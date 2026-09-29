@@ -1,0 +1,5 @@
+dist/
+__pycache__/
+*.pyc
+src/fusion/audio/*.mp3
+.DS_Store

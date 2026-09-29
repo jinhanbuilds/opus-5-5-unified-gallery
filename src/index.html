@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="从想做的效果出发，浏览 Claude Opus 5.5 的视频型动效与可交互网页，体验演示并查看提示词与出处。">
+  <meta name="theme-color" content="#F3F4F5">
+  <title>Opus 5.5 统一效果图鉴</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f3f4f5'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-family='Georgia' font-style='italic' font-size='42' fill='%23692f3d'%3E5.5%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="fusion/style.css">
+  <link rel="stylesheet" href="fusion/overrides.css">
+  <script defer src="fusion/catalog.js"></script>
+  <script defer src="fusion/lexicon-links.js"></script>
+  <script defer src="fusion/app.js"></script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#collection">跳到作品</a>
+  <div class="page">
+    <header class="masthead">
+      <a class="wordmark" href="#top" aria-label="回到顶部">THE OPUS COLLECTION<span class="wordmark-cross" aria-hidden="true">✳</span></a>
+      <span class="edition">MOTION <span class="edition-line"></span> INTERACTION</span>
+      <nav class="header-links" aria-label="关联页面"><a class="source-link" href="https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x" target="_blank" rel="noopener">动效词典 <span aria-hidden="true">↗</span></a><a class="source-link" href="#about-sources">来源与说明 <span aria-hidden="true">↗</span></a></nav>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="title">
+        <div class="intro-left">
+          <p class="eyebrow">CLAUDE OPUS <span>／</span> 5.5 统一效果图鉴</p>
+          <h1 id="title"><span>Find your</span><br><em>next effect.</em></h1>
+        </div>
+        <div class="intro-right">
+          <span class="edition-numeral" aria-hidden="true">5.5</span>
+          <div class="intro-note"><span class="note-rule"></span><p>从想做的效果出发。<br>看演示，读做法。</p><span class="note-index" aria-hidden="true">↓</span></div>
+        </div>
+      </section>
+
+      <section id="collection" class="collection" aria-label="作品瀑布流">
+        <div class="collection-toolbar">
+          <div class="collection-label"><h2>效果索引</h2><span id="resultCount" aria-live="polite">118 / 118</span></div>
+          <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><input id="search" type="search" placeholder="搜索效果、名称或编号" autocomplete="off" aria-label="搜索效果、名称、编号或提示词"><kbd>/</kbd></label>
+        </div>
+        <div class="filters" aria-label="筛选效果">
+          <div class="filter-row"><span class="filter-name">形式</span><div id="mediumFilters" class="filter-buttons" role="group" aria-label="按形式筛选">
+            <button type="button" data-medium="all" aria-pressed="true">全部 <small>118</small></button>
+            <button type="button" data-medium="video" aria-pressed="false">视频型效果 <small>15</small></button>
+            <button type="button" data-medium="web" aria-pressed="false">网页作品 <small>103</small></button>
+          </div></div>
+          <div class="filter-row"><span class="filter-name">想做</span><div id="intentFilters" class="filter-buttons" role="group" aria-label="按用途筛选"></div></div>
+          <div class="filter-bottom">
+            <details id="advancedFilters" class="advanced-filters"><summary>视觉与动态方式 <span id="advancedActive" hidden>· 已筛选</span></summary>
+              <div class="filter-row filter-extra">
+                <label>视觉方向<select id="styleFilter" aria-label="按视觉方向筛选"><option value="">全部视觉方向</option></select></label>
+                <label>动态方式<select id="motionFilter" aria-label="按动态方式筛选"><option value="">全部动态方式</option></select></label>
+              </div>
+            </details>
+            <button id="selectedFilter" type="button" aria-pressed="false">只看精选 22 条</button>
+            <button id="livePreviewToggle" type="button" aria-pressed="true" title="同屏卡片无声；有声音的作品请点开详情播放">动态预览 · 开（无声）</button>
+            <button id="clearFilters" class="clear-filters" type="button">清除筛选</button>
+          </div>
+        </div>
+        <div id="gallery" class="gallery"></div>
+        <div id="empty" class="empty" hidden><span class="empty-mark">∅</span><h3>没有找到这组作品</h3><p>换一个用途或动态方式，也可以直接搜效果名称。</p><button id="resetSearch" type="button">查看全部作品 <span aria-hidden="true">↗</span></button></div>
+      </section>
+    </main>
+
+    <footer id="about-sources" class="footer">
+      <p>118 个主题 · 122 个演示版本。<br><a href="https://github.com/MiaAI-Lab/Claude-Opus-5.5-100-HTML-Files" target="_blank" rel="noopener">100 HTML 原仓库 ↗</a> 与 22 条动效片库共同组成索引。精选片库的演示按提示词制作；4 组共用创意提示词的作品在详情中并列保留两个演示。提示词原文或摘录状态以条目说明为准。<br><a href="fusion/legacy-22/index.html">查看原 22 条片库与完整技法拆解 ↗</a></p>
+      <a href="#top">回到顶部 ↑</a>
+    </footer>
+  </div>
+
+  <dialog id="viewer" class="viewer" aria-labelledby="detailTitle">
+    <div class="viewer-layout">
+      <section class="screen" aria-label="动态预览">
+        <div class="screen-bar"><span class="screen-caption"><span id="screenNumber"></span><span class="screen-divider"></span><span id="screenState" aria-live="polite">正在载入</span></span><a id="openOriginal" target="_blank" rel="noopener">独立打开 <span aria-hidden="true">↗</span></a></div>
+        <div id="stage" class="stage"><img id="poster" class="poster" alt=""><div id="frameHost" class="frame-host"></div><div id="previewError" class="preview-error" hidden><p>动态预览未能载入</p><button id="retry" type="button">重新载入</button><a id="errorOriginal" target="_blank" rel="noopener">独立打开页面 ↗</a></div></div>
+        <div id="videoControls" class="video-controls" hidden><button id="videoPlay" type="button" aria-label="暂停">暂停</button><input id="videoSeek" type="range" min="0" max="15" value="0" step="0.01" aria-label="拖动视频型效果时间线"><span id="videoTime">00:00 / 00:15</span><button id="soundToggle" type="button" aria-pressed="false" aria-label="开启后补背景音效" title="原创后补音效，非原作者音轨" disabled>♫ 开启音效</button></div>
+        <div class="screen-foot"><span id="screenHint">点击画面后即可交互</span><span>返回图鉴 <kbd>Esc</kbd></span></div>
+      </section>
+      <aside class="info">
+        <div class="info-top"><span id="detailCategory" class="eyebrow"></span><button id="close" class="close" type="button" aria-label="关闭作品详情"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+        <div id="infoScroll" class="info-scroll">
+          <p id="detailEnglish" class="detail-english"></p><h2 id="detailTitle"></h2>
+          <p id="detailDescription" class="detail-description"></p>
+          <div id="detailBadges" class="detail-badges"></div>
+          <div id="variantPicker" class="variant-picker" role="group" aria-label="选择演示版本" hidden></div>
+          <section class="interaction"><h3>试着这样看</h3><p id="detailInteraction"></p></section>
+          <section class="prompt-section" aria-labelledby="promptTitle"><div class="section-heading"><h3 id="promptTitle">提示词</h3><span id="promptKind"></span></div><p id="promptNote" class="prompt-note"></p><pre id="detailPrompt" tabindex="0"></pre></section>
+          <details id="briefDetails" class="source-details" hidden><summary>精选片库中的创意提示词段 <span aria-hidden="true">＋</span></summary><pre id="briefPrompt"></pre></details>
+          <details id="demoDetails" class="source-details" hidden><summary>演示所用示例与简化 <span aria-hidden="true">＋</span></summary><p id="sampleInputs"></p><p id="demoNote"></p></details>
+          <section class="source-links"><h3>出处与版本</h3><div id="sourceLinks"></div><p id="sourceSummary"></p></section>
+          <a id="promptFile" class="prompt-file" target="_blank" rel="noopener" hidden>查看原始 TXT ↗</a>
+        </div>
+        <div class="info-actions"><button id="copyPrompt" type="button"><span>复制提示词</span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="1"/><path d="M16 8V3H3v13h5"/></svg></button><span id="copyStatus" aria-live="polite">复制内容与上方显示一致</span></div>
+      </aside>
+    </div>
+    <img id="flight" class="flight" alt="" aria-hidden="true">
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><p class="no-script">请开启 JavaScript 以浏览图鉴，或打开项目中的原始 HTML 文件。</p></noscript>
+</body>
+</html>

@@ -1,0 +1,6 @@
+[submodule "sources/html100"]
+	path = sources/html100
+	url = https://github.com/MiaAI-Lab/Claude-Opus-5.5-100-HTML-Files.git
+[submodule "sources/motion22"]
+	path = sources/motion22
+	url = https://github.com/jinhanbuilds/opus-5-5-motion-gallery.git
