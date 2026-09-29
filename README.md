@@ -4,6 +4,14 @@
 
 **[在线打开融合图鉴（飞书秒搭，无需登录）](https://zcnofdpgpxud.feishuapp.com/app/app_17exzr8eka4/)**
 
+## 60 秒视频预览
+
+https://github.com/user-attachments/assets/fb7e0971-df29-44cb-a184-a95a8f392149
+
+录屏展示首页浏览和作品播放，保留了原视频的音轨；点击播放器开始观看。画面中作品的归属见[来源与致谢](CREDITS.md)。
+
+静态截图：
+
 ![Opus 5.5 统一效果图鉴首页](docs/preview.png)
 
 ## 怎么用
