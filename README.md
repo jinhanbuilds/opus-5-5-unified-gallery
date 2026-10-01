@@ -2,6 +2,8 @@
 
 **从想做的效果出发，看演示，读提示词，再回到原作者。** 这份图鉴把 [MiaAI-Lab 的 100 个 HTML 作品](https://github.com/MiaAI-Lab/Claude-Opus-5.5-100-HTML-Files)与 [22 条动效片库](https://github.com/jinhanbuilds/opus-5-5-motion-gallery)放进同一个可搜索的入口。
 
+**系列入口：**[统一效果图鉴：看案例、找灵感](https://github.com/jinhanbuilds/opus-5-5-unified-gallery) · [动效词典：学会描述、写提示词](https://github.com/jinhanbuilds/motion-lexicon)
+
 **[在线打开融合图鉴（飞书秒搭，无需登录）](https://zcnofdpgpxud.feishuapp.com/app/app_17exzr8eka4/)**
 
 ## 60 秒视频预览
@@ -53,3 +55,9 @@ python3 -m http.server 8000 --directory dist
 本仓库不把两个来源仓库的原件再次提交为新仓库文件。原作者内容由各自权利人持有，这里没有授予覆盖全部原作和提示词的统一再使用许可。背景音效由本项目程序生成，没有使用外部歌曲、音效采样或配音；它们也不是 Opus 或原作者作品自带的音轨。
 
 整理与融合：**AI伐木工（金翰）**。发现作者、出处或演示说明有误，欢迎通过仓库 Issue 指出具体条目和来源。
+
+## 署名与使用范围
+
+**融合整理、设计与维护：AI伐木工（金翰）。** 本项目自行制作且依法享有权利的新增部分保留相关权利，当前未授予新的统一开源许可。原作、提示词、外部依赖及宣传视频音轨分别按各自许可或授权处理。
+
+详细说明见 [署名与使用说明](RIGHTS.md)，逐条作者与出处见 [来源与致谢](CREDITS.md)。[图鉴与词典的项目设计](https://github.com/jinhanbuilds/motion-lexicon/blob/main/docs/project-map.md)说明两个主项目的定位、内容维护与后续跳转安排；22 条片库保留为历史版本与来源。
