@@ -1,0 +1,828 @@
+{
+  "date": "2026-10-27",
+  "sourceEntries": 100,
+  "publicTexts": 100,
+  "groups": {
+    "avi": 15,
+    "lemo": 15,
+    "mg": 13,
+    "openvg": 15,
+    "optical": 14,
+    "swan": 14,
+    "threejs": 14
+  },
+  "oldSubjectsEqual": 118,
+  "oldVariantsEqual": 122,
+  "oldPairedSubjects": [
+    "001",
+    "008",
+    "015",
+    "026"
+  ],
+  "unchangedStyleHashes": {
+    "src/fusion/style.css": "d69f8bd36b654f2d1161f0f67da9fef8184e762166d443d7e99956318b604041",
+    "src/fusion/overrides.css": "b1051b17e045f83945b7f204dfcd04656fe003c1b0f55fb49106bea9fb876cab"
+  },
+  "rows": [
+    {
+      "id": "n001",
+      "group": "lemo",
+      "entrySha256": "4bcec8f994190d3522f759c3a17f2fd3ae4be4a0d57bb52b4702af19de240c86",
+      "publicTextSha256": "d73b30c0fa6d153487549d32d8c6c599733cf5e7576badec862a12da6d284761",
+      "publicTextVerifiedAt": "vendors/lemomo-ai/lemo-opuscar/styles/art-deco/STYLE.md",
+      "pass": true
+    },
+    {
+      "id": "n002",
+      "group": "lemo",
+      "entrySha256": "28d1398c8a44632461443505aa04f8afc98883ade0fb3ba64a8bb86088a25728",
+      "publicTextSha256": "cbe0b8957c785a165f85ccb3b8eba61c30c0462b32983db6a16c76046a2bb333",
+      "publicTextVerifiedAt": "vendors/lemomo-ai/lemo-opuscar/styles/ascii-crt/STYLE.md",
+      "pass": true
+    },
+    {
+      "id": "n003",
+      "group": "lemo",
+      "entrySha256": "363656cc02058402df3a02546fd24fd07437985fad3c53f8d9a7efa325577d1e",
+      "publicTextSha256": "de01fc7fcb38b17b58eb017c9cdbcb36b9242b029435a33587614c93088e1717",
+      "publicTextVerifiedAt": "vendors/lemomo-ai/lemo-opuscar/styles/blueprint/STYLE.md",
+      "pass": true
+    },
+    {
+      "id": "n004",
+      "group": "lemo",
+      "entrySha256": "a4ff7863a07fd5a6370112155b97e4f984321f3dd705174d383c39b5e8f4539d",
+      "publicTextSha256": "218c48a204f9034d1c2fb7f11698b4834f1faee1ca68c9e336f3d6ab992ff2e4",
+      "publicTextVerifiedAt": "vendors/lemomo-ai/lemo-opuscar/styles/ukiyoe/STYLE.md",
+      "pass": true
+    },
+    {
+      "id": "n005",
+      "group": "lemo",
+      "entrySha256": "35164a97857fa0c27482e20bffc2638118d8cd668c5201dd4642c4e6957916e1",
+      "publicTextSha256": "1e16f5c6f90ebf09556ec94d37434400d309c978e00ee89e9d38dec476664eaf",
+      "publicTextVerifiedAt": "vendors/lemomo-ai/lemo-opuscar/styles/cel-anime-80s/STYLE.md",
+      "pass": true
+    },
+    {
+      "id": "n006",
+      "group": "lemo",
+      "entrySha256": "7386fd82e2197ee5366b6eba5bca197226e810ec341137592ffb2d475e2c78b8",
+      "publicTextSha256": "ba558478fe519fa6777fe28fa7d1980117297c7beb6fe2e366ef6f00688aa175",
+      "publicTextVerifiedAt": "vendors/lemomo-ai/lemo-opuscar/styles/crayon-book/STYLE.md",
+      "pass": true
+    },
+    {
+      "id": "n007",
+      "group": "lemo",
+      "entrySha256": "ad41b5fbbb455619aa254be566f25b84d27f5a98f5c438a8d54a933952e5ed59",
+      "publicTextSha256": "14ddeb6dc495e691a220497069a2ee4827d820f9ee7a3173de5846489ef41f57",
+      "publicTextVerifiedAt": "vendors/lemomo-ai/lemo-opuscar/styles/swiss-motion/STYLE.md",
+      "pass": true
+    },
+    {
+      "id": "n008",
+      "group": "lemo",
+      "entrySha256": "cc09f28cff27a78c3b79715dd02ff04abf9b55e2583a813ccfdf26df2751d809",
+      "publicTextSha256": "5d71598f0b9cf4034c6461956b0d8bd63bd33750b4045376044f0d956b01d645",
+      "publicTextVerifiedAt": "vendors/lemomo-ai/lemo-opuscar/styles/ink-wash/STYLE.md",
+      "pass": true
+    },
+    {
+      "id": "n009",
+      "group": "lemo",
+      "entrySha256": "b867ae97661d976cae248e919e6c569d4418cf6f0ffd6973a05e61f9692a41f0",
+      "publicTextSha256": "69d26cb06f48ab6b03c12a76c2390d0945cdaddc38bc109b7d5e292b9af1399b",
+      "publicTextVerifiedAt": "vendors/lemomo-ai/lemo-opuscar/styles/one-line/STYLE.md",
+      "pass": true
+    },
+    {
+      "id": "n010",
+      "group": "lemo",
+      "entrySha256": "d3997587391cd3ba2078721031745830be2007c50590411241a6aba03b0e8191",
+      "publicTextSha256": "65e317d83335e0cb34696b643e31ad9e46fb0bb93fd748c2e21d74358aea61ec",
+      "publicTextVerifiedAt": "vendors/lemomo-ai/lemo-opuscar/styles/papercut-red/STYLE.md",
+      "pass": true
+    },
+    {
+      "id": "n011",
+      "group": "lemo",
+      "entrySha256": "e88a32b0b46e315fd4a883641c0071a157a3182ecd29230580397a06ada3a365",
+      "publicTextSha256": "f79fac0d9aed03d2a69f17a50b37adca2da84156b3fa525537761c507bcaea8e",
+      "publicTextVerifiedAt": "vendors/lemomo-ai/lemo-opuscar/styles/pixel-rpg/STYLE.md",
+      "pass": true
+    },
+    {
+      "id": "n012",
+      "group": "lemo",
+      "entrySha256": "26b2c841049a32aa533fb5cb6ad9585f72372bc05133c27204daa5aa612e0a0a",
+      "publicTextSha256": "c3d85c91a81b0afde091d964482749482adc66c12730afe124708f7b18b331a6",
+      "publicTextVerifiedAt": "vendors/lemomo-ai/lemo-opuscar/styles/risograph/STYLE.md",
+      "pass": true
+    },
+    {
+      "id": "n013",
+      "group": "lemo",
+      "entrySha256": "2d9fd1151d96370017fe2544e8d9e702f2ec32676a2eb2df3a54908a44a48502",
+      "publicTextSha256": "0f6551bd109a4127404068aa1e75f18f16b58c80b486c23480b3d193e597b060",
+      "publicTextVerifiedAt": "vendors/lemomo-ai/lemo-opuscar/styles/stained-glass/STYLE.md",
+      "pass": true
+    },
+    {
+      "id": "n014",
+      "group": "lemo",
+      "entrySha256": "d1a16ca6e8665ef532f0c5a676f4aa483965d0479d1a7698484ac6f9549aecf3",
+      "publicTextSha256": "bf850f9cd22e68b2125fed00d1b9804e91479620b44420ba7ec50e570e472a94",
+      "publicTextVerifiedAt": "vendors/lemomo-ai/lemo-opuscar/styles/rubber-hose/STYLE.md",
+      "pass": true
+    },
+    {
+      "id": "n015",
+      "group": "lemo",
+      "entrySha256": "d15af43907f637b48a987ac0058c798ebe53c6d827282d9602835c8d5596bc51",
+      "publicTextSha256": "e73614b6f9e2f2e8ee279f4909da8429235b96f6d13a12345b6e57d5823c30b8",
+      "publicTextVerifiedAt": "vendors/lemomo-ai/lemo-opuscar/styles/midcentury-toon/STYLE.md",
+      "pass": true
+    },
+    {
+      "id": "n016",
+      "group": "mg",
+      "entrySha256": "0f30e342c58bbcf3316d1e7cc3763055e247d1d4fdbcf1f1cef650c0be0bf66e",
+      "publicTextSha256": "16e4b1bc1762a59bc88c40ab29ff7ac0b8aea3c06a1349304566446883761b50",
+      "publicTextVerifiedAt": "vendors/Vincentwei1021/mg-styles-15/prompts/01-flat-vector.md",
+      "pass": true
+    },
+    {
+      "id": "n017",
+      "group": "mg",
+      "entrySha256": "b550add4f153964817af82943c59f31a1df539e186537601ffb8c9badaac5ddb",
+      "publicTextSha256": "bd4fa467930b0a39f19d857c4d93a5842af9bb81ea8c24396626071baf68f6e2",
+      "publicTextVerifiedAt": "vendors/Vincentwei1021/mg-styles-15/prompts/02-line-art.md",
+      "pass": true
+    },
+    {
+      "id": "n018",
+      "group": "mg",
+      "entrySha256": "7b19eedbf79e452180c5641fa7ea459382a6c5adc644999ee66b80828530b4f6",
+      "publicTextSha256": "fbb33a3826fa40fa27c7afeb7fccb1cea983e2816921c1e59f5b9896b99fd08b",
+      "publicTextVerifiedAt": "vendors/Vincentwei1021/mg-styles-15/prompts/03-isometric.md",
+      "pass": true
+    },
+    {
+      "id": "n019",
+      "group": "mg",
+      "entrySha256": "3f50e10ce0cd152f67ebf140f75752c1964cb9edefd6d5f336dd8042e9f03845",
+      "publicTextSha256": "6d7321fa69fb5b18c6b2dd4eb4b77da9eca9582cda54ec2f13f3ebe3cf9c6492",
+      "publicTextVerifiedAt": "vendors/Vincentwei1021/mg-styles-15/prompts/05-cel-boil.md",
+      "pass": true
+    },
+    {
+      "id": "n020",
+      "group": "mg",
+      "entrySha256": "1ce00a0c261735d1fb7338a69b82ffe167cf750e723a27e6e21ec7d53c08c6c4",
+      "publicTextSha256": "db2091374093538dc82264c1ccaeaaf1fa4d997bbf539ace2b4f2067c43da3ff",
+      "publicTextVerifiedAt": "vendors/Vincentwei1021/mg-styles-15/prompts/06-collage.md",
+      "pass": true
+    },
+    {
+      "id": "n021",
+      "group": "mg",
+      "entrySha256": "81b4aaa0a699f059529b52b0c87ca06ff1872fab09fc1e50f13b8a5a5fd934d6",
+      "publicTextSha256": "1fc8d2a03e546807d9453b4a0c38afeb830f7cac6104802f5223140f4568be2b",
+      "publicTextVerifiedAt": "vendors/Vincentwei1021/mg-styles-15/prompts/07-liquid.md",
+      "pass": true
+    },
+    {
+      "id": "n022",
+      "group": "mg",
+      "entrySha256": "4d104505425b3cc991e9b7b49c8bb3b653a1a5da471d0bce5ccca347d77ce62d",
+      "publicTextSha256": "512bd1ae0bf0fc96d495abbeba503bc1c9c4b15e8d89441af978df3145742d71",
+      "publicTextVerifiedAt": "vendors/Vincentwei1021/mg-styles-15/prompts/08-morph.md",
+      "pass": true
+    },
+    {
+      "id": "n023",
+      "group": "mg",
+      "entrySha256": "94855c63ee1a2d38a3811e65f5c9351f525c6a53b68a20edb891027bfb7c0740",
+      "publicTextSha256": "91f9467792e79a58b8131f7fc0eaf26c001c64bc1f3e187771d1a01a9ebfc095",
+      "publicTextVerifiedAt": "vendors/Vincentwei1021/mg-styles-15/prompts/09-bauhaus.md",
+      "pass": true
+    },
+    {
+      "id": "n024",
+      "group": "mg",
+      "entrySha256": "60603876aa00a08901c085c0834b991895971a40a9c73fda4a0ae10b18b37e91",
+      "publicTextSha256": "65e053a289bbba623bd750ef77cfc9c530972909d17c0951dfaa89c05e4d53ee",
+      "publicTextVerifiedAt": "vendors/Vincentwei1021/mg-styles-15/prompts/10-synthwave.md",
+      "pass": true
+    },
+    {
+      "id": "n025",
+      "group": "mg",
+      "entrySha256": "0def2223e6949e21fa38093cb6d54752d6606e4edde3ae44b5f52ae05ddd223b",
+      "publicTextSha256": "513df11ecdac1d51c88274eab34d5205643eaafb677451bfc05d6ec4d382ea67",
+      "publicTextVerifiedAt": "vendors/Vincentwei1021/mg-styles-15/prompts/12-aurora-glass.md",
+      "pass": true
+    },
+    {
+      "id": "n026",
+      "group": "mg",
+      "entrySha256": "2d50ad0b67c9472557cad5fa60dc27932e6a4fba09c370f267f51e311eeef4b4",
+      "publicTextSha256": "d69af5f96d6246e91d52d35c806dac605ad226c05992358320689560a6b73a92",
+      "publicTextVerifiedAt": "vendors/Vincentwei1021/mg-styles-15/prompts/19-paperclip.md",
+      "pass": true
+    },
+    {
+      "id": "n027",
+      "group": "mg",
+      "entrySha256": "282203861cdd3e9007ede9cfce783a5f5942421d645e160ad505f9c098a8a856",
+      "publicTextSha256": "63fe8ef899833151f8d9c2e835f6f42ac71eb049b9d69036d2149c7ed7506bc5",
+      "publicTextVerifiedAt": "vendors/Vincentwei1021/mg-styles-15/prompts/20-pixel.md",
+      "pass": true
+    },
+    {
+      "id": "n028",
+      "group": "mg",
+      "entrySha256": "eefb5aa96fddf47e84efbd9000e521a6b8e7908a7be20f4f42ed14586f0113b2",
+      "publicTextSha256": "b1a5d4f52ed010133c01678af159f87c3cba012cdf1acd4d78d151c72903dd6f",
+      "publicTextVerifiedAt": "vendors/Vincentwei1021/mg-styles-15/prompts/22-hud.md",
+      "pass": true
+    },
+    {
+      "id": "n029",
+      "group": "openvg",
+      "entrySha256": "37a236c3d0f0070d581aecdfc53230627c3003ca47ae54e79227cc76d044bff7",
+      "publicTextSha256": "b521a10f87c58dc91eed6af5933ec82187a69667d6d4093d80a6a4ad2cb29be2",
+      "publicTextVerifiedAt": "vendors/OpenVGLab/awesome-opus5.5-frontend-showcases/README.md",
+      "pass": true
+    },
+    {
+      "id": "n030",
+      "group": "openvg",
+      "entrySha256": "e039fbec0ca6fe5283d170949f462afa03ed6108a38511020673fac3e2308fce",
+      "publicTextSha256": "49e1fbe6b74dfd166a77be3f444eceecc03d6f3f9e25be124be0a7675036d6cc",
+      "publicTextVerifiedAt": "vendors/OpenVGLab/awesome-opus5.5-frontend-showcases/README.md",
+      "pass": true
+    },
+    {
+      "id": "n031",
+      "group": "openvg",
+      "entrySha256": "16d5f3bfc37894fffa693a3522e0e6d3773111899c637b227a2fe0dda6fa5d92",
+      "publicTextSha256": "5241e889319a4fbdcb5dd0d471b679a6212f7e59184c21f5ab252322396e3751",
+      "publicTextVerifiedAt": "vendors/OpenVGLab/awesome-opus5.5-frontend-showcases/README.md",
+      "pass": true
+    },
+    {
+      "id": "n032",
+      "group": "openvg",
+      "entrySha256": "b14f61a87719aea980603b00d838e8ec2b8cdc6dd9c934bc75bfb60971359c01",
+      "publicTextSha256": "23547b882d0d2fba131f5d1f4761320c559521a95c3f429e3fba0301001114cf",
+      "publicTextVerifiedAt": "vendors/OpenVGLab/awesome-opus5.5-frontend-showcases/README.md",
+      "pass": true
+    },
+    {
+      "id": "n033",
+      "group": "openvg",
+      "entrySha256": "0e95bb800f47a55d5a66b0c2dada301ed0e08fa705405142b409a3c29aa80dea",
+      "publicTextSha256": "2f08a8b8c1f396652bea937f370400f440584c5d6ebe30d77e04b0a069bacb24",
+      "publicTextVerifiedAt": "vendors/OpenVGLab/awesome-opus5.5-frontend-showcases/README.md",
+      "pass": true
+    },
+    {
+      "id": "n034",
+      "group": "openvg",
+      "entrySha256": "1a63cf40b8e247d8bfdc1c68a4e9b4cd92ffa109b492dd1d1883f0a00a163103",
+      "publicTextSha256": "7a85d36eaeb082f980a7794f0f57dd3895f28fa239129ac584b559a2efec7578",
+      "publicTextVerifiedAt": "vendors/OpenVGLab/awesome-opus5.5-frontend-showcases/README.md",
+      "pass": true
+    },
+    {
+      "id": "n035",
+      "group": "openvg",
+      "entrySha256": "9bffd71733bac5e08738326fcf2bcd617d6db474016906a1f27a139aff7d2732",
+      "publicTextSha256": "6f0a18f00c193032d906b3aeab70fae825c09a512bd3c14873a3bf9acc2cfd6f",
+      "publicTextVerifiedAt": "vendors/OpenVGLab/awesome-opus5.5-frontend-showcases/README.md",
+      "pass": true
+    },
+    {
+      "id": "n036",
+      "group": "openvg",
+      "entrySha256": "021ada9a0691297456aa13dbd2a16dd8a261dec724dd8197b24097d9202fc9fb",
+      "publicTextSha256": "4c6964346f090a436a70f722bd87e656360bea160a29398021ac9aaf4079bdd7",
+      "publicTextVerifiedAt": "vendors/OpenVGLab/awesome-opus5.5-frontend-showcases/README.md",
+      "pass": true
+    },
+    {
+      "id": "n037",
+      "group": "openvg",
+      "entrySha256": "ac9e04504d4bb2dd3e9bfbd80cd0410743b79f83f2273f1e6ab22f3a0d22eb8c",
+      "publicTextSha256": "7eafda59eb0f5657b80ffd23ac6d36741e64aceaccc171711d21db7391940010",
+      "publicTextVerifiedAt": "vendors/OpenVGLab/awesome-opus5.5-frontend-showcases/README.md",
+      "pass": true
+    },
+    {
+      "id": "n038",
+      "group": "openvg",
+      "entrySha256": "aba9ad2a27e82785d302bdbcaeab9c299295fb4bc9f90610016f80a10044caa8",
+      "publicTextSha256": "e2c9b7a0d6421746e0c83fda8562e18dffe93d44a0ee63b23ee182dd7dfb4ce4",
+      "publicTextVerifiedAt": "vendors/OpenVGLab/awesome-opus5.5-frontend-showcases/README.md",
+      "pass": true
+    },
+    {
+      "id": "n039",
+      "group": "openvg",
+      "entrySha256": "554616d47f873c8cf6ce3a6ba69bd915ff9cb0ceec2b2166c1f8f38eb2f440c7",
+      "publicTextSha256": "26b7f91c9bda2f429519e665149bc19723d33e898c42d6509c218d5b942e72f0",
+      "publicTextVerifiedAt": "vendors/OpenVGLab/awesome-opus5.5-frontend-showcases/README.md",
+      "pass": true
+    },
+    {
+      "id": "n040",
+      "group": "openvg",
+      "entrySha256": "a29552196f43c8a9c4b439dc0925c41ab96adae4e82d7dc8dd90bc4bb7ec7928",
+      "publicTextSha256": "48656aef7ed865ea59b5866ce33c72ec0c81519dcdc8e1b509aaf0657f454c08",
+      "publicTextVerifiedAt": "vendors/OpenVGLab/awesome-opus5.5-frontend-showcases/README.md",
+      "pass": true
+    },
+    {
+      "id": "n041",
+      "group": "openvg",
+      "entrySha256": "903393a9d975a8f2a46100ae64980e7b6bcb03df4a7048baa2e13ae54c08f70f",
+      "publicTextSha256": "ff1e284def9d821a1ce4c45e04ee78416eeb7e87a0781985deac5fd371ef43b7",
+      "publicTextVerifiedAt": "vendors/OpenVGLab/awesome-opus5.5-frontend-showcases/README.md",
+      "pass": true
+    },
+    {
+      "id": "n042",
+      "group": "openvg",
+      "entrySha256": "47d60d9653793d5de5a3700cfeda6ecedc5dcb9f73017088f0771957d0127196",
+      "publicTextSha256": "ddd77a413954895f0ed2ea1d8a21993b90dee51647f78110a45f46ac6cd96e03",
+      "publicTextVerifiedAt": "vendors/OpenVGLab/awesome-opus5.5-frontend-showcases/lottie-games/jelly-hop/PROMPT.md",
+      "pass": true
+    },
+    {
+      "id": "n043",
+      "group": "openvg",
+      "entrySha256": "c1a4e2f7293e8cb2cf45f6622bcfacb908b69bd566d86ebe6f26c7e6c1f489f5",
+      "publicTextSha256": "ad1fb1489983f611e2f4255cb68ad2a8855cc0bbb6b8091da36ebadd479e44a6",
+      "publicTextVerifiedAt": "vendors/OpenVGLab/awesome-opus5.5-frontend-showcases/lottie-games/pocket-pal/PROMPT.md",
+      "pass": true
+    },
+    {
+      "id": "n044",
+      "group": "avi",
+      "entrySha256": "5e821f7387cbbd9b72270bb98ad9b9e44bf8a0b35180e5117282de195bed8566",
+      "publicTextSha256": "9b9c56a071866ad0158841e5f34c6b1b86b8ba8218889493e8a1cfc13a8683bd",
+      "publicTextVerifiedAt": "avi-showreel.html#PROMPTS.boids",
+      "pass": true
+    },
+    {
+      "id": "n045",
+      "group": "avi",
+      "entrySha256": "5e821f7387cbbd9b72270bb98ad9b9e44bf8a0b35180e5117282de195bed8566",
+      "publicTextSha256": "bf438a698f6267ba54e0907d5350bd66b0673a49f66a32e073912f0afbbacf9f",
+      "publicTextVerifiedAt": "avi-showreel.html#PROMPTS.cloth",
+      "pass": true
+    },
+    {
+      "id": "n046",
+      "group": "avi",
+      "entrySha256": "5e821f7387cbbd9b72270bb98ad9b9e44bf8a0b35180e5117282de195bed8566",
+      "publicTextSha256": "b56ab102d166e13558ca2fa726647524d31b041c15a3c07bbe3fe366cdb05ced",
+      "publicTextVerifiedAt": "avi-showreel.html#PROMPTS.rope",
+      "pass": true
+    },
+    {
+      "id": "n047",
+      "group": "avi",
+      "entrySha256": "5e821f7387cbbd9b72270bb98ad9b9e44bf8a0b35180e5117282de195bed8566",
+      "publicTextSha256": "f0f47610707bb2feb39cb176091bd46eb128f4ee42876ac7cbdc780bfd71fb9c",
+      "publicTextVerifiedAt": "avi-showreel.html#PROMPTS.smoke",
+      "pass": true
+    },
+    {
+      "id": "n048",
+      "group": "avi",
+      "entrySha256": "5e821f7387cbbd9b72270bb98ad9b9e44bf8a0b35180e5117282de195bed8566",
+      "publicTextSha256": "126c25b8ddeec8807545552171f511699f8f0e58468f27baaf8b01e5abcfc575",
+      "publicTextVerifiedAt": "avi-showreel.html#PROMPTS.particles",
+      "pass": true
+    },
+    {
+      "id": "n049",
+      "group": "avi",
+      "entrySha256": "5e821f7387cbbd9b72270bb98ad9b9e44bf8a0b35180e5117282de195bed8566",
+      "publicTextSha256": "35b1a55d7909a49d86e00b58067908b5740508a28f844fd8a3804ccfebf3b79e",
+      "publicTextVerifiedAt": "avi-showreel.html#PROMPTS.fire",
+      "pass": true
+    },
+    {
+      "id": "n050",
+      "group": "avi",
+      "entrySha256": "5e821f7387cbbd9b72270bb98ad9b9e44bf8a0b35180e5117282de195bed8566",
+      "publicTextSha256": "e764ec12109a988983170db55d2b23386f53f8cde0da9fb9da079619fef8e0a2",
+      "publicTextVerifiedAt": "avi-showreel.html#PROMPTS.rain",
+      "pass": true
+    },
+    {
+      "id": "n051",
+      "group": "avi",
+      "entrySha256": "5e821f7387cbbd9b72270bb98ad9b9e44bf8a0b35180e5117282de195bed8566",
+      "publicTextSha256": "9f480e960e894630599455589169aa08b1f03e2e05cfdba4269f901bb343319f",
+      "publicTextVerifiedAt": "avi-showreel.html#PROMPTS.tree",
+      "pass": true
+    },
+    {
+      "id": "n052",
+      "group": "avi",
+      "entrySha256": "5e821f7387cbbd9b72270bb98ad9b9e44bf8a0b35180e5117282de195bed8566",
+      "publicTextSha256": "ab1dfefa2246f945172264cd506cce269cdf5062f5da6316085060c218f342ec",
+      "publicTextVerifiedAt": "avi-showreel.html#PROMPTS.voronoi",
+      "pass": true
+    },
+    {
+      "id": "n053",
+      "group": "avi",
+      "entrySha256": "5e821f7387cbbd9b72270bb98ad9b9e44bf8a0b35180e5117282de195bed8566",
+      "publicTextSha256": "771db6783ce160561f40eb7b18035d3b62d4e6ae732501d3f271812120105bba",
+      "publicTextVerifiedAt": "avi-showreel.html#PROMPTS.maze",
+      "pass": true
+    },
+    {
+      "id": "n054",
+      "group": "avi",
+      "entrySha256": "5e821f7387cbbd9b72270bb98ad9b9e44bf8a0b35180e5117282de195bed8566",
+      "publicTextSha256": "a1e10d1300a26a3ae5ffd0278adf6890395ef2cf24dd1546125b23d79ce9674a",
+      "publicTextVerifiedAt": "avi-showreel.html#PROMPTS.route",
+      "pass": true
+    },
+    {
+      "id": "n055",
+      "group": "avi",
+      "entrySha256": "5e821f7387cbbd9b72270bb98ad9b9e44bf8a0b35180e5117282de195bed8566",
+      "publicTextSha256": "d491e4d1a1a671b58519f27e741e0c8f46cd9b238144ab63a62536e4f7db0729",
+      "publicTextVerifiedAt": "avi-showreel.html#PROMPTS.choropleth",
+      "pass": true
+    },
+    {
+      "id": "n056",
+      "group": "avi",
+      "entrySha256": "5e821f7387cbbd9b72270bb98ad9b9e44bf8a0b35180e5117282de195bed8566",
+      "publicTextSha256": "a107fe3226db1424476e96723aa9df68ca77048b8a3f13e24f691166a11d65e9",
+      "publicTextVerifiedAt": "avi-showreel.html#PROMPTS.barrace",
+      "pass": true
+    },
+    {
+      "id": "n057",
+      "group": "avi",
+      "entrySha256": "5e821f7387cbbd9b72270bb98ad9b9e44bf8a0b35180e5117282de195bed8566",
+      "publicTextSha256": "7d3f65842e4b0da07d8cde5e46f45f478b6a5c034860b9965b1560d09a4567a0",
+      "publicTextVerifiedAt": "avi-showreel.html#PROMPTS.orgchart",
+      "pass": true
+    },
+    {
+      "id": "n058",
+      "group": "avi",
+      "entrySha256": "5e821f7387cbbd9b72270bb98ad9b9e44bf8a0b35180e5117282de195bed8566",
+      "publicTextSha256": "8001c096dc2125783b728593f0348a1c13839783cfe1f24a5c5976c21032f3b4",
+      "publicTextVerifiedAt": "avi-showreel.html#PROMPTS.handwriting",
+      "pass": true
+    },
+    {
+      "id": "n059",
+      "group": "swan",
+      "entrySha256": "e084d842f5f33aa336c74625bf8c8441095e73a6609572647fb497f353ef81b3",
+      "publicTextSha256": "3b75b47c305761ec5aa84337d15aa50dbe2eca543657b0ff7f60a073e9e420ac",
+      "publicTextVerifiedAt": "vendors/swan4er/opus-100-projects/IDEAS.md#016-gps-explained + BRIEF.md",
+      "pass": true
+    },
+    {
+      "id": "n060",
+      "group": "swan",
+      "entrySha256": "b1beebb702bab6af716d1b28a6b7940c0525edf7e5390c6e0223d1e55a355a83",
+      "publicTextSha256": "53d1531ddfdaa15c69c8771f5014b3dc1f5535f53f20f83a251e6cc8e2fbf0bf",
+      "publicTextVerifiedAt": "vendors/swan4er/opus-100-projects/IDEAS.md#030-wallpaper-groups + BRIEF.md",
+      "pass": true
+    },
+    {
+      "id": "n061",
+      "group": "swan",
+      "entrySha256": "ad5f6df899ad05161a73c46cf777e9152cabf4ca63d678e6d7921ad7c0548216",
+      "publicTextSha256": "125e1d7d0b635c5070b51be0baccc9f3d913e140286c2681e1276b8846878bc5",
+      "publicTextVerifiedAt": "vendors/swan4er/opus-100-projects/IDEAS.md#040-jpeg-anatomy + BRIEF.md",
+      "pass": true
+    },
+    {
+      "id": "n062",
+      "group": "swan",
+      "entrySha256": "a742424e2ed70ee7cb7dff2580336dfb7accc6403c00ba0ff82873e587a0d9ad",
+      "publicTextSha256": "730b963ff5f3bede21a3224f9f5dee7be901ba8b98d88e375bf6f8e3915bd0e1",
+      "publicTextVerifiedAt": "vendors/swan4er/opus-100-projects/IDEAS.md#053-airfoil-lift + BRIEF.md",
+      "pass": true
+    },
+    {
+      "id": "n063",
+      "group": "swan",
+      "entrySha256": "dd01a00cac7f2e09e858040f8cd0467ea3dd54c6c353396cc7710271da40994a",
+      "publicTextSha256": "21abc2710fb417553a3890b068ba7c1889c5fd81c41e19399b2234fc22dec73b",
+      "publicTextVerifiedAt": "vendors/swan4er/opus-100-projects/IDEAS.md#068-molecular-landscape + BRIEF.md",
+      "pass": true
+    },
+    {
+      "id": "n064",
+      "group": "swan",
+      "entrySha256": "984c0b3ff3ebe0051a5698e8c1da491152d747e7802c9b6b6e9cdb73657ef49b",
+      "publicTextSha256": "824508c6b4e0cf6a279f0e963e55f68c1b1736e00a5a2ebc18704ec8ee2aba7f",
+      "publicTextVerifiedAt": "vendors/swan4er/opus-100-projects/IDEAS.md#090-how-llm-reads + BRIEF.md",
+      "pass": true
+    },
+    {
+      "id": "n065",
+      "group": "swan",
+      "entrySha256": "7f7471ad1b17e5914d0b95749ef5e60054f5bf40b2e652c0c0f90578850634f1",
+      "publicTextSha256": "7559ea848c9e0c5db90ebb17a1b3a58f3c436ba3470f37f957564bf717a12e9a",
+      "publicTextVerifiedAt": "vendors/swan4er/opus-100-projects/IDEAS.md#091-git-internals + BRIEF.md",
+      "pass": true
+    },
+    {
+      "id": "n066",
+      "group": "swan",
+      "entrySha256": "41d980bdd9437bec48cee322069987ba042340c19bbec5e48500e2f5bb5dee97",
+      "publicTextSha256": "56903d711e8f970bf5d0511e0dba6b900e8992ac2a87092a3cf5cca41ecd24ba",
+      "publicTextVerifiedAt": "vendors/swan4er/opus-100-projects/IDEAS.md#104-lens-optics + BRIEF.md",
+      "pass": true
+    },
+    {
+      "id": "n067",
+      "group": "swan",
+      "entrySha256": "39e3a279e5c50539958f6ec3b9528a479da7ca34be9e256634514de4b9f735c1",
+      "publicTextSha256": "c6d602b85658706d24e145cf47c40d49fc8863873f163e55de8b0054349c2a3d",
+      "publicTextVerifiedAt": "vendors/swan4er/opus-100-projects/IDEAS.md#105-modular-synth + BRIEF.md",
+      "pass": true
+    },
+    {
+      "id": "n068",
+      "group": "swan",
+      "entrySha256": "e7786c2213661bfa889cbfb408980911ca3899914d171d40afde7adbb308d03b",
+      "publicTextSha256": "532aabe3150efe9d8c7495efc173367b21778aa9b2267783ab22bd2c49dab584",
+      "publicTextVerifiedAt": "vendors/swan4er/opus-100-projects/IDEAS.md#108-moon-gardener + BRIEF.md",
+      "pass": true
+    },
+    {
+      "id": "n069",
+      "group": "swan",
+      "entrySha256": "5de74dedcebe0ce34cde94654689ec1bf180505ce8ff683e95802e60c531b525",
+      "publicTextSha256": "84475e67ddfa7b359faf2989ed280b2d08ce23020946da87a79a681d7ed4897e",
+      "publicTextVerifiedAt": "vendors/swan4er/opus-100-projects/IDEAS.md#111-firebird-palekh + BRIEF.md",
+      "pass": true
+    },
+    {
+      "id": "n070",
+      "group": "swan",
+      "entrySha256": "7c15efe3c9cf189ed5d596b0e61c760f092e36e50e84fc3cf526e2705941f8b3",
+      "publicTextSha256": "f714a4ce44a1088961bc7c954e7bc62ebddd4080d15fc955e92945586eb1cca2",
+      "publicTextVerifiedAt": "vendors/swan4er/opus-100-projects/IDEAS.md#117-electron-clouds + BRIEF.md",
+      "pass": true
+    },
+    {
+      "id": "n071",
+      "group": "swan",
+      "entrySha256": "316f522df830075685caf090d3c4edfaff37f74f9dc95eb5f9872fa0c2eafbf3",
+      "publicTextSha256": "a5f118835414b07179f593e54cbe0cdb7fe962ddd8f4269891be0647b6635e4e",
+      "publicTextVerifiedAt": "vendors/swan4er/opus-100-projects/IDEAS.md#119-watch-anatomy + BRIEF.md",
+      "pass": true
+    },
+    {
+      "id": "n072",
+      "group": "swan",
+      "entrySha256": "e275dfd94d22320059966d5c53e06a85b7b8d462e76e783b7015830ce0ffa9d5",
+      "publicTextSha256": "f19f5d79e0404b0cfde6aa02330f03ba35bcfc284197c522d0d7db3637c30552",
+      "publicTextVerifiedAt": "vendors/swan4er/opus-100-projects/IDEAS.md#121-regex-automata + BRIEF.md",
+      "pass": true
+    },
+    {
+      "id": "n073",
+      "group": "threejs",
+      "entrySha256": "38d4ff19bf6eda8991dbedfc8de4629e446b17b5170d7f5ba452dfd15170b124",
+      "publicTextSha256": "3ab9d643695980901f699c80d9dd7ec63d1324be31a099171db95518bc1af099",
+      "publicTextVerifiedAt": "generations.txt#gen_et_47 -> prompts.txt#prompt_eiffel_tower",
+      "pass": true
+    },
+    {
+      "id": "n074",
+      "group": "threejs",
+      "entrySha256": "52deefdc4bf9d68e2031b0c0b59d3313b9f201732b290c4bb99c0c4fb432d306",
+      "publicTextSha256": "ddbb102c6218c79d4f23487fc16c9a4d5b5501ffbad4f0a0a2f573d37421a0b5",
+      "publicTextVerifiedAt": "generations.txt#gen_rf_39 -> prompts.txt#prompt_realistic_forest",
+      "pass": true
+    },
+    {
+      "id": "n075",
+      "group": "threejs",
+      "entrySha256": "818ab5dcd596b5d6c4d69d1d50259f860349693db4829577c17f7b2d8fd40967",
+      "publicTextSha256": "57526c4142b408b3536915abaa8039596da3c348968551903eece5849906e21e",
+      "publicTextVerifiedAt": "generations.txt#gen_sb_28 -> prompts.txt#prompt_sailboat",
+      "pass": true
+    },
+    {
+      "id": "n076",
+      "group": "threejs",
+      "entrySha256": "1a898e09ea8fe56b11952f5b3f47be464b6df51b56c3cbad1a9e124c8ab39fc1",
+      "publicTextSha256": "acc75eaed322e759c999b95a5de9a7202bb847df9a862692eb5251848cc4c935",
+      "publicTextVerifiedAt": "generations.txt#gen_cb_29 -> prompts.txt#prompt_chess_board",
+      "pass": true
+    },
+    {
+      "id": "n077",
+      "group": "threejs",
+      "entrySha256": "659d45c3a76ea8bff1f662a29843152762ee115498e9f43b08db34fa385e6fdb",
+      "publicTextSha256": "c32a70dc3aad7b218a3442f686982bc6636675e3e962a5d386a66c35060be8a1",
+      "publicTextVerifiedAt": "generations.txt#gen_b747_28 -> prompts.txt#prompt_boeing_747",
+      "pass": true
+    },
+    {
+      "id": "n078",
+      "group": "threejs",
+      "entrySha256": "32b55ba9f936989a1729c9c7d7e3bc87400987c1f8a35da5b14584782b1a0e26",
+      "publicTextSha256": "761bdb74525ab5d2e4c02b39623c42dae746b3d69a482ea405fdaf13d505b2ad",
+      "publicTextVerifiedAt": "generations.txt#gen_ra_28 -> prompts.txt#prompt_eef62f10c4ba463ba8382e7ae53e2381",
+      "pass": true
+    },
+    {
+      "id": "n079",
+      "group": "threejs",
+      "entrySha256": "98ac3bf23d1157dec60cd39240b21d14ca68c20847369e7e188d3f374098af10",
+      "publicTextSha256": "04dc789f901ae560d9c43949558ce2adcd0716e6903103b2b9e879f45451c8a2",
+      "publicTextVerifiedAt": "generations.txt#gen_ft_28 -> prompts.txt#prompt_fishtank",
+      "pass": true
+    },
+    {
+      "id": "n080",
+      "group": "threejs",
+      "entrySha256": "20b4c8cfad23c8205b820a7aaf6ce87cf0a3e3a13ad6b12e5b084ab09e2f36cf",
+      "publicTextSha256": "eaa1c1f79ff5d4b82203ac3122baf197ffe0068d0018fd1a62dac45706778efc",
+      "publicTextVerifiedAt": "generations.txt#gen_ic_28 -> prompts.txt#prompt_interactive_cloth",
+      "pass": true
+    },
+    {
+      "id": "n081",
+      "group": "threejs",
+      "entrySha256": "fb7d2e1f731a0a0b79ee317326e693227dc2f24c613bc3604364ed0e130e3b30",
+      "publicTextSha256": "d7ff930922fe3a7cf37a97a736f1392dec15c02833910a168bfdd597f45de085",
+      "publicTextVerifiedAt": "generations.txt#gen_cf_42 -> prompts.txt#prompt_cute_ferry",
+      "pass": true
+    },
+    {
+      "id": "n082",
+      "group": "threejs",
+      "entrySha256": "9765fdf8ce30c4a4d9a7665e8301bf1b6a268c0f460f5886e17dbb5f9d279e52",
+      "publicTextSha256": "645482148400830a71a2ba877d7b67bc479583a203e51e59a27c2255e64ff029",
+      "publicTextVerifiedAt": "generations.txt#gen_wh_25 -> prompts.txt#prompt_warehouse",
+      "pass": true
+    },
+    {
+      "id": "n083",
+      "group": "threejs",
+      "entrySha256": "4bb4b0f8658300edef87ee6f4627650da1a8aef0f90ea4a79658a49d53fda7b7",
+      "publicTextSha256": "e6e51a36275f5d94168c6b0087a7f33c40beee42f705036fcebfb90d4d64829e",
+      "publicTextVerifiedAt": "generations.txt#gen_ch_26 -> prompts.txt#prompt_combine_harvester",
+      "pass": true
+    },
+    {
+      "id": "n084",
+      "group": "threejs",
+      "entrySha256": "4254d5be7cb69e3483e54576ac24c648f918b99702b044e90680744e20aeb6fe",
+      "publicTextSha256": "2e52d12c930ab94ba9c64e12ada02a879f4b39e1b7771a95a9f557107fdffc7e",
+      "publicTextVerifiedAt": "generations.txt#gen_ab_25 -> prompts.txt#prompt_f997951cf92f4916b9cacb3ad1f197ef",
+      "pass": true
+    },
+    {
+      "id": "n085",
+      "group": "threejs",
+      "entrySha256": "2ab95d832cafc0006e10722a2814a1f095a5eae6910f8c07095b8e3347c758ee",
+      "publicTextSha256": "5d98dab33c7d7a3af2d7bec2677771396179f35004ec2a4bfe34a9765bcf2443",
+      "publicTextVerifiedAt": "generations.txt#gen_f9_25 -> prompts.txt#prompt_falcon_9",
+      "pass": true
+    },
+    {
+      "id": "n086",
+      "group": "threejs",
+      "entrySha256": "d980f17f9deaf9b72670595c59047566f56898a0fd24c55e99d2d15197cecff6",
+      "publicTextSha256": "658f3eaedfaad1715abe10d41fff86783970d0f5bd599be037066b2b70ec8cb6",
+      "publicTextVerifiedAt": "generations.txt#gen_ti_01 -> prompts.txt#prompt_tropical_island",
+      "pass": true
+    },
+    {
+      "id": "n087",
+      "group": "optical",
+      "entrySha256": "8809f90d5e64f745548634f407ef039739267f6830e47412d9ab6b537303ec1f",
+      "publicTextSha256": "f2c07fd9418aac8368821d3bd60fb083256630bdb209da471ae0baa031d9c5b4",
+      "publicTextVerifiedAt": "vendors/Maoku/Opus55OpticalIllusion/Docs/PLAN.md + IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "id": "n088",
+      "group": "optical",
+      "entrySha256": "8809f90d5e64f745548634f407ef039739267f6830e47412d9ab6b537303ec1f",
+      "publicTextSha256": "a893863452c8d58cef5890233fdfb3b22a3574fcb525679a06eeaa80cc28d616",
+      "publicTextVerifiedAt": "vendors/Maoku/Opus55OpticalIllusion/Docs/PLAN.md + IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "id": "n089",
+      "group": "optical",
+      "entrySha256": "8809f90d5e64f745548634f407ef039739267f6830e47412d9ab6b537303ec1f",
+      "publicTextSha256": "216d88dd0131875996168ab8800bd8794cede159ef6f60514f3ee0ecb8d8cdb8",
+      "publicTextVerifiedAt": "vendors/Maoku/Opus55OpticalIllusion/Docs/PLAN.md + IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "id": "n090",
+      "group": "optical",
+      "entrySha256": "8809f90d5e64f745548634f407ef039739267f6830e47412d9ab6b537303ec1f",
+      "publicTextSha256": "bbca388355e7e75621b9d8415847e838742b56e3999b2e961b296ffca93b9aa4",
+      "publicTextVerifiedAt": "vendors/Maoku/Opus55OpticalIllusion/Docs/PLAN.md + IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "id": "n091",
+      "group": "optical",
+      "entrySha256": "8809f90d5e64f745548634f407ef039739267f6830e47412d9ab6b537303ec1f",
+      "publicTextSha256": "293d05af6e70e0855d1c0073516eeb5de93caaeb1b3b20fdd972cfe89807e6b2",
+      "publicTextVerifiedAt": "vendors/Maoku/Opus55OpticalIllusion/Docs/PLAN.md + IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "id": "n092",
+      "group": "optical",
+      "entrySha256": "8809f90d5e64f745548634f407ef039739267f6830e47412d9ab6b537303ec1f",
+      "publicTextSha256": "8df27840937bf57e4a4fdf5c258746ef4859cfbb344f2e3abc9b0ab282ba8d54",
+      "publicTextVerifiedAt": "vendors/Maoku/Opus55OpticalIllusion/Docs/PLAN.md + IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "id": "n093",
+      "group": "optical",
+      "entrySha256": "8809f90d5e64f745548634f407ef039739267f6830e47412d9ab6b537303ec1f",
+      "publicTextSha256": "7715a4b1a1eebaa70bf2f2c88318a99ac47ab516f9196e18ae0de3ab28d0271b",
+      "publicTextVerifiedAt": "vendors/Maoku/Opus55OpticalIllusion/Docs/PLAN.md + IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "id": "n094",
+      "group": "optical",
+      "entrySha256": "8809f90d5e64f745548634f407ef039739267f6830e47412d9ab6b537303ec1f",
+      "publicTextSha256": "cd58b807ae72cbfca3932f7481774d5a7ef139259f7449048ef90e4886d3c026",
+      "publicTextVerifiedAt": "vendors/Maoku/Opus55OpticalIllusion/Docs/PLAN.md + IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "id": "n095",
+      "group": "optical",
+      "entrySha256": "8809f90d5e64f745548634f407ef039739267f6830e47412d9ab6b537303ec1f",
+      "publicTextSha256": "c50a8f7b0d4a4c943282aed6946e75ecc22e1eb1781cd999c483a578a5ed7ab7",
+      "publicTextVerifiedAt": "vendors/Maoku/Opus55OpticalIllusion/Docs/PLAN.md + IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "id": "n096",
+      "group": "optical",
+      "entrySha256": "8809f90d5e64f745548634f407ef039739267f6830e47412d9ab6b537303ec1f",
+      "publicTextSha256": "aace024504d93382d1f535e913b8191bea8ccb14fadec1d38c220b47d0204ef9",
+      "publicTextVerifiedAt": "vendors/Maoku/Opus55OpticalIllusion/Docs/PLAN.md + IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "id": "n097",
+      "group": "optical",
+      "entrySha256": "8809f90d5e64f745548634f407ef039739267f6830e47412d9ab6b537303ec1f",
+      "publicTextSha256": "ddeb3282b99af52ecae47f69b14c22b8a293d61461ad294fe9ec6e2155f56c16",
+      "publicTextVerifiedAt": "vendors/Maoku/Opus55OpticalIllusion/Docs/PLAN.md + IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "id": "n098",
+      "group": "optical",
+      "entrySha256": "8809f90d5e64f745548634f407ef039739267f6830e47412d9ab6b537303ec1f",
+      "publicTextSha256": "dfa99a561c111b28be67563ae688b5da16970acf390602bebb6cbb742aac85bd",
+      "publicTextVerifiedAt": "vendors/Maoku/Opus55OpticalIllusion/Docs/PLAN.md + IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "id": "n099",
+      "group": "optical",
+      "entrySha256": "8809f90d5e64f745548634f407ef039739267f6830e47412d9ab6b537303ec1f",
+      "publicTextSha256": "98d68fd53d37a5c1ff18ccaa8f31f5fd531d79e91bcb8236f6397ea83e21d5f6",
+      "publicTextVerifiedAt": "vendors/Maoku/Opus55OpticalIllusion/Docs/PLAN.md + IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "id": "n100",
+      "group": "optical",
+      "entrySha256": "8809f90d5e64f745548634f407ef039739267f6830e47412d9ab6b537303ec1f",
+      "publicTextSha256": "e9fa2e81efd8179bc1c3f584ef62afa7ee4686f59b7c0f40140e0e0c0781121d",
+      "publicTextVerifiedAt": "vendors/Maoku/Opus55OpticalIllusion/Docs/PLAN.md + IMPLEMENTATION_PLAN.md",
+      "pass": true
+    }
+  ]
+}

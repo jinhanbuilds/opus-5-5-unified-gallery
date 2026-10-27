@@ -1,0 +1,1228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,sans-serif;background:#fafaf8}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Opus 5.5 动效片库</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Martian+Mono:wdth,wght@75..112.5,400..700&display=swap">
+<style>
+/* ---------- Tokens ---------- */
+:root{
+  --bg:#E4E6E2;
+  --bg-2:#D8DBD5;
+  --surface:#F0F1EE;
+  --ink:#131518;
+  --ink-2:#33373C;
+  --muted:#5A6067;
+  --line:#C1C5BE;
+  --line-2:#8F958D;
+  --matte:#0B0C0D;
+  --matte-edge:transparent;
+  --matte-ink:#8D949A;
+  --on-matte:#E6E8E3;
+  --on-matte-muted:#8F969C;
+  --on-matte-line:rgba(230,232,227,.2);
+  --on-matte-hover:rgba(230,232,227,.08);
+  --tape:#F1C232;
+  --tape-ink:#1B1703;
+  --tally:#CF2E1B;
+  --slate-bg:#151719;
+  --slate-ink:#EDEFEA;
+  --slate-muted:#9DA3A8;
+  --slate-line:rgba(237,239,234,.22);
+  --focus:#0F57D6;
+  --shade:rgba(19,21,24,.06);
+  --dialog-shadow:0 28px 80px rgba(8,10,12,.34);
+
+  --f-display:"Big Shoulders Display","Arial Narrow","Helvetica Neue Condensed","PingFang SC","Noto Sans SC",sans-serif;
+  --f-cjk:"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-mono:"Martian Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,"PingFang SC","Noto Sans SC",monospace;
+  --gutter:clamp(16px,3.2vw,44px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0F1113;
+    --bg-2:#1A1D20;
+    --surface:#171A1D;
+    --ink:#E6E8E3;
+    --ink-2:#C4C8C2;
+    --muted:#8E959B;
+    --line:#2A2F34;
+    --line-2:#4A5158;
+    --matte:#050606;
+    --matte-edge:#23282C;
+    --matte-ink:#80878D;
+    --tape:#EDBF30;
+    --tape-ink:#1B1703;
+    --tally:#FF5A44;
+    --slate-bg:#E3E5E0;
+    --slate-ink:#121416;
+    --slate-muted:#555B61;
+    --slate-line:rgba(18,20,22,.2);
+    --focus:#8AB4FF;
+    --shade:rgba(230,232,227,.05);
+    --dialog-shadow:0 28px 80px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0F1113;
+  --bg-2:#1A1D20;
+  --surface:#171A1D;
+  --ink:#E6E8E3;
+  --ink-2:#C4C8C2;
+  --muted:#8E959B;
+  --line:#2A2F34;
+  --line-2:#4A5158;
+  --matte:#050606;
+  --matte-edge:#23282C;
+  --matte-ink:#80878D;
+  --tape:#EDBF30;
+  --tape-ink:#1B1703;
+  --tally:#FF5A44;
+  --slate-bg:#E3E5E0;
+  --slate-ink:#121416;
+  --slate-muted:#555B61;
+  --slate-line:rgba(18,20,22,.2);
+  --focus:#8AB4FF;
+  --shade:rgba(230,232,227,.05);
+  --dialog-shadow:0 28px 80px rgba(0,0,0,.6);
+}
+
+/* ---------- Base ---------- */
+html{scrollbar-gutter:stable;-webkit-text-size-adjust:100%}
+html.modal-open{overflow:hidden}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 var(--f-cjk);-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+*,*::before,*::after{box-sizing:border-box}
+h1,h2,h3,h4{text-wrap:balance;margin:0}
+p{margin:0}
+a{color:inherit;text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-stretch:75%;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.page{max-width:1480px;margin-inline:auto;padding-inline:var(--gutter);padding-block:20px 0}
+
+/* ---------- Slate header (the one bold move) ---------- */
+.slate{color:var(--slate-ink);position:relative;margin-block-end:18px}
+.clap{position:relative;height:30px}
+.stick{position:absolute;left:0;right:0;height:13px;background-color:var(--slate-bg);border-radius:2px}
+.stick--top{top:0;transform-origin:0 100%;background-image:repeating-linear-gradient(-58deg,var(--slate-ink) 0 18px,var(--slate-bg) 18px 36px)}
+.stick--base{bottom:2px;background-image:repeating-linear-gradient(58deg,var(--slate-ink) 0 18px,var(--slate-bg) 18px 36px)}
+.hinge{position:absolute;left:8px;top:3px;width:7px;height:7px;border-radius:50%;background:var(--slate-bg);box-shadow:0 0 0 2px var(--slate-ink)}
+@media (prefers-reduced-motion: no-preference){
+  .stick--top{animation:clap .42s cubic-bezier(.6,0,.9,.4) .35s both}
+  @keyframes clap{from{transform:rotate(-2.4deg)}to{transform:rotate(0)}}
+}
+.slate-board{background:var(--slate-bg);border-radius:2px 2px 4px 4px;display:grid;grid-template-columns:minmax(0,1fr) auto}
+.slate-title{padding:18px 24px 18px 22px;display:grid;gap:8px;align-content:start}
+.slate h1{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.3em;row-gap:2px;line-height:.9}
+.slate h1 .lat{font-family:var(--f-display);font-weight:900;font-size:clamp(46px,6.2vw,88px);letter-spacing:.005em;text-transform:uppercase}
+.slate h1 .cjk{font-weight:700;font-size:clamp(26px,3.1vw,44px);letter-spacing:.06em}
+.lede{color:var(--slate-muted);max-width:44em;font-size:14.5px;line-height:1.6}
+.cells{display:grid;grid-template-columns:repeat(4,auto);margin:0;border-left:1px solid var(--slate-line)}
+.cells > div{padding:16px 22px 14px;border-right:1px solid var(--slate-line);display:grid;align-content:space-between;gap:10px;min-width:92px}
+.cells > div:last-child{border-right:0}
+.cells dt{font-size:12px;color:var(--slate-muted);display:grid;gap:1px;line-height:1.3}
+.cells dt span{font-family:var(--f-mono);font-stretch:75%;font-size:10px;letter-spacing:.16em}
+.cells dd{margin:0;font-family:var(--f-display);font-weight:800;font-size:clamp(28px,2.8vw,42px);line-height:.95;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cells dd.sm{font-size:clamp(22px,2vw,30px)}
+.slate-foot{grid-column:1/-1;border-top:1px solid var(--slate-line);padding:12px 22px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between}
+.tape{background:var(--tape);color:var(--tape-ink);font-weight:600;font-size:13.5px;line-height:1.5;padding:5px 12px 5px 10px;display:inline-flex;gap:10px;align-items:baseline;border-radius:1px;max-width:100%}
+.tape b{font-family:var(--f-mono);font-stretch:75%;font-size:10.5px;letter-spacing:.14em;font-weight:700}
+.slate-meta{font-size:11px;color:var(--slate-muted)}
+@media (max-width: 960px){
+  .slate-board{grid-template-columns:1fr}
+  .cells{grid-template-columns:repeat(4,1fr);border-left:0;border-top:1px solid var(--slate-line)}
+  .cells > div{min-width:0;padding:12px 16px}
+}
+@media (max-width: 560px){
+  .cells{grid-template-columns:auto auto auto 1fr}
+  .cells > div{padding:10px 12px;gap:6px}
+  .cells dt{font-size:11px}
+  .cells dt span{font-size:9px;letter-spacing:.1em}
+  .cells dd,.cells dd.sm{font-size:21px}
+  .slate-title{padding:14px 16px;gap:6px}
+  .lede{font-size:13.5px}
+  .slate-foot{padding:10px 16px}
+  .slate-meta{display:none}
+}
+
+/* ---------- Filter bar ---------- */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding-block:10px;border-bottom:1px solid var(--line)}
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:2px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:6px 14px;font-size:14px;display:inline-flex;gap:8px;align-items:baseline;border-right:1px solid var(--line-2)}
+.seg button:last-child{border-right:0}
+.seg button:hover{background:var(--bg-2)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg .n{font-family:var(--f-mono);font-stretch:75%;font-size:11px;opacity:.75}
+.search{position:relative;flex:1 1 260px;max-width:440px;display:block}
+.search svg{position:absolute;left:10px;top:50%;width:15px;height:15px;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.search input{width:100%;height:36px;padding:0 12px 0 33px;border:1px solid var(--line-2);border-radius:2px;background:var(--surface);font-size:14px}
+.search input::placeholder{color:var(--muted)}
+.cat-select{display:none;height:36px;border:1px solid var(--line-2);border-radius:2px;background:var(--surface);padding:0 8px;font-size:14px;flex:1 1 140px;min-width:0}
+.result{margin-left:auto;font-size:11.5px;color:var(--muted);white-space:nowrap}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding-block:12px 4px}
+.chip{border:1px solid var(--line);background:transparent;border-radius:2px;padding:3px 10px;font-size:13px;display:inline-flex;gap:6px;align-items:baseline;color:var(--ink-2)}
+.chip:hover{border-color:var(--line-2);color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.chip .n{font-family:var(--f-mono);font-stretch:75%;font-size:10.5px;opacity:.7}
+@media (max-width: 640px){
+  .bar{position:static;gap:10px}
+  .seg button{padding:6px 10px}
+  .chips{display:none}
+  .cat-select{display:block;flex:0 1 136px;order:3}
+  .search{flex:1 1 170px;max-width:none;order:4}
+  .result{order:2;margin-left:auto}
+  .group-h .g-desc{flex-basis:100%}
+  .group-h .g-rule{display:none}
+}
+
+/* ---------- Wall ---------- */
+.wall{padding-block:22px 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,356px),1fr));column-gap:clamp(20px,2.2vw,32px);row-gap:0}
+.group-h{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;padding-block:6px 20px}
+.group-h .g-name{font-size:19px;font-weight:700;letter-spacing:.04em}
+.group-h .g-n{font-size:12px;color:var(--muted)}
+.group-h .g-desc{font-size:13px;color:var(--muted);font-weight:400}
+.group-h .g-rule{flex:1 1 60px;align-self:center;height:1px;background:var(--line);min-width:40px}
+
+.card{grid-row:span 5;display:grid;grid-template-rows:subgrid;row-gap:0;padding-bottom:40px;position:relative;min-width:0}
+@supports not (grid-template-rows: subgrid){.card{display:flex;flex-direction:column}}
+.monitor{position:relative;aspect-ratio:16/10;max-width:100%;background:var(--matte);outline:1px solid var(--matte-edge);container-type:size;display:grid;place-items:center}
+.marks{position:absolute;inset:-7px;pointer-events:none;--c:var(--line-2);--l:11px;background:
+  linear-gradient(var(--c),var(--c)) 0 0/var(--l) 1px no-repeat,linear-gradient(var(--c),var(--c)) 0 0/1px var(--l) no-repeat,
+  linear-gradient(var(--c),var(--c)) 100% 0/var(--l) 1px no-repeat,linear-gradient(var(--c),var(--c)) 100% 0/1px var(--l) no-repeat,
+  linear-gradient(var(--c),var(--c)) 0 100%/var(--l) 1px no-repeat,linear-gradient(var(--c),var(--c)) 0 100%/1px var(--l) no-repeat,
+  linear-gradient(var(--c),var(--c)) 100% 100%/var(--l) 1px no-repeat,linear-gradient(var(--c),var(--c)) 100% 100%/1px var(--l) no-repeat}
+.screen{position:relative;aspect-ratio:var(--ar);width:min(100cqw,calc(100cqh * var(--arn)));max-width:100%;overflow:hidden;background:var(--matte)}
+.screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;visibility:hidden;background:transparent}
+.screen[data-state="on"] iframe{visibility:visible}
+.screen[data-state="on"] .ph{visibility:hidden}
+.ph{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr auto;padding:clamp(10px,4%,18px);color:var(--matte-ink);border:1px dashed rgba(141,148,154,.28);margin:6%;align-items:start}
+.ph-code{font-size:10.5px;letter-spacing:.12em}
+.ph-title{align-self:center;color:var(--on-matte);opacity:.72;font-size:clamp(13px,4.2cqw,17px);font-weight:600;line-height:1.35}
+.ph-hint{font-size:10.5px;letter-spacing:.12em}
+.screen[data-state="loading"] .ph-hint::after{content:" · 载入中"}
+
+/* transport strip (shared by cards + dialog) */
+.strip{--s-ink:var(--ink);--s-muted:var(--muted);--s-line:var(--line-2);--s-hover:var(--bg-2);display:flex;align-items:center;gap:8px;padding-top:10px;min-width:0;color:var(--s-ink)}
+.ctl{flex:none;width:30px;height:30px;display:grid;place-items:center;border:1px solid var(--s-line);background:transparent;border-radius:2px;color:var(--s-ink);padding:0}
+.ctl:hover{background:var(--s-hover)}
+.ctl:disabled{opacity:.4;cursor:default}
+.ctl svg{width:12px;height:12px;display:block}
+.scrub{-webkit-appearance:none;appearance:none;flex:1 1 auto;min-width:40px;height:30px;margin:0;background:transparent;cursor:pointer;--p:0%}
+.scrub:disabled{cursor:default;opacity:.45}
+.scrub::-webkit-slider-runnable-track{height:2px;background:linear-gradient(var(--s-ink),var(--s-ink)) 0 0/var(--p) 100% no-repeat,var(--s-line)}
+.scrub::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:3px;height:16px;margin-top:-7px;background:var(--tally);border:0;border-radius:0}
+.scrub::-moz-range-track{height:2px;background:var(--s-line)}
+.scrub::-moz-range-progress{height:2px;background:var(--s-ink)}
+.scrub::-moz-range-thumb{width:3px;height:16px;background:var(--tally);border:0;border-radius:0}
+.tc{flex:none;font-size:11.5px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.tc .tot{color:var(--s-muted)}
+.tally{width:6px;height:6px;border-radius:50%;background:var(--s-line);flex:none}
+.strip[data-playing="true"] .tally{background:var(--tally)}
+.web-hint{flex:1 1 auto;min-width:0;font-size:12px;color:var(--s-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.strip .ext-link{flex:none;font-size:12px;color:var(--s-muted);text-decoration:none;display:inline-flex;gap:5px;align-items:center;padding:4px 2px}
+.strip .ext-link:hover{color:var(--s-ink)}
+.strip .ext-link svg{width:11px;height:11px}
+
+.c-head{padding-top:12px;display:grid;gap:3px;align-content:start}
+.c-slate{font-size:11px;color:var(--muted);letter-spacing:.06em}
+.c-title{font-size:17px;font-weight:700;line-height:1.4;letter-spacing:.01em}
+.open{all:unset;cursor:pointer}
+.open::after{content:"";position:absolute;left:0;right:0;bottom:0;top:var(--hit-top,0)}
+.open:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.c-effect{padding-top:4px;color:var(--ink-2);font-size:14px;line-height:1.6}
+.badges{padding-top:10px;display:flex;flex-wrap:wrap;gap:6px;align-content:start;position:relative;z-index:1;pointer-events:none}
+.b{font-size:11.5px;line-height:1;padding:4px 7px;border:1px solid var(--line-2);border-radius:2px;color:var(--ink-2);white-space:nowrap}
+.b-kind{font-weight:700;color:var(--ink)}
+.b-kind[data-kind="摘录"]{border-style:dashed}
+.b-kind[data-kind="摘要"]{border-style:dotted;color:var(--muted);font-weight:600}
+.b-cat{border-color:transparent;background:var(--bg-2)}
+.b-tag{border-color:transparent;color:var(--muted);padding-inline:2px;font-family:var(--f-mono);font-stretch:75%;font-size:10.5px;letter-spacing:.04em}
+.b-warn{border-color:var(--tally);color:var(--tally)}
+.card:hover .c-title .open{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.card .strip,.card .monitor{position:relative;z-index:1}
+
+.empty{padding:40px 0 60px;color:var(--muted);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid var(--line-2);background:transparent;border-radius:2px;padding:5px 12px;font-size:13.5px;display:inline-flex;gap:7px;align-items:center;white-space:nowrap}
+.btn:hover{background:var(--bg-2)}
+.btn svg{width:13px;height:13px}
+.btn-solid{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn-solid:hover{background:var(--ink-2);border-color:var(--ink-2)}
+
+/* ---------- Sections below the wall ---------- */
+.sec{padding-block:34px 10px;border-top:1px solid var(--line);scroll-margin-top:72px}
+.sec-h{display:grid;gap:6px;margin-bottom:24px;max-width:62em}
+.sec-h h2{font-size:24px;letter-spacing:.04em}
+.sec-h p{color:var(--muted);font-size:14px}
+.eyebrow{font-size:11px;color:var(--muted);letter-spacing:.14em}
+.tb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:30px clamp(20px,2.2vw,32px)}
+.tb{display:grid;gap:10px;align-content:start;min-width:0}
+.tb-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tb-head h3{font-size:17px;letter-spacing:.02em}
+.tb-head .btn{margin-left:auto}
+.tb-src{font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 14px}
+.tb-src a{color:var(--ink-2)}
+.copy-note{font-size:12.5px;color:var(--tally);min-height:1em}
+.copy-note:empty{display:none}
+pre.code{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal;background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:14px 16px;font-family:var(--f-mono);font-stretch:87.5%;font-size:12.5px;line-height:1.75;color:var(--ink);max-height:360px;overflow:auto;tab-size:2}
+.tb-wide{margin-top:34px;display:grid;gap:12px;min-width:0}
+.tscroll{overflow-x:auto;border:1px solid var(--line);border-radius:2px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:13.5px}
+th,td{text-align:left;vertical-align:top;padding:10px 14px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+th{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.06em;background:var(--bg-2)}
+td.en{font-family:var(--f-mono);font-stretch:87.5%;font-size:12px;line-height:1.7;user-select:all}
+td.src{color:var(--muted);font-size:12.5px;white-space:nowrap}
+.banned{display:flex;flex-wrap:wrap;gap:6px}
+.banned span{font-family:var(--f-mono);font-stretch:87.5%;font-size:12px;padding:4px 8px;border:1px solid var(--line-2);border-radius:2px;text-decoration:line-through;text-decoration-color:var(--tally);text-decoration-thickness:1px;color:var(--ink-2)}
+
+.foot{border-top:1px solid var(--line);margin-top:34px;padding-block:30px 44px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:26px clamp(20px,3vw,48px);color:var(--ink-2);font-size:14px}
+.foot h2{font-size:15px;letter-spacing:.06em;margin-bottom:10px;color:var(--ink)}
+.foot ol{margin:0;padding-left:1.4em;display:grid;gap:4px}
+.foot ol li::marker{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.foot p + p{margin-top:8px}
+.foot .fine{color:var(--muted);font-size:13px}
+.colophon{grid-column:1/-1;font-size:11px;color:var(--muted);letter-spacing:.08em;border-top:1px solid var(--line);padding-top:14px}
+
+/* ---------- Detail dialog ---------- */
+dialog.detail{padding:0;border:0;margin:auto;background:var(--surface);color:var(--ink);width:min(1480px,calc(100% - 32px));height:min(940px,calc(100% - 32px));max-width:none;max-height:none;border-radius:4px;box-shadow:var(--dialog-shadow);overflow:hidden}
+dialog.detail::backdrop{background:rgba(6,7,8,.72)}
+.d-wrap{display:grid;grid-template-rows:auto minmax(0,1fr);grid-template-columns:minmax(0,1fr);height:100%}
+.d-head{display:flex;align-items:center;gap:12px 18px;padding:12px 16px 12px 22px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.d-titles{display:grid;gap:2px;min-width:0;flex:1 1 240px}
+.d-slate{font-size:11px;color:var(--muted);letter-spacing:.06em}
+.d-title{font-size:clamp(19px,2vw,24px);font-weight:700;letter-spacing:.02em;line-height:1.3}
+.d-nav{display:flex;gap:6px;align-items:center}
+.d-nav kbd{font-family:var(--f-mono);font-stretch:75%;font-size:10px;border:1px solid var(--line);padding:1px 4px;border-radius:2px;color:var(--muted)}
+.d-body{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(360px,1fr);min-height:0}
+.d-stage{background:var(--matte);display:grid;grid-template-rows:minmax(0,1fr) auto;min-height:0;padding:22px 22px 12px;gap:10px}
+.d-monitor{container-type:size;display:grid;place-items:center;min-height:0;position:relative}
+.d-monitor .screen{outline:1px solid rgba(230,232,227,.1)}
+.d-stage .strip{--s-ink:var(--on-matte);--s-muted:var(--on-matte-muted);--s-line:var(--on-matte-line);--s-hover:var(--on-matte-hover);padding-top:0}
+.d-stage .tc{font-size:12.5px}
+.d-info{display:grid;grid-template-rows:auto minmax(0,1fr);min-height:0;border-left:1px solid var(--line)}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--line);padding-inline:14px}
+.tab{border:0;background:transparent;padding:12px 14px 10px;font-size:15px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink);font-weight:700;border-bottom-color:var(--ink)}
+.panel{overflow:auto;padding:20px 24px 28px;min-height:0;display:grid;gap:18px;align-content:start}
+.panel h4{font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--muted)}
+.lead{font-size:16.5px;line-height:1.6;font-weight:600}
+.kv{display:grid;grid-template-columns:6.2em minmax(0,1fr);gap:8px 14px;margin:0;font-size:14px}
+.kv dt{color:var(--muted);font-size:13px;padding-top:1px}
+.kv dd{margin:0;overflow-wrap:anywhere}
+.tech{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.tech li{border:1px solid var(--line-2);border-radius:2px;padding:3px 9px;font-size:13.5px}
+.note-box{border:1px solid var(--line);background:var(--bg);border-radius:2px;padding:14px 16px;display:grid;gap:12px}
+.fine{font-size:12.5px;color:var(--muted);line-height:1.6}
+.ext{display:inline-flex;gap:7px;align-items:center;font-size:14px;font-weight:600;justify-self:start}
+.ext svg{width:12px;height:12px}
+.p-head{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
+.p-head .count{font-size:11px;color:var(--muted)}
+.p-head .btn{margin-left:auto}
+.p-note{font-size:13.5px;color:var(--ink-2);border-left:2px solid var(--line-2);padding-left:12px}
+.panel pre.code{max-height:max(320px,calc(100dvh - 330px))}
+.links{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.links a{display:grid;gap:2px;text-decoration:none;border:1px solid var(--line);border-radius:2px;padding:10px 12px;background:var(--bg)}
+.links a:hover{border-color:var(--line-2)}
+.links .l-label{font-weight:700;font-size:14px;display:inline-flex;gap:6px;align-items:center}
+.links .l-label svg{width:11px;height:11px}
+.links .l-url{font-size:11px;color:var(--muted);overflow-wrap:anywhere}
+.kinds{display:grid;gap:8px}
+.kinds dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 12px;font-size:13.5px;align-items:baseline}
+.kinds dd{margin:0;color:var(--ink-2)}
+.kinds dt[data-current="true"] + dd{color:var(--ink);font-weight:600}
+.warn{font-size:13px;color:var(--tally);border:1px solid var(--tally);padding:8px 12px;border-radius:2px}
+.decomp-action{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border:1px solid var(--line-2);border-radius:2px;background:var(--surface);color:var(--ink);text-decoration:none;font-weight:700;font-size:13px;justify-self:start}
+.decomp-action:hover{border-color:var(--ink)}
+.decomp-layer{display:grid;gap:8px}
+.decomp-layer>h4{border-bottom:1px solid var(--line);padding-bottom:7px}
+.decomp-item{border-bottom:1px solid var(--line);padding:0 0 10px;display:grid;gap:4px}
+.decomp-top{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.decomp-top a{font-weight:700;text-decoration:none}
+.decomp-top a:hover{text-decoration:underline}
+.decomp-top code{font:500 11px var(--f-mono);color:var(--muted)}
+.decomp-level{display:inline-block;padding:1px 6px;border:1px solid var(--ink-2);border-radius:2px;font-size:10px;font-weight:700;color:var(--ink-2)}
+.decomp-level.explicit{background:var(--ink-2);color:var(--surface)}
+.decomp-evidence{font:11px/1.5 var(--f-mono);color:var(--muted);margin:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere}
+.decomp-item details[open] .decomp-evidence{display:block}
+.decomp-item summary{cursor:pointer;font:11px var(--f-mono);color:var(--muted)}
+@media (max-width: 860px){
+  html{scrollbar-gutter:auto}
+  dialog.detail{width:100%;height:100%;border-radius:0;margin:0}
+  .d-head{padding:10px 12px 10px 16px}
+  .d-nav .lbl{display:none}
+  .d-body{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+  .d-stage{padding:12px 16px 8px}
+  .d-monitor{container-type:normal}
+  .d-monitor .screen{width:min(100%,calc(46dvh * var(--arn)))}
+  .d-info{border-left:0}
+  .panel{padding:16px 16px 28px}
+  .panel pre.code{max-height:none}
+  .tabs{padding-inline:6px}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{scroll-behavior:auto!important}
+}
+</style>
+
+<div class="page">
+  <header class="slate" aria-labelledby="page-title">
+    <div class="clap" aria-hidden="true"><div class="stick stick--top"></div><div class="stick stick--base"></div><div class="hinge"></div></div>
+    <div class="slate-board">
+      <div class="slate-title">
+        <h1 id="page-title"><span class="lat">Opus 5.5</span><span class="cjk">动效片库</span></h1>
+        <p class="lede">收集用 Claude Opus 5.5 做动态视频和动效网页的公开提示词。每条都能直接看运行中的效果，展开后可读说明、复制提示词、查到出处。</p>
+      </div>
+      <dl class="cells">
+        <div><dt>视频<span>VIDEO</span></dt><dd id="n-video">0</dd></div>
+        <div><dt>网页<span>WEB</span></dt><dd id="n-web">0</dd></div>
+        <div><dt>截至<span>AS OF</span></dt><dd class="sm" id="as-of">2026-09-27</dd></div>
+        <div><dt>模型<span>MODEL</span></dt><dd class="sm">Opus 5.5</dd></div>
+      </dl>
+      <div class="slate-foot">
+        <p class="tape"><b>NOTE</b><span>预览是 Opus 按该提示词 + 示例输入现场生成的演示版，原作成片见每条溯源</span></p>
+        <p class="slate-meta mono" id="slate-meta">入选 0 条</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="bar" role="search" aria-label="筛选作品">
+    <div class="seg" role="group" aria-label="按类型筛选">
+      <button type="button" data-type="all" aria-pressed="true">全部<span class="n" id="seg-all">0</span></button>
+      <button type="button" data-type="video" aria-pressed="false">动态视频<span class="n" id="seg-video">0</span></button>
+      <button type="button" data-type="web" aria-pressed="false">动效网页<span class="n" id="seg-web">0</span></button>
+    </div>
+    <select class="cat-select" id="cat-select" aria-label="按分类筛选"></select>
+    <label class="search" for="q"><span class="vh">搜索</span>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.8"/><path d="m10.6 10.6 3.6 3.6"/></svg>
+      <input id="q" type="search" placeholder="搜索标题、效果、标签、技法、分类" autocomplete="off" spellcheck="false">
+    </label>
+    <p class="result mono" id="result" aria-live="polite"></p>
+  </div>
+  <div class="chips" id="chips" role="group" aria-label="按分类筛选"></div>
+
+  <main>
+    <section class="wall" aria-label="作品墙">
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="empty" hidden><span>没有匹配的条目。</span><button type="button" class="btn" id="clear-filters">清除筛选</button></div>
+    </section>
+
+    <section class="sec" id="toolbox" aria-labelledby="tb-title">
+      <header class="sec-h">
+        <p class="eyebrow mono">TOOLBOX</p>
+        <h2 id="tb-title">提示词工具箱</h2>
+        <p>从上面这些提示词里拆出来的可复用部件：骨架、审美块、质量底线、导出流程、运动词汇、禁用词和翻车修正句。每块都能直接复制。</p>
+      </header>
+      <div class="tb-grid" id="tb-grid"></div>
+      <div id="tb-wide"></div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <section aria-labelledby="f-criteria">
+      <h2 id="f-criteria">入选标准</h2>
+      <ol>
+        <li>明确用 Claude Opus 5.5（2026-09-22 发布）生成，作者或收录页写明了模型。</li>
+        <li>可溯源：有作者、可打开的链接和日期。X 原帖打不开时用收录它的页面，原帖链接一并保留。</li>
+        <li>提示词是逐字原文；只截了一部分的标「摘录」，转述的标「摘要」，只有描述没有提示词的不收。</li>
+        <li>有公开成片或在线 demo 证明效果。</li>
+        <li>换个输入就能复用，或代表一种独特技法。</li>
+        <li>每个分类 2–4 条，技法不重复。</li>
+      </ol>
+      <p class="fine" style="margin-top:10px">不收：付费墙内容、只有截图、只描述不给提示词、仿冒真实品牌或人物的页面、已知 IP 角色。</p>
+    </section>
+    <section aria-labelledby="f-how">
+      <h2 id="f-how">预览是怎么做的</h2>
+      <p>每个预览都是 Opus 按该条提示词加一组示例输入现场生成的单文件 HTML 演示。示例输入里的品牌、人名和数据都是虚构的；需要实拍或配乐的部分换成了程序化画面，时长也做了压缩。每条具体简化了什么，写在展开后的「说明」里。</p>
+      <p>如需原作成片请看溯源链接。</p>
+    </section>
+    <p class="colophon mono" id="colophon">OPUS 5.5 动效片库</p>
+  </footer>
+</div>
+
+<dialog class="detail" id="detail" aria-labelledby="d-title">
+  <div class="d-wrap">
+    <header class="d-head">
+      <div class="d-titles">
+        <p class="d-slate mono" id="d-slate"></p>
+        <h2 class="d-title" id="d-title"></h2>
+      </div>
+      <div class="d-nav">
+        <button type="button" class="btn" id="d-prev" aria-label="上一条"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg><span class="lbl">上一条</span></button>
+        <button type="button" class="btn" id="d-next" aria-label="下一条"><span class="lbl">下一条</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
+        <button type="button" class="btn btn-solid" id="d-close" aria-label="关闭详情"><span>关闭</span><kbd>Esc</kbd></button>
+      </div>
+    </header>
+    <div class="d-body">
+      <section class="d-stage" aria-label="演示预览">
+        <div class="d-monitor" id="d-monitor"></div>
+        <div id="d-strip"></div>
+      </section>
+      <section class="d-info">
+        <div class="tabs" role="tablist" aria-label="条目详情">
+          <button type="button" class="tab" role="tab" id="tab-about" aria-controls="panel-about" aria-selected="true">说明</button>
+          <button type="button" class="tab" role="tab" id="tab-prompt" aria-controls="panel-prompt" aria-selected="false" tabindex="-1">提示词</button>
+          <button type="button" class="tab" role="tab" id="tab-source" aria-controls="panel-source" aria-selected="false" tabindex="-1">溯源</button>
+          <button type="button" class="tab" role="tab" id="tab-breakdown" aria-controls="panel-breakdown" aria-selected="false" tabindex="-1">拆解</button>
+        </div>
+        <div class="panel" role="tabpanel" id="panel-about" aria-labelledby="tab-about" tabindex="0"></div>
+        <div class="panel" role="tabpanel" id="panel-prompt" aria-labelledby="tab-prompt" tabindex="0" hidden></div>
+        <div class="panel" role="tabpanel" id="panel-source" aria-labelledby="tab-source" tabindex="0" hidden></div>
+        <div class="panel" role="tabpanel" id="panel-breakdown" aria-labelledby="tab-breakdown" tabindex="0" hidden></div>
+      </section>
+    </div>
+  </div>
+</dialog>
+
+<script type="application/json" id="catalog">{"as_of":"2026-09-27","items":[{"id":"v01-showreel","type":"video","category":"动效技法","title":"一句话动效作品集","effect":"15 秒动态图形 showreel，让模型自由发挥审美和节奏","use_when":"第一次试 Opus 5.5 的动效上限；给团队演示它能做到什么程度","techniques":["开放式指令","模型自选风格与节奏","社区多在 max effort 下运行"],"prompt":"make a dynamic 15-second motion graphics video that shows what an incredible motion designer you are, like it's your showreel for a résumé. go all out.","prompt_lang":"en","prompt_kind":"原文","template_zh":"先调研 [产品网址]。为 [产品名] 做一支 [30] 秒的动态图形视频，展示你作为顶级动效设计师的水平，像简历里的作品集那样。放开做。","source":{"author":"@ajith_io","platform":"X（经 Tripo 提示词库收录）","date":"2026-09-25","url":"https://www.tripo3d.ai/3d-prompts/claude-opus-5-5-2103504887439065439","original_url":"https://x.com/ajith_io/status/2103449416325890146"},"aspect":"16:9","tags":["Canvas","motion graphics"],"demo_note":{"id":"v01-showreel","sample_inputs":"提示词无需填空","simplified":"展示了 6 个动效设计片段（标题、字体、几何、时间、深度、循环），纯 Canvas 动画无音乐与素材;时长 15 秒。","duration":15,"aspect":"16:9","libs":[]}},{"id":"v02-app-launch","type":"video","category":"产品与品牌","title":"15 秒 App 发布片","effect":"开场品牌名 → 三个功能逐一动画出现 → 网址收尾","use_when":"新功能上线、App Store 预览、社媒发布贴","techniques":["固定分辨率 1920x1080","三段式结构","品牌色约束"],"prompt":"Make a 15-second launch video for my app, [app name], at 1920x1080. Open with the name, show these three features one at a time with smooth animations: [feature 1], [feature 2], [feature 3], and end on [your URL]. Use these brand colors: [colors].","prompt_lang":"en","prompt_kind":"原文","source":{"author":"Scale My Vibe Code","platform":"博客","date":"2026-09","url":"https://scalemyvibe.dev/blog/opus-5-5-initial-thoughts-and-prompting-advice/"},"aspect":"16:9","tags":["发布片","品牌"],"demo_note":{"id":"v02-app-launch","sample_inputs":"虚构语音笔记 App「driftnote」：三个功能「说话即成文字 / 笔记自动分类 / 每日早间回顾」，网址 driftnote.example，品牌色松绿 #0E2A27、柠檬黄 #DDF45B、珊瑚 #FF7A5C、雾白 #EEF2EA（均为虚构）。","simplified":"保留 15 秒三段式：品牌名开场 → 三个功能逐一用 UI 片段动画呈现（录音波形转文字、卡片飞入三栏看板、早间回顾清单打勾）→ 网址收尾；原提示词未要求配乐，演示无声。为无缝循环，结尾网址停留约 1.3 秒后收回，Logo 与字标缩放回开场构图。","duration":15,"aspect":"16:9","libs":[]}},{"id":"v03-high-end-product","type":"video","category":"产品与品牌","title":"高端极简产品广告片","effect":"120 BPM 卡点：钩子逐词落拍 → 词变 UI → 圆形转场 → 3D 轮播 → 大数字 → Logo","use_when":"要 Apple 式克制高级感的产品片；有自己的实拍素材和音乐","techniques":["六段式结构 inputs/direction/structure/build/gotchas/start","seek(t) 纯函数渲染","numpy 分析节拍","子帧混合运动模糊","先出分镜再写代码"],"prompt":"<inputs>\nAsk me for: the product name and a one-line promise, 3 to 5 UI moments to show, one accent color, 10 to 20 real vertical clips I own, and a royalty-free song with a clear drop (e.g. Mixkit, free for commercial use).\n<\/inputs>\n\n<direction>\nHigh-end minimal. One idea per shot, lots of empty space, one accent color, one clean sans (Geist or Inter) with tight tracking. Masked type reveals, match cuts, one smooth camera language. Real footage only, never placeholder cards. No full stops in on-screen text.\nBanned: shockwave rings, particle bursts, RGB split, camera shake, lens flares, neon glows, grid floors, flashing backgrounds, bouncy easing.\n<\/direction>\n\n<structure>\n10 bars at 120 BPM, 2 seconds each.\nBar 1: the hook lands word by word on the beats.\nBar 2: one hook word morphs into the product UI. A cursor types and clicks.\nThe drop: a circle opens out of the button into a dark scene.\nThen one move per bar: a wall of real clips with a scan line and 3 winners, the key output as big type, a 3D carousel of real videos with floor reflections and a motion-blurred whip onto one hero clip, the hero in a phone next to a panel that flips into results, big stats on push cuts, a 3-word ticker, a logo reveal, a fade to black.\n<\/structure>\n\n<build>\n1. One HTML file at 1920x1080. Every style is computed from time inside seek(t): no CSS animations, no timers, no state between frames.\n2. Real video: extract clips to 30fps JPEG sequences with ffmpeg and swap img sources per frame. seek awaits the image decodes.\n3. Analyze the song with numpy: tempo, beat grid, energy per bar, the drop. Calibrate the grid to the real kick hits. Every cut sits on a downbeat, every UI hit on a beat.\n4. Render with Playwright: 3 subframes per frame at t minus, at, and plus 1/240s, then blend with ffmpeg tmix for real motion blur at 60fps.\n5. Place each sound effect so its measured peak, not its file start, lands on the event. Keep the effects quiet under the music. Loudnorm to -14 LUFS.\n6. Probe 20 or more frames before the full render. Fix anything cluttered, overlapping or hard to read.\n<\/build>\n\n<gotchas>\nNever set opacity or filter on a preserve-3d element, because it flattens and both faces show. Fade its wrapper instead. Measure element positions at runtime for match cuts. Only use music and sound effects whose license allows commercial use.\n<\/gotchas>\n\n<start>\nAsk me for the inputs, then show me a storyboard with every timing on the beat grid before you write any code.\n<\/start>","prompt_lang":"en","prompt_kind":"原文","source":{"author":"@zero（twoclipping）","platform":"X（经 YouMind 收录）","date":"2026-09-23","url":"https://youmind.com/video-prompts/high-end-product-video-prompt-11292"},"aspect":"16:9","tags":["卡点","seek(t)","运动模糊"],"demo_note":{"id":"v03-high-end-product","sample_inputs":"虚构产品「Culla」、品牌色、钩子文案","simplified":"使用程序化生成的虚拟「素材」替代真实视频片段（30 个程序性瓷砖）;省略了匹配切、音效处理和视频合成;时长压缩为 16 秒。","duration":16,"aspect":"16:9","libs":[]}},{"id":"v04-business-explainer","type":"video","category":"产品与品牌","title":"30 秒业务解说","effect":"五个场景：客户痛点 → 你做什么 → 三步流程 → 一个证据 → 名字收尾","use_when":"官网首屏视频、销售开场、投资人一分钟介绍","techniques":["角色设定","场景清单","品牌色","单 HTML 交付"],"prompt":"Adopt the role of an expert motion designer. Build a 30-second animated explainer for my business as a single HTML page. 5 scenes. The customer's problem, what I do, how it works in 3 steps, one proof point, and my name at the end. Bold text, smooth transitions, my brand colours. My business [DESCRIBE WHAT YOU SELL, WHO IT'S FOR AND YOUR COLOURS]","prompt_lang":"en","prompt_kind":"原文","source":{"author":"@alex_prompter（Alex Prompter）","platform":"X（经 YouMind 收录）","date":"2026-09-25","url":"https://youmind.com/video-prompts/business-explainer-video-prompt-11359"},"aspect":"16:9","tags":["解说","品牌"],"demo_note":{"id":"v04-business-explainer","sample_inputs":"虚构杭州茶订阅品牌「一月一山」：每月从浙江小茶园直采寄三泡当季茶，面向上班族；品牌色米纸 / 茶绿 / 朱砂；证据数字「86% 续订率」明确标注为示例数据；网址 yiyueyishan.example。","simplified":"严格五个场景（难题 → 做什么 → 三步 → 一个证据 → 名字），原提示词 30 秒压缩为 20 秒循环；无配音无配乐，文字全部上屏；场景间用「倒茶」波浪擦除过渡，最后一个波浪回到第一场景以实现无缝循环。","duration":20,"aspect":"16:9","libs":[]}},{"id":"v05-transformer","type":"video","category":"知识科普","title":"什么是 Transformer","effect":"高中生能懂又有细节的科普动画：注意力机制与数学直觉","use_when":"技术概念科普、课程片头、公众号配图视频","techniques":["受众定位（高中生）","允许联网和装工具","给模型留惊喜空间"],"prompt":"Help me create a video using JS with the theme: What is a Transformer. It should be profound yet simple, understandable even for high school students. Not only explain it clearly at a high level but also include details, covering attention mechanisms and even some mathematical concepts. You can use any tools or install tools, and you can search online. Please surprise me.","prompt_lang":"en","prompt_kind":"原文","prompt_note":"YouMind 收录的是英文版；原帖为中文。","source":{"author":"@宝玉（dotey）","platform":"X（经 YouMind 收录）","date":"2026-09-26","url":"https://youmind.com/video-prompts/transformer-explainer-video-11391"},"aspect":"16:9","tags":["科普","SVG"],"demo_note":{"id":"v05-transformer","sample_inputs":"中文句子「小猫没有过马路，因为它太累」作示例;词表编号、向量、权重均为示意","simplified":"纯 Canvas 和 SVG 动画演示，省略了交互与模型推理;用向量网格与权重弧线替代数学可视化;时长 20 秒，无音乐。","duration":20,"aspect":"16:9","libs":[]}},{"id":"v06-sky-blue","type":"video","category":"知识科普","title":"天为什么是蓝的（1950 年代教科书风）","effect":"20 秒复古科学教科书风格解说，一句话指定主题 + 年代风格","use_when":"科普短视频；想要统一的复古画风","techniques":["主题先于风格","年代风格锚点","draw(ctx, t) 单函数绘制"],"prompt":"Why is the sky blue? A 20-second explainer in the style of a 1950s science textbook.","prompt_lang":"en","prompt_kind":"原文","prompt_note":"同一文章还给了竖屏 TikTok 解说、两幕式种子长成树、睡前故事频道片头等一句话示例。","source":{"author":"iArt.ai","platform":"博客","date":"2026-09","url":"https://www.iart.ai/blog/ai-javascript-animation"},"aspect":"16:9","tags":["科普","Canvas","复古"],"demo_note":{"id":"v06-sky-blue","sample_inputs":"提示词无需填空","simplified":"采用 1950 年代科学教科书风格复古设计;用 Canvas 半色调和矢量图形展示光学原理，5 个图解;省略了音乐和交互;时长 20 秒。","duration":20,"aspect":"16:9","libs":[]}},{"id":"v07-ui-morph","type":"video","category":"动效技法","title":"单一形体 UI 变形","effect":"一个形体不切镜头连续变成按钮、加载、播放器、滑块、开关、图表、⌘K、Toast，首尾相接可循环","use_when":"产品 UI 动效展示、Dribbble 作品、发布会过场","techniques":["闭式弹簧（纯时间函数）","双弹簧拉伸指示条","光标直接操控","首帧=末帧无缝循环","4 子帧运动模糊"],"prompt":"<inputs>\nAsk me for: 8 to 12 UI states I want the shape to become (e.g. button, loader, player, slider, toggle, tabs, chart, command palette, toast), pure black and white or one accent color, and a royalty-free song around 120 BPM (e.g. Mixkit, free for commercial use).\n<\/inputs>\n\n<direction>\nDribbble-level UI motion. One shape, never cut: every state is the same element morphing its size, radius and color while its content swaps with a short blur. A cursor drives every change with real clicks and drags. Light warm-gray canvas, black and white components, one clean UI font (Geist). Springs everywhere, a tiny overshoot at most. The camera zooms so each state fills the frame. The last frame is the first frame, so it loops.\nBanned: bouncy easing, particle bursts, glows, gradients on UI chrome, mismatched icon strokes, dead time, anything that looks like a template.\n<\/direction>\n\n<structure>\n120 BPM, 7 bars, something happens on every beat.\nButton → loader → check → dynamic island → music player with a play/pause morph → scrub the progress bar → it becomes a volume slider that stretches when dragged past max → a toggle flips on the beat → the knob becomes a liquid tab indicator → the tabs open into a chart that draws itself, with a tooltip on hover → it collapses into ⌘K → type to filter → enter → toast → back to the button.\n<\/structure>\n\n<build>\n1. One HTML file, square 1440x1440. Every style is computed from time inside seek(t): no CSS transitions, no timers, no state carried between frames.\n2. Springs are closed-form step responses. A value that changes target many times is the sum of one spring per change, so it stays a pure function of time.\n3. The tab indicator's two edges ride different springs, so the leading edge stretches ahead of the trailing one. Same trick for the toggle knob.\n4. Drags are direct manipulation: while the cursor is held, the value is computed from its position. On release it springs back from wherever it was.\n5. Analyze the song with numpy for the beat grid and start on a downbeat. Place every UI sound by its measured peak.\n6. Render with Playwright: 4 subframes per frame, blended with ffmpeg tmix for motion blur at 60fps.\n7. Render one frame per beat before the full render. Fix anything off the grid, cramped or hard to read.\n<\/build>\n\n<gotchas>\nNever put will-change on anything the camera scales or the text renders blurry. Text that swaps inside a morphing container needs its own enter and exit timing or it overlaps. Make the last frame identical to the first, cursor position and speed included, or the loop stutters.\n<\/gotchas>\n\n<start>\nAsk me for the inputs, then show me the state list on the beat grid before you write any code.\n<\/start>","prompt_lang":"en","prompt_kind":"原文","source":{"author":"@zero（twoclipping）","platform":"X（经 YouMind 收录）","date":"2026-09-24","url":"https://youmind.com/video-prompts/ui-morphing-motion-template-11361"},"aspect":"1:1","tags":["弹簧","循环","seek(t)"],"demo_note":{"id":"v07-ui-morph","sample_inputs":"13 个 UI 状态（按钮、加载、复选、岛屿、播放器、音量、开关、标签页、图表、命令栏、Toast）","simplified":"采用黑白配色方案;用闭式弹簧函数实现平滑变形无动画库;省略了音乐;时长 14 秒(7 小节@120BPM)，4 子帧运动模糊。","duration":14,"aspect":"1:1","libs":[]}},{"id":"v08-kinetic-type","type":"video","category":"动效技法","title":"演讲文字动效片《BUILD THE FLOOR》","effect":"20 秒纯排版演讲：每句话改变画面结构，最后一句站在前面文字搭起的「地板」上","use_when":"金句海报视频、品牌宣言、发布会开场","techniques":["逐字原文锁定","三色 + 三字体角色","禁用陈词滥调清单","确定性 seek(t)"],"prompt":"Create a 20.00-second kinetic spoken-word film titled \"BUILD THE FLOOR.\" Treat this as an original miniature speech staged entirely through typography. Every line changes the architecture of the frame. The final declaration must stand on something the earlier words physically constructed. Deliver one self-contained HTML file, 1080×1080, targeting 60fps, using SVG and/or Canvas. Embed all required assets.\n\nART DIRECTION\nBackground #102820. Paper #F4E9D5. Structural accent #F2B544. A literary editorial world with the scale and confidence of a public monument. Use a high-contrast serif for the speech, a heavy grotesque for load-bearing words, and a restrained monospace for small timing marks. No distressed protest-poster clichés, megaphones, flags, crowds, microphones, or stock footage.\n\nORIGINAL SPEECH — EXACT WORDS, EXACT ORDER\n\"We were told to wait.\"\n\"So we learned the weight of waiting.\"\n\"Then one voice made room.\"\n\"Then another.\"\n\"Now the floor belongs to us.\"","prompt_lang":"en","prompt_kind":"摘录","prompt_note":"原文后续还有完整分镜、编排、字体实现与工程规格，见溯源页。","source":{"author":"@TechHalla","platform":"X（经 YouMind 收录）","date":"2026-09-25","url":"https://youmind.com/video-prompts/kinetic-typography-speech-film-11293"},"aspect":"1:1","tags":["排版","SVG","Canvas"],"demo_note":{"id":"v08-kinetic-type","sample_inputs":"原文演讲词：5 句英文宣言","simplified":"用 Canvas 实现排版与几何结构的关联(WAIT→WEIGHT、ROOM、ANOTHER、FLOOR);省略了原创音效与实拍素材;时长 20 秒，无交互。","duration":20,"aspect":"1:1","libs":[]}},{"id":"v09-room-to-quarks","type":"video","category":"镜头与地图","title":"从房间推进到夸克","effect":"一镜到底连续推进：房间 → 笔记本 → 芯片 → 原子 → 夸克","use_when":"尺度类科普、品牌「深入细节」概念片","techniques":["Three.js","连续推镜","尺度转场"],"prompt":"Create an animated sequence that starts in a room, zooms into a MacBook, then into an Apple M4 chip, followed by atoms, and finally quarks. Use HTML and Three.js for rendering.","prompt_lang":"en","prompt_kind":"原文","source":{"author":"Victor Taelin（@Taelin）","platform":"X（经 YouMind 收录）","date":"2026-09-25","url":"https://youmind.com/video-prompts/room-to-quarks-zoom-animation-11283"},"aspect":"16:9","tags":["Three.js","推镜"],"demo_note":{"id":"v09-room-to-quarks","sample_inputs":"尺度标注：房间(5m) → 笔记本(30cm) → 芯片(1cm) → 原子(0.2nm) → 质子(1.7fm)","simplified":"采用程序化 3D 几何体替代真实扫描数据;7 层场景用圆形转场无缝连接;省略了音乐和交互;时长 16 秒，对数尺度插值。","duration":16,"aspect":"16:9","libs":["three r134"]}},{"id":"v10-map-route","type":"video","category":"镜头与地图","title":"地图路线动画","effect":"路线从洛杉矶画到纽约，镜头跟随","use_when":"物流/出行/融资路演里的地理叙事","techniques":["Remotion Agent Skills","/remotion-maps 技能","镜头跟随"],"prompt":"/remotion-maps Animate a route from Los Angeles to New York and make the camera follow it.","prompt_lang":"en","prompt_kind":"原文","prompt_note":"需先在 Remotion 项目里执行 npx skills add remotion-dev/skills。","source":{"author":"Remotion 官方文档","platform":"remotion.dev","date":"2026","url":"https://www.remotion.dev/docs/ai/skills"},"aspect":"16:9","tags":["Remotion","地图"],"demo_note":{"id":"v10-map-route","sample_inputs":"洛杉矶到纽约的真实坐标与地名","simplified":"地图投影用 Albers 等积圆锥投影;大圆弧线动画 + 景深跟随;距离计数器实时更新;省略了音乐与交互;时长 12 秒，纯 Canvas 2D。","duration":12,"aspect":"16:9","libs":[]}},{"id":"v12-rain-station","type":"video","category":"故事与片头","title":"雨夜站台重逢短片","effect":"雨夜月台上二人隔着驶过的列车相望而错过，转场为撑伞背影的意外重逢","use_when":"情感向2D故事短片、影视分镜预览，需要一镜到底运镜与景深的叙事片段","techniques":["GPT Image出图+绿幕抠像","Real-ESRGAN四倍放大","深度估计做2.5D视差","自写合成器控制运镜景深","按剧情节点配乐配音"],"prompt":"Help me create a 30-second 2D animated storyboard preview short film titled 'Rain Station', with benchmark-level quality. Do not use HyperFrames/Remotion; write all code yourself (Python + ffmpeg).\n\nStory (24fps, 2.39:1, 4K): A rainy night at an elevated station platform. She wears a beige trench coat and holds a transparent umbrella, standing on the near-side platform; he stands under a streetlight on the opposite side, wearing a dark grey long coat and a scarf.\n1. 0–6.4s Close-up of raindrops on the transparent umbrella → Pull back, focus shifts to him appearing on the opposite side (over-the-shoulder shot)\n2. 6.4–9.4s Medium close-up of him: Head down → Looks up towards the left of the frame\n3. 9.4–12.4s Frontal close-up of her: Blinks → Recognizes him; distant horn sound\n4. 12.4–17s Long shot: Headlights arrive first, a 5-car train passes; he is still visible in the gap of the first car, but the second is empty\n5. 17–18.8s Close-up of her teary eyes, light bands from windows sweep across her face, hair blown by wind\n6. 18.8–22.4s Tail lights recede, opposite platform is empty; his streetlight flickers a few times then goes out\n7. 22.4–28.6s Her back view, focus pulls from empty platform back to her; footsteps behind, a black umbrella covers her head, she turns to look at the camera; male voice says 'Long time no see.', with subtitles\n8. 28.6–30s Black screen title 'Rain Station / RAIN STATION'\n\nMethod:\n- Original Art: Use GPT Image 2.5 to draw the background, him, her, and the train (head/middle/tail cars). Characters must have pure green #00FF00 backgrounds for self-matting (using reference images with transparent backgrounds may result in fake checkerboards). Keep various poses of the same character in one session, editing continuously based on a base image; only composite changed areas when switching poses.\n- Quality: Use Real-ESRGAN x4plus anime 6B (safetensors version from HF, write your own RRDBNet, run on MPS) to upscale all original art by 4x; use Depth Anything V2 to estimate background depth for per-pixel parallax.\n- Rendering: Write your own 2.5D compositor. Place layers according to real depth, move pinhole camera according to real focal length; implement circular bokeh, rack focus, 3D rain streaks, train motion blur, volumetric light, bloom/glow/film halo, fine grain, and color grading. Use mesh deformation for characters to simulate breathing, wind-blown hair, and umbrella shake, switching key poses in Japanese 'one-frame-two' style. 4K supersampling, cache frames to disk, parallelize rendering into 3 processes by time segment (16GB memory).\n- Sound: Mixkit real SFX (rain, umbrella rain, train, horn, footsteps); compose music according to plot nodes, render with Steinway piano and string samples from Logic/GarageBand; dialogue uses Kokoro Chinese male voice; apply distance-based audio panning/volume, loudness -16 LUFS.\n- Render preview frames at each step, stitch them together for self-checking, fix issues before final output. Deliver 4K master and 1080p share version.","prompt_lang":"en","prompt_kind":"原文","prompt_note":"作者为中文创作者，提示词以英文撰写；原文标注画幅为2.39:1电影宽银幕，此处按最接近的16:9归类。","source":{"author":"Feicai（@zhu185178）","platform":"X（经 YouMind 收录）","date":"2026-09-26","url":"https://youmind.com/video-prompts/rain-station-animated-short-11378","original_url":"https://x.com/zhu185178/status/2103757767727255661"},"aspect":"16:9","tags":["2.5D","水彩感","叙事"],"demo_note":{"id":"v12-rain-station","sample_inputs":"沿用原提示词的故事与 8 个镜头顺序（透明伞、米色风衣的她 / 路灯下深灰长大衣配围巾的他、5 节列车、黑伞重逢）；站名牌只画抽象色块，台词字幕排为「好久不见。/ Long time no see.」，片尾标题排为中英双语「雨站 / RAIN STATION」。","simplified":"30 秒压缩为 24 秒，镜头顺序和运镜保留（推拉、焦点转移、升格变速、尾灯远去）；GPT Image 出图、绿幕抠像、Real-ESRGAN 放大和 Depth Anything 深度全部换成 Canvas 程序化绘制的分层 2.5D 场景（针孔相机 + 按弥散圆逐层虚化 + 圆形焦外光斑），角色是简化剪影、姿态按一拍二（12fps）切换；原作的音效、配乐和中文配音都没做（远处汽笛改成画面左侧渐亮的暖光），信箱黑边里加了分镜编号、时间码和镜头进度条。","duration":24,"aspect":"16:9","libs":[]}},{"id":"v14-lab-explainer","type":"video","category":"知识科普","title":"光学全反射实验室解说","effect":"暗色实验台上激光穿过半圆玻璃块，角度超过临界角后发生全反射，标题随公式实时改写","use_when":"物理/光学等硬核概念科普，需要真实公式驱动画面与字幕的讲解短片","techniques":["公式驱动全部数值与文字","控制台按钮+滑块联动","多机位实验镜头切换","大字幕逐句呈现","同一模型算光线也算数字"],"prompt":"Make a 30 second explainer on why light gets trapped in glass: a laser, a half-round block, the angle going past critical, then water and diamond.","prompt_lang":"en","prompt_kind":"原文","prompt_note":"出自开源 Skill `lab-explainer`（misbahsy/claude-horizon-animation）自带的示例提示词；仓库里 examples/refraction 对应此例，另有 examples/plane-of-focus（镜头对焦）等同类示例。","template_zh":"做一个 30 秒的解说：为什么会出现 [现象，如「光会被困在玻璃里」]。道具依次是 [激光、半圆玻璃块]，然后换成 [水和钻石] 做对比。","source":{"author":"misbahsy","platform":"GitHub：claude-horizon-animation","date":"2026-09","url":"https://github.com/misbahsy/claude-horizon-animation"},"aspect":"16:9","tags":["物理","公式驱动","实验室"],"demo_note":{"id":"v14-lab-explainer","sample_inputs":"650 nm 红色激光、半圆玻璃块 n=1.50，对比材料水 n=1.33、钻石 n=2.42；台面、控制台和「LAB 03」编号都是示例。","simplified":"30 秒压缩为 24 秒，按原提示词的顺序走：激光 → 半圆块 → 角度越过临界角 → 水、钻石对比，最后加一屏 θc=arcsin(1/n) 曲线和三种材料的逃逸锥。所有光线、标题、公式、读数都由同一套斯涅尔定律加菲涅耳反射率模型实时算出（玻璃 41.8°、水 48.8°、钻石 24.4°）；光束亮度把菲涅耳反射/透射比例做了感知映射。「掠射」一段停在 41.7°（θ₂≈86°），因为正好在临界角时透射强度为 0。原 Skill 的多机位简化为「全景 → 界面微距推近 → 对比图切镜」，没有配音和音效。","duration":24,"aspect":"16:9","libs":[]}},{"id":"v16-bedtime-opener","type":"video","category":"故事与片头","title":"睡前故事频道片头","effect":"15秒暖色调动画开场，灯笼与星光渐次亮起，收尾停在频道名上","use_when":"无露脸YouTube/播客频道的开场标识，尤其适合儿童向或助眠向内容","techniques":["一句话给受众+时长+收尾要求","代码逐帧绘制无需实拍素材","固定种子笔触避免闪烁","同一引擎输出HTML+MP4"],"prompt":"Opening sequence for my faceless YouTube bedtime-story channel 'Sleepy Lantern'. Cozy, 15 seconds, ends on the channel name.","prompt_lang":"en","prompt_kind":"原文","prompt_note":"出自 iArt.ai 的 Animation 模式案例（Claude Code + iArt Animation skill，实测使用 Opus 5.5）；同一文章还给出 sky-blue（已收录为 v06）、seed-to-tree、noise-cancelling 等一句话示例。","template_zh":"为我的无露脸 YouTube [睡前故事] 频道「[频道名]」做一段开场。风格 [温馨]，时长 [15] 秒，结尾停在频道名上。","source":{"author":"iArt.ai","platform":"博客","date":"2026-09-24","url":"https://www.iart.ai/blog/ai-javascript-animation"},"aspect":"16:9","tags":["频道片头","极简提示词","代码动画"],"demo_note":{"id":"v16-bedtime-opener","sample_inputs":"直接用提示词里的频道名「Sleepy Lantern」，片尾副标题「bedtime stories · every night」为补充的示例文案；画面为原创剪纸风夜景（打瞌睡的月亮、挂着的纸灯笼、小屋、萤火虫）。","simplified":"原作用 iArt Animation skill 同时导出 HTML+MP4 并可配乐，演示只做 HTML 画面、无声；全部动作按 12fps「一拍二」量化，描边 3 帧抖动（line boil）+ 纸纹颗粒模拟手作感；频道名停留约 3 秒后柔和淡出、灯笼转暗，回到首帧以无缝循环。","duration":15,"aspect":"16:9","libs":[]}},{"id":"v18-noise-cancelling","type":"video","category":"知识科普","title":"降噪耳机竖屏解说","effect":"9:16科普短片，三步讲清降噪原理，镜头推入耳罩内部演示声波抵消","use_when":"抖音/TikTok/小红书竖屏知识短视频、硬件原理科普","techniques":["一句话给主题+平台+时长","平台词自动决定画幅","代码逐帧绘制配合成音效"],"prompt":"How do noise-cancelling headphones actually cancel noise? Short vertical explainer for TikTok, ~20s.","prompt_lang":"en","prompt_kind":"原文","prompt_note":"出自 iArt.ai 同一篇文章；作者强调「写清题目/时长/平台即可，平台名会自动带出竖屏画幅」。实际渲染为9:16、22秒。","template_zh":"[你的问题，如「降噪耳机到底是怎么消除噪音的？」] 竖屏短解说，投给 [TikTok/抖音]，大约 [20] 秒。","source":{"author":"iArt.ai","platform":"博客","date":"2026-09-24","url":"https://www.iart.ai/blog/ai-javascript-animation"},"aspect":"9:16","tags":["竖屏","科普","极简提示词"],"demo_note":{"id":"v18-noise-cancelling","sample_inputs":"原提示词只有一句话，画面文字由演示自拟为中文：钩子问题「降噪耳机怎么把噪音消掉？」加三步解说（麦克风采集 → 芯片反相 → 扬声器叠加抵消）和一条适用范围说明；耳机和头像都是通用造型，没有品牌。","simplified":"压缩到 20 秒、1080×1920 竖屏，文字全部放在安全区内（上 150、下 170、左右 60），标题 76–132px，正文 42px。波形由同一套声波模型实时算出，反相波逐点取负，叠加结果也是算出来的；最后一段用同一模型加一个处理延迟，演示低频抵消得干净、高频突发残留更多，这个延迟量为了看得清做了夸大。原作的音效和配音没有做。","duration":20,"aspect":"9:16","libs":[]}},{"id":"v19-water-cycle","type":"video","category":"知识科普","title":"水循环无缝循环动画","effect":"蒸发-凝结-降水-径流首尾相接，云雨山川循环往复、无缝衔接","use_when":"科普短片素材、网站背景循环视频、社媒无缝循环片段","techniques":["一句话极简提示词","首尾帧无缝衔接","纯代码程序化绘制"],"prompt":"Create a seamless looping animation of the water cycle, entirely in code.","prompt_lang":"en","prompt_kind":"原文","source":{"author":"Higgsfield AI（@higgsfield_ai）","platform":"X（经 GitHub awesome-opus-5-5-prompts 收录）","date":"2026-09-23","url":"https://github.com/TripoGrowthLab/awesome-opus-5-5-prompts/blob/main/docs/catalog.en.1.md","original_url":"https://x.com/higgsfield_ai/status/2102781807179735211"},"aspect":"16:9","tags":["循环","科普","极简提示词"],"demo_note":{"id":"v19-water-cycle","sample_inputs":"无外部输入；海岸、雪山、河流、树林等地形和配色均为演示自拟，四个阶段用中英小标签（蒸发/凝结/降水/径流/汇集）按阶段依次出现。","simplified":"循环为 16 秒，全部用 Canvas 程序化绘制：静态地形在尺寸变化时预渲染一次；水汽粒子、云的生长和漂移、降雨、溪流和河面流光、海面闪光都是时间的周期函数（频率取 2π/16 的整数倍，虚线流速正好是虚线周期的整数倍，粒子寿命 4 秒），或者在接缝处包络正好为 0，所以 t=16 的画面和 t=0 一致。云是分层平涂的插画风格，不是体积云模拟；左下角加了标题，右下角加了循环进度环。","duration":16,"aspect":"16:9","libs":[]}},{"id":"w01-aurora-glass","type":"web","category":"落地页","title":"玻璃拟态冥想 App 落地页","effect":"Canvas 极光背景跟随鼠标弯曲；4-7-8 呼吸球；3D 倾斜卡片带高光","use_when":"消费类 App 官网、需要氛围感的首屏","techniques":["Canvas 叠加极光带","backdrop-filter 毛玻璃","指针驱动 3D 倾斜","价格切换滑动药丸"],"prompt":"Design a premium landing page for \"Stillwater\", a fictional breathing and meditation app, in refined glassmorphism. Background: deep midnight (#070b1f) with three slow-drifting aurora ribbons rendered on a canvas (layered, sine-deformed gradient bands in teal #2de2c4, violet #7b5cff and rose #ff6fa8, additive blending, very soft) over a faint twinkling star field. Foreground: frosted-glass panels (backdrop-filter blur + saturate, 1px inner highlight border, subtle grain) — a hero with a large, airy, light-weight sans headline; a centred \"breathing orb\" that expands and contracts on a 4-7-8 rhythm with a caption that cross-fades Inhale / Hold / Exhale; a row of three feature cards; a testimonial strip; and a pricing section whose monthly/yearly toggle animates a sliding glass pill. Delight: cards tilt in 3D toward the pointer with a moving specular glare; the aurora bends gently toward the cursor. Interaction: hover/tilt cards; click the orb to start/stop a guided one-minute session with a progress ring; pricing toggle. Mobile: cards stack, the orb stays hero-centred.","prompt_lang":"en","prompt_kind":"原文","prompt_note":"原作者对 100 个页面统一附加了「共享要求」10 条，见工具箱。","source":{"author":"miaai-lab","platform":"GitHub Pages：Claude Opus 5.5 100 HTML Files","date":"2026-09","url":"https://miaai-lab.github.io/Claude-Opus-5.5-100-HTML-Files/001-aurora-glass.txt","original_url":"https://miaai-lab.github.io/Claude-Opus-5.5-100-HTML-Files/001-aurora-glass.html"},"aspect":"16:10","tags":["Canvas","玻璃拟态"],"demo_note":{"id":"w01-aurora-glass","sample_inputs":"虚构冥想 App「Stillwater」：4-7-8 呼吸节奏、三张功能卡、五位虚构用户评价、Ripple/Stillwater/Tidepool 三档价格（均为虚构数据）。","simplified":"保留极光带跟随光标弯曲、星空闪烁、毛玻璃面板、4-7-8 呼吸球（字幕交叉淡入淡出 + 刻度表盘 + 点击开始一分钟练习的进度环）、3D 倾斜卡片带移动高光、月/年价格滑动玻璃药丸与数字滚动。省略了原作的可选「Chime」合成铃声和 conic 渐变遮罩式进度环（改为 SVG 描边进度环）；字体用系统无衬线栈。","duration":null,"aspect":"16:10","libs":[]}},{"id":"w02-longform","type":"web","category":"滚动叙事","title":"灯塔守望者长文专题","effect":"灯塔光束扫过标题并真实照亮文字；滚动时天色由黄昏转入夜；菲涅耳透镜随滚动组装","use_when":"品牌故事、年度报告、杂志式长文","techniques":["光束 clip-path 照亮标题","滚动插值天色","滚动驱动 SVG 组装","阅读进度条做成光束"],"prompt":"Design a long-read editorial feature: \"The Last Keepers — Life at the Edge of the Light\", a fictional magazine story about lighthouse keepers. Write original, evocative literary prose (~900 words), impressionistic rather than presenting invented facts as real history. Typography-led: a classic book serif (\"Iowan Old Style\", \"Palatino Linotype\", Palatino, \"P052\", Georgia, serif) for body text at a comfortable measure, a large Didone-feeling headline, an ornamental drop cap, small-caps bylines, pull quotes that break the column, and marginal notes on wide screens. Palette: cream paper #f6f1e7, ink navy #14213d, signal red #c0392b, fog grey. Hero: a full-bleed SVG illustration of a lighthouse on rocks at dusk with a rotating light beam that sweeps across the headline and a gently animated sea. Scroll storytelling: sections fade and rise in; a reading-progress bar styled as a lighthouse beam; a section where the background shifts from dusk to night as you scroll; and an illustrated \"anatomy of a lens\" figure (Fresnel lens rings) that assembles on scroll. Footnotes pop up on click. Must read beautifully on phones.","prompt_lang":"en","prompt_kind":"原文","source":{"author":"miaai-lab","platform":"GitHub Pages：Claude Opus 5.5 100 HTML Files","date":"2026-09","url":"https://miaai-lab.github.io/Claude-Opus-5.5-100-HTML-Files/008-lighthouse-longform.txt","original_url":"https://miaai-lab.github.io/Claude-Opus-5.5-100-HTML-Files/008-lighthouse-longform.html"},"aspect":"16:10","tags":["滚动","SVG","排版"],"demo_note":{"id":"w02-longform","sample_inputs":"虚构杂志《The Tidewater Quarterly》的虚构长文《The Last Keepers》，虚构作者 Maren Hollis；正文为原创散文，演示版缩短到约 400 字（原提示词要求约 900 字）。","simplified":"保留：SVG 黄昏灯塔首屏 + 双光束旋转并用逐帧 clip-path 真实照亮标题、动态海浪、灯塔光束式阅读进度条、黄昏→深夜的吸顶滚动场景（时钟 19:40→04:40 + 值班日志）、滚动组装的菲涅耳透镜图版、首字下沉/小型大写署名/破栏引语/宽屏边注、脚注弹层（手机为底部抽屉）。删减：正文从四章压到三章 + 尾声，去掉引语复制按钮与 toast、分章波浪过渡只保留首屏一处；字体为系统书籍衬线/Didone 栈。","duration":null,"aspect":"16:10","libs":[]}},{"id":"w03-art-deco","type":"web","category":"落地页","title":"装饰艺术风酒店落地页","effect":"金色边框从中间向两侧自绘；旭日光芒旋转；标题掠过金箔光泽；电梯表盘指针跟随滚动","use_when":"酒店、奢侈品、复古主题活动页","techniques":["SVG 描边自绘 stroke-dashoffset","background-clip:text 金箔扫光","弹簧指针","滚动展开扇形"],"prompt":"Create a landing page for \"The Aurelian\", a fictional 1928 Art Deco grand hotel. Black lacquer (#0b0b0c) and deep emerald (#0f3d33) grounds with gold (#d4af37, grading to #f5e3a1) geometric ornament — sunbursts, stepped ziggurat frames, chevrons and fan motifs, all inline SVG. Typography: tall, thin, high-contrast display capitals (stack: Didot, \"Bodoni 72\", \"Bodoni MT\", \"C059\", Georgia, serif) with wide letter-spacing, plus refined small caps. Sections: a hero with an animated sunburst radiating behind the hotel name and a symmetrical Deco frame that draws itself in gold; \"The Suites\" as three arched cards with gilded hover states; a dining section with a menu styled as an engraved card; an elevator-dial floor selector that scrolls to sections while its needle rotates; and a reservation form with Deco-bordered inputs. Delight: a gold-foil shimmer sweeping across headings and fan patterns that open on scroll. Elegant and symmetrical on desktop, gracefully stacked on phones.","prompt_lang":"en","prompt_kind":"原文","source":{"author":"miaai-lab","platform":"GitHub Pages：Claude Opus 5.5 100 HTML Files","date":"2026-09","url":"https://miaai-lab.github.io/Claude-Opus-5.5-100-HTML-Files/015-art-deco-hotel.txt","original_url":"https://miaai-lab.github.io/Claude-Opus-5.5-100-HTML-Files/015-art-deco-hotel.html"},"aspect":"16:10","tags":["SVG","复古"],"demo_note":{"id":"w03-art-deco","sample_inputs":"虚构 1928 年装饰艺术酒店「The Aurelian」：三间虚构套房（Meridian / Solstice / Spire）与虚构价格、Salon 爵士夜、夜宵菜单、前台预订表单（不发送任何数据）。","simplified":"保留：72 道旋转金色旭日光芒 + 反向虚线环与脉冲环、按首屏尺寸由 JS 计算的阶梯金字塔框从底部中点向两侧自绘（stroke-dashoffset）、金箔扫光标题（background-clip:text）与 SMIL 金色渐变高光、拱形套房卡片的鎏金悬停、滚动进入时从中心向外展开的扇形、雕版风菜单卡、阶梯角框输入框、电梯半圆表盘（弹簧指针跟随滚动、点击楼层跳转、上下呼梯键、楼层铭牌）。删减：可选 Web Audio 电梯铃、预订表单的实时房费估算与房卡动画；手机端表盘缩小而非折叠成可展开徽章；字体为系统 Didone/Baskerville 栈。","duration":null,"aspect":"16:10","libs":[]}},{"id":"w04-pulse","type":"web","category":"交互与声音","title":"PULSE 生成式音乐可视化","effect":"点击后浏览器现场合成电子乐，128 根频谱花瓣随鼓点绽放，三种模式切换","use_when":"活动页、音乐产品、需要「能玩」的首屏","techniques":["Web Audio 合成音乐","AnalyserNode 驱动画面","Canvas 反馈拖尾","未播放时也要好看"],"prompt":"Build \"PULSE — Generative Audio Visualizer\". On first click, a built-in generative electronic track starts, synthesized entirely with Web Audio (kick, hi-hat from filtered noise, a bassline and an arpeggiated pad in a minor key at ~110 BPM, evolving every 8 bars). An AnalyserNode drives the centrepiece: a radial frequency bloom — 128 bars around a circle with mirrored symmetry, a pulsating core that swells on each kick, orbiting particles that accelerate with high frequencies, and a smoky trail (canvas feedback with a slight zoom/rotation each frame). Before audio starts, an idle breathing version of the visual must already look beautiful. Palette: sunset-to-violet gradient (#ff9a3c → #ff3c78 → #7b2ff7 → #16d9e3) on deep plum-black #0c0612. Typography: wide, spaced uppercase sans for the title and a small monospace readout of BPM, bar count and track section. Controls: play/pause; mode switch between \"Bloom\", \"Tunnel\" (concentric rings rushing toward the viewer) and \"Horizon\" (mirrored waveform landscape); volume. Optional \"Use microphone\" button with a graceful fallback if permission is denied.","prompt_lang":"en","prompt_kind":"原文","source":{"author":"miaai-lab","platform":"GitHub Pages：Claude Opus 5.5 100 HTML Files","date":"2026-09","url":"https://miaai-lab.github.io/Claude-Opus-5.5-100-HTML-Files/026-pulse-visualizer.txt","original_url":"https://miaai-lab.github.io/Claude-Opus-5.5-100-HTML-Files/026-pulse-visualizer.html"},"aspect":"16:10","tags":["Web Audio","Canvas"],"demo_note":{"id":"w04-pulse","sample_inputs":"110 BPM 电子乐自动生成（鼓组、低音线、合成器垫音）","simplified":"支持三种可视化模式（Bloom/Tunnel/Horizon），缩减了原提示的交互范围;省略了麦克风输入与模式自定义;音乐纯 Web Audio 合成。","duration":null,"aspect":"16:10","libs":[]}},{"id":"w05-escapement","type":"web","category":"滚动叙事","title":"独立制表品牌官网（3D 机芯 + 滚动拆解）","effect":"真实齿轮比运转的 3D 机芯；滚动时机芯拆成零件并标注，再重新组装","use_when":"硬件/奢侈品官网；需要一个「招牌时刻」的品牌站","techniques":["锁定技术栈版本","Three.js 程序化建模","400vh 固定滚动擦洗","慢缓动 0.9–1.4s","先输出共享文件再分页，禁止省略"],"prompt":"Build \"Escapement\" — the website for an independent mechanical watchmaker. A complete\nMULTI-PAGE site: 6 interlinked pages sharing one design system, one nav, and smooth page\ntransitions. This is a luxury horology brand — the site must feel precise, patient, and\nexpensive. Restraint is the design.\n\nSTACK — pin this exact setup:\n<script type=\"importmap\">\n{ \"imports\": {\n  \"three\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js\",\n  \"three/addons/\": \"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/\"\n}}\n<\/script>\nPlus GSAP 3.12 + ScrollTrigger, Lenis smooth scroll, Lucide icons, Google Fonts.\nModern API only — SRGBColorSpace, ACESFilmicToneMapping, BufferGeometry, no deprecated calls.\nALL imagery procedural — no external image files.\n\nFILES:\n  shared.css · shared.js\n  index.html · calibre.html · collection.html · atelier.html · heritage.html · enquire.html\n  js/home.js · js/calibre.js · js/collection.js · js/atelier.js · js/heritage.js · js/enquire.js\n\nDESIGN DIRECTION — \"patient precision\":\n  Light-first (luxury horology is photographed bright), with a full dark theme for the\n  movement pages. Palette: warm bone-white, deep graphite ink, and ONE metal accent —\n  a restrained rose-gold — plus a cool steel blue for technical annotation. Fonts: a fine\n  high-contrast serif for display (the kind on a watch dial), a clean grotesk for body, and\n  a mono for specifications and reference numbers. Enormous whitespace. Slow easings\n  (0.9–1.4s). Nothing bounces. Nothing flashes. The pacing IS the brand.\n\nTHE 3D HERO (real Three.js WebGL — the centerpiece, and the hardest thing on the site):\n  A mechanical watch MOVEMENT built from primitives — mainspring barrel, gear train (four\n  meshing wheels), escape wheel, pallet fork, and a balance wheel. And it must actually RUN:\n  the gears rotate at correct RELATIVE ratios (each wheel's angular velocity inversely\n  proportional to its tooth count), the escape wheel ticks in discrete steps rather than\n  sweeping, and the balance wheel oscillates back and forth at a steady beat. The pallet fork\n  rocks in time with the escapement. Get the mechanical relationship right — that's the whole\n  point of the object.\n  Materials: polished steel, brushed rose-gold plates, blued screws, jewel bearings as tiny\n  translucent red cylinders. Env-map reflections, soft key light, and a shallow depth-of-field\n  feel. Mouse parallax tilts the movement gently. Dispose on page transition; static gradient\n  fallback if WebGL is unavailable.\n\nCUSTOM CURSOR (fresh — must differ from every other cursor style):\n  A fine crosshair with a slowly sweeping second-hand tick around it — a thin line that\n  advances one discrete step per second, like a watch's seconds hand. On hover over\n  interactive elements the crosshair contracts and a hairline circle closes around it.\n  Hidden on touch devices.\n\nPAGE 1 — index.html (11 sections):\n  1. Hero: the running 3D movement + brand name + a single line of positioning + two\n     restrained CTAs. No urgency, no banners.\n  2. A quiet credibility strip (founded year, pieces per year, patents, awards) in mono\n  3. Three pillars (in-house calibre, hand finishing, limited production) — tilt cards\n  4. THE PINNED SCROLL INTERLUDE (400vh) — \"the movement, assembled\": the signature moment.\n     The watch movement DISASSEMBLES into its component parts, which drift apart and hold in\n     an exploded view with hairline annotation lines naming each part and its function — then\n     reassembles as the user continues scrolling. Each component labels itself as it separates.\n     This must be one continuous choreographed sequence driven by scroll scrub, not a slideshow.\n  5. The current collection preview (3 pieces, hover reveals the caseback) → collection.html\n  6. Hand-finishing detail: a macro comparison slider (machine-finished vs hand-finished\n     bevel), drawn procedurally as SVG\n  7. Numbers band (animated counters: components per movement, hours of finishing, power\n     reserve, beats per hour)\n  8. Owner testimonials — set as short, quiet pull quotes, not a carousel of faces\n  9. The atelier teaser (a wide procedural workshop illustration) → atelier.html\n  10. FAQ accordion (delivery times, servicing, waitlist, water resistance)\n  11. Final enquiry CTA + rich footer\n\nPAGE 2 — calibre.html: the in-house movement. A sticky scroll-spy side nav through the\n  movement's systems (power, gear train, escapement, regulation, finishing); an interactive\n  exploded diagram where hovering a component highlights it and shows its specification;\n  a technical spec table (jewels, frequency, power reserve, dimensions, tolerance); a\n  finishing-techniques section (Côtes de Genève, perlage, anglage) each illustrated\n  procedurally; a patents list; CTA.\n\nPAGE 3 — collection.html: the watches. A collection grid where each piece has a front view,\n  a caseback view showing the movement, and a strap selector that recolors live; a filter by\n  case material, dial colour, and complication; a piece detail view with full specification,\n  edition size, and price on application; a size-on-wrist visualizer (a simple scale\n  comparison); waitlist CTA.\n\nPAGE 4 — atelier.html: how they are made. A production-stages walkthrough where an SVG line\n  draws between stations as you scroll; the watchmakers (cards with hover reveal); tooling\n  and machinery; the quality-control protocol; annual production philosophy and why the\n  numbers are small; a workshop gallery; CTA.\n\nPAGE 5 — heritage.html: the house. Founding story; a timeline whose SVG line draws on scroll\n  with milestone pieces attached to it; historic calibres; the founder's philosophy as a full-\n  bleed statement; press and awards; museum and exhibition appearances; footer.\n\nPAGE 6 — enquire.html: acquisition. A considered enquiry form (piece of interest, strap size,\n  preferred contact, message) — validated, calm, no marketing language; boutique and\n  authorized-dealer locations; the servicing programme; the waitlist explanation; response-time\n  commitment; a closing macro shot of the movement. Footer.\n\nSHARED SYSTEMS (shared.js):\n  - Lenis smooth scroll + a hairline scroll-progress bar\n  - The watch-tick cursor described above\n  - Theme toggle persisted in localStorage, slow crossfade\n  - [data-reveal] entrance system (up/left/right/scale, batched with stagger, slow easings)\n  - Magnetic buttons (very subtle — this is a luxury brand, not a tech startup)\n  - Tilt cards with a faint metal-sheen gradient following the cursor\n  - PAGE TRANSITION VEIL: intercept internal links → veil in → navigate → veil out on load\n\nREQUIREMENTS: 6 distinct background patterns (guilloché, perlage dots, hairline grid, warm\n  paper grain, radial polish, fine diagonal); active nav link indicated; frosted nav after\n  scroll; mobile overlay menu; fully responsive; reduced-motion fully respected (the movement\n  slows and the explode becomes static); accessible (semantic HTML, visible focus, aria\n  labels, aria-hidden on decorative SVG); 60fps; cap pixel ratio at 2. Every specification\n  figure must be consistent across all six pages.\n\nDELIVERY: output shared.css and shared.js complete FIRST, then each page with its JS. No\ntruncation, no \"rest is similar\" shortcuts. End with a validation checklist.","prompt_lang":"en","prompt_kind":"原文","prompt_note":"原提示词是 6 页完整站点；本页演示只复现首页的 3D 机芯与滚动拆解。","source":{"author":"Promptslove","platform":"博客（Opus 5.5 评测 Test 1）","date":"2026-09","url":"https://promptslove.com/blog/claude-opus-5-5-review/"},"aspect":"16:10","tags":["Three.js","滚动擦洗","GSAP"],"demo_note":{"id":"w05-escapement","sample_inputs":"虚构制表品牌 Escapement 与虚构机芯 Calibre E-09（18,000 A/h、72 小时动储、21 钻等参数均为示例），页脚注明为虚构品牌。","simplified":"只复现首页两个招牌时刻：可运转的 3D 机芯 hero（同模数齿轮直接啮合、角速度∝1/齿数，擒纵轮每拍跳 12°，摆轮 2.5Hz 摆动、擒纵叉同步摆动，游丝随摆轮呼吸）与 400vh 固定滚动拆解/标注/重组，外加信誉条和结尾 CTA；省略其余 5 页、秒针光标、Lenis、转场遮罩、tilt 卡片等。three@0.170 ES module 换成 cdnjs r134 UMD（用 sRGBEncoding 代替 SRGBColorSpace），环境反射用程序化 PMREM 场景，浅景深用暗角近似；reduced-motion 下机芯减速、拆解变为静态爆炸图；无 WebGL 时显示静态渐变。","duration":null,"aspect":"16:10","libs":["three r134","gsap 3.12.5","ScrollTrigger 3.12.5"]}},{"id":"w06-neon-fluid","type":"web","category":"3D 与 WebGL","title":"霓虹流体模拟","effect":"GPU 流体随鼠标搅动，霓虹配色","use_when":"科技品牌首屏背景、互动装置","techniques":["WebGL 着色器","平流/压力求解/涡度约束","鼠标交互"],"prompt":"Write a complete, single-file HTML document containing a high-performance, GPU-accelerated interactive Eulerian Neon Fluid Simulation.\n\nStrict Technical & Aesthetic Requirements:\n\n1. Architecture & Performance:\n   - Single-file: All HTML, CSS, and JavaScript/GLSL shaders inline.\n   - Zero external dependencies: Pure WebGL 1.0 or 2.0 (no Three.js, no Pixi, no external libraries).\n   - GPU-Computed Fluid Dynamics: The simulation must run entirely via ping-pong Framebuffer Objects (FBOs) using custom fragment shaders for:\n     a) Advection (velocity & dye)\n     b) Divergence calculation\n     c) Pressure Poisson solver (Jacobi iteration, 20-30 iterations per frame)\n     d) Gradient subtraction / velocity projection\n     e) Vorticity confinement (adds turbulent swirls and prevents the fluid from turning into dull, blurry mush).\n\n2. Visual Fidelity (The \"Neon Smoke\" Look):\n   - Pitch-black void background (`#050508`).\n   - Additive / High-Dynamic-Range blending for dye injection.\n   - Dynamic palette: Each cursor flick or touch drag injects high-luminosity neon dye that cycles smoothly through vivid cyber hues (electric cyan `#00F0FF`, hot magenta `#FF007F`, deep ultraviolet, and radiant gold).\n   - Display shader enhancements: Include a post-processing pass directly in the final render shader that applies subtle bloom/glow, tone mapping, and chromatic aberration around the swirling edges of the fluid.\n\n3. Interaction:\n   - Mouse & Touch: Rapid cursor movement or dragging injects velocity proportional to mouse speed, along with dense glowing dye.\n   - Passive Ambient Motion: When idle, generate subtle procedural curl noise or gentle drifting vortices so the canvas is never completely static.\n   - Controls: A sleek, ultra-minimal glassmorphism HUD tucked into a corner (with auto-hide on inactivity):\n     * Viscosity slider\n     * Dye dissipation / persistence slider\n     * Splat radius slider\n     * \"Clear Canvas\" button\n     * Toggle button to cycle color themes (Cyberpunk, Thermal Inferno, Bioluminescent Deep).\n\n4. Production Polish:\n   - Automatically handle high-DPI displays and `resize` events without stretching or clearing the FBO textures.\n   - Graceful fallback check for floating-point texture support (`OES_texture_float` / `OES_texture_half_float`).\n   - Clean, bug-free, fully implemented code with zero placeholders or truncated comments.\n\nReturn only the fully populated HTML file ready to run directly in Chrome/Safari/Firefox.","prompt_lang":"en","prompt_kind":"原文","source":{"author":"theailoser","platform":"Tripo（3D Prompts，收录自 X）","date":"2026-09-23","url":"https://www.tripo3d.ai/3d-prompts/claude-opus-5-5-2102565611473661963","original_url":"https://x.com/theailoser/status/2102565612874596411"},"aspect":"16:10","tags":["WebGL","着色器"],"prompt_note":"已打开 tripo3d.ai 单独提示词页，取得逐字原文，比种子里的摘要长得多、细节更完整（ping-pong FBO、Jacobi 迭代次数、HUD 控件清单等）。种子应替换为此原文并去掉 needs_verification。","demo_note":{"id":"w06-neon-fluid","sample_inputs":"无外部输入；霓虹色板（青、洋红、酸橙、橙、电光蓝）与两条 Lissajous 幽灵光标路径为演示自拟。","simplified":"原条目只有一句摘要式提示词，演示按摘要实现完整 GPU 流体：平流、Jacobi 压力求解 ×20、涡度约束、染料场、轻量 bloom，显示层用染料梯度描边做霓虹灯管感。为无人操作的缩略预览加入自动搅动的幽灵光标（用户移动时让出控制，空闲约 3 秒后接回），并定时甩出新色笔触；WebGL2 半浮点→WebGL1 半浮点/浮点→无线性过滤时手动双线性→都不支持时降级为程序化噪声画面。","duration":null,"aspect":"16:10","libs":["raw WebGL"]}},{"id":"w07-sakura-valley","type":"web","category":"3D 与 WebGL","title":"樱花山谷 3D 体素场景","effect":"体素风樱花谷，多机位切换，蓝调时刻/清晨/雨天氛围切换","use_when":"文旅、游戏官网、沉浸式首屏","techniques":["Three.js 体素","多机位","天气/时段切换"],"prompt":"Create a polished 3D landscape web experience that can be explored and interacted with in real time in a browser.\n\nTheme: Japanese cherry blossom valley.\nUse HTML, CSS, and JavaScript. Do not generate images or provide only a design concept,\nand do not fake 3D with a single background image and parallax effects. I need a working, explorable finished product.\n\n【1. Creative Direction】\n\nCreate a complete, continuous valley landscape with clear depth across near and distant areas,\nnot an isolated prop, floating island, diorama with a base, or mere technical demo.\n\nThe style is modern, refined voxel art:\nretain the visual language of cubic geometry, while keeping the image high-resolution, antialiased, and finely lit.\nDo not use retro low-resolution pixelation, oversized block construction, or a pixel filter over the scene.\n\nPrioritize visual quality. It is better to include fewer features than to sacrifice composition, materials, or lighting.\n\n【2. How to Use Reference Images】\n\nIf reference images are provided, first understand their compositional layers, scale, lighting, and color relationships.\nUse them only as inspiration for the atmosphere and visual language, then redesign the scene,\nwithout copying the positions of the buildings, trees, mountains, or roads or recreating the image 1:1.\n\nThe reference image is not background material for the web page. The scene itself must be built from real 3D geometry.\n\n【3. Scene Composition】\n\nWhen opened, the page should immediately show a complete, compelling composition,\nso users should not have to rotate the camera first to find a good angle.\n\nUse a perspective camera, not an orthographic, diorama-style top-down camera.\nThe composition must have a clear foreground, midground, and background:\n\nForeground:\na prominent old cherry tree with rocks, grasses, plants, a stone lantern, and a few fallen blossoms,\ncreating a natural frame around the edge of the image without blocking the river, bridge, or main buildings.\n\nMidground:\na winding river that leads the eye into the scene, crossed by a red wooden bridge;\na village, teahouse, shrine, and paths distributed along the terrain, with believable circulation between the buildings.\nThe ground must have elevation changes, shorelines, and natural transitions rather than models placed evenly on a flat plane.\n\nBackground:\na multi-tiered pagoda on the hillside, forests at varying distances, mountain ridges, and snow-capped mountains in the distance.\nShow distance through changes in scale, occlusion, warm-to-cool shifts, and atmospheric perspective,\nrather than simply shrinking distant objects.\n\nDo not distribute every element evenly across the scene. Establish hierarchy, variation in density, negative space, and a clear visual focal point.\n\n【4. Modeling and Image Quality】\n\nCherry tree:\nthe trunk should have bends, branches, forks, and visible roots; the canopy should consist of irregular clusters of blossoms,\nwith gaps, variation in thickness, and visible branches. Do not make it out of a few regular spheres or blocky clumps.\n\nArchitecture:\nroofs should include layered tiles, eaves, beams, columns, and lattice windows;\ndifferent buildings should vary in purpose, scale, and height. Do not fill the valley with copies of the same house.\n\nTerrain:\ninclude wet rocks, grasses, and vegetation transitions along the banks.\nAvoid overly regular steps, repeating stripes, checkerboard patterns, and obvious procedural grids.\n\nWater:\nthe surface must reflect its surroundings, with moderate ripples, depth variation, and natural transitions at the banks.\nUse real scene reflections wherever possible; when reducing quality for performance, keep the result visually convincing.\nDo not substitute flickering noise, extreme distortion, or a solid blue plane for water.\n\nDetails:\nyou may include a few koi, fallen blossoms, fireflies, waterfalls, and distant birds,\nbut they should support the atmosphere without making the image feel cluttered.\nDo not pile on details just to advertise a high model count.\n\n【5. Color and Atmosphere】\n\nThe default atmosphere is blue hour:\ncool-toned valleys and distant mountains, soft pink cherry blossoms, and warm but not overexposed lantern and window light.\nKeep the warm light concentrated in inhabited areas; do not tint the entire environment orange.\n\nUse soft shadows, contact shading, sensible exposure,\nrestrained bloom, antialiasing, and layered fog that conveys distance.\n\nAvoid a washed-out or gray appearance, oversaturation, dense fog across the entire scene, overexposed lights, and obvious aliasing.\nThe cubic geometry can remain crisp, but the rendering itself must not look crude.\n\nAlso provide \"Morning\" and \"Rainy\" atmospheres;\nwhen switching between them, update the sky, ambient light, fog, and local effects together,\nrather than merely changing the background color.\n\n【6. Interaction and Interface】\n\nProvide four designed camera views:\nvalley panorama, low riverside angle, temple path, and hillside overlook.\nTransitions should be smooth, and each view must have its own compositional value.\n\nBasic interaction:\ndrag with the mouse to look around, and use the scroll wheel to zoom or move forward; support dragging and pinch-to-zoom on touchscreens.\nProvide controls to reset the view, hide the interface, and save the current image.\n\nOptional enhancements:\nfree exploration, a slow camera tour, and ambient sound.\nAmbient sound must be off by default and play only after the user clicks to enable it.\nAdditional features must not reduce the quality of the default composition.\n\nKeep the interface restrained and thoughtfully designed, with the landscape taking priority.\nPlace the title and control bar at the edges so they do not obscure the visual focal point.\nOn both desktop and mobile, buttons must stay within the viewport, text must not overlap, and all controls must remain usable.\n\n【7. Engineering and Performance】\n\nYou may use Three.js / WebGL and version-pinned, mutually compatible CDN dependencies.\nPrefer mature rendering capabilities instead of rewriting an entire engine for the sake of \"zero dependencies.\"\n\nKeep the custom HTML, CSS, and JavaScript organized in a single HTML file wherever practical.\nGenerate the scenery with procedural geometry and materials; do not depend on external images or 3D model assets.\n\nUse suitable batching or instanced rendering for repeated objects;\nmanage subdivisions, shadows, reflections, and render resolution appropriately.\nProvide high-quality and lightweight modes, with lighter settings enabled by default on mobile.\nDo not pursue detail by endlessly increasing the voxel count.\n\nInclude a loading indicator, a message when WebGL is unsupported, and necessary error handling.\nDo not autoplay audio when sound has not been enabled; respect the system preference for reduced motion.\n\n【8. Pre-Delivery Validation】\n\nDo not deliver immediately after writing the code.\n\nIf the current environment supports running a browser and taking screenshots, open the page first,\ncheck the default camera, all four views, atmosphere switching, and desktop and mobile layouts,\nthen correct obvious composition, exposure, occlusion, and rendering issues based on the screenshots.\n\nPay particular attention to:\nblank screens, failed loading, and console errors;\nintersections, flickering, shadow acne, overexposure, and abnormal water;\nwhether the default view truly looks like a complete landscape rather than a small diorama;\nand whether the feature buttons actually work and stay within bounds on mobile.\n\nYou may use browser screenshots for validation, but do not call image-generation tools.\nState honestly which tests were not completed; do not claim that they have been verified.\n\nFinal deliverables:\n1. An actual, openable HTML file or an interactive preview supported by the current environment.\n2. If screenshots are possible, include one real screenshot of the browser rendering.\n3. A brief explanation of the controls and any required runtime conditions.\n\nComplete the build directly; make consistent design decisions for noncritical details yourself,\nrather than repeatedly asking me to decide implementation issues you can resolve independently.","prompt_lang":"en","prompt_kind":"原文","source":{"author":"@宝玉（dotey）","platform":"Tripo（3D Prompts，收录自 X）","date":"2026-09-23","url":"https://www.tripo3d.ai/3d-prompts/claude-opus-5-5-2102565403109085669","original_url":"https://x.com/dotey/status/2102565403109085669"},"aspect":"16:10","tags":["Three.js","体素"],"prompt_note":"已打开 tripo3d.ai 单独提示词页，取得逐字原文（英文版，8 段完整规格：创作方向/参考图用法/构图/建模精度/色彩氛围/交互界面/工程性能/交付前校验）。种子里的摘要只覆盖了第 1、3、6 段的一小部分，应替换为此原文并去掉 needs_verification。原帖为中文写作，本页展示的是英文翻译版；未在页面上找到中文原文链接。","demo_note":{"id":"w07-sakura-valley","sample_inputs":"樱花谷体素场景：河流、神社鸟居、瀑布、周期性樱花飘落","simplified":"采用体素风格 3D 场景;支持 5 个固定机位与 3 种天气模式(蓝调时刻/清晨/雨天)，自动巡游;省略了性能动态调整与完整 WebGL 回退渐进增强。","duration":null,"aspect":"16:10","libs":["three r134"]}}],"toolbox":{"skeleton_zh":"<inputs>\n先问我要：[产品名/主题]、[时长]、[画幅 1920x1080 / 1080x1920 / 1080x1080]、[1 个主色]、[参考素材：截图/实拍/音乐]\n<\/inputs>\n\n<direction>\n风格：[一句话定调，如「高端极简，每个镜头只讲一件事，大量留白」]\n字体：[1 个展示字体 + 1 个正文字体]\n运动：[如「弹簧缓动，最多轻微过冲；遮罩文字揭示；匹配剪辑」]\n禁用：弹跳缓动、粒子爆炸、光晕、镜头光斑、RGB 分离、镜头抖动、紫色渐变\n<\/direction>\n\n<structure>\n[BPM] BPM，[N] 小节，每小节 [2] 秒。\n第 1 小节：[钩子，逐词落在节拍上]\n第 2 小节：[……]\n最后：[Logo / 网址定格]\n<\/structure>\n\n<build>\n1. 单个 HTML 文件，[分辨率]。所有样式在 seek(t) 里由时间计算：不用 CSS 动画、不用定时器、帧与帧之间不存状态。\n2. 随机数用固定种子，禁止 Math.random。\n3. 每个剪辑点落在强拍上。\n4. 用 Playwright 逐帧渲染，ffmpeg 编码为 [60]fps MP4。\n5. 全量渲染前先抽 20 帧检查，拥挤、重叠、看不清的先修。\n<\/build>\n\n<gotchas>\n切换中的文字要有独立的进出时间，否则会重叠。\n被镜头缩放的元素不要加 will-change，否则文字会糊。\n<\/gotchas>\n\n<start>\n先问我要输入，再给我一份每个时间点都对齐节拍的分镜表，确认后再写代码。\n<\/start>","skeleton_source":"结构提炼自 @zero 的两条 YouMind 提示词（UI 变形、高端产品片）","aesthetics_block":"<frontend_aesthetics>\n\nYou tend to converge toward generic, \"on distribution\" outputs. In frontend design, this creates what users call the \"AI slop\" aesthetic. Avoid this: make creative, distinctive frontends that surprise and delight. Focus on:\n\nTypography: Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts like Arial and Inter; opt instead for distinctive choices that elevate the frontend's aesthetics.\n\nColor & Theme: Commit to a cohesive aesthetic. Use CSS variables for consistency. Dominant colors with sharp accents outperform timid, evenly-distributed palettes. Draw from IDE themes and cultural aesthetics for inspiration.\n\nMotion: Use animations for effects and micro-interactions. Prioritize CSS-only solutions for HTML. Use Motion library for React when available. Focus on high-impact moments: one well-orchestrated page load with staggered reveals (animation-delay) creates more delight than scattered micro-interactions.\n\nBackgrounds: Create atmosphere and depth rather than defaulting to solid colors. Layer CSS gradients, use geometric patterns, or add contextual effects that match the overall aesthetic.\n\nAvoid generic AI-generated aesthetics:\n\n- Overused font families (Inter, Roboto, Arial, system fonts)\n\n- Clichéd color schemes (particularly purple gradients on white backgrounds)\n\n- Predictable layouts and component patterns\n\n- Cookie-cutter design that lacks context-specific character\n\nInterpret creatively and make unexpected choices that feel genuinely designed for the context. Vary between light and dark themes, different fonts, different aesthetics. You still tend to converge on common choices (Space Grotesk, for example) across generations. Avoid this: it is critical that you think outside the box!\n\n<\/frontend_aesthetics>","aesthetics_source":{"author":"Anthropic","url":"https://platform.claude.com/cookbook/coding-prompting-for-frontend-aesthetics"},"shared_requirements":"SHARED REQUIREMENTS (apply to every page in this 100-page collection):\n1. One standalone HTML5 file. All CSS inline in <style>, all JavaScript inline in <script>. No external resources of any kind: no CDN, no libraries, no web fonts, no external images/SVG/audio files, no network requests. All visuals come from CSS, inline SVG, Canvas and procedural code.\n2. Valid HTML5: <!DOCTYPE html>, <html lang=\"en\">, <meta charset=\"utf-8\">, a viewport meta tag, a meaningful <title> and meta description, well-nested semantic markup, unique ids, labels/aria attributes for controls, <button type=\"button\"> for actions.\n3. Typography from local system font stacks only, always ending in a generic family; display lettering may be drawn with SVG or Canvas.\n4. Responsive from 360px phones to large desktops with no horizontal page scroll; canvases match their container and devicePixelRatio (capped at 2) and re-layout on resize.\n5. Works offline by opening the file directly (file://); no console errors; storage access guarded with try/catch.\n6. Smooth motion via requestAnimationFrame and transform/opacity; animation pauses when the tab is hidden where it matters; honours prefers-reduced-motion with a calmer fallback.\n7. Pointer events so mouse and touch both work; visible :focus-visible styles; keyboard support where it makes sense.\n8. Any sound is synthesized with the Web Audio API, starts only after a user gesture, and has a visible mute/toggle.\n9. Premium finish: a deliberate palette and spacing, polished micro-interactions, a beautiful first frame before any interaction, and original copy (no lorem ipsum). Factual content must be accurate; fictional brands, people and data are clearly fictional.\n10. Quality bar: visually impressive, bookmark-worthy, showcase-grade, premium, full of delightful details, and clearly distinct from the other 99 pages in concept, layout, palette, typography and motion.","shared_requirements_source":{"author":"miaai-lab","url":"https://miaai-lab.github.io/Claude-Opus-5.5-100-HTML-Files/"},"export_prompt_zh":"把这个动画导出成 MP4：\n1. 页面暴露 window.DURATION 和 window.seek(t)；所有动画由 t 计算，不用 CSS transition、不用定时器、不用 Math.random（改用固定种子）。\n2. 用 Playwright 打开页面，按 [60]fps 逐帧调用 seek(t) 并截图，分辨率 [1920x1080]。\n3. 每帧渲染 3 个子帧（t−1/240s、t、t+1/240s），用 ffmpeg tmix 混合出运动模糊。\n4. ffmpeg 编码 libx264、crf 18、yuv420p；有音轨就混进去，并 loudnorm 到 −14 LUFS。\n5. 全量渲染前，先每 0.5 秒抽一帧拼成联系表给我看。","export_sources":[{"label":"@zero 高端产品片（子帧 + tmix + −14 LUFS）","url":"https://youmind.com/video-prompts/high-end-product-video-prompt-11292"},{"label":"shipvideo（虚拟时钟 + libx264 crf 18）","url":"https://github.com/diggerhq/shipvideo"},{"label":"iArt（联系表：每 0.5 秒一帧）","url":"https://www.iart.ai/blog/ai-javascript-animation"}],"motion_vocab":[{"zh":"弹簧缓动，轻微过冲","en":"springs everywhere, a tiny overshoot at most","note":"比 ease-in-out 更有物理感","src":"@zero UI 变形"},{"zh":"慢而贵的节奏","en":"slow easings (0.9–1.4s). Nothing bounces. Nothing flashes.","note":"奢侈品、品牌站","src":"Promptslove Escapement"},{"zh":"遮罩文字揭示","en":"masked type reveals","note":"文字从遮罩里滑出","src":"@zero 高端产品片"},{"zh":"逐词落拍","en":"the hook lands word by word on the beats","note":"开场钩子","src":"@zero 高端产品片"},{"zh":"匹配剪辑","en":"match cuts (measure element positions at runtime)","note":"形状或位置连续切到下一镜","src":"@zero 高端产品片"},{"zh":"带运动模糊的甩镜","en":"a motion-blurred whip onto one hero clip","note":"强调主角镜头","src":"@zero 高端产品片"},{"zh":"一个形体不切镜","en":"one shape, never cut: the same element morphing its size, radius and color","note":"UI 动效的连续感","src":"@zero UI 变形"},{"zh":"错峰入场","en":"one well-orchestrated page load with staggered reveals (animation-delay)","note":"网页首屏","src":"Anthropic 前端审美"},{"zh":"滚动擦洗的固定段落","en":"pinned scroll interlude, one continuous choreographed sequence driven by scroll scrub, not a slideshow","note":"网页招牌时刻","src":"Promptslove Escapement"},{"zh":"手作感帧率","en":"motion on twos (24fps, 2-frame holds)","note":"像手绘动画","src":"charlie947/motion-graphics-skills"},{"zh":"真实运动模糊","en":"render 3–4 subframes per frame, blend with ffmpeg tmix","note":"导出 MP4 时","src":"@zero"},{"zh":"无缝循环","en":"the last frame is the first frame, so it loops","note":"社媒循环、封面动图","src":"@zero UI 变形"},{"zh":"卡点","en":"every cut sits on a downbeat, every UI hit on a beat","note":"配乐视频","src":"@zero 高端产品片"},{"zh":"一镜到底推进","en":"starts in a room, zooms into …, then into …, finally …","note":"尺度类叙事","src":"@Taelin"}],"banned":{"words":"bouncy easing, particle bursts, shockwave rings, glows, neon glows, lens flares, RGB split, camera shake, grid floors, flashing backgrounds, gradients on UI chrome, typewriter text, purple gradients on white, Inter / Roboto / Arial as the display face","src":"汇总自 @zero 两条提示词、charlie947/motion-graphics-skills、Anthropic 前端审美块"},"fixes":[{"symptom":"画面平庸、有模板感","fix":"加上 direction 段和禁用清单；给一个具体参考；写明「不要最安全的平均版本」","src":"newfacedesign / Anthropic"},{"symptom":"切换时文字叠在一起","fix":"Text that swaps inside a morphing container needs its own enter and exit timing. 渲染每个节拍一帧，修掉重叠和拥挤。","src":"@zero"},{"symptom":"有几秒画面不动","fix":"Something happens on every beat. 删掉空帧和死时间。","src":"@zero / opus-visual-motion-engine"},{"symptom":"角色粗圆描边，像儿童画","fix":"细线条、少描边、更成熟的造型语言；先定主题再定风格。","src":"iArt"},{"symptom":"镜头放大后文字发糊","fix":"Never put will-change on anything the camera scales.","src":"@zero"},{"symptom":"3D 翻转卡片两面同时显示","fix":"Never set opacity or filter on a preserve-3d element. Fade its wrapper instead.","src":"@zero"},{"symptom":"循环接缝处卡一下","fix":"Make the last frame identical to the first, cursor position and speed included.","src":"@zero"},{"symptom":"导出的帧闪烁、每次不一样","fix":"禁用 Math.random 和定时器，所有状态由 seek(t) 计算，随机数用固定种子。","src":"shipvideo / @TechHalla"},{"symptom":"长页面输出被截断","fix":"Output shared.css and shared.js complete FIRST, then each page. No truncation, no \"rest is similar\" shortcuts. 同时把输出上限调到 32k 以上。","src":"Promptslove / Promptowy"},{"symptom":"音效忽大忽小、对不上画面","fix":"Place each sound effect so its measured peak lands on the event. Keep the effects quiet under the music.","src":"@zero / iArt"}]}}</script>
+<script type="application/json" id="case-data">{"lexicon_url":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x","keywords":{"fixed-stage":"固定舞台，等比缩放","duration-fps":"时长与帧率","seek-t":"seek(t) 纯函数渲染","seeded-random":"固定种子随机数","loop-seam":"首尾无缝循环","storyboard-first":"先出分镜，再写代码","contact-sheet":"联系表抽帧自检","subframe-blur":"子帧运动模糊","export-mp4":"导出 MP4 流程","aspect-ratios":"画幅：16:9 / 9:16 / 1:1 / 2.39:1","safe-zone":"竖屏安全区与字号下限","reduced-motion":"尊重「减少动态」","one-idea":"一个镜头只讲一件事","restraint":"克制即设计","one-accent":"单一强调色","type-roles":"字体分角色","type-extremes":"字重与字号走极端","frosted-glass":"毛玻璃","print-texture":"印刷质感：纸纹、网点、有限油墨","layered-atmosphere":"有层次的氛围背景","metal-sheen":"金属/箔面光泽扫过","studio-light-3d":"3D 摄影棚布光","anti-slop":"禁用清单（去 AI 味）","spring":"弹簧缓动，轻微过冲","slow-ease":"慢缓动，不弹不闪","expo-out":"快起慢收（expo out）","dual-spring":"双弹簧拉伸","on-twos":"一拍二（手作感）","beat-grid":"节拍网格与卡点","word-on-beat":"逐词落拍","stagger":"错峰入场","no-dead-time":"每一拍都有事发生","orchestrated-load":"一次编排好的入场","masked-reveal":"遮罩揭示","match-cut":"匹配剪辑","shape-morph":"一个形体不切镜","iris-open":"从元素里打开的圆形转场","whip-pan":"带模糊的甩镜","push-cut":"推进硬切","material-wipe":"材质化擦除","push-in-journey":"一镜到底尺度推进","zoom-to-fill":"镜头推到状态填满画面","parallax-depth":"视差纵深","follow-cam":"跟随镜头","rack-focus":"景深与移焦","orbit-drift":"缓慢环绕漂移","kinetic-type":"文字即结构","counter-roll":"数字滚动计数","light-on-text":"光照亮文字","aurora":"极光飘带","feedback-trail":"画布反馈拖尾","flow-field":"流场与流体","rain-bokeh":"雨与光斑","pinned-scrub":"固定段落 + 滚动擦洗","exploded-view":"拆解爆炸图 + 细线标注","scroll-reveal":"滚动揭示（上浮淡入）","scroll-interpolate":"滚动插值场景","draw-on-scroll":"滚动绘制线条","progress-metaphor":"有隐喻的阅读进度","tilt-glare":"倾斜卡片 + 移动高光","magnetic-btn":"磁吸按钮（很轻）","custom-cursor":"贴合主题的自定义光标","cursor-reactive":"背景响应光标","spring-toggle":"滑动药丸切换","hover-reveal":"悬停揭示第二面","ghost-cursor":"幽灵光标自动演示","audio-reactive":"声音驱动画面","s-five-scene":"五幕解说：痛点→方案→三步→证据→落版","s-launch-bars":"卡点发布片：钩子→变 UI→转场点→一小节一动作→落版","s-mechanism":"原理讲解：提问→模型→公式→结论","s-scale-journey":"尺度之旅：一镜到底","s-loop-cycle":"循环周期","s-shot-list":"分镜表叙事","s-landing-signature":"招牌时刻型官网","s-longread":"滚动长文专题","single-file":"单文件、零外部依赖","stack-pin":"锁定技术栈","perf-budget":"性能预算与降级","complete-delivery":"完整交付，诚实验收","autonomy":"授权自主决策","facts-first":"事实与数据约束","copy-lock":"文案逐字锁定","asset-pipeline":"素材接入流程","audio-sync":"音频对齐与响度","quality-bar":"质量标尺与角色","brand-tokens":"品牌规范","style-anchor":"风格锚点（年代 / 媒介 / 流派）","first-frame":"首帧即成品，空闲不静止","composition-depth":"三层构图与视觉焦点","cursor-demo":"视频里的模拟光标","secondary-motion":"次级运动","end-hold":"落版定格","s-state-chain":"状态链：A → B → … → A"},"cases":[{"id":"v01-showreel","tags":[{"k":"duration-fps","layer":"L1","level":"明写","evidence":"a dynamic 15-second motion graphics video","is_new":false,"src":"提示词原文"},{"k":"quality-bar","layer":"L2","level":"明写","evidence":"shows what an incredible motion designer you are… go all out","is_new":true,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.video.15s.16x9.duration-fps.quality-bar"},{"id":"v02-app-launch","tags":[{"k":"duration-fps","layer":"L1","level":"明写","evidence":"15-second launch video","is_new":false,"src":"提示词原文"},{"k":"aspect-ratios","layer":"L1","level":"明写","evidence":"at 1920x1080","is_new":false,"src":"提示词原文"},{"k":"fixed-stage","layer":"L1","level":"隐含","evidence":"固定分辨率的视频","is_new":false,"src":"提示词原文"},{"k":"brand-tokens","layer":"L2","level":"明写","evidence":"Use these brand colors: [colors]","is_new":true,"src":"提示词原文"},{"k":"end-hold","layer":"L5","level":"明写","evidence":"end on [your URL]","is_new":true,"src":"提示词原文"},{"k":"s-state-chain","layer":"L5","level":"隐含","evidence":"show these three features one at a time","is_new":true,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.video.15s.16x9.duration-fps.aspect-ratios.fixed-stage.brand-tokens.end-hold.s-state-chain"},{"id":"v03-high-end-product","tags":[{"k":"fixed-stage","layer":"L1","level":"明写","evidence":"One HTML file at 1920x1080","is_new":false,"src":"提示词原文"},{"k":"seek-t","layer":"L1","level":"明写","evidence":"Every style is computed from time inside seek(t)","is_new":false,"src":"提示词原文"},{"k":"storyboard-first","layer":"L1","level":"明写","evidence":"show me a storyboard with every timing on the beat grid before you write any code","is_new":false,"src":"提示词原文"},{"k":"contact-sheet","layer":"L1","level":"明写","evidence":"Probe 20 or more frames before the full render","is_new":false,"src":"提示词原文"},{"k":"subframe-blur","layer":"L1","level":"明写","evidence":"3 subframes per frame… blend with ffmpeg tmix","is_new":false,"src":"提示词原文"},{"k":"export-mp4","layer":"L1","level":"明写","evidence":"Render with Playwright","is_new":false,"src":"提示词原文"},{"k":"asset-pipeline","layer":"L1","level":"明写","evidence":"extract clips to 30fps JPEG sequences… Real footage only, never placeholder cards","is_new":true,"src":"提示词原文"},{"k":"audio-sync","layer":"L1","level":"明写","evidence":"Analyze the song with numpy… measured peak… Loudnorm to -14 LUFS","is_new":true,"src":"提示词原文"},{"k":"one-idea","layer":"L2","level":"明写","evidence":"One idea per shot, lots of empty space","is_new":false,"src":"提示词原文"},{"k":"one-accent","layer":"L2","level":"明写","evidence":"one accent color","is_new":false,"src":"提示词原文"},{"k":"anti-slop","layer":"L2","level":"明写","evidence":"Banned: shockwave rings, particle bursts, RGB split…","is_new":false,"src":"提示词原文"},{"k":"beat-grid","layer":"L3","level":"明写","evidence":"10 bars at 120 BPM… Every cut sits on a downbeat","is_new":false,"src":"提示词原文"},{"k":"word-on-beat","layer":"L3","level":"明写","evidence":"the hook lands word by word on the beats","is_new":false,"src":"提示词原文"},{"k":"masked-reveal","layer":"L3","level":"明写","evidence":"Masked type reveals","is_new":false,"src":"提示词原文"},{"k":"match-cut","layer":"L3","level":"明写","evidence":"match cuts… Measure element positions at runtime","is_new":false,"src":"提示词原文"},{"k":"cursor-demo","layer":"L3","level":"明写","evidence":"A cursor types and clicks","is_new":true,"src":"提示词原文"},{"k":"iris-open","layer":"L3","level":"明写","evidence":"a circle opens out of the button into a dark scene","is_new":false,"src":"提示词原文"},{"k":"whip-pan","layer":"L3","level":"明写","evidence":"a motion-blurred whip onto one hero clip","is_new":false,"src":"提示词原文"},{"k":"push-cut","layer":"L3","level":"明写","evidence":"big stats on push cuts","is_new":false,"src":"提示词原文"},{"k":"shape-morph","layer":"L3","level":"隐含","evidence":"one hook word morphs into the product UI","is_new":false,"src":"提示词原文"},{"k":"s-launch-bars","layer":"L5","level":"明写","evidence":"10 bars at 120 BPM, 2 seconds each… one move per bar","is_new":false,"src":"提示词原文"},{"k":"end-hold","layer":"L5","level":"明写","evidence":"a logo reveal, a fade to black","is_new":true,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.video.20s.16x9.120bpm.fixed-stage.seek-t.storyboard-first.contact-sheet.subframe-blur.export-mp4.asset-pipeline.audio-sync.one-idea.one-accent.anti-slop.beat-grid.word-on-beat.masked-reveal.match-cut.cursor-demo.iris-open.whip-pan.push-cut.shape-morph.s-launch-bars.end-hold"},{"id":"v04-business-explainer","tags":[{"k":"duration-fps","layer":"L1","level":"明写","evidence":"30-second animated explainer","is_new":false,"src":"提示词原文"},{"k":"single-file","layer":"L1","level":"明写","evidence":"as a single HTML page","is_new":true,"src":"提示词原文"},{"k":"quality-bar","layer":"L2","level":"明写","evidence":"Adopt the role of an expert motion designer","is_new":true,"src":"提示词原文"},{"k":"brand-tokens","layer":"L2","level":"明写","evidence":"my brand colours","is_new":true,"src":"提示词原文"},{"k":"s-five-scene","layer":"L5","level":"明写","evidence":"5 scenes. The customer's problem, what I do, how it works in 3 steps, one proof point","is_new":false,"src":"提示词原文"},{"k":"end-hold","layer":"L5","level":"明写","evidence":"my name at the end","is_new":true,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.video.30s.16x9.duration-fps.single-file.quality-bar.brand-tokens.s-five-scene.end-hold"},{"id":"v05-transformer","tags":[{"k":"stack-pin","layer":"L1","level":"明写","evidence":"create a video using JS","is_new":true,"src":"提示词原文"},{"k":"autonomy","layer":"L1","level":"明写","evidence":"You can use any tools or install tools, and you can search online. Please surprise me.","is_new":true,"src":"提示词原文"},{"k":"facts-first","layer":"L1","level":"隐含","evidence":"include details… mathematical concepts（技术内容需准确）","is_new":true,"src":"提示词原文"},{"k":"s-mechanism","layer":"L5","level":"隐含","evidence":"explain it clearly… covering attention mechanisms and even some mathematical concepts","is_new":false,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.video.16x9.stack-pin.autonomy.facts-first.s-mechanism"},{"id":"v06-sky-blue","tags":[{"k":"duration-fps","layer":"L1","level":"明写","evidence":"A 20-second explainer","is_new":false,"src":"提示词原文"},{"k":"style-anchor","layer":"L2","level":"明写","evidence":"in the style of a 1950s science textbook","is_new":true,"src":"提示词原文"},{"k":"print-texture","layer":"L2","level":"隐含","evidence":"1950s science textbook（印刷品质感）","is_new":false,"src":"提示词原文"},{"k":"s-mechanism","layer":"L5","level":"隐含","evidence":"Why is the sky blue?（原理讲解）","is_new":false,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.video.20s.16x9.duration-fps.style-anchor.print-texture.s-mechanism"},{"id":"v07-ui-morph","tags":[{"k":"fixed-stage","layer":"L1","level":"明写","evidence":"One HTML file, square 1440x1440","is_new":false,"src":"提示词原文"},{"k":"aspect-ratios","layer":"L1","level":"明写","evidence":"square 1440x1440","is_new":false,"src":"提示词原文"},{"k":"seek-t","layer":"L1","level":"明写","evidence":"Every style is computed from time inside seek(t)","is_new":false,"src":"提示词原文"},{"k":"loop-seam","layer":"L1","level":"明写","evidence":"The last frame is the first frame, so it loops","is_new":false,"src":"提示词原文"},{"k":"storyboard-first","layer":"L1","level":"明写","evidence":"show me the state list on the beat grid before you write any code","is_new":false,"src":"提示词原文"},{"k":"contact-sheet","layer":"L1","level":"明写","evidence":"Render one frame per beat before the full render","is_new":false,"src":"提示词原文"},{"k":"subframe-blur","layer":"L1","level":"明写","evidence":"4 subframes per frame, blended with ffmpeg tmix","is_new":false,"src":"提示词原文"},{"k":"export-mp4","layer":"L1","level":"明写","evidence":"Render with Playwright","is_new":false,"src":"提示词原文"},{"k":"audio-sync","layer":"L1","level":"明写","evidence":"Analyze the song with numpy… Place every UI sound by its measured peak","is_new":true,"src":"提示词原文"},{"k":"quality-bar","layer":"L2","level":"明写","evidence":"Dribbble-level UI motion… anything that looks like a template","is_new":true,"src":"提示词原文"},{"k":"one-accent","layer":"L2","level":"明写","evidence":"pure black and white or one accent color","is_new":false,"src":"提示词原文"},{"k":"anti-slop","layer":"L2","level":"明写","evidence":"Banned: bouncy easing, particle bursts, glows…","is_new":false,"src":"提示词原文"},{"k":"spring","layer":"L3","level":"明写","evidence":"Springs everywhere, a tiny overshoot at most","is_new":false,"src":"提示词原文"},{"k":"dual-spring","layer":"L3","level":"明写","evidence":"The tab indicator's two edges ride different springs","is_new":false,"src":"提示词原文"},{"k":"shape-morph","layer":"L3","level":"明写","evidence":"One shape, never cut","is_new":false,"src":"提示词原文"},{"k":"zoom-to-fill","layer":"L3","level":"明写","evidence":"The camera zooms so each state fills the frame","is_new":false,"src":"提示词原文"},{"k":"cursor-demo","layer":"L3","level":"明写","evidence":"A cursor drives every change with real clicks and drags","is_new":true,"src":"提示词原文"},{"k":"beat-grid","layer":"L3","level":"明写","evidence":"120 BPM, 7 bars… start on a downbeat","is_new":false,"src":"提示词原文"},{"k":"no-dead-time","layer":"L3","level":"明写","evidence":"something happens on every beat… Banned: dead time","is_new":false,"src":"提示词原文"},{"k":"s-state-chain","layer":"L5","level":"明写","evidence":"Button → loader → check → … → back to the button","is_new":true,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.video.14s.1x1.120bpm.fixed-stage.aspect-ratios.seek-t.loop-seam.storyboard-first.contact-sheet.subframe-blur.export-mp4.audio-sync.quality-bar.one-accent.anti-slop.spring.dual-spring.shape-morph.zoom-to-fill.cursor-demo.beat-grid.no-dead-time.s-state-chain"},{"id":"v08-kinetic-type","tags":[{"k":"single-file","layer":"L1","level":"明写","evidence":"Deliver one self-contained HTML file… Embed all required assets","is_new":true,"src":"提示词原文"},{"k":"duration-fps","layer":"L1","level":"明写","evidence":"20.00-second… targeting 60fps","is_new":false,"src":"提示词原文"},{"k":"aspect-ratios","layer":"L1","level":"明写","evidence":"1080×1080","is_new":false,"src":"提示词原文"},{"k":"copy-lock","layer":"L1","level":"明写","evidence":"ORIGINAL SPEECH — EXACT WORDS, EXACT ORDER","is_new":true,"src":"提示词原文"},{"k":"fixed-stage","layer":"L1","level":"隐含","evidence":"固定 1080×1080 画布","is_new":false,"src":"提示词原文"},{"k":"seek-t","layer":"L1","level":"隐含","evidence":"收录页渲染说明：deterministic scene rendering via window.seek(t)","is_new":false,"src":"提示词原文"},{"k":"one-accent","layer":"L2","level":"明写","evidence":"Background #102820. Paper #F4E9D5. Structural accent #F2B544","is_new":false,"src":"提示词原文"},{"k":"type-roles","layer":"L2","level":"明写","evidence":"a high-contrast serif for the speech, a heavy grotesque for load-bearing words, a restrained monospace","is_new":false,"src":"提示词原文"},{"k":"anti-slop","layer":"L2","level":"明写","evidence":"No distressed protest-poster clichés, megaphones, flags…（按题材定制的禁用清单）","is_new":false,"src":"提示词原文"},{"k":"kinetic-type","layer":"L3","level":"明写","evidence":"Every line changes the architecture of the frame","is_new":false,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.video.20s.1x1.single-file.duration-fps.aspect-ratios.copy-lock.fixed-stage.seek-t.one-accent.type-roles.anti-slop.kinetic-type"},{"id":"v09-room-to-quarks","tags":[{"k":"stack-pin","layer":"L1","level":"明写","evidence":"Use HTML and Three.js for rendering","is_new":true,"src":"提示词原文"},{"k":"push-in-journey","layer":"L3","level":"明写","evidence":"starts in a room, zooms into…, then into…, followed by atoms, and finally quarks","is_new":false,"src":"提示词原文"},{"k":"s-scale-journey","layer":"L5","level":"明写","evidence":"room → laptop → chip → atoms → quarks","is_new":false,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.video.16x9.stack-pin.push-in-journey.s-scale-journey"},{"id":"v10-map-route","tags":[{"k":"stack-pin","layer":"L1","level":"明写","evidence":"/remotion-maps（调用 Remotion 地图技能）","is_new":true,"src":"提示词原文"},{"k":"follow-cam","layer":"L3","level":"明写","evidence":"make the camera follow it","is_new":false,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.video.16x9.stack-pin.follow-cam"},{"id":"v12-rain-station","tags":[{"k":"stack-pin","layer":"L1","level":"明写","evidence":"Do not use HyperFrames/Remotion; write all code yourself (Python + ffmpeg)","is_new":true,"src":"提示词原文"},{"k":"duration-fps","layer":"L1","level":"明写","evidence":"30-second… 24fps","is_new":false,"src":"提示词原文"},{"k":"aspect-ratios","layer":"L1","level":"明写","evidence":"2.39:1, 4K","is_new":false,"src":"提示词原文"},{"k":"asset-pipeline","layer":"L1","level":"明写","evidence":"pure green #00FF00 backgrounds for self-matting… Real-ESRGAN… Depth Anything V2","is_new":true,"src":"提示词原文"},{"k":"audio-sync","layer":"L1","level":"明写","evidence":"Mixkit real SFX… distance-based panning… loudness -16 LUFS","is_new":true,"src":"提示词原文"},{"k":"copy-lock","layer":"L1","level":"明写","evidence":"male voice says 'Long time no see.', with subtitles… title 'Rain Station / RAIN STATION'","is_new":true,"src":"提示词原文"},{"k":"contact-sheet","layer":"L1","level":"明写","evidence":"Render preview frames at each step, stitch them together for self-checking","is_new":false,"src":"提示词原文"},{"k":"export-mp4","layer":"L1","level":"明写","evidence":"Deliver 4K master and 1080p share version","is_new":false,"src":"提示词原文"},{"k":"autonomy","layer":"L1","level":"隐含","evidence":"write all code yourself… Write your own 2.5D compositor","is_new":true,"src":"提示词原文"},{"k":"subframe-blur","layer":"L1","level":"隐含","evidence":"train motion blur","is_new":false,"src":"提示词原文"},{"k":"quality-bar","layer":"L2","level":"明写","evidence":"with benchmark-level quality","is_new":true,"src":"提示词原文"},{"k":"layered-atmosphere","layer":"L2","level":"明写","evidence":"volumetric light, bloom/glow/film halo, fine grain, and color grading","is_new":false,"src":"提示词原文"},{"k":"composition-depth","layer":"L2","level":"隐含","evidence":"Place layers according to real depth","is_new":true,"src":"提示词原文"},{"k":"parallax-depth","layer":"L3","level":"明写","evidence":"per-pixel parallax… 2.5D compositor","is_new":false,"src":"提示词原文"},{"k":"rack-focus","layer":"L3","level":"明写","evidence":"focus shifts to him… implement circular bokeh, rack focus","is_new":false,"src":"提示词原文"},{"k":"rain-bokeh","layer":"L3","level":"明写","evidence":"3D rain streaks… circular bokeh","is_new":false,"src":"提示词原文"},{"k":"on-twos","layer":"L3","level":"明写","evidence":"switching key poses in Japanese 'one-frame-two' style","is_new":false,"src":"提示词原文"},{"k":"secondary-motion","layer":"L3","level":"明写","evidence":"mesh deformation… breathing, wind-blown hair, and umbrella shake","is_new":true,"src":"提示词原文"},{"k":"s-shot-list","layer":"L5","level":"明写","evidence":"1. 0–6.4s Close-up… 8. 28.6–30s Black screen title","is_new":false,"src":"提示词原文"},{"k":"end-hold","layer":"L5","level":"明写","evidence":"Black screen title 'Rain Station / RAIN STATION'","is_new":true,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.video.30s.cine.stack-pin.duration-fps.aspect-ratios.asset-pipeline.audio-sync.copy-lock.contact-sheet.export-mp4.autonomy.subframe-blur.quality-bar.layered-atmosphere.composition-depth.parallax-depth.rack-focus.rain-bokeh.on-twos.secondary-motion.s-shot-list.end-hold"},{"id":"v14-lab-explainer","tags":[{"k":"duration-fps","layer":"L1","level":"明写","evidence":"Make a 30 second explainer","is_new":false,"src":"提示词原文"},{"k":"facts-first","layer":"L1","level":"隐含","evidence":"技能规则：数值与光线由同一个物理模型计算","is_new":true,"src":"提示词原文"},{"k":"s-mechanism","layer":"L5","level":"明写","evidence":"a laser, a half-round block, the angle going past critical, then water and diamond","is_new":false,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.video.30s.16x9.duration-fps.facts-first.s-mechanism"},{"id":"v16-bedtime-opener","tags":[{"k":"duration-fps","layer":"L1","level":"明写","evidence":"Cozy, 15 seconds","is_new":false,"src":"提示词原文"},{"k":"style-anchor","layer":"L2","level":"隐含","evidence":"Cozy… bedtime-story channel（情绪锚点）","is_new":true,"src":"提示词原文"},{"k":"end-hold","layer":"L5","level":"明写","evidence":"ends on the channel name","is_new":true,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.video.15s.16x9.duration-fps.style-anchor.end-hold"},{"id":"v18-noise-cancelling","tags":[{"k":"aspect-ratios","layer":"L1","level":"明写","evidence":"Short vertical explainer for TikTok","is_new":false,"src":"提示词原文"},{"k":"duration-fps","layer":"L1","level":"明写","evidence":"~20s","is_new":false,"src":"提示词原文"},{"k":"s-mechanism","layer":"L5","level":"隐含","evidence":"How do noise-cancelling headphones actually cancel noise?","is_new":false,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.video.20s.9x16.aspect-ratios.duration-fps.s-mechanism"},{"id":"v19-water-cycle","tags":[{"k":"loop-seam","layer":"L1","level":"明写","evidence":"a seamless looping animation","is_new":false,"src":"提示词原文"},{"k":"stack-pin","layer":"L1","level":"隐含","evidence":"entirely in code","is_new":true,"src":"提示词原文"},{"k":"s-loop-cycle","layer":"L5","level":"明写","evidence":"of the water cycle","is_new":false,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.video.16x9.loop-seam.stack-pin.s-loop-cycle"},{"id":"w01-aurora-glass","tags":[{"k":"single-file","layer":"L1","level":"明写","evidence":"One standalone HTML5 file… No external resources of any kind","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"perf-budget","layer":"L1","level":"明写","evidence":"devicePixelRatio (capped at 2)… animation pauses when the tab is hidden","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"reduced-motion","layer":"L1","level":"明写","evidence":"honours prefers-reduced-motion with a calmer fallback","is_new":false,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"facts-first","layer":"L1","level":"明写","evidence":"Factual content must be accurate; fictional brands, people and data are clearly fictional","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"layered-atmosphere","layer":"L2","level":"明写","evidence":"deep midnight… three slow-drifting aurora ribbons… faint twinkling star field","is_new":false,"src":"提示词原文"},{"k":"frosted-glass","layer":"L2","level":"明写","evidence":"backdrop-filter blur + saturate, 1px inner highlight border, subtle grain","is_new":false,"src":"提示词原文"},{"k":"first-frame","layer":"L2","level":"明写","evidence":"a beautiful first frame before any interaction","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"quality-bar","layer":"L2","level":"明写","evidence":"visually impressive, bookmark-worthy, showcase-grade, premium","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"aurora","layer":"L3","level":"明写","evidence":"layered, sine-deformed gradient bands… additive blending, very soft","is_new":false,"src":"提示词原文"},{"k":"tilt-glare","layer":"L4","level":"明写","evidence":"cards tilt in 3D toward the pointer with a moving specular glare","is_new":false,"src":"提示词原文"},{"k":"cursor-reactive","layer":"L4","level":"明写","evidence":"the aurora bends gently toward the cursor","is_new":false,"src":"提示词原文"},{"k":"spring-toggle","layer":"L4","level":"明写","evidence":"monthly/yearly toggle animates a sliding glass pill","is_new":false,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.web.16x10.single-file.perf-budget.reduced-motion.facts-first.layered-atmosphere.frosted-glass.first-frame.quality-bar.aurora.tilt-glare.cursor-reactive.spring-toggle"},{"id":"w02-longform","tags":[{"k":"single-file","layer":"L1","level":"明写","evidence":"One standalone HTML5 file… No external resources of any kind","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"perf-budget","layer":"L1","level":"明写","evidence":"devicePixelRatio (capped at 2)… animation pauses when the tab is hidden","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"reduced-motion","layer":"L1","level":"明写","evidence":"honours prefers-reduced-motion with a calmer fallback","is_new":false,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"facts-first","layer":"L1","level":"明写","evidence":"Factual content must be accurate; fictional brands, people and data are clearly fictional","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"type-roles","layer":"L2","level":"明写","evidence":"classic book serif for body… large Didone-feeling headline… small-caps bylines","is_new":false,"src":"提示词原文"},{"k":"first-frame","layer":"L2","level":"明写","evidence":"a beautiful first frame before any interaction","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"quality-bar","layer":"L2","level":"明写","evidence":"visually impressive, bookmark-worthy, showcase-grade, premium","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"style-anchor","layer":"L2","level":"隐含","evidence":"a fictional magazine story… Didone-feeling headline","is_new":true,"src":"提示词原文"},{"k":"light-on-text","layer":"L3","level":"明写","evidence":"a rotating light beam that sweeps across the headline","is_new":false,"src":"提示词原文"},{"k":"scroll-reveal","layer":"L4","level":"明写","evidence":"sections fade and rise in","is_new":false,"src":"提示词原文"},{"k":"progress-metaphor","layer":"L4","level":"明写","evidence":"a reading-progress bar styled as a lighthouse beam","is_new":false,"src":"提示词原文"},{"k":"scroll-interpolate","layer":"L4","level":"明写","evidence":"the background shifts from dusk to night as you scroll","is_new":false,"src":"提示词原文"},{"k":"exploded-view","layer":"L4","level":"隐含","evidence":"an illustrated 'anatomy of a lens' figure… that assembles on scroll","is_new":false,"src":"提示词原文"},{"k":"s-longread","layer":"L5","level":"明写","evidence":"long-read editorial feature… scroll storytelling","is_new":false,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.web.16x10.single-file.perf-budget.reduced-motion.facts-first.type-roles.first-frame.quality-bar.style-anchor.light-on-text.scroll-reveal.progress-metaphor.scroll-interpolate.exploded-view.s-longread"},{"id":"w03-art-deco","tags":[{"k":"single-file","layer":"L1","level":"明写","evidence":"One standalone HTML5 file… No external resources of any kind","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"perf-budget","layer":"L1","level":"明写","evidence":"devicePixelRatio (capped at 2)… animation pauses when the tab is hidden","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"reduced-motion","layer":"L1","level":"明写","evidence":"honours prefers-reduced-motion with a calmer fallback","is_new":false,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"facts-first","layer":"L1","level":"明写","evidence":"Factual content must be accurate; fictional brands, people and data are clearly fictional","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"style-anchor","layer":"L2","level":"明写","evidence":"a fictional 1928 Art Deco grand hotel","is_new":true,"src":"提示词原文"},{"k":"type-roles","layer":"L2","level":"明写","evidence":"tall, thin, high-contrast display capitals… plus refined small caps","is_new":false,"src":"提示词原文"},{"k":"metal-sheen","layer":"L2","level":"明写","evidence":"a gold-foil shimmer sweeping across headings","is_new":false,"src":"提示词原文"},{"k":"first-frame","layer":"L2","level":"明写","evidence":"a beautiful first frame before any interaction","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"quality-bar","layer":"L2","level":"明写","evidence":"visually impressive, bookmark-worthy, showcase-grade, premium","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"one-accent","layer":"L2","level":"隐含","evidence":"Black lacquer and deep emerald grounds with gold geometric ornament","is_new":false,"src":"提示词原文"},{"k":"draw-on-scroll","layer":"L4","level":"隐含","evidence":"a symmetrical Deco frame that draws itself in gold","is_new":false,"src":"提示词原文"},{"k":"scroll-reveal","layer":"L4","level":"隐含","evidence":"fan patterns that open on scroll","is_new":false,"src":"提示词原文"},{"k":"progress-metaphor","layer":"L4","level":"隐含","evidence":"an elevator-dial floor selector… while its needle rotates","is_new":false,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.web.16x10.single-file.perf-budget.reduced-motion.facts-first.style-anchor.type-roles.metal-sheen.first-frame.quality-bar.one-accent.draw-on-scroll.scroll-reveal.progress-metaphor"},{"id":"w04-pulse","tags":[{"k":"single-file","layer":"L1","level":"明写","evidence":"One standalone HTML5 file… No external resources of any kind","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"perf-budget","layer":"L1","level":"明写","evidence":"devicePixelRatio (capped at 2)… animation pauses when the tab is hidden","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"reduced-motion","layer":"L1","level":"明写","evidence":"honours prefers-reduced-motion with a calmer fallback","is_new":false,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"facts-first","layer":"L1","level":"明写","evidence":"Factual content must be accurate; fictional brands, people and data are clearly fictional","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"first-frame","layer":"L2","level":"明写","evidence":"Before audio starts, an idle breathing version of the visual must already look beautiful","is_new":true,"src":"提示词原文"},{"k":"type-roles","layer":"L2","level":"明写","evidence":"wide, spaced uppercase sans for the title and a small monospace readout","is_new":false,"src":"提示词原文"},{"k":"quality-bar","layer":"L2","level":"明写","evidence":"visually impressive, bookmark-worthy, showcase-grade, premium","is_new":true,"src":"miaai 共享要求（w01–w04 通用）"},{"k":"feedback-trail","layer":"L3","level":"明写","evidence":"a smoky trail (canvas feedback with a slight zoom/rotation each frame)","is_new":false,"src":"提示词原文"},{"k":"beat-grid","layer":"L3","level":"隐含","evidence":"~110 BPM, evolving every 8 bars… a pulsating core that swells on each kick","is_new":false,"src":"提示词原文"},{"k":"audio-reactive","layer":"L4","level":"明写","evidence":"synthesized entirely with Web Audio… An AnalyserNode drives the centrepiece","is_new":false,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.web.16x10.single-file.perf-budget.reduced-motion.facts-first.first-frame.type-roles.quality-bar.feedback-trail.beat-grid.audio-reactive"},{"id":"w05-escapement","tags":[{"k":"stack-pin","layer":"L1","level":"明写","evidence":"STACK — pin this exact setup… Modern API only","is_new":true,"src":"提示词原文"},{"k":"complete-delivery","layer":"L1","level":"明写","evidence":"output shared.css and shared.js complete FIRST… No truncation… End with a validation checklist","is_new":true,"src":"提示词原文"},{"k":"perf-budget","layer":"L1","level":"明写","evidence":"60fps; cap pixel ratio at 2… static gradient fallback if WebGL is unavailable","is_new":true,"src":"提示词原文"},{"k":"reduced-motion","layer":"L1","level":"明写","evidence":"reduced-motion fully respected (the movement slows and the explode becomes static)","is_new":false,"src":"提示词原文"},{"k":"facts-first","layer":"L1","level":"明写","evidence":"Every specification figure must be consistent across all six pages","is_new":true,"src":"提示词原文"},{"k":"restraint","layer":"L2","level":"明写","evidence":"Restraint is the design… The pacing IS the brand","is_new":false,"src":"提示词原文"},{"k":"one-accent","layer":"L2","level":"明写","evidence":"ONE metal accent — a restrained rose-gold","is_new":false,"src":"提示词原文"},{"k":"type-roles","layer":"L2","level":"明写","evidence":"a fine high-contrast serif for display, a clean grotesk for body, and a mono for specifications","is_new":false,"src":"提示词原文"},{"k":"studio-light-3d","layer":"L2","level":"明写","evidence":"polished steel… Env-map reflections, soft key light, and a shallow depth-of-field feel","is_new":false,"src":"提示词原文"},{"k":"metal-sheen","layer":"L2","level":"明写","evidence":"a faint metal-sheen gradient following the cursor","is_new":false,"src":"提示词原文"},{"k":"layered-atmosphere","layer":"L2","level":"隐含","evidence":"6 distinct background patterns (guilloché, perlage dots…)","is_new":false,"src":"提示词原文"},{"k":"slow-ease","layer":"L3","level":"明写","evidence":"Slow easings (0.9–1.4s). Nothing bounces. Nothing flashes.","is_new":false,"src":"提示词原文"},{"k":"stagger","layer":"L3","level":"明写","evidence":"[data-reveal] entrance system… batched with stagger","is_new":false,"src":"提示词原文"},{"k":"parallax-depth","layer":"L3","level":"明写","evidence":"Mouse parallax tilts the movement gently","is_new":false,"src":"提示词原文"},{"k":"counter-roll","layer":"L3","level":"明写","evidence":"Numbers band (animated counters…)","is_new":false,"src":"提示词原文"},{"k":"pinned-scrub","layer":"L4","level":"明写","evidence":"THE PINNED SCROLL INTERLUDE (400vh)… driven by scroll scrub, not a slideshow","is_new":false,"src":"提示词原文"},{"k":"exploded-view","layer":"L4","level":"明写","evidence":"hold in an exploded view with hairline annotation lines naming each part","is_new":false,"src":"提示词原文"},{"k":"scroll-reveal","layer":"L4","level":"明写","evidence":"[data-reveal] entrance system (up/left/right/scale…)","is_new":false,"src":"提示词原文"},{"k":"draw-on-scroll","layer":"L4","level":"明写","evidence":"an SVG line draws between stations as you scroll","is_new":false,"src":"提示词原文"},{"k":"tilt-glare","layer":"L4","level":"明写","evidence":"Tilt cards with a faint metal-sheen gradient following the cursor","is_new":false,"src":"提示词原文"},{"k":"magnetic-btn","layer":"L4","level":"明写","evidence":"Magnetic buttons (very subtle…)","is_new":false,"src":"提示词原文"},{"k":"custom-cursor","layer":"L4","level":"明写","evidence":"A fine crosshair with a slowly sweeping second-hand tick","is_new":false,"src":"提示词原文"},{"k":"hover-reveal","layer":"L4","level":"明写","evidence":"hover reveals the caseback","is_new":false,"src":"提示词原文"},{"k":"page-transition","layer":"L4","level":"明写","evidence":"PAGE TRANSITION VEIL… Lenis smooth scroll","is_new":true,"src":"提示词原文"},{"k":"s-landing-signature","layer":"L5","level":"明写","evidence":"Hero… credibility strip… three pillars… PINNED SCROLL INTERLUDE… FAQ… final enquiry CTA","is_new":false,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.web.16x10.stack-pin.complete-delivery.perf-budget.reduced-motion.facts-first.restraint.one-accent.type-roles.studio-light-3d.metal-sheen.layered-atmosphere.slow-ease.stagger.parallax-depth.counter-roll.pinned-scrub.exploded-view.scroll-reveal.draw-on-scroll.tilt-glare.magnetic-btn.custom-cursor.hover-reveal.page-transition.s-landing-signature"},{"id":"w06-neon-fluid","tags":[{"k":"single-file","layer":"L1","level":"明写","evidence":"Single-file: All HTML, CSS, and JavaScript/GLSL shaders inline","is_new":true,"src":"提示词原文"},{"k":"stack-pin","layer":"L1","level":"明写","evidence":"Pure WebGL 1.0 or 2.0 (no Three.js, no Pixi, no external libraries)","is_new":true,"src":"提示词原文"},{"k":"perf-budget","layer":"L1","level":"明写","evidence":"handle high-DPI displays and resize… fallback check for floating-point texture support","is_new":true,"src":"提示词原文"},{"k":"complete-delivery","layer":"L1","level":"明写","evidence":"fully implemented code with zero placeholders or truncated comments","is_new":true,"src":"提示词原文"},{"k":"first-frame","layer":"L2","level":"明写","evidence":"When idle, generate subtle procedural curl noise… never completely static","is_new":true,"src":"提示词原文"},{"k":"frosted-glass","layer":"L2","level":"明写","evidence":"ultra-minimal glassmorphism HUD tucked into a corner","is_new":false,"src":"提示词原文"},{"k":"flow-field","layer":"L3","level":"明写","evidence":"Eulerian Neon Fluid Simulation… Vorticity confinement","is_new":false,"src":"提示词原文"},{"k":"cursor-reactive","layer":"L4","level":"明写","evidence":"Rapid cursor movement or dragging injects velocity proportional to mouse speed","is_new":false,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.web.16x10.single-file.stack-pin.perf-budget.complete-delivery.first-frame.frosted-glass.flow-field.cursor-reactive"},{"id":"w07-sakura-valley","tags":[{"k":"stack-pin","layer":"L1","level":"明写","evidence":"Three.js / WebGL and version-pinned, mutually compatible CDN dependencies","is_new":true,"src":"提示词原文"},{"k":"single-file","layer":"L1","level":"明写","evidence":"a single HTML file wherever practical… do not depend on external images or 3D model assets","is_new":true,"src":"提示词原文"},{"k":"perf-budget","layer":"L1","level":"明写","evidence":"batching or instanced rendering… high-quality and lightweight modes… message when WebGL is unsupported","is_new":true,"src":"提示词原文"},{"k":"reduced-motion","layer":"L1","level":"明写","evidence":"respect the system preference for reduced motion","is_new":false,"src":"提示词原文"},{"k":"contact-sheet","layer":"L1","level":"明写","evidence":"open the page first, check the default camera, all four views… correct… based on the screenshots","is_new":false,"src":"提示词原文"},{"k":"complete-delivery","layer":"L1","level":"明写","evidence":"State honestly which tests were not completed","is_new":true,"src":"提示词原文"},{"k":"autonomy","layer":"L1","level":"明写","evidence":"make consistent design decisions for noncritical details yourself","is_new":true,"src":"提示词原文"},{"k":"style-anchor","layer":"L2","level":"明写","evidence":"modern, refined voxel art… Do not use retro low-resolution pixelation","is_new":true,"src":"提示词原文"},{"k":"first-frame","layer":"L2","level":"明写","evidence":"immediately show a complete, compelling composition","is_new":true,"src":"提示词原文"},{"k":"composition-depth","layer":"L2","level":"明写","evidence":"a clear foreground, midground, and background… a clear visual focal point","is_new":true,"src":"提示词原文"},{"k":"layered-atmosphere","layer":"L2","level":"明写","evidence":"layered fog that conveys distance… atmospheric perspective","is_new":false,"src":"提示词原文"},{"k":"studio-light-3d","layer":"L2","level":"明写","evidence":"soft shadows, contact shading, sensible exposure, restrained bloom, antialiasing","is_new":false,"src":"提示词原文"},{"k":"anti-slop","layer":"L2","level":"明写","evidence":"Avoid a washed-out or gray appearance, oversaturation, dense fog…（按题材定制）","is_new":false,"src":"提示词原文"},{"k":"one-idea","layer":"L2","level":"隐含","evidence":"Establish hierarchy, variation in density, negative space","is_new":false,"src":"提示词原文"},{"k":"restraint","layer":"L2","level":"隐含","evidence":"It is better to include fewer features than to sacrifice composition","is_new":false,"src":"提示词原文"},{"k":"orbit-drift","layer":"L3","level":"明写","evidence":"four designed camera views… a slow camera tour","is_new":false,"src":"提示词原文"}],"recipe_link":"https://zcnofdpgpxud.feishuapp.com/app/app_17f0q2gtu5x#r.web.16x10.stack-pin.single-file.perf-budget.reduced-motion.contact-sheet.complete-delivery.autonomy.style-anchor.first-frame.composition-depth.layered-atmosphere.studio-light-3d.anti-slop.one-idea.restraint.orbit-drift"}]}</script>
+<script>
+(function(){
+'use strict';
+
+/* ---------- helpers ---------- */
+var $ = function(s, r){ return (r || document).querySelector(s); };
+function h(tag, attrs){
+  var el = document.createElement(tag);
+  if (attrs) for (var k in attrs){
+    var v = attrs[k];
+    if (v == null || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'text') el.textContent = v;
+    else if (k === 'svg') el.innerHTML = v;            // static icon markup only
+    else if (k.slice(0,2) === 'on') el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (var i = 2; i < arguments.length; i++) append(el, arguments[i]);
+  return el;
+}
+function append(el, kid){
+  if (kid == null || kid === false) return;
+  if (Array.isArray(kid)) { kid.forEach(function(k){ append(el, k); }); return; }
+  el.append(kid.nodeType ? kid : String(kid));
+}
+var ICON = {
+  play:'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2.5v11l9-5.5z" fill="currentColor"/></svg>',
+  pause:'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5h3v11H4zM9 2.5h3v11H9z" fill="currentColor"/></svg>',
+  expand:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9.5 2.5h4v4M6.5 13.5h-4v-4M13.5 2.5 9.2 6.8M2.5 13.5l4.3-4.3"/></svg>',
+  ext:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"/></svg>',
+  copy:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1"/><path d="M10.5 5.5v-2a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2"/></svg>'
+};
+var RM = false;
+try { RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+var FPS = 30, CAP = 6;
+function pad(n){ return (n < 10 ? '0' : '') + n; }
+function fmtTC(t){
+  t = Math.max(0, t || 0);
+  var m = Math.floor(t / 60), s = Math.floor(t % 60), f = Math.floor((t % 1) * FPS + 1e-6);
+  if (f >= FPS) f = FPS - 1;
+  return pad(m) + ':' + pad(s) + '.' + pad(f);
+}
+function fmtDur(d){ return d ? pad(Math.floor(d / 60)) + ':' + pad(Math.round(d % 60)) : '--:--'; }
+function codeOf(it){ var m = /^([vw])(\d+)/i.exec(it.id || ''); return m ? m[1].toUpperCase() + m[2] : (it.id || '').toUpperCase(); }
+function arOf(it){
+  var a = String(it.aspect || (it.type === 'video' ? '16:9' : '16:10'));
+  var p = a.split(':').map(Number);
+  if (!(p[0] > 0 && p[1] > 0)) { a = '16:9'; p = [16, 9]; }
+  return { label: a, css: p[0] + '/' + p[1], n: p[0] / p[1] };
+}
+function demoUrl(it){ return '../demos/' + encodeURIComponent(it.id) + '.html'; }
+
+/* ---------- catalog ---------- */
+var CAT = null;
+try { CAT = JSON.parse(document.getElementById('catalog').textContent); } catch (e) {}
+var gridEl = $('#grid');
+if (!CAT || !Array.isArray(CAT.items)) {
+  gridEl.append(h('p', { class: 'empty', text: '目录数据还没注入。请先运行 python3 tools/build_page.py 生成 dist/index.html。' }));
+  return;
+}
+var ITEMS = CAT.items;
+var CASE_DATA = JSON.parse(document.getElementById('case-data').textContent);
+var CASE_BY_ID = {};
+CASE_DATA.cases.forEach(function(c){ CASE_BY_ID[c.id] = c; });
+var nVideo = ITEMS.filter(function(i){ return i.type === 'video'; }).length;
+var nWeb = ITEMS.length - nVideo;
+var asOf = CAT.as_of || '2026-09-27';
+$('#n-video').textContent = nVideo;
+$('#n-web').textContent = nWeb;
+$('#as-of').textContent = asOf;
+$('#slate-meta').textContent = '入选 ' + (nVideo + nWeb) + ' 条 · 均有公开出处';
+$('#seg-all').textContent = ITEMS.length;
+$('#seg-video').textContent = nVideo;
+$('#seg-web').textContent = nWeb;
+$('#colophon').textContent = 'OPUS 5.5 动效片库 · 截至 ' + asOf + ' · 视频 ' + nVideo + ' · 网页 ' + nWeb;
+
+/* ---------- Preview controller (one per live screen) ---------- */
+var PREVIEWS = [];
+function Preview(item, screen, strip, opts){
+  this.item = item; this.screen = screen; this.strip = strip; this.big = !!(opts && opts.big);
+  this.onDuration = opts && opts.onDuration;
+  this.isVideo = item.type === 'video';
+  this.iframe = null; this.live = false; this.loaded = false; this.ready = false;
+  this.dur = +(item.demo_note && item.demo_note.duration) || 0;
+  this.userPaused = RM; this.extPaused = false;
+  this.base = 0; this.start = 0; this.clockOn = false;
+  this.dragging = false; this.wasPlaying = false; this.lastF = -1; this.lastPlaying = null;
+  this.ctlWeb = false;
+  PREVIEWS.push(this);
+  this.bind();
+  this.paintIdle();
+}
+Preview.prototype.bind = function(){
+  var self = this, s = this.strip;
+  if (s.play) s.play.addEventListener('click', function(e){ e.stopPropagation(); self.toggle(); });
+  if (s.scrub) {
+    s.scrub.addEventListener('input', function(){
+      if (!self.ready || !self.dur) return;
+      if (!self.dragging) { self.dragging = true; self.wasPlaying = self.isPlaying(); if (self.wasPlaying) self.pauseRaw(); }
+      var t = (+s.scrub.value / 1000) * self.dur;
+      self.base = t; self.cmd('seek', t); self.paintTime(t, true);
+    });
+    s.scrub.addEventListener('change', function(){
+      if (!self.dragging) return;
+      self.dragging = false;
+      if (self.wasPlaying && !self.extPaused && !self.userPaused) self.playRaw();
+    });
+  }
+};
+Preview.prototype.win = function(){
+  try { var w = this.iframe && this.iframe.contentWindow; if (w && w.__demo) return w; } catch (e) {}
+  return null;
+};
+Preview.prototype.load = function(){
+  if (this.live || this.item.demo_missing) return;
+  var self = this, it = this.item;
+  var f = document.createElement('iframe');
+  f.title = '演示预览：' + it.title;
+  f.setAttribute('loading', 'lazy');
+  if (!this.big) f.tabIndex = -1;
+  f.addEventListener('load', function(){ if (self.iframe === f) self.onLoad(); });
+  f.src = demoUrl(it);
+  this.screen.append(f);
+  this.iframe = f; this.live = true; this.loaded = false; this.ready = false;
+  this.screen.dataset.state = 'loading';
+  startTicker();
+};
+Preview.prototype.unload = function(){
+  if (!this.live) return;
+  if (this.isVideo && this.ready) { this.base = this.time(); }
+  if (this.iframe) this.iframe.remove();   // removing (vs. about:blank) frees the document without adding history entries
+  this.iframe = null; this.live = false; this.loaded = false; this.ready = false; this.clockOn = false;
+  this.screen.dataset.state = 'idle';
+  this.paintIdle();
+};
+Preview.prototype.onLoad = function(){
+  this.loaded = true;
+  this.screen.dataset.state = 'on';
+  var w = this.win(), self = this;
+  if (w) {
+    if (this.isVideo && +w.DURATION > 0) this.onReady(+w.DURATION);
+    if (!this.isVideo) this.onReady(null);
+    if (this.big) {
+      try { w.addEventListener('keydown', function(e){ if (e.key === 'Escape' && dlg.open) dlg.close(); }); } catch (e) {}
+    }
+  }
+  if (!this.isVideo && (this.userPaused || this.extPaused)) this.cmd('pause');
+};
+Preview.prototype.onReady = function(duration){
+  if (this.ready) { if (duration > 0 && !this.dur) { this.dur = duration; if (this.onDuration) this.onDuration(duration); } return; }
+  this.ready = true;
+  if (duration > 0 && Math.abs(duration - this.dur) > 0.01) { this.dur = duration; if (this.onDuration) this.onDuration(duration); }
+  if (this.isVideo) {
+    if (this.userPaused || this.extPaused) {
+      this.cmd('pause'); this.cmd('seek', this.base || 0); this.clockOn = false;
+    } else if (this.base > 0.05) {
+      this.cmd('seek', this.base); this.start = performance.now(); this.clockOn = true;
+    } else {
+      this.base = 0; this.start = performance.now(); this.clockOn = true;
+    }
+    if (this.strip.scrub) this.strip.scrub.disabled = false;
+  } else {
+    this.ctlWeb = true;
+    if (this.strip.play) this.strip.play.hidden = false;
+    if (this.userPaused || this.extPaused) this.cmd('pause');
+  }
+  this.lastF = -1; this.paint(true);
+};
+Preview.prototype.cmd = function(type, t){
+  var w = this.win();
+  if (w) {
+    try {
+      if (type === 'play') w.__demo.play && w.__demo.play();
+      else if (type === 'pause') w.__demo.pause && w.__demo.pause();
+      else if (type === 'seek' && typeof w.seek === 'function') w.seek(t);
+    } catch (e) {}
+  }
+  try {
+    var msg = type === 'seek' ? { type: 'demo:seek', t: t } : { type: 'demo:' + type };
+    if (this.iframe && this.iframe.contentWindow) this.iframe.contentWindow.postMessage(msg, '*');
+  } catch (e) {}
+};
+Preview.prototype.time = function(){
+  var w = this.win();
+  if (w) { try { var v = +w.__demo.time; if (isFinite(v)) return v; } catch (e) {} }
+  if (!this.clockOn) return this.base;
+  var t = this.base + (performance.now() - this.start) / 1000;
+  return this.dur ? t % this.dur : t;
+};
+Preview.prototype.isPlaying = function(){
+  if (!this.live || !this.ready) return false;
+  var w = this.win();
+  if (w) { try { if (typeof w.__demo.playing === 'boolean') return w.__demo.playing; } catch (e) {} }
+  return this.isVideo ? this.clockOn : !(this.userPaused || this.extPaused);
+};
+Preview.prototype.pauseRaw = function(){ if (this.ready) this.base = this.time(); this.clockOn = false; this.cmd('pause'); this.paint(true); };
+Preview.prototype.playRaw = function(){ this.start = performance.now(); this.clockOn = true; this.cmd('play'); this.paint(true); };
+Preview.prototype.toggle = function(){
+  if (!this.live) { this.userPaused = false; if (!this.big) requestLive(this); else this.load(); return; }
+  if (!this.ready) { this.userPaused = !this.userPaused; this.paint(true); return; }
+  if (this.isPlaying()) { this.userPaused = true; this.pauseRaw(); }
+  else { this.userPaused = false; if (!this.extPaused) this.playRaw(); }
+};
+Preview.prototype.paintIdle = function(){
+  var s = this.strip;
+  if (s.scrub) { s.scrub.disabled = true; }
+  if (this.isVideo) this.paintTime(this.base, true);
+  this.setPlayUI(false);
+};
+Preview.prototype.setPlayUI = function(playing){
+  var s = this.strip;
+  if (this.lastPlaying === playing) return;
+  this.lastPlaying = playing;
+  s.el.dataset.playing = playing ? 'true' : 'false';
+  if (s.play) {
+    s.play.innerHTML = playing ? ICON.pause : ICON.play;
+    s.play.setAttribute('aria-label', (playing ? '暂停' : '播放') + '预览：' + this.item.title);
+  }
+};
+Preview.prototype.paintTime = function(t, force){
+  var s = this.strip; if (!s.cur) return;
+  var f = Math.floor(t * FPS);
+  if (!force && f === this.lastF) return;
+  this.lastF = f;
+  s.cur.textContent = fmtTC(t);
+  if (s.tot) s.tot.textContent = '/ ' + (this.dur ? fmtTC(this.dur) : '--:--.--');
+  if (s.scrub && this.dur && !this.dragging) {
+    var v = Math.round((t / this.dur) * 1000);
+    s.scrub.value = v; s.scrub.style.setProperty('--p', (v / 10) + '%');
+  } else if (s.scrub && this.dragging) {
+    s.scrub.style.setProperty('--p', (+s.scrub.value / 10) + '%');
+  }
+};
+Preview.prototype.paint = function(force){
+  if (!this.live || !this.ready) return;
+  this.setPlayUI(this.isPlaying());
+  if (this.isVideo && !this.dragging) this.paintTime(this.time(), force);
+};
+Preview.prototype.destroy = function(){
+  this.unload();
+  var i = PREVIEWS.indexOf(this); if (i >= 0) PREVIEWS.splice(i, 1);
+};
+
+window.addEventListener('message', function(e){
+  var d = e.data;
+  if (!d || typeof d !== 'object' || d.type !== 'demo:ready') return;
+  for (var i = 0; i < PREVIEWS.length; i++) {
+    var p = PREVIEWS[i];
+    if (p.iframe && p.iframe.contentWindow === e.source) { p.onReady(+d.duration || 0); break; }
+  }
+});
+
+var tickId = 0;
+function tick(){
+  var any = false;
+  for (var i = 0; i < PREVIEWS.length; i++) { var p = PREVIEWS[i]; if (p.live) { any = true; p.paint(false); } }
+  tickId = any && !document.hidden ? requestAnimationFrame(tick) : 0;
+}
+function startTicker(){ if (!tickId && !document.hidden) tickId = requestAnimationFrame(tick); }
+document.addEventListener('visibilitychange', function(){ if (!document.hidden) startTicker(); });
+
+/* ---------- strip builder ---------- */
+function makeStrip(item, big){
+  var s = { el: h('div', { class: 'strip' }) };
+  var code = codeOf(item);
+  if (item.type === 'video') {
+    s.play = h('button', { type: 'button', class: 'ctl', 'aria-label': '播放预览：' + item.title, svg: ICON.play });
+    s.scrub = h('input', { type: 'range', class: 'scrub', min: '0', max: '1000', step: '1', value: '0', 'aria-label': code + ' 时间线', disabled: true });
+    s.cur = h('span', { class: 'cur', text: '00:00.00' });
+    s.tot = h('span', { class: 'tot', text: '/ --:--.--' });
+    var tc = h('span', { class: 'tc mono', title: '时间码 分:秒.帧（按 30fps 计）' }, h('i', { class: 'tally', 'aria-hidden': 'true' }), s.cur, s.tot);
+    s.el.append(s.play, s.scrub, tc);
+  } else {
+    s.play = h('button', { type: 'button', class: 'ctl', 'aria-label': '暂停预览：' + item.title, svg: ICON.pause, hidden: true });
+    s.el.append(s.play, h('span', { class: 'web-hint', text: big ? '可直接在预览里滚动、点击；Tab 可进入演示' : '网页演示 · 可在预览里直接操作' }));
+  }
+  if (item.demo_missing) { s.play.disabled = true; }
+  return s;
+}
+
+/* ---------- cards ---------- */
+var CARDS = [];
+function kindBadge(kind){ return h('span', { class: 'b b-kind', 'data-kind': kind || '原文', title: KIND_TEXT[kind] || '', text: kind || '原文' }); }
+var KIND_TEXT = {
+  '原文': '逐字照录作者公开的提示词，可以直接复制使用。',
+  '摘录': '原提示词较长或分段发布，这里只收了其中一部分。',
+  '摘要': '作者没有公开全文，这里是根据收录页整理的转述，不能当逐字原文用。'
+};
+function slateText(it, dur){
+  var ar = arOf(it).label, code = codeOf(it);
+  if (it.type === 'video') return code + ' · ' + ar + ' · ' + fmtDur(dur) + ' · seek(t)';
+  return code + ' · ' + ar + ' · 网页 · 可交互';
+}
+function placeholder(it){
+  return h('div', { class: 'ph', 'aria-hidden': 'true' },
+    h('span', { class: 'ph-code mono', text: codeOf(it) + ' · ' + arOf(it).label }),
+    h('span', { class: 'ph-title', text: it.title }),
+    h('span', { class: 'ph-hint mono', text: it.demo_missing ? '演示待补' : '预览' }));
+}
+function buildCard(it){
+  var ar = arOf(it);
+  var card = h('article', { class: 'card', 'data-id': it.id, 'data-type': it.type, 'aria-labelledby': 't-' + it.id });
+  var screen = h('div', { class: 'screen', 'data-state': it.demo_missing ? 'missing' : 'idle', style: '--ar:' + ar.css + ';--arn:' + ar.n.toFixed(4) }, placeholder(it));
+  var monitor = h('div', { class: 'monitor' }, screen, h('i', { class: 'marks', 'aria-hidden': 'true' }));
+  var strip = makeStrip(it, false);
+  var openBtn = h('button', { type: 'button', class: 'open', 'aria-haspopup': 'dialog', text: it.title });
+  var slate = h('p', { class: 'c-slate mono', text: slateText(it, +(it.demo_note && it.demo_note.duration) || 0) });
+  var expand = h('button', { type: 'button', class: 'ctl', 'aria-label': '展开详情：' + it.title, 'aria-haspopup': 'dialog', svg: ICON.expand });
+  strip.el.append(expand);
+  var head = h('div', { class: 'c-head' }, slate, h('h3', { class: 'c-title', id: 't-' + it.id }, openBtn));
+  var caseInfo = CASE_BY_ID[it.id];
+  var linkedCount = caseInfo ? caseInfo.tags.filter(function(t){ return !!CASE_DATA.keywords[t.k]; }).length : 0;
+  var badges = h('div', { class: 'badges' }, kindBadge(it.prompt_kind), h('span', { class: 'b b-cat', text: it.category }),
+    (it.tags || []).slice(0, 2).map(function(t){ return h('span', { class: 'b b-tag', text: t }); }),
+    h('span', { class: 'b b-tag', text: '关键词 ' + linkedCount }),
+    it.demo_missing ? h('span', { class: 'b b-warn', text: '演示待补' }) : null);
+  card.append(monitor, strip.el, head, h('p', { class: 'c-effect', text: it.effect }), badges);
+  var g = { item: it, card: card, monitor: monitor, open: openBtn };
+  g.prev = new Preview(it, screen, strip, { onDuration: function(d){ slate.textContent = slateText(it, d); } });
+  openBtn.addEventListener('click', function(){ openDetail(it, openBtn); });
+  expand.addEventListener('click', function(e){ e.stopPropagation(); openDetail(it, expand); });
+  card.addEventListener('click', function(e){
+    if (e.target.closest('button, a, input, select, .strip')) return;
+    openDetail(it, openBtn);
+  });
+  return g;
+}
+
+function groupHead(type, n){
+  var desc = type === 'video' ? '由 window.seek(t) 驱动，可暂停、拖动时间线' : '真实网页，可在预览里直接滚动和点击';
+  return h('h2', { class: 'group-h', 'data-group': type },
+    h('span', { class: 'g-name', text: type === 'video' ? '动态视频' : '动效网页' }),
+    h('span', { class: 'g-n mono', text: n + ' 条' }),
+    h('span', { class: 'g-desc', text: desc }),
+    h('span', { class: 'g-rule', 'aria-hidden': 'true' }));
+}
+var heads = {};
+['video', 'web'].forEach(function(type){
+  var list = ITEMS.filter(function(i){ return i.type === type; });
+  if (!list.length) return;
+  heads[type] = groupHead(type, list.length);
+  gridEl.append(heads[type]);
+  list.forEach(function(it){ var g = buildCard(it); CARDS.push(g); gridEl.append(g.card); });
+});
+var byMonitor = new Map();
+CARDS.forEach(function(g){ byMonitor.set(g.monitor, g); });
+var byId = {};
+CARDS.forEach(function(g){ byId[g.item.id] = g; });
+
+/* ---------- lazy lifecycle: load near viewport, cap live iframes ---------- */
+var near = new Set(), far = new Set(), modalOpen = false, reconcileQueued = false;
+function makeIO(margin, fn){
+  var cb = function(entries){ entries.forEach(function(e){ var g = byMonitor.get(e.target); if (g) fn(g, e.isIntersecting); }); schedule(); };
+  try { return new IntersectionObserver(cb, { root: document, rootMargin: margin }); }
+  catch (e) { return new IntersectionObserver(cb, { rootMargin: margin }); }
+}
+var ioNear = makeIO('300px 0px 300px 0px', function(g, on){ if (on) near.add(g); else near.delete(g); });
+var ioFar = makeIO('1100px 0px 1100px 0px', function(g, on){ if (on) far.delete(g); else far.add(g); });
+CARDS.forEach(function(g){ ioNear.observe(g.monitor); ioFar.observe(g.monitor); });
+
+function dist(g){
+  var r = g.monitor.getBoundingClientRect();
+  if (!r.height) return Infinity;
+  return Math.abs((r.top + r.bottom) / 2 - window.innerHeight / 2);
+}
+function schedule(){ if (reconcileQueued) return; reconcileQueued = true; requestAnimationFrame(function(){ reconcile(null); }); }
+function reconcile(forced){
+  reconcileQueued = false;
+  if (modalOpen) return;
+  CARDS.forEach(function(g){ if (g.prev.live && (far.has(g) || g.card.hidden)) g.prev.unload(); });
+  var cands = [];
+  near.forEach(function(g){ if (!g.card.hidden && !g.item.demo_missing) cands.push(g); });
+  cands.sort(function(a, b){ return dist(a) - dist(b); });
+  var want = cands.slice(0, CAP);
+  if (forced && forced.prev && want.indexOf(forced) < 0) { if (want.length >= CAP) want.pop(); want.unshift(forced); }
+  var wantSet = new Set(want);
+  var toLoad = want.filter(function(g){ return !g.prev.live; });
+  var live = CARDS.filter(function(g){ return g.prev.live; });
+  var excess = live.length + toLoad.length - CAP;
+  if (excess > 0) {
+    live.filter(function(g){ return !wantSet.has(g); })
+        .sort(function(a, b){ return dist(b) - dist(a); })
+        .forEach(function(g){ if (excess > 0) { g.prev.unload(); excess--; } });
+  }
+  toLoad.forEach(function(g){ g.prev.load(); });
+}
+function requestLive(prev){
+  var g = CARDS.filter(function(c){ return c.prev === prev; })[0];
+  if (g) reconcile(g);
+}
+var scrollTimer = 0;
+window.addEventListener('scroll', function(){ clearTimeout(scrollTimer); scrollTimer = setTimeout(schedule, 140); }, { passive: true });
+window.addEventListener('resize', function(){ clearTimeout(scrollTimer); scrollTimer = setTimeout(schedule, 200); });
+
+/* ---------- filters ---------- */
+var state = { type: 'all', cat: '', q: '' };
+var CATS = [];
+ITEMS.forEach(function(i){ if (CATS.indexOf(i.category) < 0) CATS.push(i.category); });
+var chipsEl = $('#chips'), catSel = $('#cat-select'), qEl = $('#q');
+function typeOK(i){ return state.type === 'all' || i.type === state.type; }
+function hay(i){
+  return [i.id, i.title, i.effect, i.category, (i.tags || []).join(' '), (i.techniques || []).join(' ')].join(' ').toLowerCase();
+}
+ITEMS.forEach(function(i){ i._hay = hay(i); });
+function renderCats(){
+  var counts = {};
+  ITEMS.forEach(function(i){ if (typeOK(i)) counts[i.category] = (counts[i.category] || 0) + 1; });
+  if (state.cat && !counts[state.cat]) state.cat = '';
+  var total = ITEMS.filter(typeOK).length;
+  chipsEl.textContent = ''; catSel.textContent = '';
+  var mk = function(cat, label, n){
+    var b = h('button', { type: 'button', class: 'chip', 'aria-pressed': String(state.cat === cat) }, label, h('span', { class: 'n', text: n }));
+    b.addEventListener('click', function(){ state.cat = cat; renderCats(); apply(); });
+    chipsEl.append(b);
+    var o = h('option', { value: cat, text: label + '（' + n + '）' });
+    if (state.cat === cat) o.selected = true;
+    catSel.append(o);
+  };
+  mk('', '全部分类', total);
+  CATS.forEach(function(c){ if (counts[c]) mk(c, c, counts[c]); });
+}
+catSel.addEventListener('change', function(){ state.cat = catSel.value; renderCats(); apply(); });
+document.querySelectorAll('.seg button').forEach(function(b){
+  b.addEventListener('click', function(){
+    state.type = b.dataset.type;
+    document.querySelectorAll('.seg button').forEach(function(x){ x.setAttribute('aria-pressed', String(x === b)); });
+    renderCats(); apply();
+  });
+});
+var qTimer = 0;
+qEl.addEventListener('input', function(){ clearTimeout(qTimer); qTimer = setTimeout(function(){ state.q = qEl.value.trim().toLowerCase(); apply(); }, 90); });
+$('#clear-filters').addEventListener('click', function(){
+  state = { type: 'all', cat: '', q: '' }; qEl.value = '';
+  document.querySelectorAll('.seg button').forEach(function(x){ x.setAttribute('aria-pressed', String(x.dataset.type === 'all')); });
+  renderCats(); apply();
+});
+function visibleItems(){ return CARDS.filter(function(g){ return !g.card.hidden; }).map(function(g){ return g.item; }); }
+function apply(){
+  var toks = state.q ? state.q.split(/\s+/) : [];
+  var shown = 0, per = { video: 0, web: 0 };
+  CARDS.forEach(function(g){
+    var i = g.item;
+    var ok = typeOK(i) && (!state.cat || i.category === state.cat) && toks.every(function(t){ return i._hay.indexOf(t) >= 0; });
+    g.card.hidden = !ok;
+    if (ok) { shown++; per[i.type]++; }
+  });
+  Object.keys(heads).forEach(function(k){ heads[k].hidden = !per[k]; });
+  $('#result').textContent = '显示 ' + shown + ' / ' + ITEMS.length;
+  $('#empty').hidden = shown > 0;
+  schedule();
+}
+renderCats(); apply();
+
+/* ---------- copy ---------- */
+function selectNode(el){
+  try { var r = document.createRange(); r.selectNodeContents(el); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {}
+}
+function copyButton(label, getText, getNode, note){
+  var btn = h('button', { type: 'button', class: 'btn' }, h('span', { svg: ICON.copy }), h('span', { class: 'lbl', text: label }));
+  var lbl = btn.querySelector('.lbl'), timer = 0;
+  btn.addEventListener('click', function(){
+    var text = getText();
+    var done = function(msg, isFallback){
+      clearTimeout(timer);
+      lbl.textContent = isFallback ? label : msg;
+      if (note) note.textContent = isFallback ? msg : '';
+      if (!isFallback) timer = setTimeout(function(){ lbl.textContent = label; }, 1600);
+    };
+    try {
+      navigator.clipboard.writeText(text).then(function(){ done('已复制', false); }, function(){ selectNode(getNode()); done('已选中，按 Ctrl/⌘+C 复制', true); });
+    } catch (e) { selectNode(getNode()); done('已选中，按 Ctrl/⌘+C 复制', true); }
+  });
+  return btn;
+}
+function copyBlock(title, text, extra){
+  var pre = h('pre', { class: 'code', tabindex: '0', 'aria-label': title, text: text });
+  var note = h('p', { class: 'copy-note', 'aria-live': 'polite' });
+  var head = h('div', { class: 'tb-head' }, h('h3', { text: title }), copyButton('复制', function(){ return text; }, function(){ return pre; }, note));
+  return h('article', { class: 'tb' }, head, note, pre, extra || null);
+}
+function extLink(url, label){
+  return h('a', { href: url, target: '_blank', rel: 'noopener', text: label || url });
+}
+
+/* ---------- toolbox ---------- */
+(function renderToolbox(){
+  var tb = CAT.toolbox;
+  if (!tb) { $('#toolbox').hidden = true; return; }
+  var grid = $('#tb-grid'), wide = $('#tb-wide');
+  if (tb.skeleton_zh) grid.append(copyBlock('六段式骨架模板', tb.skeleton_zh,
+    h('p', { class: 'tb-src', text: '出处：' + (tb.skeleton_source || '') })));
+  if (tb.export_prompt_zh) grid.append(copyBlock('导出 MP4 提示词', tb.export_prompt_zh,
+    h('p', { class: 'tb-src' }, h('span', { text: '出处：' }), (tb.export_sources || []).map(function(s){ return extLink(s.url, s.label); }))));
+  if (tb.aesthetics_block) grid.append(copyBlock('前端审美增强块', tb.aesthetics_block,
+    tb.aesthetics_source ? h('p', { class: 'tb-src' }, h('span', { text: '出处：' + (tb.aesthetics_source.author || '') }), extLink(tb.aesthetics_source.url, '原文页面')) : null));
+  if (tb.shared_requirements) grid.append(copyBlock('质量底线 10 条', tb.shared_requirements,
+    tb.shared_requirements_source ? h('p', { class: 'tb-src' }, h('span', { text: '出处：' + (tb.shared_requirements_source.author || '') }), extLink(tb.shared_requirements_source.url, '原文页面')) : null));
+
+  if (Array.isArray(tb.motion_vocab) && tb.motion_vocab.length) {
+    var rows = tb.motion_vocab.map(function(r){
+      return h('tr', null, h('td', { text: r.zh }), h('td', { class: 'en', text: r.en }), h('td', { text: r.note || '' }), h('td', { class: 'src', text: r.src || '' }));
+    });
+    wide.append(h('div', { class: 'tb-wide' },
+      h('div', { class: 'tb-head' }, h('h3', { text: '运动词汇表' }), h('span', { class: 'tb-src', text: '单击「提示词写法」一格可整格选中' })),
+      h('div', { class: 'tscroll' }, h('table', null,
+        h('thead', null, h('tr', null, h('th', { scope: 'col', text: '想要的效果' }), h('th', { scope: 'col', text: '提示词写法' }), h('th', { scope: 'col', text: '说明' }), h('th', { scope: 'col', text: '出处' }))),
+        h('tbody', null, rows)))));
+  }
+  if (tb.banned && tb.banned.words) {
+    var words = tb.banned.words.split(/\s*,\s*/).filter(Boolean);
+    var note = h('p', { class: 'copy-note', 'aria-live': 'polite' });
+    var list = h('div', { class: 'banned' }, words.map(function(w){ return h('span', { text: w }); }));
+    var hidden = h('span', { class: 'vh', text: tb.banned.words });
+    wide.append(h('div', { class: 'tb-wide' },
+      h('div', { class: 'tb-head' }, h('h3', { text: '禁用词清单' }), copyButton('复制', function(){ return 'Avoid: ' + tb.banned.words + '.'; }, function(){ return hidden; }, note)),
+      note, list, hidden, h('p', { class: 'tb-src', text: '出处：' + (tb.banned.src || '') + '。复制时会带上 “Avoid:” 前缀，可直接贴进提示词。' })));
+  }
+  if (Array.isArray(tb.fixes) && tb.fixes.length) {
+    wide.append(h('div', { class: 'tb-wide' },
+      h('div', { class: 'tb-head' }, h('h3', { text: '翻车修正' })),
+      h('div', { class: 'tscroll' }, h('table', null,
+        h('thead', null, h('tr', null, h('th', { scope: 'col', text: '症状' }), h('th', { scope: 'col', text: '修正提示词' }), h('th', { scope: 'col', text: '出处' }))),
+        h('tbody', null, tb.fixes.map(function(r){ return h('tr', null, h('td', { text: r.symptom }), h('td', { text: r.fix }), h('td', { class: 'src', text: r.src || '' })); }))))));
+  }
+})();
+
+/* ---------- detail dialog ---------- */
+var dlg = $('#detail');
+var dMonitor = $('#d-monitor'), dStrip = $('#d-strip');
+var TABS = ['about', 'prompt', 'source', 'breakdown'];
+var curTab = 'about', curItem = null, curPrev = null, returnFocus = null;
+
+function selectTab(name, focus){
+  curTab = name;
+  TABS.forEach(function(t){
+    var tab = $('#tab-' + t), panel = $('#panel-' + t), on = t === name;
+    tab.setAttribute('aria-selected', String(on));
+    tab.tabIndex = on ? 0 : -1;
+    panel.hidden = !on;
+    if (on && focus) tab.focus();
+  });
+}
+TABS.forEach(function(t, idx){
+  var tab = $('#tab-' + t);
+  tab.addEventListener('click', function(){ selectTab(t); });
+  tab.addEventListener('keydown', function(e){
+    var n = null;
+    if (e.key === 'ArrowRight') n = (idx + 1) % TABS.length;
+    else if (e.key === 'ArrowLeft') n = (idx + TABS.length - 1) % TABS.length;
+    else if (e.key === 'Home') n = 0;
+    else if (e.key === 'End') n = TABS.length - 1;
+    if (n != null) { e.preventDefault(); selectTab(TABS[n], true); }
+  });
+});
+
+function kv(pairs){
+  var dl = h('dl', { class: 'kv' });
+  pairs.forEach(function(p){ if (p[1] == null || p[1] === '') return; dl.append(h('dt', { text: p[0] }), h('dd', null, p[1])); });
+  return dl;
+}
+function aboutPanel(it){
+  var p = $('#panel-about'); p.textContent = '';
+  var n = it.demo_note;
+  p.append(h('p', { class: 'lead', text: it.effect }));
+  p.append(kv([['适用场景', it.use_when], ['分类', it.category], ['画幅', arOf(it).label]]));
+  if (it.techniques && it.techniques.length) {
+    p.append(h('div', { style: 'display:grid;gap:8px' }, h('h4', { text: '关键技法' }), h('ul', { class: 'tech' }, it.techniques.map(function(t){ return h('li', { text: t }); }))));
+  }
+  var box = h('section', { class: 'note-box', 'aria-label': '演示说明' }, h('h4', { text: '演示说明' }));
+  if (n) {
+    var libs = (n.libs && n.libs.length) ? n.libs.join('、') : '无外部库';
+    box.append(kv([['示例输入', n.sample_inputs], ['简化了什么', n.simplified], ['时长', n.duration ? n.duration + ' 秒（循环）' : (it.type === 'web' ? '网页，无固定时长' : '')], ['画幅', n.aspect || arOf(it).label], ['依赖', libs]]));
+  } else {
+    box.append(h('p', { class: 'fine', text: it.demo_missing ? '这条的演示还没做好。' : '这条的演示说明还没补上。' }));
+  }
+  box.append(h('p', { class: 'fine', text: '预览是 Opus 按该提示词 + 示例输入现场生成的演示版，示例输入为虚构；原作成片见「溯源」。' }));
+  p.append(box);
+  if (!it.demo_missing) p.append(h('a', { class: 'ext', href: demoUrl(it), target: '_blank', rel: 'noopener' }, '新窗口打开演示', h('span', { svg: ICON.ext })));
+}
+function promptPanel(it){
+  var p = $('#panel-prompt'); p.textContent = '';
+  var pre = h('pre', { class: 'code', tabindex: '0', 'aria-label': '提示词' + (it.prompt_kind || ''), text: it.prompt || '' });
+  var note = h('p', { class: 'copy-note', 'aria-live': 'polite' });
+  var lang = it.prompt_lang === 'zh' ? '中文' : (it.prompt_lang === 'en' ? '英文' : (it.prompt_lang || ''));
+  p.append(h('div', { class: 'p-head' },
+    kindBadge(it.prompt_kind), lang ? h('span', { class: 'b', text: lang }) : null,
+    h('span', { class: 'count mono', text: (it.prompt || '').length.toLocaleString('en-US') + ' 字符' }),
+    copyButton('复制提示词', function(){ return it.prompt || ''; }, function(){ return pre; }, note)));
+  p.append(note);
+  if (it.needs_verification) p.append(h('p', { class: 'warn', text: '这条提示词还在核实，目前是「' + (it.prompt_kind || '摘要') + '」，不要当逐字原文使用。' }));
+  if (it.prompt_note) p.append(h('p', { class: 'p-note', text: it.prompt_note }));
+  p.append(pre);
+  if (it.template_zh) {
+    var pre2 = h('pre', { class: 'code', tabindex: '0', 'aria-label': '中文填空模板', text: it.template_zh });
+    var note2 = h('p', { class: 'copy-note', 'aria-live': 'polite' });
+    p.append(h('div', { style: 'display:grid;gap:10px;margin-top:6px' },
+      h('div', { class: 'p-head' }, h('h4', { text: '中文填空模板' }), copyButton('复制模板', function(){ return it.template_zh; }, function(){ return pre2; }, note2)),
+      note2, pre2, h('p', { class: 'fine', text: '方括号里的内容换成你自己的输入。' })));
+  }
+}
+function sourcePanel(it){
+  var p = $('#panel-source'); p.textContent = '';
+  var s = it.source || {};
+  p.append(kv([['作者', s.author], ['平台', s.platform], ['日期', s.date ? h('span', { class: 'mono', text: s.date }) : '']]));
+  var links = h('ul', { class: 'links' });
+  var link = function(url, label){
+    links.append(h('li', null, h('a', { href: url, target: '_blank', rel: 'noopener' },
+      h('span', { class: 'l-label' }, label, h('span', { svg: ICON.ext })), h('span', { class: 'l-url mono', text: url }))));
+  };
+  if (s.url) link(s.url, '收录页');
+  if (s.original_url) link(s.original_url, '原帖 / 成片');
+  p.append(links);
+  var dl = h('dl');
+  ['原文', '摘录', '摘要'].forEach(function(k){
+    dl.append(h('dt', { 'data-current': String(k === it.prompt_kind) }, kindBadge(k)), h('dd', { text: KIND_TEXT[k] + (k === it.prompt_kind ? '（本条）' : '') }));
+  });
+  p.append(h('section', { class: 'kinds', 'aria-label': '提示词标注说明' }, h('h4', { text: '原文 / 摘录 / 摘要是什么意思' }), dl));
+}
+function breakdownPanel(it){
+  var p = $('#panel-breakdown'); p.textContent = '';
+  var c = CASE_BY_ID[it.id];
+  if (!c) { p.append(h('p', { class: 'fine', text: '这条尚无关键词拆解。' })); return; }
+  p.append(h('a', { class: 'decomp-action', href: c.recipe_link, target: '_blank', rel: 'noopener' }, '在词典中用这套配方 ↗'));
+  p.append(h('p', { class: 'fine', text: '明写：提示词直接表达；隐含：依据原文推断。点关键词可在新标签查看词义与演示。' }));
+  ['L1','L2','L3','L4','L5'].forEach(function(layer){
+    var tags = c.tags.filter(function(t){ return t.layer === layer; });
+    if (!tags.length) return;
+    var names = {L1:'底座',L2:'质感',L3:'运动',L4:'交互',L5:'结构'};
+    var group = h('section', { class: 'decomp-layer' }, h('h4', { text: layer + ' · ' + names[layer] + ' · ' + tags.length + ' 词' }));
+    tags.forEach(function(t){
+      var name = CASE_DATA.keywords[t.k];
+      var title = name ? h('a', { href: CASE_DATA.lexicon_url + '#k-' + t.k, target: '_blank', rel: 'noopener', text: name + ' ↗' })
+        : h('span', { text: t.k + '（观察中）' });
+      var ev = String(t.evidence || '');
+      var evidence = h('div', null,
+        h('p', { class: 'decomp-evidence', text: '“' + ev + '”' }),
+        ev.length > 95 ? h('details', null, h('summary', { text: '展开完整依据' }), h('p', { class: 'decomp-evidence', text: '“' + ev + '”' })) : null);
+      group.append(h('div', { class: 'decomp-item' },
+        h('div', { class: 'decomp-top' }, title, h('code', { text: t.k }),
+          h('span', { class: 'decomp-level' + (t.level === '明写' ? ' explicit' : ''), text: t.level })),
+        evidence));
+    });
+    p.append(group);
+  });
+}
+
+function renderDetail(it){
+  if (curPrev) { curPrev.destroy(); curPrev = null; }
+  curItem = it;
+  var ar = arOf(it), dur = +(it.demo_note && it.demo_note.duration) || 0;
+  var typeLabel = it.type === 'video' ? '动态视频' : '动效网页';
+  var slateEl = $('#d-slate');
+  var setSlate = function(d){ slateEl.textContent = codeOf(it) + ' · ' + typeLabel + ' · ' + it.category + ' · ' + ar.label + (it.type === 'video' ? ' · ' + fmtDur(d) : ''); };
+  setSlate(dur);
+  $('#d-title').textContent = it.title;
+  dMonitor.textContent = ''; dStrip.textContent = '';
+  var screen = h('div', { class: 'screen', 'data-state': it.demo_missing ? 'missing' : 'idle', style: '--ar:' + ar.css + ';--arn:' + ar.n.toFixed(4) }, placeholder(it));
+  dMonitor.append(screen);
+  var strip = makeStrip(it, true);
+  if (!it.demo_missing) strip.el.append(h('a', { class: 'ext-link', href: demoUrl(it), target: '_blank', rel: 'noopener' }, '新窗口', h('span', { svg: ICON.ext })));
+  dStrip.append(strip.el);
+  curPrev = new Preview(it, screen, strip, { big: true, onDuration: setSlate });
+  curPrev.load();
+  aboutPanel(it); promptPanel(it); sourcePanel(it); breakdownPanel(it);
+  TABS.forEach(function(t){ $('#panel-' + t).scrollTop = 0; });
+  selectTab(curTab);
+}
+function setHash(id){
+  try { history.replaceState(null, '', id ? '#' + id : location.pathname + location.search); } catch (e) {}
+}
+function pauseGrid(){
+  CARDS.forEach(function(g){
+    var p = g.prev; p.extPaused = true;
+    if (p.live) p.pauseRaw();
+  });
+}
+function resumeGrid(){
+  CARDS.forEach(function(g){
+    var p = g.prev; p.extPaused = false;
+    if (p.live && p.ready && !p.userPaused) p.playRaw();
+  });
+}
+function openDetail(it, from){
+  returnFocus = from || (byId[it.id] && byId[it.id].open) || null;
+  renderDetail(it);
+  if (!dlg.open) {
+    modalOpen = true;
+    pauseGrid();
+    document.documentElement.classList.add('modal-open');
+    try { dlg.showModal(); } catch (e) { dlg.setAttribute('open', ''); }
+  }
+  $('#tab-' + curTab).focus();
+  setHash(it.id);
+}
+function step(dir){
+  var list = visibleItems();
+  if (!curItem) return;
+  var idx = list.indexOf(curItem);
+  if (idx < 0) { list = ITEMS; idx = list.indexOf(curItem); }
+  var next = list[(idx + dir + list.length) % list.length];
+  var g = byId[next.id];
+  returnFocus = g ? g.open : returnFocus;
+  renderDetail(next);
+  setHash(next.id);
+}
+$('#d-prev').addEventListener('click', function(){ step(-1); });
+$('#d-next').addEventListener('click', function(){ step(1); });
+$('#d-close').addEventListener('click', function(){ dlg.close(); });
+dlg.addEventListener('click', function(e){ if (e.target === dlg) dlg.close(); });
+dlg.addEventListener('close', function(){
+  if (curPrev) { curPrev.destroy(); curPrev = null; }
+  curItem = null;
+  modalOpen = false;
+  document.documentElement.classList.remove('modal-open');
+  setHash('');
+  resumeGrid();
+  schedule();
+  if (returnFocus && document.contains(returnFocus)) { try { returnFocus.focus(); } catch (e) {} }
+});
+
+function fromHash(){
+  var id = decodeURIComponent((location.hash || '').slice(1));
+  if (!id) { if (dlg.open) dlg.close(); return; }
+  var g = byId[id];
+  if (g && (!curItem || curItem.id !== id)) {
+    if (g.card.hidden) { state = { type: 'all', cat: '', q: '' }; qEl.value = ''; renderCats(); apply(); }
+    openDetail(g.item, g.open);
+  }
+}
+window.addEventListener('hashchange', fromHash);
+fromHash();
+})();
+</script>
+
+</body>
+</html>

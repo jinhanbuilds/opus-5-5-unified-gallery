@@ -1,0 +1,1008 @@
+{
+  "date": "2026-10-27",
+  "code": 31,
+  "image": 69,
+  "rule": "Select smaller compressed dependency bundles with shared-cost accounting; retain screenshots for code without an established redistribution license.",
+  "cases": [
+    {
+      "id": "n001",
+      "title": "午夜饭店的装饰艺术短片",
+      "group": "lemo",
+      "mode": "image",
+      "standaloneRawBytes": 2956110,
+      "standaloneGzipBytes": 2140093,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://lemomo-ai.github.io/lemo-opuscar/"
+    },
+    {
+      "id": "n002",
+      "title": "字符终端里的世界",
+      "group": "lemo",
+      "mode": "image",
+      "standaloneRawBytes": 2683864,
+      "standaloneGzipBytes": 1943580,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://lemomo-ai.github.io/lemo-opuscar/"
+    },
+    {
+      "id": "n003",
+      "title": "蓝图捕云机",
+      "group": "lemo",
+      "mode": "image",
+      "standaloneRawBytes": 2540573,
+      "standaloneGzipBytes": 1849148,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://lemomo-ai.github.io/lemo-opuscar/"
+    },
+    {
+      "id": "n004",
+      "title": "浮世绘卷轴",
+      "group": "lemo",
+      "mode": "image",
+      "standaloneRawBytes": 20421776,
+      "standaloneGzipBytes": 15299553,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://lemomo-ai.github.io/lemo-opuscar/"
+    },
+    {
+      "id": "n005",
+      "title": "八十年代赛璐璐夜行",
+      "group": "lemo",
+      "mode": "image",
+      "standaloneRawBytes": 5078251,
+      "standaloneGzipBytes": 3758218,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://lemomo-ai.github.io/lemo-opuscar/"
+    },
+    {
+      "id": "n006",
+      "title": "蜡笔月亮绘本",
+      "group": "lemo",
+      "mode": "image",
+      "standaloneRawBytes": 4090482,
+      "standaloneGzipBytes": 3027314,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://lemomo-ai.github.io/lemo-opuscar/"
+    },
+    {
+      "id": "n007",
+      "title": "海报变成一张乐谱",
+      "group": "lemo",
+      "mode": "image",
+      "standaloneRawBytes": 2360294,
+      "standaloneGzipBytes": 1735129,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://lemomo-ai.github.io/lemo-opuscar/"
+    },
+    {
+      "id": "n008",
+      "title": "水墨山水与行笔",
+      "group": "lemo",
+      "mode": "image",
+      "standaloneRawBytes": 11282357,
+      "standaloneGzipBytes": 8434070,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://lemomo-ai.github.io/lemo-opuscar/"
+    },
+    {
+      "id": "n009",
+      "title": "一根线讲完一个故事",
+      "group": "lemo",
+      "mode": "image",
+      "standaloneRawBytes": 2750443,
+      "standaloneGzipBytes": 1821062,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://lemomo-ai.github.io/lemo-opuscar/"
+    },
+    {
+      "id": "n010",
+      "title": "红剪纸夜游",
+      "group": "lemo",
+      "mode": "image",
+      "standaloneRawBytes": 7373244,
+      "standaloneGzipBytes": 5486925,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://lemomo-ai.github.io/lemo-opuscar/"
+    },
+    {
+      "id": "n011",
+      "title": "像素 RPG 存档人生",
+      "group": "lemo",
+      "mode": "image",
+      "standaloneRawBytes": 2359108,
+      "standaloneGzipBytes": 1669224,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://lemomo-ai.github.io/lemo-opuscar/"
+    },
+    {
+      "id": "n012",
+      "title": "孔版印刷骑行日记",
+      "group": "lemo",
+      "mode": "code",
+      "standaloneRawBytes": 2216800,
+      "standaloneGzipBytes": 1620538,
+      "reason": "fits budget",
+      "originalUrl": "https://lemomo-ai.github.io/lemo-opuscar/"
+    },
+    {
+      "id": "n013",
+      "title": "彩色玻璃里的光",
+      "group": "lemo",
+      "mode": "image",
+      "standaloneRawBytes": 3195418,
+      "standaloneGzipBytes": 2348793,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://lemomo-ai.github.io/lemo-opuscar/"
+    },
+    {
+      "id": "n014",
+      "title": "橡皮管厨房爵士",
+      "group": "lemo",
+      "mode": "image",
+      "standaloneRawBytes": 2599792,
+      "standaloneGzipBytes": 1879878,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://lemomo-ai.github.io/lemo-opuscar/"
+    },
+    {
+      "id": "n015",
+      "title": "中古卡通操作手册",
+      "group": "lemo",
+      "mode": "code",
+      "standaloneRawBytes": 1985890,
+      "standaloneGzipBytes": 1451201,
+      "reason": "fits budget",
+      "originalUrl": "https://lemomo-ai.github.io/lemo-opuscar/"
+    },
+    {
+      "id": "n016",
+      "title": "一个点的品牌旅程",
+      "group": "mg",
+      "mode": "image",
+      "standaloneRawBytes": 33373991,
+      "standaloneGzipBytes": 25108950,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://vincentwei1021.github.io/mg-styles-15/"
+    },
+    {
+      "id": "n017",
+      "title": "一笔画出城市",
+      "group": "mg",
+      "mode": "image",
+      "standaloneRawBytes": 21349162,
+      "standaloneGzipBytes": 16054589,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://vincentwei1021.github.io/mg-styles-15/"
+    },
+    {
+      "id": "n018",
+      "title": "等轴城市自己生长",
+      "group": "mg",
+      "mode": "image",
+      "standaloneRawBytes": 39773522,
+      "standaloneGzipBytes": 28726575,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://vincentwei1021.github.io/mg-styles-15/"
+    },
+    {
+      "id": "n019",
+      "title": "手作线条沸腾",
+      "group": "mg",
+      "mode": "image",
+      "standaloneRawBytes": 14996964,
+      "standaloneGzipBytes": 10086573,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://vincentwei1021.github.io/mg-styles-15/"
+    },
+    {
+      "id": "n020",
+      "title": "脑洞拼贴季刊",
+      "group": "mg",
+      "mode": "image",
+      "standaloneRawBytes": 43359809,
+      "standaloneGzipBytes": 32546474,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://vincentwei1021.github.io/mg-styles-15/"
+    },
+    {
+      "id": "n021",
+      "title": "万物始于一滴",
+      "group": "mg",
+      "mode": "image",
+      "standaloneRawBytes": 48320383,
+      "standaloneGzipBytes": 36329040,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://vincentwei1021.github.io/mg-styles-15/"
+    },
+    {
+      "id": "n022",
+      "title": "一形万象",
+      "group": "mg",
+      "mode": "image",
+      "standaloneRawBytes": 41036677,
+      "standaloneGzipBytes": 30682803,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://vincentwei1021.github.io/mg-styles-15/"
+    },
+    {
+      "id": "n023",
+      "title": "包豪斯几何节奏",
+      "group": "mg",
+      "mode": "image",
+      "standaloneRawBytes": 24422804,
+      "standaloneGzipBytes": 18353389,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://vincentwei1021.github.io/mg-styles-15/"
+    },
+    {
+      "id": "n024",
+      "title": "合成波游戏夜",
+      "group": "mg",
+      "mode": "image",
+      "standaloneRawBytes": 39563210,
+      "standaloneGzipBytes": 29191510,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://vincentwei1021.github.io/mg-styles-15/"
+    },
+    {
+      "id": "n025",
+      "title": "极光玻璃界面",
+      "group": "mg",
+      "mode": "image",
+      "standaloneRawBytes": 41316261,
+      "standaloneGzipBytes": 30925539,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://vincentwei1021.github.io/mg-styles-15/"
+    },
+    {
+      "id": "n026",
+      "title": "回形针式产品解释",
+      "group": "mg",
+      "mode": "image",
+      "standaloneRawBytes": 34386394,
+      "standaloneGzipBytes": 25585803,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://vincentwei1021.github.io/mg-styles-15/"
+    },
+    {
+      "id": "n027",
+      "title": "像素闯关片头",
+      "group": "mg",
+      "mode": "image",
+      "standaloneRawBytes": 2482651,
+      "standaloneGzipBytes": 1839709,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://vincentwei1021.github.io/mg-styles-15/"
+    },
+    {
+      "id": "n028",
+      "title": "科幻 HUD 锁定",
+      "group": "mg",
+      "mode": "image",
+      "standaloneRawBytes": 38046747,
+      "standaloneGzipBytes": 27732279,
+      "reason": "larger than remaining compressed dependency budget",
+      "originalUrl": "https://vincentwei1021.github.io/mg-styles-15/"
+    },
+    {
+      "id": "n029",
+      "title": "厨房大作战",
+      "group": "openvg",
+      "mode": "code",
+      "standaloneRawBytes": 97557,
+      "standaloneGzipBytes": 32714,
+      "reason": "fits budget",
+      "originalUrl": "https://openvglab.github.io/awesome-opus5.5-frontend-showcases/svg/kitchen-rush.svg"
+    },
+    {
+      "id": "n030",
+      "title": "阳光卡丁车",
+      "group": "openvg",
+      "mode": "code",
+      "standaloneRawBytes": 137510,
+      "standaloneGzipBytes": 41972,
+      "reason": "fits budget",
+      "originalUrl": "https://openvglab.github.io/awesome-opus5.5-frontend-showcases/svg/sunny-kart.svg"
+    },
+    {
+      "id": "n031",
+      "title": "像素大冒险",
+      "group": "openvg",
+      "mode": "code",
+      "standaloneRawBytes": 114797,
+      "standaloneGzipBytes": 36661,
+      "reason": "fits budget",
+      "originalUrl": "https://openvglab.github.io/awesome-opus5.5-frontend-showcases/svg/pixel-quest.svg"
+    },
+    {
+      "id": "n032",
+      "title": "水果刀客",
+      "group": "openvg",
+      "mode": "code",
+      "standaloneRawBytes": 250591,
+      "standaloneGzipBytes": 69652,
+      "reason": "fits budget",
+      "originalUrl": "https://openvglab.github.io/awesome-opus5.5-frontend-showcases/svg/fruit-slash.svg"
+    },
+    {
+      "id": "n033",
+      "title": "花园保卫战",
+      "group": "openvg",
+      "mode": "code",
+      "standaloneRawBytes": 169897,
+      "standaloneGzipBytes": 47088,
+      "reason": "fits budget",
+      "originalUrl": "https://openvglab.github.io/awesome-opus5.5-frontend-showcases/svg/garden-defense.svg"
+    },
+    {
+      "id": "n034",
+      "title": "泡泡海",
+      "group": "openvg",
+      "mode": "code",
+      "standaloneRawBytes": 106385,
+      "standaloneGzipBytes": 35771,
+      "reason": "fits budget",
+      "originalUrl": "https://openvglab.github.io/awesome-opus5.5-frontend-showcases/svg/bubble-reef.svg"
+    },
+    {
+      "id": "n035",
+      "title": "糖果砖块",
+      "group": "openvg",
+      "mode": "code",
+      "standaloneRawBytes": 118208,
+      "standaloneGzipBytes": 36608,
+      "reason": "fits budget",
+      "originalUrl": "https://openvglab.github.io/awesome-opus5.5-frontend-showcases/svg/candy-breaker.svg"
+    },
+    {
+      "id": "n036",
+      "title": "漫画星舰",
+      "group": "openvg",
+      "mode": "code",
+      "standaloneRawBytes": 109581,
+      "standaloneGzipBytes": 39699,
+      "reason": "fits budget",
+      "originalUrl": "https://openvglab.github.io/awesome-opus5.5-frontend-showcases/svg/comic-starfighter.svg"
+    },
+    {
+      "id": "n037",
+      "title": "灯塔与二十秒日落",
+      "group": "openvg",
+      "mode": "code",
+      "standaloneRawBytes": 312360,
+      "standaloneGzipBytes": 35002,
+      "reason": "fits budget",
+      "originalUrl": "https://openvglab.github.io/awesome-opus5.5-frontend-showcases/svg/rolls/svg-anim/lighthouse-sunset.svg"
+    },
+    {
+      "id": "n038",
+      "title": "黄铜怀表轮系",
+      "group": "openvg",
+      "mode": "code",
+      "standaloneRawBytes": 233270,
+      "standaloneGzipBytes": 48825,
+      "reason": "fits budget",
+      "originalUrl": "https://openvglab.github.io/awesome-opus5.5-frontend-showcases/svg/rolls/svg-anim/clockwork.svg"
+    },
+    {
+      "id": "n039",
+      "title": "椭圆轨道太阳系",
+      "group": "openvg",
+      "mode": "code",
+      "standaloneRawBytes": 207385,
+      "standaloneGzipBytes": 32335,
+      "reason": "fits budget",
+      "originalUrl": "https://openvglab.github.io/awesome-opus5.5-frontend-showcases/svg/rolls/svg-anim/solar-system.svg"
+    },
+    {
+      "id": "n040",
+      "title": "雨夜城市窗景",
+      "group": "openvg",
+      "mode": "code",
+      "standaloneRawBytes": 268062,
+      "standaloneGzipBytes": 38405,
+      "reason": "fits budget",
+      "originalUrl": "https://openvglab.github.io/awesome-opus5.5-frontend-showcases/svg/rolls/svg-anim/rainy-city.svg"
+    },
+    {
+      "id": "n041",
+      "title": "从种子到花再到种子",
+      "group": "openvg",
+      "mode": "code",
+      "standaloneRawBytes": 141757,
+      "standaloneGzipBytes": 22159,
+      "reason": "fits budget",
+      "originalUrl": "https://openvglab.github.io/awesome-opus5.5-frontend-showcases/svg/rolls/svg-anim/seed-to-bloom.svg"
+    },
+    {
+      "id": "n042",
+      "title": "果冻跳跳",
+      "group": "openvg",
+      "mode": "code",
+      "standaloneRawBytes": 1410277,
+      "standaloneGzipBytes": 196430,
+      "reason": "fits budget",
+      "originalUrl": "https://openvglab.github.io/awesome-opus5.5-frontend-showcases/lottie-games/jelly-hop/index.html"
+    },
+    {
+      "id": "n043",
+      "title": "口袋宠物",
+      "group": "openvg",
+      "mode": "code",
+      "standaloneRawBytes": 1780319,
+      "standaloneGzipBytes": 230577,
+      "reason": "fits budget",
+      "originalUrl": "https://openvglab.github.io/awesome-opus5.5-frontend-showcases/lottie-games/pocket-pal/index.html"
+    },
+    {
+      "id": "n044",
+      "title": "群鸟避让",
+      "group": "avi",
+      "mode": "image",
+      "standaloneRawBytes": 1122520,
+      "standaloneGzipBytes": 775438,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://www.avilevi.co.il/showreel/index.html?embed=post"
+    },
+    {
+      "id": "n045",
+      "title": "条纹布料碰撞",
+      "group": "avi",
+      "mode": "image",
+      "standaloneRawBytes": 1122520,
+      "standaloneGzipBytes": 775439,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://www.avilevi.co.il/showreel/index.html?embed=post"
+    },
+    {
+      "id": "n046",
+      "title": "绳索悬挂字母",
+      "group": "avi",
+      "mode": "image",
+      "standaloneRawBytes": 1122519,
+      "standaloneGzipBytes": 775438,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://www.avilevi.co.il/showreel/index.html?embed=post"
+    },
+    {
+      "id": "n047",
+      "title": "烟雾流场",
+      "group": "avi",
+      "mode": "image",
+      "standaloneRawBytes": 1122520,
+      "standaloneGzipBytes": 775438,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://www.avilevi.co.il/showreel/index.html?embed=post"
+    },
+    {
+      "id": "n048",
+      "title": "粒子聚成字形",
+      "group": "avi",
+      "mode": "image",
+      "standaloneRawBytes": 1122524,
+      "standaloneGzipBytes": 775439,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://www.avilevi.co.il/showreel/index.html?embed=post"
+    },
+    {
+      "id": "n049",
+      "title": "篝火与余烬",
+      "group": "avi",
+      "mode": "image",
+      "standaloneRawBytes": 1122519,
+      "standaloneGzipBytes": 775438,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://www.avilevi.co.il/showreel/index.html?embed=post"
+    },
+    {
+      "id": "n050",
+      "title": "雨幕中的霓虹街区",
+      "group": "avi",
+      "mode": "image",
+      "standaloneRawBytes": 1122519,
+      "standaloneGzipBytes": 775439,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://www.avilevi.co.il/showreel/index.html?embed=post"
+    },
+    {
+      "id": "n051",
+      "title": "树枝生长到开花",
+      "group": "avi",
+      "mode": "image",
+      "standaloneRawBytes": 1122519,
+      "standaloneGzipBytes": 775438,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://www.avilevi.co.il/showreel/index.html?embed=post"
+    },
+    {
+      "id": "n052",
+      "title": "彩色 Voronoi 镶嵌",
+      "group": "avi",
+      "mode": "image",
+      "standaloneRawBytes": 1122522,
+      "standaloneGzipBytes": 775439,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://www.avilevi.co.il/showreel/index.html?embed=post"
+    },
+    {
+      "id": "n053",
+      "title": "迷宫逐步生成",
+      "group": "avi",
+      "mode": "image",
+      "standaloneRawBytes": 1122519,
+      "standaloneGzipBytes": 775438,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://www.avilevi.co.il/showreel/index.html?embed=post"
+    },
+    {
+      "id": "n054",
+      "title": "地图路线导航",
+      "group": "avi",
+      "mode": "image",
+      "standaloneRawBytes": 1122520,
+      "standaloneGzipBytes": 775438,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://www.avilevi.co.il/showreel/index.html?embed=post"
+    },
+    {
+      "id": "n055",
+      "title": "六边形区域地图",
+      "group": "avi",
+      "mode": "image",
+      "standaloneRawBytes": 1122525,
+      "standaloneGzipBytes": 775440,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://www.avilevi.co.il/showreel/index.html?embed=post"
+    },
+    {
+      "id": "n056",
+      "title": "动态条形竞赛",
+      "group": "avi",
+      "mode": "image",
+      "standaloneRawBytes": 1122522,
+      "standaloneGzipBytes": 775439,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://www.avilevi.co.il/showreel/index.html?embed=post"
+    },
+    {
+      "id": "n057",
+      "title": "组织结构逐层展开",
+      "group": "avi",
+      "mode": "image",
+      "standaloneRawBytes": 1122523,
+      "standaloneGzipBytes": 775440,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://www.avilevi.co.il/showreel/index.html?embed=post"
+    },
+    {
+      "id": "n058",
+      "title": "笔锋写出 hello",
+      "group": "avi",
+      "mode": "image",
+      "standaloneRawBytes": 1122526,
+      "standaloneGzipBytes": 775440,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://www.avilevi.co.il/showreel/index.html?embed=post"
+    },
+    {
+      "id": "n059",
+      "title": "GPS 怎样从时间得到位置",
+      "group": "swan",
+      "mode": "image",
+      "standaloneRawBytes": 519462,
+      "standaloneGzipBytes": 346042,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://github.com/swan4er/opus-100-projects/blob/6c98846c00d667b8958c4c777025025a57fda0e9/016-gps-explained/index.html"
+    },
+    {
+      "id": "n060",
+      "title": "十七种平面花纹",
+      "group": "swan",
+      "mode": "image",
+      "standaloneRawBytes": 1303741,
+      "standaloneGzipBytes": 934167,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://github.com/swan4er/opus-100-projects/blob/6c98846c00d667b8958c4c777025025a57fda0e9/030-wallpaper-groups/index.html"
+    },
+    {
+      "id": "n061",
+      "title": "JPEG 的内部解剖",
+      "group": "swan",
+      "mode": "image",
+      "standaloneRawBytes": 840471,
+      "standaloneGzipBytes": 511280,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://github.com/swan4er/opus-100-projects/blob/6c98846c00d667b8958c4c777025025a57fda0e9/040-jpeg-anatomy/index.html"
+    },
+    {
+      "id": "n062",
+      "title": "机翼升力风洞",
+      "group": "swan",
+      "mode": "image",
+      "standaloneRawBytes": 981239,
+      "standaloneGzipBytes": 701689,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://github.com/swan4er/opus-100-projects/blob/6c98846c00d667b8958c4c777025025a57fda0e9/053-airfoil-lift/index.html"
+    },
+    {
+      "id": "n063",
+      "title": "细胞里的分子风景",
+      "group": "swan",
+      "mode": "image",
+      "standaloneRawBytes": 1333535,
+      "standaloneGzipBytes": 979612,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://github.com/swan4er/opus-100-projects/blob/6c98846c00d667b8958c4c777025025a57fda0e9/068-molecular-landscape/index.html"
+    },
+    {
+      "id": "n064",
+      "title": "语言模型如何切分文字",
+      "group": "swan",
+      "mode": "image",
+      "standaloneRawBytes": 3984794,
+      "standaloneGzipBytes": 2895758,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://github.com/swan4er/opus-100-projects/blob/6c98846c00d667b8958c4c777025025a57fda0e9/090-how-llm-reads/index.html"
+    },
+    {
+      "id": "n065",
+      "title": "Git 对象与分支图",
+      "group": "swan",
+      "mode": "image",
+      "standaloneRawBytes": 598860,
+      "standaloneGzipBytes": 372269,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://github.com/swan4er/opus-100-projects/blob/6c98846c00d667b8958c4c777025025a57fda0e9/091-git-internals/index.html"
+    },
+    {
+      "id": "n066",
+      "title": "镜头里的焦距与光圈",
+      "group": "swan",
+      "mode": "image",
+      "standaloneRawBytes": 603913,
+      "standaloneGzipBytes": 413797,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://github.com/swan4er/opus-100-projects/blob/6c98846c00d667b8958c4c777025025a57fda0e9/104-lens-optics/index.html"
+    },
+    {
+      "id": "n067",
+      "title": "可接线的模块合成器",
+      "group": "swan",
+      "mode": "image",
+      "standaloneRawBytes": 774306,
+      "standaloneGzipBytes": 531306,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://github.com/swan4er/opus-100-projects/blob/6c98846c00d667b8958c4c777025025a57fda0e9/105-modular-synth/index.html"
+    },
+    {
+      "id": "n068",
+      "title": "月球园丁",
+      "group": "swan",
+      "mode": "image",
+      "standaloneRawBytes": 431141,
+      "standaloneGzipBytes": 253100,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://github.com/swan4er/opus-100-projects/blob/6c98846c00d667b8958c4c777025025a57fda0e9/108-moon-gardener/index.html"
+    },
+    {
+      "id": "n069",
+      "title": "火鸟之羽",
+      "group": "swan",
+      "mode": "image",
+      "standaloneRawBytes": 801565,
+      "standaloneGzipBytes": 523320,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://github.com/swan4er/opus-100-projects/blob/6c98846c00d667b8958c4c777025025a57fda0e9/111-firebird-palekh/index.html"
+    },
+    {
+      "id": "n070",
+      "title": "电子云与轨道",
+      "group": "swan",
+      "mode": "image",
+      "standaloneRawBytes": 996265,
+      "standaloneGzipBytes": 719647,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://github.com/swan4er/opus-100-projects/blob/6c98846c00d667b8958c4c777025025a57fda0e9/117-electron-clouds/index.html"
+    },
+    {
+      "id": "n071",
+      "title": "机械表的内部结构",
+      "group": "swan",
+      "mode": "image",
+      "standaloneRawBytes": 740346,
+      "standaloneGzipBytes": 522387,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://github.com/swan4er/opus-100-projects/blob/6c98846c00d667b8958c4c777025025a57fda0e9/119-watch-anatomy/index.html"
+    },
+    {
+      "id": "n072",
+      "title": "正则表达式变成状态机",
+      "group": "swan",
+      "mode": "image",
+      "standaloneRawBytes": 784361,
+      "standaloneGzipBytes": 562111,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://github.com/swan4er/opus-100-projects/blob/6c98846c00d667b8958c4c777025025a57fda0e9/121-regex-automata/index.html"
+    },
+    {
+      "id": "n073",
+      "title": "埃菲尔铁塔空间细节",
+      "group": "threejs",
+      "mode": "image",
+      "standaloneRawBytes": 573052,
+      "standaloneGzipBytes": 147422,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://threejseval.com/models/claude-opus-5-5-high"
+    },
+    {
+      "id": "n074",
+      "title": "林下空间与树冠",
+      "group": "threejs",
+      "mode": "image",
+      "standaloneRawBytes": 592570,
+      "standaloneGzipBytes": 154139,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://threejseval.com/models/claude-opus-5-5-high"
+    },
+    {
+      "id": "n075",
+      "title": "海面上的帆船",
+      "group": "threejs",
+      "mode": "image",
+      "standaloneRawBytes": 596831,
+      "standaloneGzipBytes": 154206,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://threejseval.com/models/claude-opus-5-5-high"
+    },
+    {
+      "id": "n076",
+      "title": "完整三维国际象棋",
+      "group": "threejs",
+      "mode": "image",
+      "standaloneRawBytes": 605599,
+      "standaloneGzipBytes": 157659,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://threejseval.com/models/claude-opus-5-5-high"
+    },
+    {
+      "id": "n077",
+      "title": "波音 747 模型",
+      "group": "threejs",
+      "mode": "image",
+      "standaloneRawBytes": 612022,
+      "standaloneGzipBytes": 159556,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://threejseval.com/models/claude-opus-5-5-high"
+    },
+    {
+      "id": "n078",
+      "title": "机械臂把玩具放进盒子",
+      "group": "threejs",
+      "mode": "image",
+      "standaloneRawBytes": 595637,
+      "standaloneGzipBytes": 153577,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://threejseval.com/models/claude-opus-5-5-high"
+    },
+    {
+      "id": "n079",
+      "title": "折射鱼缸",
+      "group": "threejs",
+      "mode": "image",
+      "standaloneRawBytes": 594915,
+      "standaloneGzipBytes": 153863,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://threejseval.com/models/claude-opus-5-5-high"
+    },
+    {
+      "id": "n080",
+      "title": "能被拖动的窗帘",
+      "group": "threejs",
+      "mode": "image",
+      "standaloneRawBytes": 564419,
+      "standaloneGzipBytes": 147124,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://threejseval.com/models/claude-opus-5-5-high"
+    },
+    {
+      "id": "n081",
+      "title": "山湖里的小渡轮",
+      "group": "threejs",
+      "mode": "image",
+      "standaloneRawBytes": 599389,
+      "standaloneGzipBytes": 158633,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://threejseval.com/models/claude-opus-5-5-high"
+    },
+    {
+      "id": "n082",
+      "title": "机器人仓库",
+      "group": "threejs",
+      "mode": "image",
+      "standaloneRawBytes": 581650,
+      "standaloneGzipBytes": 150213,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://threejseval.com/models/claude-opus-5-5-high"
+    },
+    {
+      "id": "n083",
+      "title": "麦田联合收割机",
+      "group": "threejs",
+      "mode": "image",
+      "standaloneRawBytes": 609451,
+      "standaloneGzipBytes": 159437,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://threejseval.com/models/claude-opus-5-5-high"
+    },
+    {
+      "id": "n084",
+      "title": "三维弹弓闯关",
+      "group": "threejs",
+      "mode": "image",
+      "standaloneRawBytes": 568437,
+      "standaloneGzipBytes": 148208,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://threejseval.com/models/claude-opus-5-5-high"
+    },
+    {
+      "id": "n085",
+      "title": "海岸发射台升空",
+      "group": "threejs",
+      "mode": "image",
+      "standaloneRawBytes": 603304,
+      "standaloneGzipBytes": 156470,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://threejseval.com/models/claude-opus-5-5-high"
+    },
+    {
+      "id": "n086",
+      "title": "近海热带岛屿",
+      "group": "threejs",
+      "mode": "image",
+      "standaloneRawBytes": 622419,
+      "standaloneGzipBytes": 164845,
+      "reason": "source code redistribution license not established",
+      "originalUrl": "https://threejseval.com/models/claude-opus-5-5-high"
+    },
+    {
+      "id": "n087",
+      "title": "咖啡墙错觉",
+      "group": "optical",
+      "mode": "code",
+      "standaloneRawBytes": 795504,
+      "standaloneGzipBytes": 214638,
+      "reason": "fits budget",
+      "originalUrl": "https://maoku.github.io/Opus55OpticalIllusion/?exhibit=cafe-wall"
+    },
+    {
+      "id": "n088",
+      "title": "大小对比错觉",
+      "group": "optical",
+      "mode": "code",
+      "standaloneRawBytes": 795505,
+      "standaloneGzipBytes": 214639,
+      "reason": "fits budget",
+      "originalUrl": "https://maoku.github.io/Opus55OpticalIllusion/?exhibit=ebbinghaus"
+    },
+    {
+      "id": "n089",
+      "title": "箭头与线段长度",
+      "group": "optical",
+      "mode": "code",
+      "standaloneRawBytes": 795506,
+      "standaloneGzipBytes": 214640,
+      "reason": "fits budget",
+      "originalUrl": "https://maoku.github.io/Opus55OpticalIllusion/?exhibit=muller-lyer"
+    },
+    {
+      "id": "n090",
+      "title": "闪烁格点",
+      "group": "optical",
+      "mode": "code",
+      "standaloneRawBytes": 795513,
+      "standaloneGzipBytes": 214647,
+      "reason": "fits budget",
+      "originalUrl": "https://maoku.github.io/Opus55OpticalIllusion/?exhibit=scintillating-grid"
+    },
+    {
+      "id": "n091",
+      "title": "周边漂移",
+      "group": "optical",
+      "mode": "code",
+      "standaloneRawBytes": 795511,
+      "standaloneGzipBytes": 214645,
+      "reason": "fits budget",
+      "originalUrl": "https://maoku.github.io/Opus55OpticalIllusion/?exhibit=peripheral-drift"
+    },
+    {
+      "id": "n092",
+      "title": "残像之窗",
+      "group": "optical",
+      "mode": "code",
+      "standaloneRawBytes": 795505,
+      "standaloneGzipBytes": 214635,
+      "reason": "fits budget",
+      "originalUrl": "https://maoku.github.io/Opus55OpticalIllusion/?exhibit=afterimage"
+    },
+    {
+      "id": "n093",
+      "title": "艾姆斯房间",
+      "group": "optical",
+      "mode": "code",
+      "standaloneRawBytes": 795504,
+      "standaloneGzipBytes": 214638,
+      "reason": "fits budget",
+      "originalUrl": "https://maoku.github.io/Opus55OpticalIllusion/?exhibit=ames-room"
+    },
+    {
+      "id": "n094",
+      "title": "不可能三角形",
+      "group": "optical",
+      "mode": "code",
+      "standaloneRawBytes": 795514,
+      "standaloneGzipBytes": 214648,
+      "reason": "fits budget",
+      "originalUrl": "https://maoku.github.io/Opus55OpticalIllusion/?exhibit=impossible-triangle"
+    },
+    {
+      "id": "n095",
+      "title": "棋盘阴影错觉",
+      "group": "optical",
+      "mode": "code",
+      "standaloneRawBytes": 795509,
+      "standaloneGzipBytes": 214639,
+      "reason": "fits budget",
+      "originalUrl": "https://maoku.github.io/Opus55OpticalIllusion/?exhibit=checker-shadow"
+    },
+    {
+      "id": "n096",
+      "title": "反向透视",
+      "group": "optical",
+      "mode": "code",
+      "standaloneRawBytes": 795508,
+      "standaloneGzipBytes": 214642,
+      "reason": "fits budget",
+      "originalUrl": "https://maoku.github.io/Opus55OpticalIllusion/?exhibit=reverspective"
+    },
+    {
+      "id": "n097",
+      "title": "旋转的影子",
+      "group": "optical",
+      "mode": "code",
+      "standaloneRawBytes": 795509,
+      "standaloneGzipBytes": 214643,
+      "reason": "fits budget",
+      "originalUrl": "https://maoku.github.io/Opus55OpticalIllusion/?exhibit=shadow-spinner"
+    },
+    {
+      "id": "n098",
+      "title": "圆与心形之间",
+      "group": "optical",
+      "mode": "code",
+      "standaloneRawBytes": 795507,
+      "standaloneGzipBytes": 214641,
+      "reason": "fits budget",
+      "originalUrl": "https://maoku.github.io/Opus55OpticalIllusion/?exhibit=circle-heart"
+    },
+    {
+      "id": "n099",
+      "title": "没有颜色的果实",
+      "group": "optical",
+      "mode": "code",
+      "standaloneRawBytes": 795510,
+      "standaloneGzipBytes": 214644,
+      "reason": "fits budget",
+      "originalUrl": "https://maoku.github.io/Opus55OpticalIllusion/?exhibit=colorless-fruit"
+    },
+    {
+      "id": "n100",
+      "title": "看不见的三角形",
+      "group": "optical",
+      "mode": "code",
+      "standaloneRawBytes": 795513,
+      "standaloneGzipBytes": 214647,
+      "reason": "fits budget",
+      "originalUrl": "https://maoku.github.io/Opus55OpticalIllusion/?exhibit=invisible-triangle"
+    }
+  ]
+}

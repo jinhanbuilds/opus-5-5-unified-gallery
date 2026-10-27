@@ -1,0 +1,246 @@
+{
+  "date": "2026-10-27T15:46:46.179617+00:00",
+  "baseRevision": "3a5b7d8d1d4d8f1d80db62577a816f4d1c3a91fe",
+  "publicBuild": "Passed from isolated worktree without sources/new-originals/",
+  "directFileRuntimeChecks": [
+    {
+      "id": "n012",
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "pause, seek, play, original sound on/off",
+        "duration": 40,
+        "seek": 27.200000000000003,
+        "advanced": 27.241000000011923,
+        "sound": {
+          "audio": [
+            {
+              "paused": false,
+              "time": 27.468612,
+              "duration": 40
+            }
+          ],
+          "contexts": []
+        }
+      },
+      "frames": {
+        "a": "6d38333bf7b3e2596d59f40ef8f8037a92a7a9c2d6cf4a8e14313016ca5e12ee",
+        "b": "54955510e4e4d8c52ac203b365f6dd9f05d2123d80d6127e85b3efaaf67e99d4",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3882
+    },
+    {
+      "id": "n029",
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": "GER JOINT\n困难\n忙碌后厨\nBUSY BACKLINE\n推车出没\n开始\nSTART · Enter\n帮助 H\n← → 选厨房 · ↑ ↓ 选模式 · Enter 开始 · H 帮助 · M 静音\n暂停一下\nPAUSED · 锅里的菜也停了\n继续\nP / Enter\n重新开始\nR\n返回标题\nEsc\nM 静音\n打烊啦！\n0\nNEW BEST!\n出餐\n0\n小费\n0\n超时\n0\n烧焦\n0\n端错\n0\n最佳\n0\n再来一局\nEnter\n返回标题\nEsc\n怎么玩 HOW TO PLAY\n1\n做菜流程：一条龙\n从箱子拿食材\n按住 切 键切菜\n下锅煮 / 下锅煎\n装进盘子\n送到出餐口\n2\n三道菜 (每个厨房点的菜不同)\n番茄汤\n×3\n3 个切好的番茄放进锅里煮\n蔬菜沙拉\n+\n切好的生菜 + 切好的番茄\n汉堡\n+\n+\n面包 + 煎好的肉饼 + 切好的生菜\n3\n操作\n单人 1P\nWASD\n/ 方向键 移动\n空格\nJ\n拿起 / 放下\nK\n按住切菜\nShift\n冲刺\nTab\n切换两位厨师\nP\n暂停 M 静音\n双人合作 2P\nWASD\n1P 移动\n↑←↓→\n2P 移动\nF\nG\n1P 拿放 / 切\n.\n/\n2P 拿放 / 切\n左Shift\n1P 冲刺\n右Shift\n2P 冲刺 (Num1/2)\n订单超时会扣分\n出餐越快，小费越多\n煮过头会烧焦：倒进垃圾桶\n端错菜会被退回\nEsc / Enter / H 返回"
+        },
+        "after": {
+          "state": "countdown",
+          "text": "USY BACKLINE\n推车出没\n开始\nSTART · Enter\n帮助 H\n← → 选厨房 · ↑ ↓ 选模式 · Enter 开始 · H 帮助 · M 静音\n简单 · 街角小馆 · 单人\n开工！\n暂停一下\nPAUSED · 锅里的菜也停了\n继续\nP / Enter\n重新开始\nR\n返回标题\nEsc\nM 静音\n打烊啦！\n0\nNEW BEST!\n出餐\n0\n小费\n0\n超时\n0\n烧焦\n0\n端错\n0\n最佳\n0\n再来一局\nEnter\n返回标题\nEsc\n怎么玩 HOW TO PLAY\n1\n做菜流程：一条龙\n从箱子拿食材\n按住 切 键切菜\n下锅煮 / 下锅煎\n装进盘子\n送到出餐口\n2\n三道菜 (每个厨房点的菜不同)\n番茄汤\n×3\n3 个切好的番茄放进锅里煮\n蔬菜沙拉\n+\n切好的生菜 + 切好的番茄\n汉堡\n+\n+\n面包 + 煎好的肉饼 + 切好的生菜\n3\n操作\n单人 1P\nWASD\n/ 方向键 移动\n空格\nJ\n拿起 / 放下\nK\n按住切菜\nShift\n冲刺\nTab\n切换两位厨师\nP\n暂停 M 静音\n双人合作 2P\nWASD\n1P 移动\n↑←↓→\n2P 移动\nF\nG\n1P 拿放 / 切\n.\n/\n2P 拿放 / 切\n左Shift\n1P 冲刺\n右Shift\n2P 冲刺 (Num1/2)\n订单超时会扣分\n出餐越快，小费越多\n煮过头会烧焦：倒进垃圾桶\n端错菜会被退回\nEsc / Enter / H 返回"
+        }
+      },
+      "frames": {
+        "a": "302bf774c24465f48cc947a00a50c329d1e624ef54c1c8cbc5d375e40885913a",
+        "b": "a146d461aef912caf57d20a2ca8145425aab841e87e02c608cb1bcb2a6c6a855",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3309
+    },
+    {
+      "id": "n087",
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "A-1\n古典\nヒント閲覧済み\nカフェウォール錯視\n\nCafé Wall Illusion\n\nR. L. Gregory & P. Heard (1979)\n\n鑑賞のしかた\n\n少し離れたところから、作品全体を眺めてください。\n\nヒントを隠す\nどう見える？\n\n白と黒のタイルのあいだを通る灰色の横線が、交互に右上がり・右下がりに傾いて、くさび形に広がったりすぼまったりして見えます。傾きの強さには個人差があります。見えにくい場合は、少し離れてみてください。\n\nしくみを知る\n▶ 確かめる\nガイド線を重ねて、タイルのずれをなくす\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "92605a277d9734f6b458f2eb4d55dc5846119db803de4f178659d88e5c0a2235",
+        "b": "b0e55eb52cea457089539a12e98e0f078792a9ba6394d165f7161db309623e88",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 2711
+    },
+    {
+      "id": "n012",
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "pause, seek, play, original sound on/off",
+        "duration": 40,
+        "seek": 27.200000000000003,
+        "advanced": 27.239000000000004,
+        "sound": {
+          "audio": [
+            {
+              "paused": false,
+              "time": 27.470804,
+              "duration": 40
+            }
+          ],
+          "contexts": []
+        }
+      },
+      "frames": {
+        "a": "0fbadd952e52a53f2cdd2ae56d4caae241b885f74d3dfeec3c07694f381b5b4a",
+        "b": "aa563c1321c67ea0f8f168dabcb4376fb4d52f7a559b97a732b4fd8a822a22f2",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3018
+    },
+    {
+      "id": "n029",
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": "GER JOINT\n困难\n忙碌后厨\nBUSY BACKLINE\n推车出没\n开始\nSTART · Enter\n帮助 H\n← → 选厨房 · ↑ ↓ 选模式 · Enter 开始 · H 帮助 · M 静音\n暂停一下\nPAUSED · 锅里的菜也停了\n继续\nP / Enter\n重新开始\nR\n返回标题\nEsc\nM 静音\n打烊啦！\n0\nNEW BEST!\n出餐\n0\n小费\n0\n超时\n0\n烧焦\n0\n端错\n0\n最佳\n0\n再来一局\nEnter\n返回标题\nEsc\n怎么玩 HOW TO PLAY\n1\n做菜流程：一条龙\n从箱子拿食材\n按住 切 键切菜\n下锅煮 / 下锅煎\n装进盘子\n送到出餐口\n2\n三道菜 (每个厨房点的菜不同)\n番茄汤\n×3\n3 个切好的番茄放进锅里煮\n蔬菜沙拉\n+\n切好的生菜 + 切好的番茄\n汉堡\n+\n+\n面包 + 煎好的肉饼 + 切好的生菜\n3\n操作\n单人 1P\nWASD\n/ 方向键 移动\n空格\nJ\n拿起 / 放下\nK\n按住切菜\nShift\n冲刺\nTab\n切换两位厨师\nP\n暂停 M 静音\n双人合作 2P\nWASD\n1P 移动\n↑←↓→\n2P 移动\nF\nG\n1P 拿放 / 切\n.\n/\n2P 拿放 / 切\n左Shift\n1P 冲刺\n右Shift\n2P 冲刺 (Num1/2)\n订单超时会扣分\n出餐越快，小费越多\n煮过头会烧焦：倒进垃圾桶\n端错菜会被退回\nEsc / Enter / H 返回"
+        },
+        "after": {
+          "state": "countdown",
+          "text": "USY BACKLINE\n推车出没\n开始\nSTART · Enter\n帮助 H\n← → 选厨房 · ↑ ↓ 选模式 · Enter 开始 · H 帮助 · M 静音\n简单 · 街角小馆 · 单人\n开工！\n暂停一下\nPAUSED · 锅里的菜也停了\n继续\nP / Enter\n重新开始\nR\n返回标题\nEsc\nM 静音\n打烊啦！\n0\nNEW BEST!\n出餐\n0\n小费\n0\n超时\n0\n烧焦\n0\n端错\n0\n最佳\n0\n再来一局\nEnter\n返回标题\nEsc\n怎么玩 HOW TO PLAY\n1\n做菜流程：一条龙\n从箱子拿食材\n按住 切 键切菜\n下锅煮 / 下锅煎\n装进盘子\n送到出餐口\n2\n三道菜 (每个厨房点的菜不同)\n番茄汤\n×3\n3 个切好的番茄放进锅里煮\n蔬菜沙拉\n+\n切好的生菜 + 切好的番茄\n汉堡\n+\n+\n面包 + 煎好的肉饼 + 切好的生菜\n3\n操作\n单人 1P\nWASD\n/ 方向键 移动\n空格\nJ\n拿起 / 放下\nK\n按住切菜\nShift\n冲刺\nTab\n切换两位厨师\nP\n暂停 M 静音\n双人合作 2P\nWASD\n1P 移动\n↑←↓→\n2P 移动\nF\nG\n1P 拿放 / 切\n.\n/\n2P 拿放 / 切\n左Shift\n1P 冲刺\n右Shift\n2P 冲刺 (Num1/2)\n订单超时会扣分\n出餐越快，小费越多\n煮过头会烧焦：倒进垃圾桶\n端错菜会被退回\nEsc / Enter / H 返回"
+        }
+      },
+      "frames": {
+        "a": "c5082866b3d03b8f72bd8705ae5a9f0034bc6d431d49e8786e71242b2ba0cd71",
+        "b": "2324ab57ccc2173963849e1adb4560643a7d3d77a1c2b3f28b548d49dc9b9dc7",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3189
+    },
+    {
+      "id": "n087",
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "A-1\n古典\nヒント閲覧済み\nカフェウォール錯視\n\nCafé Wall Illusion\n\nR. L. Gregory & P. Heard (1979)\n\n鑑賞のしかた\n\n少し離れたところから、作品全体を眺めてください。\n\nヒントを隠す\nどう見える？\n\n白と黒のタイルのあいだを通る灰色の横線が、交互に右上がり・右下がりに傾いて、くさび形に広がったりすぼまったりして見えます。傾きの強さには個人差があります。見えにくい場合は、少し離れてみてください。\n\nしくみを知る\n▶ 確かめる\nガイド線を重ねて、タイルのずれをなくす\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "d586b6c319b01ce9426e66a381bfb9a4b515b93558e70d3a4a5efed559b98b1e",
+        "b": "77e31bd34174b7583329e1def9fe3fa75d4772ff867ab38da9252f7e6f72ba8a",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 2710
+    }
+  ],
+  "directFileUiChecks": [
+    {
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "checks": [
+        "218 cards and count",
+        "medium, selected, intent and style filters",
+        "search, empty state, prompt copy handler, close removes iframe and restores focus",
+        "four paired works retain both versions and old detail/lexicon links",
+        "live card preview starts and stops",
+        "deep link and viewport"
+      ],
+      "pass": true
+    },
+    {
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "checks": [
+        "218 cards and count",
+        "medium, selected, intent and style filters",
+        "search, empty state, prompt copy handler, close removes iframe and restores focus",
+        "four paired works retain both versions and old detail/lexicon links",
+        "live card preview starts and stops",
+        "deep link and viewport"
+      ],
+      "pass": true
+    }
+  ],
+  "preflight": {
+    "stagedFiles": 1095,
+    "stagedBytes": 51846295,
+    "largestFile": [
+      1835953,
+      "site/fusion/catalog.js"
+    ],
+    "indexByteMismatches": [],
+    "credentialCandidates": [],
+    "siteChangesFromPublishedPackage": [
+      "RIGHTS.md",
+      "CREDITS.md",
+      "docs/new-100-review.md",
+      "docs/miaoda-update.md",
+      "docs/new-100-sources.md"
+    ],
+    "runtimeChangesFromPublishedPackage": []
+  },
+  "distributionScope": "Engineering sources, public text/provenance, final acceptance summaries, and the same 31-code/69-image static edition as Miaoda. Complete local source cache and raw screenshots remain local."
+}

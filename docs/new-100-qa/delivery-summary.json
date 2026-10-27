@@ -1,0 +1,32 @@
+{
+  "completedAt": "2026-10-27T14:21:55.451902+00:00",
+  "publishedUrl": "https://zcnofdpgpxud.feishu.link/app/app_17exzr8eka4",
+  "subjects": 218,
+  "variants": 222,
+  "newCases": 100,
+  "completeLocalNewCode": 100,
+  "onlineNewCode": 31,
+  "onlineNewImages": 69,
+  "referenceArchiveBytes": 17824740,
+  "referenceArchiveSha256": "857fbafa65e9408b472293f5bdd085cccdc1ad185c983f902f5bdb8b1fee600c",
+  "localBuildFingerprint": "ef36b044226f45d641affc17c611fbd51edc0216fc44401cc0aa5f0f52a030a1",
+  "localFilesVerified": 1041,
+  "checks": {
+    "localRuntime": 400,
+    "localHost": 232,
+    "coreInteractions": 44,
+    "localUiContexts": 4,
+    "backups": 7,
+    "miaodaRuntime": 62,
+    "miaodaHost": 200,
+    "miaodaUiContexts": 2,
+    "liveChecks": 8
+  },
+  "access": {
+    "date": "2026-10-27T14:21:54.543074+00:00",
+    "scope": "All",
+    "requireLogin": false,
+    "allSettingsUnchanged": true
+  },
+  "githubPushedByThisTask": false
+}

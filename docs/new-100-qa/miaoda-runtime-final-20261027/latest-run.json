@@ -1,0 +1,2020 @@
+{
+  "date": "2026-10-27T14:01:47.573Z",
+  "startedAt": "2026-10-27T13:58:01.000Z",
+  "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+  "protocols": [
+    "http"
+  ],
+  "widths": [
+    1440,
+    390
+  ],
+  "count": 62,
+  "passed": 62,
+  "results": [
+    {
+      "id": "n012",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "pause, seek, play, original sound on/off",
+        "duration": 40,
+        "seek": 27.200000000000003,
+        "advanced": 27.243400000000005,
+        "sound": {
+          "audio": [
+            {
+              "paused": false,
+              "time": 27.455958,
+              "duration": 40
+            }
+          ],
+          "contexts": []
+        }
+      },
+      "frames": {
+        "a": "6d38333bf7b3e2596d59f40ef8f8037a92a7a9c2d6cf4a8e14313016ca5e12ee",
+        "b": "0f4a63abe762186361a64f7f0f87aaf06f0a00b86128207aee40889a6e0c18e2",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3800
+    },
+    {
+      "id": "n015",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "pause, seek, play, original sound on/off",
+        "duration": 40,
+        "seek": 27.200000000000003,
+        "advanced": 27.23049999996424,
+        "sound": {
+          "audio": [
+            {
+              "paused": false,
+              "time": 27.445119,
+              "duration": 40
+            }
+          ],
+          "contexts": []
+        }
+      },
+      "frames": {
+        "a": "1460b49d0596d099156ce581e5af98ebd673b99cfed5c28ce79619547497bce9",
+        "b": "4327f22eb6c69c619a4b4cf15faa907b563d251675eebb1c8f2e52ea768cfb0c",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3697
+    },
+    {
+      "id": "n029",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": "GER JOINT\n困难\n忙碌后厨\nBUSY BACKLINE\n推车出没\n开始\nSTART · Enter\n帮助 H\n← → 选厨房 · ↑ ↓ 选模式 · Enter 开始 · H 帮助 · M 静音\n暂停一下\nPAUSED · 锅里的菜也停了\n继续\nP / Enter\n重新开始\nR\n返回标题\nEsc\nM 静音\n打烊啦！\n0\nNEW BEST!\n出餐\n0\n小费\n0\n超时\n0\n烧焦\n0\n端错\n0\n最佳\n0\n再来一局\nEnter\n返回标题\nEsc\n怎么玩 HOW TO PLAY\n1\n做菜流程：一条龙\n从箱子拿食材\n按住 切 键切菜\n下锅煮 / 下锅煎\n装进盘子\n送到出餐口\n2\n三道菜 (每个厨房点的菜不同)\n番茄汤\n×3\n3 个切好的番茄放进锅里煮\n蔬菜沙拉\n+\n切好的生菜 + 切好的番茄\n汉堡\n+\n+\n面包 + 煎好的肉饼 + 切好的生菜\n3\n操作\n单人 1P\nWASD\n/ 方向键 移动\n空格\nJ\n拿起 / 放下\nK\n按住切菜\nShift\n冲刺\nTab\n切换两位厨师\nP\n暂停 M 静音\n双人合作 2P\nWASD\n1P 移动\n↑←↓→\n2P 移动\nF\nG\n1P 拿放 / 切\n.\n/\n2P 拿放 / 切\n左Shift\n1P 冲刺\n右Shift\n2P 冲刺 (Num1/2)\n订单超时会扣分\n出餐越快，小费越多\n煮过头会烧焦：倒进垃圾桶\n端错菜会被退回\nEsc / Enter / H 返回"
+        },
+        "after": {
+          "state": "countdown",
+          "text": "USY BACKLINE\n推车出没\n开始\nSTART · Enter\n帮助 H\n← → 选厨房 · ↑ ↓ 选模式 · Enter 开始 · H 帮助 · M 静音\n简单 · 街角小馆 · 单人\n开工！\n暂停一下\nPAUSED · 锅里的菜也停了\n继续\nP / Enter\n重新开始\nR\n返回标题\nEsc\nM 静音\n打烊啦！\n0\nNEW BEST!\n出餐\n0\n小费\n0\n超时\n0\n烧焦\n0\n端错\n0\n最佳\n0\n再来一局\nEnter\n返回标题\nEsc\n怎么玩 HOW TO PLAY\n1\n做菜流程：一条龙\n从箱子拿食材\n按住 切 键切菜\n下锅煮 / 下锅煎\n装进盘子\n送到出餐口\n2\n三道菜 (每个厨房点的菜不同)\n番茄汤\n×3\n3 个切好的番茄放进锅里煮\n蔬菜沙拉\n+\n切好的生菜 + 切好的番茄\n汉堡\n+\n+\n面包 + 煎好的肉饼 + 切好的生菜\n3\n操作\n单人 1P\nWASD\n/ 方向键 移动\n空格\nJ\n拿起 / 放下\nK\n按住切菜\nShift\n冲刺\nTab\n切换两位厨师\nP\n暂停 M 静音\n双人合作 2P\nWASD\n1P 移动\n↑←↓→\n2P 移动\nF\nG\n1P 拿放 / 切\n.\n/\n2P 拿放 / 切\n左Shift\n1P 冲刺\n右Shift\n2P 冲刺 (Num1/2)\n订单超时会扣分\n出餐越快，小费越多\n煮过头会烧焦：倒进垃圾桶\n端错菜会被退回\nEsc / Enter / H 返回"
+        }
+      },
+      "frames": {
+        "a": "6b2b83e92473cc339345991fde60286594a2a01e966313eb07e4cf9575f13f62",
+        "b": "2ad64fed87be03328627ac3e2a0e0169c2d28376e2578857a9dfe206924d5ced",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3297
+    },
+    {
+      "id": "n030",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": "AL LAP\n阳光卡丁车\n阳光卡丁车\n阳光卡丁车\nSUNNY KART\n海边赛道三圈定胜负，漂移攒火花、抢道具，冲上领奖台！\n选择难度 · CC\n简单50cc\n普通100cc\n困难150cc\n开始比赛ENTER\n玩法H\n最佳成绩 · 普通 100cc\n暂无纪录，快来创造！\n↑/W 油门 · ↓/S 刹车倒车 · ←→/A D 转向 · 转向时按住 Shift/空格 漂移 · X/J 道具 · P 暂停 · H 玩法 · M 静音\n玩法说明HOW TO PLAY\n操作 CONTROLS\n↑\nW\n油门加速\n↓\nS\n刹车 / 倒车\n←\n→\nA\nD\n左右转向\nShift\n空格\n转向时按住 = 漂移\nX\nJ\n使用道具\nP\nH\nM\n暂停 · 玩法 · 静音\n漂移火花 DRIFT\n蓝\n›\n橙\n›\n紫\n按住越久火花越亮\n松开即获得加速！\n道具 ITEMS\n加速火箭\n瞬间冲刺，沙地也不减速\n香蕉皮\n丢在身后，踩到就打滑转圈\n泡泡护盾\n挡下一次香蕉皮或弹弹球\n弹弹球\n向前弹出，会追着前车跑\n撞碎彩虹道具箱拿道具\n压过橙色加速带会冲刺\n三圈定胜负 · 沙地草地会减速 · 排名看圈数和进度 · 前三名登上领奖台！\n知道了H / ESC\n暂停\nPAUSED\n-\n继续比赛P\n重新开始R\n返回标题ESC\n比赛结果RESULTS\n第1名\n冠军！阳光杯归你啦！\nNEW BEST!\n再来一局ENTER\n返回标题ESC"
+        },
+        "after": {
+          "state": "countdown",
+          "text": "AL LAP\n阳光卡丁车\n阳光卡丁车\n阳光卡丁车\nSUNNY KART\n海边赛道三圈定胜负，漂移攒火花、抢道具，冲上领奖台！\n选择难度 · CC\n简单50cc\n普通100cc\n困难150cc\n开始比赛ENTER\n玩法H\n最佳成绩 · 普通 100cc\n暂无纪录，快来创造！\n↑/W 油门 · ↓/S 刹车倒车 · ←→/A D 转向 · 转向时按住 Shift/空格 漂移 · X/J 道具 · P 暂停 · H 玩法 · M 静音\n玩法说明HOW TO PLAY\n操作 CONTROLS\n↑\nW\n油门加速\n↓\nS\n刹车 / 倒车\n←\n→\nA\nD\n左右转向\nShift\n空格\n转向时按住 = 漂移\nX\nJ\n使用道具\nP\nH\nM\n暂停 · 玩法 · 静音\n漂移火花 DRIFT\n蓝\n›\n橙\n›\n紫\n按住越久火花越亮\n松开即获得加速！\n道具 ITEMS\n加速火箭\n瞬间冲刺，沙地也不减速\n香蕉皮\n丢在身后，踩到就打滑转圈\n泡泡护盾\n挡下一次香蕉皮或弹弹球\n弹弹球\n向前弹出，会追着前车跑\n撞碎彩虹道具箱拿道具\n压过橙色加速带会冲刺\n三圈定胜负 · 沙地草地会减速 · 排名看圈数和进度 · 前三名登上领奖台！\n知道了H / ESC\n暂停\nPAUSED\n-\n继续比赛P\n重新开始R\n返回标题ESC\n比赛结果RESULTS\n第1名\n冠军！阳光杯归你啦！\nNEW BEST!\n再来一局ENTER\n返回标题ESC"
+        }
+      },
+      "frames": {
+        "a": "4a09366fc81497329717cd3c676bcd0e9429fadb1b04db55331384e95b693a68",
+        "b": "5e56071e168941de0f1fa1b223cd2735018e4e98d0e76adf17977f945dd1f5b3",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3289
+    },
+    {
+      "id": "n031",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": ""
+        },
+        "after": {
+          "state": "intro",
+          "text": ""
+        }
+      },
+      "frames": {
+        "a": "b31c0f6de137812992733b97edb80933918d6b1b258945f7feaf13d1b6a0d352",
+        "b": "2f98ce557277dae9a5e68e8757338d3a4b3b8b3aa8dce3315e509a74fa83e591",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3233
+    },
+    {
+      "id": "n032",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": "束\n最高 0\n街机 60秒\n特殊香蕉 · 炸弹扣 10 分\n最高 0\n禅意 90秒\n没有炸弹 · 静心切果\n最高 0\n帮助\nH\n难度\n简单\n普通\n困难\n开始\nEnter\n按住鼠标或手指快速划过水果 · 切开圆环中的水果即可开局 · ←→ 模式 ↑↓ 难度 · Enter 开始 · H 帮助 · M 静音\n刀客心法\nHOW TO PLAY\n划 · 切\n按住鼠标（或手指）快速划过水果\n动作太慢可切不开哦\n三连击 +3\n连 · 击\n一刀切开 3 个以上水果得连击奖励\n正中快切有机会暴击 +10\n炸 · 弹\n千万别碰黑色炸弹！\n经典模式直接结束，街机扣 10 分\n失 · 误\n经典模式：漏掉 3 个水果\n游戏就结束了\n冰冻\n双倍\n狂热\n特殊香蕉\n仅在街机模式出现，切开即生效\n冰冻减速 · 双倍得分 · 狂热果潮\nP\n暂停\nM\n静音\nH\n帮助\nEsc\n返回\n模式 · 按键\n经典 3 条命 · 街机 60 秒 · 禅意 90 秒\n禅意模式没有炸弹，尽情切吧\n按 H / Esc / Enter 关闭\n暂停\nPAUSED\n继续游戏 · P\n重新开始 · R\n操作说明 · H\n返回标题 · Esc\n↑↓ 选择 · Enter 确认\n时间到！\n街机 · 普通\n得分\n0\n切开水果\n最佳连击\n最长连斩\n命中率\n0\n0\n0\n0%\n本模式最高 0\n再来一局\nEnter\n返回标题\nEsc\n新纪录\nNEW BEST"
+        },
+        "after": {
+          "state": "countdown",
+          "text": "束\n最高 0\n街机 60秒\n特殊香蕉 · 炸弹扣 10 分\n最高 0\n禅意 90秒\n没有炸弹 · 静心切果\n最高 0\n帮助\nH\n难度\n简单\n普通\n困难\n开始\nEnter\n按住鼠标或手指快速划过水果 · 切开圆环中的水果即可开局 · ←→ 模式 ↑↓ 难度 · Enter 开始 · H 帮助 · M 静音\n刀客心法\nHOW TO PLAY\n划 · 切\n按住鼠标（或手指）快速划过水果\n动作太慢可切不开哦\n三连击 +3\n连 · 击\n一刀切开 3 个以上水果得连击奖励\n正中快切有机会暴击 +10\n炸 · 弹\n千万别碰黑色炸弹！\n经典模式直接结束，街机扣 10 分\n失 · 误\n经典模式：漏掉 3 个水果\n游戏就结束了\n冰冻\n双倍\n狂热\n特殊香蕉\n仅在街机模式出现，切开即生效\n冰冻减速 · 双倍得分 · 狂热果潮\nP\n暂停\nM\n静音\nH\n帮助\nEsc\n返回\n模式 · 按键\n经典 3 条命 · 街机 60 秒 · 禅意 90 秒\n禅意模式没有炸弹，尽情切吧\n按 H / Esc / Enter 关闭\n暂停\nPAUSED\n继续游戏 · P\n重新开始 · R\n操作说明 · H\n返回标题 · Esc\n↑↓ 选择 · Enter 确认\n时间到！\n街机 · 普通\n得分\n0\n切开水果\n最佳连击\n最长连斩\n命中率\n0\n0\n0\n0%\n本模式最高 0\n再来一局\nEnter\n返回标题\nEsc\n新纪录\nNEW BEST"
+        }
+      },
+      "frames": {
+        "a": "191d1a1dc1c9b1204d90c074f1b4557221aa608d7898304c20b0751fb525f687",
+        "b": "b2191d55fcccb13f899a7a523d95ca1a80c229da2df1e0e91b82c31221fb5d10",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3112
+    },
+    {
+      "id": "n033",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": "次\n撑过所有波次\n大波来袭前会有提示，\n僵尸进家门就失败！\n暖阳葵\n50\n定时产出阳光，经济之本\n冷却 7 秒\n豌豆炮\n100\n朝前方一颗颗发射豌豆\n冷却 7 秒\n连发豆\n200\n一次连射两颗，火力翻倍\n冷却 8 秒\n霜冻豆\n175\n冰豆让僵尸变蓝、减速\n冷却 8 秒\n土豆盾\n50\n超级耐啃，替大家挡住僵尸\n冷却 20 秒 · 越啃越破\n辣椒爆弹\n150\n种下即爆，炸飞周围 3×3\n冷却 30 秒 · 一次性\n普通僵尸\n慢吞吞，见啥啃啥\n路锥僵尸\n头顶路锥，更耐打\n水桶僵尸\n铁皮水桶，超级硬\n跑跑僵尸\n受伤后撒腿狂奔\n晾衣杆僵尸\n撑杆跳过第一株植物\n操作方式\n鼠标：点卡片 → 点草地格子种植\n点击阳光收集 · 右键 / Esc 取消\n铲子：点铲子再点植物即可移除\n键盘：1–6 选卡 · 方向键移动光标\n空格 / 回车：种植、铲除、收阳光\nS 铲子 · P 暂停 · H 帮助 · M 静音\n知道了！\nEnter\n暂停一下\n继续游戏\nP\n重新开始\nR\n返回标题\nQ\nH 帮助 · M 静音 · Esc 继续\n僵尸闯进家门啦！\n打扰啦～\n本局得分\n坚持到\n击败僵尸\n收集阳光\n种下植物\n用时\n新纪录 NEW BEST\n再试一次\nEnter\n返回标题\nEsc\n花园守住啦！\n本局得分\n击败僵尸\n收集阳光\n剩余小推车\n种下植物\n用时\n新纪录 NEW BEST\n再来一局\nEnter\n返回标题\nEsc"
+        },
+        "after": {
+          "state": "countdown",
+          "text": "，\n僵尸进家门就失败！\n暖阳葵\n50\n定时产出阳光，经济之本\n冷却 7 秒\n豌豆炮\n100\n朝前方一颗颗发射豌豆\n冷却 7 秒\n连发豆\n200\n一次连射两颗，火力翻倍\n冷却 8 秒\n霜冻豆\n175\n冰豆让僵尸变蓝、减速\n冷却 8 秒\n土豆盾\n50\n超级耐啃，替大家挡住僵尸\n冷却 20 秒 · 越啃越破\n辣椒爆弹\n150\n种下即爆，炸飞周围 3×3\n冷却 30 秒 · 一次性\n普通僵尸\n慢吞吞，见啥啃啥\n路锥僵尸\n头顶路锥，更耐打\n水桶僵尸\n铁皮水桶，超级硬\n跑跑僵尸\n受伤后撒腿狂奔\n晾衣杆僵尸\n撑杆跳过第一株植物\n操作方式\n鼠标：点卡片 → 点草地格子种植\n点击阳光收集 · 右键 / Esc 取消\n铲子：点铲子再点植物即可移除\n键盘：1–6 选卡 · 方向键移动光标\n空格 / 回车：种植、铲除、收阳光\nS 铲子 · P 暂停 · H 帮助 · M 静音\n知道了！\nEnter\n暂停一下\n继续游戏\nP\n重新开始\nR\n返回标题\nQ\nH 帮助 · M 静音 · Esc 继续\n僵尸闯进家门啦！\n打扰啦～\n本局得分\n坚持到\n击败僵尸\n收集阳光\n种下植物\n用时\n新纪录 NEW BEST\n再试一次\nEnter\n返回标题\nEsc\n花园守住啦！\n本局得分\n击败僵尸\n收集阳光\n剩余小推车\n种下植物\n用时\n新纪录 NEW BEST\n再来一局\nEnter\n返回标题\nEsc\n开始守护！\n收集阳光 · 种下植物"
+        }
+      },
+      "frames": {
+        "a": "b36cac3a419d59d9f127d893102787792fc293f3a5f039594f51f05034429042",
+        "b": "f50865810136fecfa7db9ebdb7a53b3338056d9333a2e8104c22e8317de07372",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3217
+    },
+    {
+      "id": "n034",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": " 静音\n泡\n泡\n海\nBUBBLE REEF\n— 水彩海底 · 泡泡射击 —\n模式\n难度\n冒险模式\n无尽模式\n简单\n普通\n困难\n5 种颜色 · 标准节奏 · 冒险 12 关\n开始游戏\n帮助\n音效：开\n最高分（普通）　冒险 0　·　无尽 0\n鼠标瞄准 · 点击发射　← → 调整角度　空格 发射　↑ 交换　P 暂停　H 帮助　M 静音\n选择关卡\n1\n浅滩初游\n2\n珊瑚拱门\n3\n海星花园\n4\n冰封礁石\n5\n水母之舞\n6\n漩涡洞穴\n7\n海龟迁徙\n8\n沉船宝藏\n9\n海马峡谷\n10\n章鱼迷宫\n11\n冰川暗流\n12\n深海之心\n返回\n开始\n游戏帮助\n操作\n鼠标移动\n瞄准\n鼠标点击\n发射泡泡\n← →\n调整发射角度\n空格\n发射泡泡\n↑\n交换当前与下一个泡泡\nP / H / M\n暂停 / 帮助 / 静音\n规则\n同色泡泡连成 3 个及以上就会消除\n失去连接的泡泡会变成小鱼游走，额外加分\n泡泡可以碰左右墙壁反弹，瞄准线会显示路径\n每发射若干次，泡泡阵整体下降一行\n泡泡压过底部警戒线就失败\n特殊泡泡\n彩虹泡\n可以匹配任意颜色\n河豚炸弹泡\n落下后炸掉周围一圈泡泡\n冰冻泡\n先打一次解冻，之后才能消除\n闪电泡\n消除所在的整行泡泡\n颜色与海洋生物（方便色弱玩家辨认）\n小丑鱼\n橙色\n海龟\n绿色\n海马\n蓝色\n水母\n紫色\n海星\n黄色\n章鱼\n红色\n返回\nEsc / H\n暂停\n继续\n重新开始\n返回标题\n按钮\n按钮\n按钮\n新纪录！"
+        },
+        "after": {
+          "state": "levels",
+          "text": "险模式\n无尽模式\n简单\n普通\n困难\n5 种颜色 · 标准节奏 · 冒险 12 关\n开始游戏\n帮助\n音效：开\n最高分（普通）　冒险 0　·　无尽 0\n鼠标瞄准 · 点击发射　← → 调整角度　空格 发射　↑ 交换　P 暂停　H 帮助　M 静音\n选择关卡\n冒险模式 · 普通 · 已解锁 1 / 12 · 星星 0 / 36\n1\n浅滩初游\n2\n珊瑚拱门\n3\n海星花园\n4\n冰封礁石\n5\n水母之舞\n6\n漩涡洞穴\n7\n海龟迁徙\n8\n沉船宝藏\n9\n海马峡谷\n10\n章鱼迷宫\n11\n冰川暗流\n12\n深海之心\n第 7 关尚未解锁\n返回\n开始\n游戏帮助\n操作\n鼠标移动\n瞄准\n鼠标点击\n发射泡泡\n← →\n调整发射角度\n空格\n发射泡泡\n↑\n交换当前与下一个泡泡\nP / H / M\n暂停 / 帮助 / 静音\n规则\n同色泡泡连成 3 个及以上就会消除\n失去连接的泡泡会变成小鱼游走，额外加分\n泡泡可以碰左右墙壁反弹，瞄准线会显示路径\n每发射若干次，泡泡阵整体下降一行\n泡泡压过底部警戒线就失败\n特殊泡泡\n彩虹泡\n可以匹配任意颜色\n河豚炸弹泡\n落下后炸掉周围一圈泡泡\n冰冻泡\n先打一次解冻，之后才能消除\n闪电泡\n消除所在的整行泡泡\n颜色与海洋生物（方便色弱玩家辨认）\n小丑鱼\n橙色\n海龟\n绿色\n海马\n蓝色\n水母\n紫色\n海星\n黄色\n章鱼\n红色\n返回\nEsc / H\n暂停\n继续\n重新开始\n返回标题\n按钮\n按钮\n按钮\n新纪录！"
+        }
+      },
+      "frames": {
+        "a": "7c15dcdd8e4df51856fdbdfafd3ca89d92b0a61a07f112f67192f019529470f4",
+        "b": "c970bbb8c4e8dadb4f91c5cdfa3c193e3885a286abf6cbf478a3e81eb2b4002e",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3426
+    },
+    {
+      "id": "n035",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": {
+            "state": "title",
+            "mode": "demo",
+            "diff": "normal",
+            "level": 1,
+            "score": 0,
+            "lives": 3,
+            "bricksLeft": 91,
+            "balls": 1,
+            "combo": 0,
+            "maxCombo": 0,
+            "eff": {
+              "expand": 0,
+              "shrink": 0,
+              "slow": 0,
+              "fast": 0,
+              "laser": 0,
+              "sticky": 0,
+              "fire": 0
+            },
+            "best": {
+              "easy": 0,
+              "normal": 0,
+              "hard": 0
+            },
+            "auto": false,
+            "audio": "not started"
+          },
+          "text": "助 · M 静音\n游戏帮助\nHOW TO PLAY\n操作说明\n砖块图鉴\n道具图鉴\n/\nA\nD\n移动挡板\n鼠标\n挡板跟随鼠标\n空格\n/\n点击\n发射小球 / 激光\nP\n暂停\nH\n帮助\nM\n静音\n玩法规则\n打碎全部可破坏的砖块即可过关\n球落在挡板边缘，反弹得更斜\n不碰挡板连续打碎＝连击，倍率最高 ×8\n共 3 条命，漏掉所有球扣一条命\n普通糖块\n一击就碎的 Q 弹果冻\n硬糖\n要打 2～3 下，裂纹越来越深\n巧克力块\n坚硬无比，打不碎\n跳跳糖\n碎掉时炸掉周围一圈\n礼物糖\n打碎后掉落道具\n长\n加长挡板\n挡板变长 15 秒\n好道具\n多\n多球\n每颗球分裂成 3 颗\n好道具\n慢\n慢速\n球速变慢 12 秒\n好道具\n光\n激光\n8 秒内按空格发射激光\n好道具\n黏\n黏球\n接住球，再按空格发射\n好道具\n火\n火球\n8 秒内穿透砖块\n好道具\n短\n缩短挡板\n挡板变短 12 秒\n坏道具\n快\n加速\n球速变快 10 秒\n坏道具\n按 H / Esc / 空格 或点击任意处返回\n暂停中\n继续游戏\n重新开始本关\n返回标题\nP / Esc 继续 · ↑↓ 选择 · 回车确认\n-\n-\n砖块得分\n连击奖励\n时间奖励\n本关合计\n-\n游戏结束\nGAME OVER\n最终得分\n0\n-\n-\n新纪录\nNEW BEST\n再来一局\n返回标题\n全部通关！\n糖果王国的生日派对开始啦！\n最终得分\n0\n-\n-\n新纪录\nNEW BEST\n再来一局\n返回标题"
+        },
+        "after": {
+          "state": {
+            "state": "play",
+            "mode": "game",
+            "diff": "normal",
+            "level": 1,
+            "score": 50,
+            "lives": 3,
+            "bricksLeft": 90,
+            "balls": 1,
+            "combo": 1,
+            "maxCombo": 1,
+            "eff": {
+              "expand": 0,
+              "shrink": 0,
+              "slow": 0,
+              "fast": 0,
+              "laser": 0,
+              "sticky": 0,
+              "fire": 0
+            },
+            "best": {
+              "easy": 0,
+              "normal": 0,
+              "hard": 0
+            },
+            "auto": false,
+            "audio": "running song=game"
+          },
+          "text": "助 · M 静音\n游戏帮助\nHOW TO PLAY\n操作说明\n砖块图鉴\n道具图鉴\n/\nA\nD\n移动挡板\n鼠标\n挡板跟随鼠标\n空格\n/\n点击\n发射小球 / 激光\nP\n暂停\nH\n帮助\nM\n静音\n玩法规则\n打碎全部可破坏的砖块即可过关\n球落在挡板边缘，反弹得更斜\n不碰挡板连续打碎＝连击，倍率最高 ×8\n共 3 条命，漏掉所有球扣一条命\n普通糖块\n一击就碎的 Q 弹果冻\n硬糖\n要打 2～3 下，裂纹越来越深\n巧克力块\n坚硬无比，打不碎\n跳跳糖\n碎掉时炸掉周围一圈\n礼物糖\n打碎后掉落道具\n长\n加长挡板\n挡板变长 15 秒\n好道具\n多\n多球\n每颗球分裂成 3 颗\n好道具\n慢\n慢速\n球速变慢 12 秒\n好道具\n光\n激光\n8 秒内按空格发射激光\n好道具\n黏\n黏球\n接住球，再按空格发射\n好道具\n火\n火球\n8 秒内穿透砖块\n好道具\n短\n缩短挡板\n挡板变短 12 秒\n坏道具\n快\n加速\n球速变快 10 秒\n坏道具\n按 H / Esc / 空格 或点击任意处返回\n暂停中\n继续游戏\n重新开始本关\n返回标题\nP / Esc 继续 · ↑↓ 选择 · 回车确认\n-\n-\n砖块得分\n连击奖励\n时间奖励\n本关合计\n-\n游戏结束\nGAME OVER\n最终得分\n0\n-\n-\n新纪录\nNEW BEST\n再来一局\n返回标题\n全部通关！\n糖果王国的生日派对开始啦！\n最终得分\n0\n-\n-\n新纪录\nNEW BEST\n再来一局\n返回标题"
+        }
+      },
+      "frames": {
+        "a": "71340053ea593c97badf7698fef286964e9f4d383863e19794daccd2258dcb32",
+        "b": "29bbfc7d5e130f72dc1926d9b3c34f8e8ea45287c4d595fedab3d9aaa052d796",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3368
+    },
+    {
+      "id": "n036",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": "\n↑↓ 选择　←→ 切换难度　Enter / Z 确认　H 帮助　M 静音　（最高分按难度分别记录）\n帮助说明\n按 Enter / Esc / H 返回\n操作\n方向键 / WASD\n移动战机\nZ / 空格\n射击（按住连发）\nX\n炸弹：清屏 + 短暂无敌\nC\n必杀：能量满时发动星爆光束\nShift\n低速精确移动，显示判定点\nP / Esc\n暂停　H 帮助　M 静音\n道具\n火力升级\n单发 → 双发 → 散射 → 激光（满级后改为加分）\n炸弹 +1\n清除全部敌弹并重创敌机，期间短暂无敌\n护盾\n自动抵挡一次伤害，挡下后护盾碎裂\n擦弹与必杀\n擦！\n敌弹贴着机身擦过即为「擦弹」，\n每次擦弹都会加分并积累必杀能量。\n能量满 100% 后按 C 发动必杀：\n巨型星爆光束贯穿全屏，期间无敌。\n判定点只有机身中央的小圆点，\n按住 Shift 可见，且移动更精准。\n关卡与难度\n共 3 关：城市上空 → 陨石带 → 敌方母舰，\n每关结尾都有多阶段弹幕的 Boss 战。\n简单：弹幕稀疏、判定点更小、炸弹更多\n普通：标准挑战\n困难：弹幕更密、敌人更耐打\n共 3 条命 · 最高分按难度自动保存\n赤隼号坠毁了……\n下回分解：英雄绝不认输！\n最终得分\n最高分\n新纪录\n再来一局\n返回标题\n全剧终 · 新港市重获和平！\n铁颚大帝被击败了！\n……真的结束了吗？敬请期待下一期！\n最终得分\n最高分\n新纪录\n再来一局\n返回标题"
+        },
+        "after": {
+          "state": "play",
+          "text": "\n↑↓ 选择　←→ 切换难度　Enter / Z 确认　H 帮助　M 静音　（最高分按难度分别记录）\n帮助说明\n按 Enter / Esc / H 返回\n操作\n方向键 / WASD\n移动战机\nZ / 空格\n射击（按住连发）\nX\n炸弹：清屏 + 短暂无敌\nC\n必杀：能量满时发动星爆光束\nShift\n低速精确移动，显示判定点\nP / Esc\n暂停　H 帮助　M 静音\n道具\n火力升级\n单发 → 双发 → 散射 → 激光（满级后改为加分）\n炸弹 +1\n清除全部敌弹并重创敌机，期间短暂无敌\n护盾\n自动抵挡一次伤害，挡下后护盾碎裂\n擦弹与必杀\n擦！\n敌弹贴着机身擦过即为「擦弹」，\n每次擦弹都会加分并积累必杀能量。\n能量满 100% 后按 C 发动必杀：\n巨型星爆光束贯穿全屏，期间无敌。\n判定点只有机身中央的小圆点，\n按住 Shift 可见，且移动更精准。\n关卡与难度\n共 3 关：城市上空 → 陨石带 → 敌方母舰，\n每关结尾都有多阶段弹幕的 Boss 战。\n简单：弹幕稀疏、判定点更小、炸弹更多\n普通：标准挑战\n困难：弹幕更密、敌人更耐打\n共 3 条命 · 最高分按难度自动保存\n赤隼号坠毁了……\n下回分解：英雄绝不认输！\n最终得分\n最高分\n新纪录\n再来一局\n返回标题\n全剧终 · 新港市重获和平！\n铁颚大帝被击败了！\n……真的结束了吗？敬请期待下一期！\n最终得分\n最高分\n新纪录\n再来一局\n返回标题"
+        }
+      },
+      "frames": {
+        "a": "a9cdfecdc3f862aa2a40b68288f1f9597299598e8e62e7e6cf914cc02b0861cf",
+        "b": "722433faf5e3d5ffe117334b6e404d9a2cac78ab09dbdfbab5b109ace40ba074",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3349
+    },
+    {
+      "id": "n037",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "observe native SVG animation at two times"
+      },
+      "frames": {
+        "a": "7557953bb3ecd35a87428c3955e7240be80c0779e0f3220bc07b657f93d61d6b",
+        "b": "c7f21b05099cf9653b641c403638225b7aa9e3c37aae145a243e1ae06f30c210",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3999
+    },
+    {
+      "id": "n038",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "observe native SVG animation at two times"
+      },
+      "frames": {
+        "a": "a986399b64e41298234f755cfad35874c7998f1a860f5dd50b6b63550e3672ce",
+        "b": "8cfa65d4993b3b8c44e494de5f905d10dad5fd4ef24c46bc411da44541ac573e",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 4591
+    },
+    {
+      "id": "n039",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "observe native SVG animation at two times"
+      },
+      "frames": {
+        "a": "ef43c4be0ae5d255d8c4670cb9bf40dce49203fecae6062a1ccd606f8265be61",
+        "b": "98083cc3e6c466139a112d38133d36e743005ae680ee5535ef1f3ec98d2fdf1f",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3853
+    },
+    {
+      "id": "n040",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "observe native SVG animation at two times"
+      },
+      "frames": {
+        "a": "3992506d0c22c665eeed9f8aa45bd1dd86cc0c7aeb2b472c8e39c719f54d2272",
+        "b": "96316fd43ed95f2793e798a5088e72a9a7ce92c1cecad58b9e57708a7aeeb29c",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3858
+    },
+    {
+      "id": "n041",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "observe native SVG animation at two times"
+      },
+      "frames": {
+        "a": "5fb22431ad3cc8504cfd1684e9662883c7164b0e403ba74a206429ca38c70d11",
+        "b": "c8c98e29237271d3726560a90e3ca857826085605965bf5a7c3cd33ba932e923",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3849
+    },
+    {
+      "id": "n042",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": null,
+          "text": "果冻跳跳\nJELLY HOP\n选择难度\n简单\n最高 0\n普通\n最高 0\n困难\n最高 0\n开始游戏\n玩法帮助\n按住 空格 / 鼠标 / 触屏 蓄力，松开起跳 · P 暂停 · H 帮助 · M 静音\n点击屏幕或按空格也能直接开始"
+        },
+        "after": {
+          "state": null,
+          "text": "得分\n0\n最高0\n连击×1"
+        }
+      },
+      "frames": {
+        "a": "62a8018491429fab6cc261cbbb32169f578be0666eb0070f5c198661b5212ff3",
+        "b": "80562ff6d38a88b7cd0dc8d8d31c532a959ed705cfd0d864ea0722101b2dd7f6",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3369
+    },
+    {
+      "id": "n043",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": {
+            "screen": "title",
+            "overlay": null,
+            "paused": false,
+            "name": null,
+            "diff": null,
+            "stage": null,
+            "form": null,
+            "needs": null,
+            "sick": null,
+            "angry": null,
+            "sleeping": null,
+            "growth": null,
+            "day": 0,
+            "clock": "",
+            "petSeg": null,
+            "petForm": "baby",
+            "stats": null,
+            "bath": null,
+            "mini": null,
+            "scene": "day",
+            "lights": "on",
+            "muted": false,
+            "audio": "none"
+          },
+          "text": "口袋宠物\nPOCKET PAL\n新的开始\n轻松\n普通\n硬核\n普通：标准节奏，需要时常回来照看它。\n帮助\nP 暂停 · H 帮助 · M 静音　　鼠标 / 触屏点击操作"
+        },
+        "after": {
+          "state": {
+            "screen": "room",
+            "overlay": null,
+            "paused": false,
+            "name": "小光",
+            "diff": "normal",
+            "stage": "baby",
+            "form": null,
+            "needs": {
+              "food": 93.9,
+              "mood": 85.2,
+              "clean": 84.4,
+              "energy": 84.2
+            },
+            "sick": false,
+            "angry": false,
+            "sleeping": false,
+            "growth": 4.7,
+            "day": 1,
+            "clock": "08:22",
+            "petSeg": "happy",
+            "petForm": "baby",
+            "stats": {
+              "feed": 1,
+              "berry": 1,
+              "rice": 0,
+              "cake": 0,
+              "plays": 0,
+              "stars": 0,
+              "baths": 0,
+              "sleeps": 0,
+              "sick": 0,
+              "angry": 0,
+              "cures": 0,
+              "soothes": 0,
+              "gifts": 0,
+              "stuffed": 0,
+              "neglect": 0,
+              "nightmares": 0
+            },
+            "bath": null,
+            "mini": null,
+            "scene": "day",
+            "lights": "on",
+            "muted": false,
+            "audio": "running"
+          },
+          "text": "饱食\n94\n心情\n85\n清洁\n84\n体力\n84\n小光 · 幼年\n第 1 天 08:22\n成长 5%\n喂食\n玩耍\n洗澡\n关灯\n治疗\n哄哄\n小光吃得好香！饱食 +15 心情 +6"
+        }
+      },
+      "frames": {
+        "a": "a7e3e7a12eb06c72e8ec1564bbad7614699fe6ea976d87fca6b9d8e996f040a3",
+        "b": "b7ad7b77640bc42e0ca445906630b229a45b432394d17ab9c66ed9005b1cdbcd",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 9870
+    },
+    {
+      "id": "n087",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "A-1\n古典\nヒント閲覧済み\nカフェウォール錯視\n\nCafé Wall Illusion\n\nR. L. Gregory & P. Heard (1979)\n\n鑑賞のしかた\n\n少し離れたところから、作品全体を眺めてください。\n\nヒントを隠す\nどう見える？\n\n白と黒のタイルのあいだを通る灰色の横線が、交互に右上がり・右下がりに傾いて、くさび形に広がったりすぼまったりして見えます。傾きの強さには個人差があります。見えにくい場合は、少し離れてみてください。\n\nしくみを知る\n▶ 確かめる\nガイド線を重ねて、タイルのずれをなくす\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "92605a277d9734f6b458f2eb4d55dc5846119db803de4f178659d88e5c0a2235",
+        "b": "b0e55eb52cea457089539a12e98e0f078792a9ba6394d165f7161db309623e88",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 2719
+    },
+    {
+      "id": "n088",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "A-2\n古典\nヒント閲覧済み\nエビングハウス錯視\n\nEbbinghaus Illusion\n\nH. Ebbinghaus（19 世紀末）\n\n鑑賞のしかた\n\n左右のオレンジ色の円を見比べてください。\n\nヒントを隠す\nどう見える？\n\n大きな円に囲まれた左の円は小さく、小さな円に囲まれた右の円は大きく見えます。大きさの差の感じ方には個人差があります。\n\nしくみを知る\n▶ 確かめる\n周りの円を消して、中央の円を並べる\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "6c6875b7c8d7e53e61c2ebc1db5468ac5dd7dd4b9a01788e98c53d8aaa60b7c8",
+        "b": "8bdbaa2e6135ebea43a5a98a233e96bfa8e5d697766cc06aa490b0e679ff3333",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 2587
+    },
+    {
+      "id": "n089",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "A-3\n古典\nヒント閲覧済み\nミュラー・リヤー錯視\n\nMüller-Lyer Illusion\n\nF. C. Müller-Lyer (1889)\n\n鑑賞のしかた\n\n上下に並んだ 2 本の横線の長さを見比べてください。\n\nヒントを隠す\nどう見える？\n\n両端に外向きの矢羽がついた線のほうが、内向きの矢羽がついた線より長く見えます。差の感じ方には個人差があり、見慣れると弱まることもあります。\n\nしくみを知る\n▶ 確かめる\n矢羽を消して、定規を重ねる\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "8c1aa7318b82f3c9cdabcd189125166c337c7526ca420dc4df687627b4a5c534",
+        "b": "e07d96b3dc12c25f245641ebe556f2372a1c7b2bd45444a79eab6616d26aa0dc",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 2558
+    },
+    {
+      "id": "n090",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "A-4\n古典\nヒント閲覧済み\nきらめき格子錯視\n\nScintillating Grid Illusion\n\nM. Schrauf, B. Lingelbach & E. R. Wist (1997)\n\n鑑賞のしかた\n\n作品全体をぼんやり眺めながら、視線をゆっくり動かしてみてください。\n\n⚠ ちらつくように感じる図柄です。気分が悪くなったら、すぐに鑑賞をやめてください。\n\nヒントを隠す\nどう見える？\n\n格子の交点にある白い円の中に、黒い点がちらちらと現れては消えるように見えます。いま注視している交点には現れません。見え方には個人差があり、見る距離によっても強さが変わります。\n\nしくみを知る\n▶ 確かめる\n交点を拡大する\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "f57eab9c948537b199424e5306d290f8e50b2e1af5038a00fc90b56ed1f7ed8b",
+        "b": "0276eef272032bac9b4240ad907c9f221749e8754851d12be96be7f10d470788",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 3872
+    },
+    {
+      "id": "n091",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "A-5\n古典\nヒント閲覧済み\n周辺ドリフト錯視\n\nPeripheral Drift Illusion\n\nJ. Faubert & A. M. Herbert (1999)／北岡明佳・蘆田宏 (2003)\n\n鑑賞のしかた\n\n作品の中心ではなく、少し外側を見たり、視線をあちこちへ動かしたりしてみてください。\n\n⚠ 動いて見える図柄です。光に敏感な方や、気分が悪くなった方は、すぐに鑑賞をやめてください。\n\nヒントを隠す\nどう見える？\n\n止まっている絵なのに、円環がゆっくり回転しているように見えます。視線を動かしたり、まばたきをしたりすると強まります。まったく動いて見えない人もいますが、異常ではありません。\n\nしくみを知る\n▶ 確かめる\n明るさの並びを拡大して、入れ替える\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "d914bc844227629c244cd591fd2225b68d0529487002e038cb7bd88331169be7",
+        "b": "f6c03c3001dcac0eaa9890c59b907be0cd5eba53f098c459cefe727572c51bfe",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 2869
+    },
+    {
+      "id": "n092",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "A-6\n古典\nヒント閲覧済み\n残像の窓\n\nWindow of Afterimages\n\n補色残像（負の残像）\n\n鑑賞のしかた\n\n「はじめる」を押すと、不思議な色の風景が表示されます。中央の小さな黒い点から目を離さずに、カウントダウンが終わるまで見つめ続けてください。\n\nはじめる\nヒントを隠す\nどう見える？\n\n風景が白黒に切り替わった直後、白黒の写真なのに、一瞬だけ自然な色（青い空、緑の草、赤い花）がついて見えます。数秒で色は消えます。色の見え方や長さには個人差があります。\n\nしくみを知る\n▶ 確かめる\n錐体の順応を図で見る\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "b8a32088bdaaa36800a8d32d345e51fb60c95d0034f9daff8e068b5a7dcf8b24",
+        "b": "74f0bee10a967cd52be65d83c7adf3c0800e516ee9ed01ee9bc0b01db6d48497",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 2618
+    },
+    {
+      "id": "n093",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "B-1\n古典\nヒント閲覧済み\nエイムズの部屋\n\nAmes Room\n\nA. Ames Jr. (1946)\n\n鑑賞のしかた\n\nブースの正面にある覗き穴から、部屋の中を覗いてください。\n\nヒントを隠す\nどう見える？\n\n普通の四角い部屋に見えるのに、左右の隅に立つ 2 体の人形の大きさが極端に違って見えます。どちらも同じ大きさの人形です。差の感じ方には個人差があります。\n\nしくみを知る\n▶ 確かめる\n部屋の本当の形を見る\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "d63f34343dce7b7dcdf150c6b7de03ac438a4a8c3f586fabf7951d08a34fa432",
+        "b": "c7601150abbf9ccf7f83a6e396e3ecf0bca33d0260a2b96410668a5a10259f49",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 2587
+    },
+    {
+      "id": "n094",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "B-2\n古典\nヒント閲覧済み\nペンローズの三角形\n\nPenrose Triangle\n\nO. Reutersvärd (1934)／L. S. Penrose & R. Penrose (1958)\n\n鑑賞のしかた\n\n床の「ここから見る」マークに立ち、台座の上の彫刻を眺めてください。\n\nヒントを隠す\nどう見える？\n\n3 本の角材が互いに直角につながり、ぐるりと一周した三角形に見えます。どの角も正しくつながっているのに、全体としては現実にありえない形です。すぐに三角形に見えない場合は、マークの中心に立ち直してみてください。\n\nしくみを知る\n▶ 確かめる\n横から見る\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "1300a3633e1e7e47e7b5bfb8d3d043e3e89593bd36074bf594f1e17757e223aa",
+        "b": "c7ea3449472052bf04fde9ddfcb176af375130a2691a65cd996b8a02a43f2b47",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 2573
+    },
+    {
+      "id": "n095",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "B-3\n古典\nヒント閲覧済み\nチェッカーシャドウ\n\nChecker Shadow Illusion (3D)\n\nE. H. Adelson (1995)\n\n鑑賞のしかた\n\n市松模様の盤にある「A」と「B」の 2 つのマスの明るさを見比べてください。\n\nヒントを隠す\nどう見える？\n\n円柱の影の外にある A のマスは暗い灰色、影の中にある B のマスは明るい灰色に見えます。多くの人には、はっきり違う色に見えますが、差の感じ方には個人差があります。\n\nしくみを知る\n▶ 確かめる\nA と B をつなげる\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "5ec015f905ef15cfa2c484df132b71a82fb01e0db11f793748756a9766dc8534",
+        "b": "65401f7b567f00b4c25a7197df888449685d7409b9435fcff2d758830286c207",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 2629
+    },
+    {
+      "id": "n096",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "B-4\n古典\nヒント閲覧済み\n逆遠近の街\n\nReverspective City\n\nP. Hughes による「リバースペクティブ」の原理（図柄は独自）\n\n鑑賞のしかた\n\n正面から作品を見ながら、左右にゆっくり動いてください（A / D キー、または画面のドラッグ）。\n\n⚠ 視点を動かすと画面が大きく動いて見えます。酔いやすい方はご注意ください。\n\nヒントを隠す\nどう見える？\n\n壁の奥へ続いているはずの街並みが、こちらの動きを追いかけるように大きく向きを変えて見えます。片目をつぶると、さらに強く感じられることがあります。感じ方には個人差があります。\n\nしくみを知る\n▶ 確かめる\n真横から見る\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "4c34ef99d5214290727550eb0b70fa9ee5c2ab0d318aca91ef737834e4d6818c",
+        "b": "ba79871967c8e1f775e4d0d367c125a73754606978e0b33b9d9102b53fc0fa12",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 2565
+    },
+    {
+      "id": "n097",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "B-5\n古典\nヒント閲覧済み\n回る影\n\nSpinning Silhouette\n\n茅原伸幸 (2003) のシルエット錯視と同じ現象（人型は独自）\n\n鑑賞のしかた\n\nスクリーンに映る、回転する人の影をしばらく眺めてください。\n\nヒントを隠す\nどう見える？\n\n影の人は、右回りにも左回りにも見えます。見ているうちに、回転の向きが突然反転することがあります。最初にどちらに見えるか、反転しやすいかには個人差があります。\n\nしくみを知る\n▶ 確かめる\n奥行きの手がかりを加える\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "44d3dac72895bd35276cc5f2bfb364b964d27fceb71e3b4f6a098a3841c70c17",
+        "b": "13ca0d0c4e01548f9b5023cc32edf70c71c3f0c4ee834fcc609bef2cd1ca0168",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 2555
+    },
+    {
+      "id": "n098",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "C-1\nオリジナル\nヒント閲覧済み\n円とハートのあいだ\n\nBetween a Circle and a Heart\n\n鑑賞のしかた\n\n床の「ここから見る」マークに立ち、台座の上の筒と、その後ろの鏡を見比べてください。\n\nヒントを隠す\nどう見える？\n\n手前の筒の縁は丸い「円」に見えるのに、後ろの鏡に映った姿は「ハート」に見えます。同じ 1 本の筒です。見えにくい場合は、マークの中心に立ち直してみてください。\n\nしくみを知る\n▶ 確かめる\n筒を 180° 回す\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "ca1c4b0e91fb5f681d6cc32257b904d357a3d32cecb6a38263357280fd1f9db1",
+        "b": "2af572e1780a7e6ab9dbf1c8ec02d3ac286fb55c1e96ef1feda1ee20a2f23a55",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 2582
+    },
+    {
+      "id": "n099",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "C-2\nオリジナル\nヒント閲覧済み\n色のない果実\n\nColorless Fruit\n\n色の恒常性（北岡明佳氏の「赤くないイチゴ」で広く知られる現象）\n\n鑑賞のしかた\n\n暗室に入り、テーブルの上の果物を眺めてください。画面をクリック（タップ）すると、その場所の実際の色を調べられます。\n\nヒントを隠す\nどう見える？\n\nシアン色の光に満たされた部屋で、イチゴやリンゴは赤く見えます。ところが、スポイトで果物の色を調べると、灰色の値しか出てきません。赤く見える度合いには個人差があります。\n\nしくみを知る\n▶ 確かめる\n照明を白に切り替える\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "acd0a79f3e5f2de244b72fef03904b8286ce206d50b42eedbe629873c25ad9a6",
+        "b": "efb57217727f23147c6567c1b64b10593f257445231c6711dfe30717b3d9c9c8",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 2576
+    },
+    {
+      "id": "n100",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "C-3\nオリジナル\nヒント閲覧済み\n見えない三角形\n\nThe Invisible Triangle\n\nG. Kanizsa (1955) の主観的輪郭を立体にした作品\n\n鑑賞のしかた\n\n床の「ここから見る」マークに立ち、白い壁の前に吊るされた作品を眺めてください。\n\nヒントを隠す\nどう見える？\n\n空間の中に、周りより少し明るい白い三角形が浮かんで見えます。三角形の輪郭線まで見える人もいます。見え方には個人差があります。\n\nしくみを知る\n▶ 確かめる\n横から見る\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "6b65bb9b3555d0c30be0daf5677e45ee46f54089e0f1071e6ab1fc0743298cac",
+        "b": "3ca6c26f9003fc8ba8606c5f7e26b3f35a540996238788633b6784ce9b520834",
+        "different": true
+      },
+      "viewport": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "height": 900
+      },
+      "pass": true,
+      "elapsedMs": 2738
+    },
+    {
+      "id": "n012",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "pause, seek, play, original sound on/off",
+        "duration": 40,
+        "seek": 27.200000000000003,
+        "advanced": 27.238900000035766,
+        "sound": {
+          "audio": [
+            {
+              "paused": false,
+              "time": 27.453985,
+              "duration": 40
+            }
+          ],
+          "contexts": []
+        }
+      },
+      "frames": {
+        "a": "0fbadd952e52a53f2cdd2ae56d4caae241b885f74d3dfeec3c07694f381b5b4a",
+        "b": "64a4b639cc8a97007a82c2d0c488f9abe6518c61aec15f303fb05e33e67b271f",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3042
+    },
+    {
+      "id": "n015",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "pause, seek, play, original sound on/off",
+        "duration": 40,
+        "seek": 27.200000000000003,
+        "advanced": 27.23689999996424,
+        "sound": {
+          "audio": [
+            {
+              "paused": false,
+              "time": 27.454142,
+              "duration": 40
+            }
+          ],
+          "contexts": []
+        }
+      },
+      "frames": {
+        "a": "d0aa20b7e5005daacb53b3137a91ad4de5c4d4235e22c87ccd5ba7b9909d49fd",
+        "b": "2d200e83ab53de8c892ded56e7ad57577943545143fa4d3138bb83532684ccab",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3109
+    },
+    {
+      "id": "n029",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": "GER JOINT\n困难\n忙碌后厨\nBUSY BACKLINE\n推车出没\n开始\nSTART · Enter\n帮助 H\n← → 选厨房 · ↑ ↓ 选模式 · Enter 开始 · H 帮助 · M 静音\n暂停一下\nPAUSED · 锅里的菜也停了\n继续\nP / Enter\n重新开始\nR\n返回标题\nEsc\nM 静音\n打烊啦！\n0\nNEW BEST!\n出餐\n0\n小费\n0\n超时\n0\n烧焦\n0\n端错\n0\n最佳\n0\n再来一局\nEnter\n返回标题\nEsc\n怎么玩 HOW TO PLAY\n1\n做菜流程：一条龙\n从箱子拿食材\n按住 切 键切菜\n下锅煮 / 下锅煎\n装进盘子\n送到出餐口\n2\n三道菜 (每个厨房点的菜不同)\n番茄汤\n×3\n3 个切好的番茄放进锅里煮\n蔬菜沙拉\n+\n切好的生菜 + 切好的番茄\n汉堡\n+\n+\n面包 + 煎好的肉饼 + 切好的生菜\n3\n操作\n单人 1P\nWASD\n/ 方向键 移动\n空格\nJ\n拿起 / 放下\nK\n按住切菜\nShift\n冲刺\nTab\n切换两位厨师\nP\n暂停 M 静音\n双人合作 2P\nWASD\n1P 移动\n↑←↓→\n2P 移动\nF\nG\n1P 拿放 / 切\n.\n/\n2P 拿放 / 切\n左Shift\n1P 冲刺\n右Shift\n2P 冲刺 (Num1/2)\n订单超时会扣分\n出餐越快，小费越多\n煮过头会烧焦：倒进垃圾桶\n端错菜会被退回\nEsc / Enter / H 返回"
+        },
+        "after": {
+          "state": "countdown",
+          "text": "USY BACKLINE\n推车出没\n开始\nSTART · Enter\n帮助 H\n← → 选厨房 · ↑ ↓ 选模式 · Enter 开始 · H 帮助 · M 静音\n简单 · 街角小馆 · 单人\n开工！\n暂停一下\nPAUSED · 锅里的菜也停了\n继续\nP / Enter\n重新开始\nR\n返回标题\nEsc\nM 静音\n打烊啦！\n0\nNEW BEST!\n出餐\n0\n小费\n0\n超时\n0\n烧焦\n0\n端错\n0\n最佳\n0\n再来一局\nEnter\n返回标题\nEsc\n怎么玩 HOW TO PLAY\n1\n做菜流程：一条龙\n从箱子拿食材\n按住 切 键切菜\n下锅煮 / 下锅煎\n装进盘子\n送到出餐口\n2\n三道菜 (每个厨房点的菜不同)\n番茄汤\n×3\n3 个切好的番茄放进锅里煮\n蔬菜沙拉\n+\n切好的生菜 + 切好的番茄\n汉堡\n+\n+\n面包 + 煎好的肉饼 + 切好的生菜\n3\n操作\n单人 1P\nWASD\n/ 方向键 移动\n空格\nJ\n拿起 / 放下\nK\n按住切菜\nShift\n冲刺\nTab\n切换两位厨师\nP\n暂停 M 静音\n双人合作 2P\nWASD\n1P 移动\n↑←↓→\n2P 移动\nF\nG\n1P 拿放 / 切\n.\n/\n2P 拿放 / 切\n左Shift\n1P 冲刺\n右Shift\n2P 冲刺 (Num1/2)\n订单超时会扣分\n出餐越快，小费越多\n煮过头会烧焦：倒进垃圾桶\n端错菜会被退回\nEsc / Enter / H 返回"
+        }
+      },
+      "frames": {
+        "a": "c5082866b3d03b8f72bd8705ae5a9f0034bc6d431d49e8786e71242b2ba0cd71",
+        "b": "2324ab57ccc2173963849e1adb4560643a7d3d77a1c2b3f28b548d49dc9b9dc7",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3150
+    },
+    {
+      "id": "n030",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": "AL LAP\n阳光卡丁车\n阳光卡丁车\n阳光卡丁车\nSUNNY KART\n海边赛道三圈定胜负，漂移攒火花、抢道具，冲上领奖台！\n选择难度 · CC\n简单50cc\n普通100cc\n困难150cc\n开始比赛ENTER\n玩法H\n最佳成绩 · 普通 100cc\n暂无纪录，快来创造！\n↑/W 油门 · ↓/S 刹车倒车 · ←→/A D 转向 · 转向时按住 Shift/空格 漂移 · X/J 道具 · P 暂停 · H 玩法 · M 静音\n玩法说明HOW TO PLAY\n操作 CONTROLS\n↑\nW\n油门加速\n↓\nS\n刹车 / 倒车\n←\n→\nA\nD\n左右转向\nShift\n空格\n转向时按住 = 漂移\nX\nJ\n使用道具\nP\nH\nM\n暂停 · 玩法 · 静音\n漂移火花 DRIFT\n蓝\n›\n橙\n›\n紫\n按住越久火花越亮\n松开即获得加速！\n道具 ITEMS\n加速火箭\n瞬间冲刺，沙地也不减速\n香蕉皮\n丢在身后，踩到就打滑转圈\n泡泡护盾\n挡下一次香蕉皮或弹弹球\n弹弹球\n向前弹出，会追着前车跑\n撞碎彩虹道具箱拿道具\n压过橙色加速带会冲刺\n三圈定胜负 · 沙地草地会减速 · 排名看圈数和进度 · 前三名登上领奖台！\n知道了H / ESC\n暂停\nPAUSED\n-\n继续比赛P\n重新开始R\n返回标题ESC\n比赛结果RESULTS\n第1名\n冠军！阳光杯归你啦！\nNEW BEST!\n再来一局ENTER\n返回标题ESC"
+        },
+        "after": {
+          "state": "countdown",
+          "text": "AL LAP\n阳光卡丁车\n阳光卡丁车\n阳光卡丁车\nSUNNY KART\n海边赛道三圈定胜负，漂移攒火花、抢道具，冲上领奖台！\n选择难度 · CC\n简单50cc\n普通100cc\n困难150cc\n开始比赛ENTER\n玩法H\n最佳成绩 · 普通 100cc\n暂无纪录，快来创造！\n↑/W 油门 · ↓/S 刹车倒车 · ←→/A D 转向 · 转向时按住 Shift/空格 漂移 · X/J 道具 · P 暂停 · H 玩法 · M 静音\n玩法说明HOW TO PLAY\n操作 CONTROLS\n↑\nW\n油门加速\n↓\nS\n刹车 / 倒车\n←\n→\nA\nD\n左右转向\nShift\n空格\n转向时按住 = 漂移\nX\nJ\n使用道具\nP\nH\nM\n暂停 · 玩法 · 静音\n漂移火花 DRIFT\n蓝\n›\n橙\n›\n紫\n按住越久火花越亮\n松开即获得加速！\n道具 ITEMS\n加速火箭\n瞬间冲刺，沙地也不减速\n香蕉皮\n丢在身后，踩到就打滑转圈\n泡泡护盾\n挡下一次香蕉皮或弹弹球\n弹弹球\n向前弹出，会追着前车跑\n撞碎彩虹道具箱拿道具\n压过橙色加速带会冲刺\n三圈定胜负 · 沙地草地会减速 · 排名看圈数和进度 · 前三名登上领奖台！\n知道了H / ESC\n暂停\nPAUSED\n-\n继续比赛P\n重新开始R\n返回标题ESC\n比赛结果RESULTS\n第1名\n冠军！阳光杯归你啦！\nNEW BEST!\n再来一局ENTER\n返回标题ESC"
+        }
+      },
+      "frames": {
+        "a": "02d02f4a690d08d7a59a5f886d8fe112d52f48bf989b84c1d700866739136726",
+        "b": "35ad639dd7e4ef089e8d3420ff81b29f517ce471d9887d4d5ed9fe54eccdc7d8",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3266
+    },
+    {
+      "id": "n031",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": ""
+        },
+        "after": {
+          "state": "intro",
+          "text": ""
+        }
+      },
+      "frames": {
+        "a": "cb32a98e59427450add1e6d5d6dd6091f805606d16ea95ad9cd0951ae890cf9a",
+        "b": "9fdc874048a6355cb3173316e5b27bcd83937ed761915fadae9fbe6cd6ac3b89",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3340
+    },
+    {
+      "id": "n032",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": "束\n最高 0\n街机 60秒\n特殊香蕉 · 炸弹扣 10 分\n最高 0\n禅意 90秒\n没有炸弹 · 静心切果\n最高 0\n帮助\nH\n难度\n简单\n普通\n困难\n开始\nEnter\n按住鼠标或手指快速划过水果 · 切开圆环中的水果即可开局 · ←→ 模式 ↑↓ 难度 · Enter 开始 · H 帮助 · M 静音\n刀客心法\nHOW TO PLAY\n划 · 切\n按住鼠标（或手指）快速划过水果\n动作太慢可切不开哦\n三连击 +3\n连 · 击\n一刀切开 3 个以上水果得连击奖励\n正中快切有机会暴击 +10\n炸 · 弹\n千万别碰黑色炸弹！\n经典模式直接结束，街机扣 10 分\n失 · 误\n经典模式：漏掉 3 个水果\n游戏就结束了\n冰冻\n双倍\n狂热\n特殊香蕉\n仅在街机模式出现，切开即生效\n冰冻减速 · 双倍得分 · 狂热果潮\nP\n暂停\nM\n静音\nH\n帮助\nEsc\n返回\n模式 · 按键\n经典 3 条命 · 街机 60 秒 · 禅意 90 秒\n禅意模式没有炸弹，尽情切吧\n按 H / Esc / Enter 关闭\n暂停\nPAUSED\n继续游戏 · P\n重新开始 · R\n操作说明 · H\n返回标题 · Esc\n↑↓ 选择 · Enter 确认\n时间到！\n街机 · 普通\n得分\n0\n切开水果\n最佳连击\n最长连斩\n命中率\n0\n0\n0\n0%\n本模式最高 0\n再来一局\nEnter\n返回标题\nEsc\n新纪录\nNEW BEST"
+        },
+        "after": {
+          "state": "playing",
+          "text": "束\n最高 0\n街机 60秒\n特殊香蕉 · 炸弹扣 10 分\n最高 0\n禅意 90秒\n没有炸弹 · 静心切果\n最高 0\n帮助\nH\n难度\n简单\n普通\n困难\n开始\nEnter\n按住鼠标或手指快速划过水果 · 切开圆环中的水果即可开局 · ←→ 模式 ↑↓ 难度 · Enter 开始 · H 帮助 · M 静音\n刀客心法\nHOW TO PLAY\n划 · 切\n按住鼠标（或手指）快速划过水果\n动作太慢可切不开哦\n三连击 +3\n连 · 击\n一刀切开 3 个以上水果得连击奖励\n正中快切有机会暴击 +10\n炸 · 弹\n千万别碰黑色炸弹！\n经典模式直接结束，街机扣 10 分\n失 · 误\n经典模式：漏掉 3 个水果\n游戏就结束了\n冰冻\n双倍\n狂热\n特殊香蕉\n仅在街机模式出现，切开即生效\n冰冻减速 · 双倍得分 · 狂热果潮\nP\n暂停\nM\n静音\nH\n帮助\nEsc\n返回\n模式 · 按键\n经典 3 条命 · 街机 60 秒 · 禅意 90 秒\n禅意模式没有炸弹，尽情切吧\n按 H / Esc / Enter 关闭\n暂停\nPAUSED\n继续游戏 · P\n重新开始 · R\n操作说明 · H\n返回标题 · Esc\n↑↓ 选择 · Enter 确认\n时间到！\n街机 · 普通\n得分\n0\n切开水果\n最佳连击\n最长连斩\n命中率\n0\n0\n0\n0%\n本模式最高 0\n再来一局\nEnter\n返回标题\nEsc\n新纪录\nNEW BEST"
+        }
+      },
+      "frames": {
+        "a": "4462f83584db46556ebb446301341ba55ec14d9f68612e9eab0be87df8efd559",
+        "b": "d3bda94edc2c14e9193d09b77d214f15c9ae01fa92fe661635a309f9a070a0cb",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 4270
+    },
+    {
+      "id": "n033",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": "次\n撑过所有波次\n大波来袭前会有提示，\n僵尸进家门就失败！\n暖阳葵\n50\n定时产出阳光，经济之本\n冷却 7 秒\n豌豆炮\n100\n朝前方一颗颗发射豌豆\n冷却 7 秒\n连发豆\n200\n一次连射两颗，火力翻倍\n冷却 8 秒\n霜冻豆\n175\n冰豆让僵尸变蓝、减速\n冷却 8 秒\n土豆盾\n50\n超级耐啃，替大家挡住僵尸\n冷却 20 秒 · 越啃越破\n辣椒爆弹\n150\n种下即爆，炸飞周围 3×3\n冷却 30 秒 · 一次性\n普通僵尸\n慢吞吞，见啥啃啥\n路锥僵尸\n头顶路锥，更耐打\n水桶僵尸\n铁皮水桶，超级硬\n跑跑僵尸\n受伤后撒腿狂奔\n晾衣杆僵尸\n撑杆跳过第一株植物\n操作方式\n鼠标：点卡片 → 点草地格子种植\n点击阳光收集 · 右键 / Esc 取消\n铲子：点铲子再点植物即可移除\n键盘：1–6 选卡 · 方向键移动光标\n空格 / 回车：种植、铲除、收阳光\nS 铲子 · P 暂停 · H 帮助 · M 静音\n知道了！\nEnter\n暂停一下\n继续游戏\nP\n重新开始\nR\n返回标题\nQ\nH 帮助 · M 静音 · Esc 继续\n僵尸闯进家门啦！\n打扰啦～\n本局得分\n坚持到\n击败僵尸\n收集阳光\n种下植物\n用时\n新纪录 NEW BEST\n再试一次\nEnter\n返回标题\nEsc\n花园守住啦！\n本局得分\n击败僵尸\n收集阳光\n剩余小推车\n种下植物\n用时\n新纪录 NEW BEST\n再来一局\nEnter\n返回标题\nEsc"
+        },
+        "after": {
+          "state": "countdown",
+          "text": "，\n僵尸进家门就失败！\n暖阳葵\n50\n定时产出阳光，经济之本\n冷却 7 秒\n豌豆炮\n100\n朝前方一颗颗发射豌豆\n冷却 7 秒\n连发豆\n200\n一次连射两颗，火力翻倍\n冷却 8 秒\n霜冻豆\n175\n冰豆让僵尸变蓝、减速\n冷却 8 秒\n土豆盾\n50\n超级耐啃，替大家挡住僵尸\n冷却 20 秒 · 越啃越破\n辣椒爆弹\n150\n种下即爆，炸飞周围 3×3\n冷却 30 秒 · 一次性\n普通僵尸\n慢吞吞，见啥啃啥\n路锥僵尸\n头顶路锥，更耐打\n水桶僵尸\n铁皮水桶，超级硬\n跑跑僵尸\n受伤后撒腿狂奔\n晾衣杆僵尸\n撑杆跳过第一株植物\n操作方式\n鼠标：点卡片 → 点草地格子种植\n点击阳光收集 · 右键 / Esc 取消\n铲子：点铲子再点植物即可移除\n键盘：1–6 选卡 · 方向键移动光标\n空格 / 回车：种植、铲除、收阳光\nS 铲子 · P 暂停 · H 帮助 · M 静音\n知道了！\nEnter\n暂停一下\n继续游戏\nP\n重新开始\nR\n返回标题\nQ\nH 帮助 · M 静音 · Esc 继续\n僵尸闯进家门啦！\n打扰啦～\n本局得分\n坚持到\n击败僵尸\n收集阳光\n种下植物\n用时\n新纪录 NEW BEST\n再试一次\nEnter\n返回标题\nEsc\n花园守住啦！\n本局得分\n击败僵尸\n收集阳光\n剩余小推车\n种下植物\n用时\n新纪录 NEW BEST\n再来一局\nEnter\n返回标题\nEsc\n开始守护！\n收集阳光 · 种下植物"
+        }
+      },
+      "frames": {
+        "a": "0ba0d65a9be0548d977480011168a14c9919b3144a97d4924743e4dd577c99c7",
+        "b": "2f5d3b492a6c7b01b92b0c74cf1218b4ed8b0c81ac2e5ad110680b2b272baba3",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3145
+    },
+    {
+      "id": "n034",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": " 静音\n泡\n泡\n海\nBUBBLE REEF\n— 水彩海底 · 泡泡射击 —\n模式\n难度\n冒险模式\n无尽模式\n简单\n普通\n困难\n5 种颜色 · 标准节奏 · 冒险 12 关\n开始游戏\n帮助\n音效：开\n最高分（普通）　冒险 0　·　无尽 0\n鼠标瞄准 · 点击发射　← → 调整角度　空格 发射　↑ 交换　P 暂停　H 帮助　M 静音\n选择关卡\n1\n浅滩初游\n2\n珊瑚拱门\n3\n海星花园\n4\n冰封礁石\n5\n水母之舞\n6\n漩涡洞穴\n7\n海龟迁徙\n8\n沉船宝藏\n9\n海马峡谷\n10\n章鱼迷宫\n11\n冰川暗流\n12\n深海之心\n返回\n开始\n游戏帮助\n操作\n鼠标移动\n瞄准\n鼠标点击\n发射泡泡\n← →\n调整发射角度\n空格\n发射泡泡\n↑\n交换当前与下一个泡泡\nP / H / M\n暂停 / 帮助 / 静音\n规则\n同色泡泡连成 3 个及以上就会消除\n失去连接的泡泡会变成小鱼游走，额外加分\n泡泡可以碰左右墙壁反弹，瞄准线会显示路径\n每发射若干次，泡泡阵整体下降一行\n泡泡压过底部警戒线就失败\n特殊泡泡\n彩虹泡\n可以匹配任意颜色\n河豚炸弹泡\n落下后炸掉周围一圈泡泡\n冰冻泡\n先打一次解冻，之后才能消除\n闪电泡\n消除所在的整行泡泡\n颜色与海洋生物（方便色弱玩家辨认）\n小丑鱼\n橙色\n海龟\n绿色\n海马\n蓝色\n水母\n紫色\n海星\n黄色\n章鱼\n红色\n返回\nEsc / H\n暂停\n继续\n重新开始\n返回标题\n按钮\n按钮\n按钮\n新纪录！"
+        },
+        "after": {
+          "state": "levels",
+          "text": "模式\n无尽模式\n简单\n普通\n困难\n5 种颜色 · 标准节奏 · 冒险 12 关\n开始游戏\n帮助\n音效：开\n最高分（普通）　冒险 0　·　无尽 0\n鼠标瞄准 · 点击发射　← → 调整角度　空格 发射　↑ 交换　P 暂停　H 帮助　M 静音\n选择关卡\n冒险模式 · 普通 · 已解锁 1 / 12 · 星星 0 / 36\n1\n浅滩初游\n2\n珊瑚拱门\n3\n海星花园\n4\n冰封礁石\n5\n水母之舞\n6\n漩涡洞穴\n7\n海龟迁徙\n8\n沉船宝藏\n9\n海马峡谷\n10\n章鱼迷宫\n11\n冰川暗流\n12\n深海之心\n第 11 关尚未解锁\n返回\n开始\n游戏帮助\n操作\n鼠标移动\n瞄准\n鼠标点击\n发射泡泡\n← →\n调整发射角度\n空格\n发射泡泡\n↑\n交换当前与下一个泡泡\nP / H / M\n暂停 / 帮助 / 静音\n规则\n同色泡泡连成 3 个及以上就会消除\n失去连接的泡泡会变成小鱼游走，额外加分\n泡泡可以碰左右墙壁反弹，瞄准线会显示路径\n每发射若干次，泡泡阵整体下降一行\n泡泡压过底部警戒线就失败\n特殊泡泡\n彩虹泡\n可以匹配任意颜色\n河豚炸弹泡\n落下后炸掉周围一圈泡泡\n冰冻泡\n先打一次解冻，之后才能消除\n闪电泡\n消除所在的整行泡泡\n颜色与海洋生物（方便色弱玩家辨认）\n小丑鱼\n橙色\n海龟\n绿色\n海马\n蓝色\n水母\n紫色\n海星\n黄色\n章鱼\n红色\n返回\nEsc / H\n暂停\n继续\n重新开始\n返回标题\n按钮\n按钮\n按钮\n新纪录！"
+        }
+      },
+      "frames": {
+        "a": "156a332d93d3b993ecdf23de46ea5fb4bdea5d82de0f4194d13633882e0be4a5",
+        "b": "4cb3bf6786ea1d92165cc14109eaab0972be1392c0688c1ec990ad91c6244ca6",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3226
+    },
+    {
+      "id": "n035",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": {
+            "state": "title",
+            "mode": "demo",
+            "diff": "normal",
+            "level": 1,
+            "score": 0,
+            "lives": 3,
+            "bricksLeft": 102,
+            "balls": 1,
+            "combo": 0,
+            "maxCombo": 0,
+            "eff": {
+              "expand": 0,
+              "shrink": 0,
+              "slow": 0,
+              "fast": 0,
+              "laser": 0,
+              "sticky": 0,
+              "fire": 0
+            },
+            "best": {
+              "easy": 0,
+              "normal": 0,
+              "hard": 0
+            },
+            "auto": false,
+            "audio": "not started"
+          },
+          "text": "助 · M 静音\n游戏帮助\nHOW TO PLAY\n操作说明\n砖块图鉴\n道具图鉴\n/\nA\nD\n移动挡板\n鼠标\n挡板跟随鼠标\n空格\n/\n点击\n发射小球 / 激光\nP\n暂停\nH\n帮助\nM\n静音\n玩法规则\n打碎全部可破坏的砖块即可过关\n球落在挡板边缘，反弹得更斜\n不碰挡板连续打碎＝连击，倍率最高 ×8\n共 3 条命，漏掉所有球扣一条命\n普通糖块\n一击就碎的 Q 弹果冻\n硬糖\n要打 2～3 下，裂纹越来越深\n巧克力块\n坚硬无比，打不碎\n跳跳糖\n碎掉时炸掉周围一圈\n礼物糖\n打碎后掉落道具\n长\n加长挡板\n挡板变长 15 秒\n好道具\n多\n多球\n每颗球分裂成 3 颗\n好道具\n慢\n慢速\n球速变慢 12 秒\n好道具\n光\n激光\n8 秒内按空格发射激光\n好道具\n黏\n黏球\n接住球，再按空格发射\n好道具\n火\n火球\n8 秒内穿透砖块\n好道具\n短\n缩短挡板\n挡板变短 12 秒\n坏道具\n快\n加速\n球速变快 10 秒\n坏道具\n按 H / Esc / 空格 或点击任意处返回\n暂停中\n继续游戏\n重新开始本关\n返回标题\nP / Esc 继续 · ↑↓ 选择 · 回车确认\n-\n-\n砖块得分\n连击奖励\n时间奖励\n本关合计\n-\n游戏结束\nGAME OVER\n最终得分\n0\n-\n-\n新纪录\nNEW BEST\n再来一局\n返回标题\n全部通关！\n糖果王国的生日派对开始啦！\n最终得分\n0\n-\n-\n新纪录\nNEW BEST\n再来一局\n返回标题"
+        },
+        "after": {
+          "state": {
+            "state": "play",
+            "mode": "game",
+            "diff": "normal",
+            "level": 1,
+            "score": 50,
+            "lives": 3,
+            "bricksLeft": 90,
+            "balls": 1,
+            "combo": 1,
+            "maxCombo": 1,
+            "eff": {
+              "expand": 0,
+              "shrink": 0,
+              "slow": 0,
+              "fast": 0,
+              "laser": 0,
+              "sticky": 0,
+              "fire": 0
+            },
+            "best": {
+              "easy": 0,
+              "normal": 0,
+              "hard": 0
+            },
+            "auto": false,
+            "audio": "running song=game"
+          },
+          "text": "助 · M 静音\n游戏帮助\nHOW TO PLAY\n操作说明\n砖块图鉴\n道具图鉴\n/\nA\nD\n移动挡板\n鼠标\n挡板跟随鼠标\n空格\n/\n点击\n发射小球 / 激光\nP\n暂停\nH\n帮助\nM\n静音\n玩法规则\n打碎全部可破坏的砖块即可过关\n球落在挡板边缘，反弹得更斜\n不碰挡板连续打碎＝连击，倍率最高 ×8\n共 3 条命，漏掉所有球扣一条命\n普通糖块\n一击就碎的 Q 弹果冻\n硬糖\n要打 2～3 下，裂纹越来越深\n巧克力块\n坚硬无比，打不碎\n跳跳糖\n碎掉时炸掉周围一圈\n礼物糖\n打碎后掉落道具\n长\n加长挡板\n挡板变长 15 秒\n好道具\n多\n多球\n每颗球分裂成 3 颗\n好道具\n慢\n慢速\n球速变慢 12 秒\n好道具\n光\n激光\n8 秒内按空格发射激光\n好道具\n黏\n黏球\n接住球，再按空格发射\n好道具\n火\n火球\n8 秒内穿透砖块\n好道具\n短\n缩短挡板\n挡板变短 12 秒\n坏道具\n快\n加速\n球速变快 10 秒\n坏道具\n按 H / Esc / 空格 或点击任意处返回\n暂停中\n继续游戏\n重新开始本关\n返回标题\nP / Esc 继续 · ↑↓ 选择 · 回车确认\n-\n-\n砖块得分\n连击奖励\n时间奖励\n本关合计\n-\n游戏结束\nGAME OVER\n最终得分\n0\n-\n-\n新纪录\nNEW BEST\n再来一局\n返回标题\n全部通关！\n糖果王国的生日派对开始啦！\n最终得分\n0\n-\n-\n新纪录\nNEW BEST\n再来一局\n返回标题"
+        }
+      },
+      "frames": {
+        "a": "f3106d57f071aa8aad4d19df5e0b1e01dc902c263097810af320628e0a2c345d",
+        "b": "7d5a3b53a4df2233932ac4a9dae7ba29302fcc74e423732470c1487aae7278a7",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3279
+    },
+    {
+      "id": "n036",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": "title",
+          "text": "\n↑↓ 选择　←→ 切换难度　Enter / Z 确认　H 帮助　M 静音　（最高分按难度分别记录）\n帮助说明\n按 Enter / Esc / H 返回\n操作\n方向键 / WASD\n移动战机\nZ / 空格\n射击（按住连发）\nX\n炸弹：清屏 + 短暂无敌\nC\n必杀：能量满时发动星爆光束\nShift\n低速精确移动，显示判定点\nP / Esc\n暂停　H 帮助　M 静音\n道具\n火力升级\n单发 → 双发 → 散射 → 激光（满级后改为加分）\n炸弹 +1\n清除全部敌弹并重创敌机，期间短暂无敌\n护盾\n自动抵挡一次伤害，挡下后护盾碎裂\n擦弹与必杀\n擦！\n敌弹贴着机身擦过即为「擦弹」，\n每次擦弹都会加分并积累必杀能量。\n能量满 100% 后按 C 发动必杀：\n巨型星爆光束贯穿全屏，期间无敌。\n判定点只有机身中央的小圆点，\n按住 Shift 可见，且移动更精准。\n关卡与难度\n共 3 关：城市上空 → 陨石带 → 敌方母舰，\n每关结尾都有多阶段弹幕的 Boss 战。\n简单：弹幕稀疏、判定点更小、炸弹更多\n普通：标准挑战\n困难：弹幕更密、敌人更耐打\n共 3 条命 · 最高分按难度自动保存\n赤隼号坠毁了……\n下回分解：英雄绝不认输！\n最终得分\n最高分\n新纪录\n再来一局\n返回标题\n全剧终 · 新港市重获和平！\n铁颚大帝被击败了！\n……真的结束了吗？敬请期待下一期！\n最终得分\n最高分\n新纪录\n再来一局\n返回标题"
+        },
+        "after": {
+          "state": "play",
+          "text": "\n↑↓ 选择　←→ 切换难度　Enter / Z 确认　H 帮助　M 静音　（最高分按难度分别记录）\n帮助说明\n按 Enter / Esc / H 返回\n操作\n方向键 / WASD\n移动战机\nZ / 空格\n射击（按住连发）\nX\n炸弹：清屏 + 短暂无敌\nC\n必杀：能量满时发动星爆光束\nShift\n低速精确移动，显示判定点\nP / Esc\n暂停　H 帮助　M 静音\n道具\n火力升级\n单发 → 双发 → 散射 → 激光（满级后改为加分）\n炸弹 +1\n清除全部敌弹并重创敌机，期间短暂无敌\n护盾\n自动抵挡一次伤害，挡下后护盾碎裂\n擦弹与必杀\n擦！\n敌弹贴着机身擦过即为「擦弹」，\n每次擦弹都会加分并积累必杀能量。\n能量满 100% 后按 C 发动必杀：\n巨型星爆光束贯穿全屏，期间无敌。\n判定点只有机身中央的小圆点，\n按住 Shift 可见，且移动更精准。\n关卡与难度\n共 3 关：城市上空 → 陨石带 → 敌方母舰，\n每关结尾都有多阶段弹幕的 Boss 战。\n简单：弹幕稀疏、判定点更小、炸弹更多\n普通：标准挑战\n困难：弹幕更密、敌人更耐打\n共 3 条命 · 最高分按难度自动保存\n赤隼号坠毁了……\n下回分解：英雄绝不认输！\n最终得分\n最高分\n新纪录\n再来一局\n返回标题\n全剧终 · 新港市重获和平！\n铁颚大帝被击败了！\n……真的结束了吗？敬请期待下一期！\n最终得分\n最高分\n新纪录\n再来一局\n返回标题"
+        }
+      },
+      "frames": {
+        "a": "d6dc0cfa6b4c5017166b2d9972c925a5814ff5fd439df1ceae44176d441b3bfc",
+        "b": "fab3dca35ba25e35a52d08a37b5fe44d25c36a69f23344b2905122b790ec4d17",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3264
+    },
+    {
+      "id": "n037",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "observe native SVG animation at two times"
+      },
+      "frames": {
+        "a": "fc0f3a23845fe44f0ebaa2f2a549c3df52bb009aca559f1ad43b5aea5e2c6b0b",
+        "b": "bef687a38eae590627c1e2a73df456cb80e7a968b9591551a15e2b4287aa2f05",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3981
+    },
+    {
+      "id": "n038",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "observe native SVG animation at two times"
+      },
+      "frames": {
+        "a": "3e41c90b252db4618c88d95273134fdbee00ac246d31c4bb6ce81b992cb072af",
+        "b": "24aefcab96c5452797d5dce03246b4e7c8de332cbf60e282333d1382705cdf69",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 4009
+    },
+    {
+      "id": "n039",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "observe native SVG animation at two times"
+      },
+      "frames": {
+        "a": "1f955df301db61bc3972f5de3097217034d64ad37ca3504bf9ee056a09f0874a",
+        "b": "897c85bc5dd76d935cbf94899f7d244c4ed2ea316597ee9e0b1194135bbdff3e",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3837
+    },
+    {
+      "id": "n040",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "observe native SVG animation at two times"
+      },
+      "frames": {
+        "a": "4c274e817d3d4d6c27e25a9784e7f4fedfdc436cd4cce20fb1c43d2e75171ce6",
+        "b": "2f8b279508fc84b82fd101b22dad851e209b82a96b581eb1b330759663b9acd1",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3816
+    },
+    {
+      "id": "n041",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "observe native SVG animation at two times"
+      },
+      "frames": {
+        "a": "0d31b47905e7c2ebcd4bc0e7090e77988127b1640760eddcca6b7e8dd4dc46c9",
+        "b": "4acb51e9891a0b236ce9b44997cef9b6b3e120c006f6f55d44149440a1b101db",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3791
+    },
+    {
+      "id": "n042",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": null,
+          "text": "果冻跳跳\nJELLY HOP\n选择难度\n简单\n最高 0\n普通\n最高 0\n困难\n最高 0\n开始游戏\n玩法帮助\n按住 空格 / 鼠标 / 触屏 蓄力，松开起跳 · P 暂停 · H 帮助 · M 静音\n点击屏幕或按空格也能直接开始"
+        },
+        "after": {
+          "state": null,
+          "text": "得分\n0\n最高0\n连击×1"
+        }
+      },
+      "frames": {
+        "a": "668fc3b1ae0d2299d760dc559384215774c3ac850a3f034e239eac7fe70a19c9",
+        "b": "08766ecaaae59fea2fe19b5b35cc1fe4df24e90323aed6e20f9d256b50d56545",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3375
+    },
+    {
+      "id": "n043",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "start original game and use its primary input",
+        "before": {
+          "state": {
+            "screen": "title",
+            "overlay": null,
+            "paused": false,
+            "name": null,
+            "diff": null,
+            "stage": null,
+            "form": null,
+            "needs": null,
+            "sick": null,
+            "angry": null,
+            "sleeping": null,
+            "growth": null,
+            "day": 0,
+            "clock": "",
+            "petSeg": null,
+            "petForm": "baby",
+            "stats": null,
+            "bath": null,
+            "mini": null,
+            "scene": "day",
+            "lights": "on",
+            "muted": false,
+            "audio": "none"
+          },
+          "text": "口袋宠物\nPOCKET PAL\n新的开始\n轻松\n普通\n硬核\n普通：标准节奏，需要时常回来照看它。\n帮助\nP 暂停 · H 帮助 · M 静音　　鼠标 / 触屏点击操作"
+        },
+        "after": {
+          "state": {
+            "screen": "room",
+            "overlay": null,
+            "paused": false,
+            "name": "小光",
+            "diff": "normal",
+            "stage": "baby",
+            "form": null,
+            "needs": {
+              "food": 94,
+              "mood": 85.3,
+              "clean": 84.4,
+              "energy": 84.3
+            },
+            "sick": false,
+            "angry": false,
+            "sleeping": false,
+            "growth": 4.6,
+            "day": 1,
+            "clock": "08:20",
+            "petSeg": "happy",
+            "petForm": "baby",
+            "stats": {
+              "feed": 1,
+              "berry": 1,
+              "rice": 0,
+              "cake": 0,
+              "plays": 0,
+              "stars": 0,
+              "baths": 0,
+              "sleeps": 0,
+              "sick": 0,
+              "angry": 0,
+              "cures": 0,
+              "soothes": 0,
+              "gifts": 0,
+              "stuffed": 0,
+              "neglect": 0,
+              "nightmares": 0
+            },
+            "bath": null,
+            "mini": null,
+            "scene": "day",
+            "lights": "on",
+            "muted": false,
+            "audio": "running"
+          },
+          "text": "饱食\n94\n心情\n85\n清洁\n84\n体力\n84\n小光 · 幼年\n第 1 天 08:20\n成长 5%\n喂食\n玩耍\n洗澡\n关灯\n治疗\n哄哄\n小光吃得好香！饱食 +15 心情 +6"
+        }
+      },
+      "frames": {
+        "a": "8c6de93b46a2ba241b85c031b273ab0a278e7994e2f32c944d114cf081857a63",
+        "b": "c4681d4f5f071e2724ce3bd9c0ba9e7ebba1c65a9c9d7f12b6bc714ea6b3a909",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 9654
+    },
+    {
+      "id": "n087",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "A-1\n古典\nヒント閲覧済み\nカフェウォール錯視\n\nCafé Wall Illusion\n\nR. L. Gregory & P. Heard (1979)\n\n鑑賞のしかた\n\n少し離れたところから、作品全体を眺めてください。\n\nヒントを隠す\nどう見える？\n\n白と黒のタイルのあいだを通る灰色の横線が、交互に右上がり・右下がりに傾いて、くさび形に広がったりすぼまったりして見えます。傾きの強さには個人差があります。見えにくい場合は、少し離れてみてください。\n\nしくみを知る\n▶ 確かめる\nガイド線を重ねて、タイルのずれをなくす\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "d586b6c319b01ce9426e66a381bfb9a4b515b93558e70d3a4a5efed559b98b1e",
+        "b": "77e31bd34174b7583329e1def9fe3fa75d4772ff867ab38da9252f7e6f72ba8a",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 2670
+    },
+    {
+      "id": "n088",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "A-2\n古典\nヒント閲覧済み\nエビングハウス錯視\n\nEbbinghaus Illusion\n\nH. Ebbinghaus（19 世紀末）\n\n鑑賞のしかた\n\n左右のオレンジ色の円を見比べてください。\n\nヒントを隠す\nどう見える？\n\n大きな円に囲まれた左の円は小さく、小さな円に囲まれた右の円は大きく見えます。大きさの差の感じ方には個人差があります。\n\nしくみを知る\n▶ 確かめる\n周りの円を消して、中央の円を並べる\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "895e21b76e01ccb6bdf003e323fe336b9d5ae9220cd7de8ad85f305ab854026b",
+        "b": "da300a2256284b82e72ceca61f6c3bc420dda230b40cc2c2c23c0fc679ffd349",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 2647
+    },
+    {
+      "id": "n089",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "A-3\n古典\nヒント閲覧済み\nミュラー・リヤー錯視\n\nMüller-Lyer Illusion\n\nF. C. Müller-Lyer (1889)\n\n鑑賞のしかた\n\n上下に並んだ 2 本の横線の長さを見比べてください。\n\nヒントを隠す\nどう見える？\n\n両端に外向きの矢羽がついた線のほうが、内向きの矢羽がついた線より長く見えます。差の感じ方には個人差があり、見慣れると弱まることもあります。\n\nしくみを知る\n▶ 確かめる\n矢羽を消して、定規を重ねる\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "e73f085896c01281be1836500f4f7d620c0971bbe4effc1592351c5b4a8667f4",
+        "b": "7462692a961a0581d78aae99c1c3342c1b924b26b4de8b248f0104809e8294d4",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 2827
+    },
+    {
+      "id": "n090",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "A-4\n古典\nヒント閲覧済み\nきらめき格子錯視\n\nScintillating Grid Illusion\n\nM. Schrauf, B. Lingelbach & E. R. Wist (1997)\n\n鑑賞のしかた\n\n作品全体をぼんやり眺めながら、視線をゆっくり動かしてみてください。\n\n⚠ ちらつくように感じる図柄です。気分が悪くなったら、すぐに鑑賞をやめてください。\n\nヒントを隠す\nどう見える？\n\n格子の交点にある白い円の中に、黒い点がちらちらと現れては消えるように見えます。いま注視している交点には現れません。見え方には個人差があり、見る距離によっても強さが変わります。\n\nしくみを知る\n▶ 確かめる\n交点を拡大する\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "923b89e58abb2765dd37039821b03ab55e01f38c5dfe95ef12e002949a7082e7",
+        "b": "83097620496eeccd0e2dcafedf538ee417cf0b45ea2c8a90984cadf9e569679a",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3019
+    },
+    {
+      "id": "n091",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "A-5\n古典\nヒント閲覧済み\n周辺ドリフト錯視\n\nPeripheral Drift Illusion\n\nJ. Faubert & A. M. Herbert (1999)／北岡明佳・蘆田宏 (2003)\n\n鑑賞のしかた\n\n作品の中心ではなく、少し外側を見たり、視線をあちこちへ動かしたりしてみてください。\n\n⚠ 動いて見える図柄です。光に敏感な方や、気分が悪くなった方は、すぐに鑑賞をやめてください。\n\nヒントを隠す\nどう見える？\n\n止まっている絵なのに、円環がゆっくり回転しているように見えます。視線を動かしたり、まばたきをしたりすると強まります。まったく動いて見えない人もいますが、異常ではありません。\n\nしくみを知る\n▶ 確かめる\n明るさの並びを拡大して、入れ替える\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "59944b693dfcb37171d7c15f84fa39000de8cdce4ecbef2b79537f01916964c0",
+        "b": "6f5c33deee413949827ee9018e11e929a4f2f2f910a046cfd3422780b1b605e4",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 2699
+    },
+    {
+      "id": "n092",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "A-6\n古典\nヒント閲覧済み\n残像の窓\n\nWindow of Afterimages\n\n補色残像（負の残像）\n\n鑑賞のしかた\n\n「はじめる」を押すと、不思議な色の風景が表示されます。中央の小さな黒い点から目を離さずに、カウントダウンが終わるまで見つめ続けてください。\n\nはじめる\nヒントを隠す\nどう見える？\n\n風景が白黒に切り替わった直後、白黒の写真なのに、一瞬だけ自然な色（青い空、緑の草、赤い花）がついて見えます。数秒で色は消えます。色の見え方や長さには個人差があります。\n\nしくみを知る\n▶ 確かめる\n錐体の順応を図で見る\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "1440dd08d2330060c37505be00b056c59cd4c9726a535865f424cc5fd793cd83",
+        "b": "7d748bf2ab7804d206e253d8ff981915b64b91e3f66712be1091481084a8efc5",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 2581
+    },
+    {
+      "id": "n093",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "B-1\n古典\nヒント閲覧済み\nエイムズの部屋\n\nAmes Room\n\nA. Ames Jr. (1946)\n\n鑑賞のしかた\n\nブースの正面にある覗き穴から、部屋の中を覗いてください。\n\nヒントを隠す\nどう見える？\n\n普通の四角い部屋に見えるのに、左右の隅に立つ 2 体の人形の大きさが極端に違って見えます。どちらも同じ大きさの人形です。差の感じ方には個人差があります。\n\nしくみを知る\n▶ 確かめる\n部屋の本当の形を見る\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "db6c1f93fefe0da788804a5647f37b12e53051bacead8c3277f15610d21deb70",
+        "b": "02b80ebb47ede7901195d45d85bcb9b09b75a3b1c57deb815f6795d2c4897b23",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 2639
+    },
+    {
+      "id": "n094",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "B-2\n古典\nヒント閲覧済み\nペンローズの三角形\n\nPenrose Triangle\n\nO. Reutersvärd (1934)／L. S. Penrose & R. Penrose (1958)\n\n鑑賞のしかた\n\n床の「ここから見る」マークに立ち、台座の上の彫刻を眺めてください。\n\nヒントを隠す\nどう見える？\n\n3 本の角材が互いに直角につながり、ぐるりと一周した三角形に見えます。どの角も正しくつながっているのに、全体としては現実にありえない形です。すぐに三角形に見えない場合は、マークの中心に立ち直してみてください。\n\nしくみを知る\n▶ 確かめる\n横から見る\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "a59228d0f8e19c6f93fc659bf9916834e1d36085571e2e5fcb5ab969b274a6d8",
+        "b": "33d8994b7446da3bee7f03dc306b68f1e77be8c66c6bbd10f1bef9cf03328034",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 2686
+    },
+    {
+      "id": "n095",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "B-3\n古典\nヒント閲覧済み\nチェッカーシャドウ\n\nChecker Shadow Illusion (3D)\n\nE. H. Adelson (1995)\n\n鑑賞のしかた\n\n市松模様の盤にある「A」と「B」の 2 つのマスの明るさを見比べてください。\n\nヒントを隠す\nどう見える？\n\n円柱の影の外にある A のマスは暗い灰色、影の中にある B のマスは明るい灰色に見えます。多くの人には、はっきり違う色に見えますが、差の感じ方には個人差があります。\n\nしくみを知る\n▶ 確かめる\nA と B をつなげる\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "b3c426ca8eeb231290be4583bdd7ccb542955dd293a115af5a2b0b00f7884cb6",
+        "b": "5623ad9ad31f676cf3527e38df6d095f0ca20bfc589286c06fdeddb1cccbb0be",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 3755
+    },
+    {
+      "id": "n096",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "B-4\n古典\nヒント閲覧済み\n逆遠近の街\n\nReverspective City\n\nP. Hughes による「リバースペクティブ」の原理（図柄は独自）\n\n鑑賞のしかた\n\n正面から作品を見ながら、左右にゆっくり動いてください（A / D キー、または画面のドラッグ）。\n\n⚠ 視点を動かすと画面が大きく動いて見えます。酔いやすい方はご注意ください。\n\nヒントを隠す\nどう見える？\n\n壁の奥へ続いているはずの街並みが、こちらの動きを追いかけるように大きく向きを変えて見えます。片目をつぶると、さらに強く感じられることがあります。感じ方には個人差があります。\n\nしくみを知る\n▶ 確かめる\n真横から見る\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "5403f0487d2d24f1d84cd1ef7319d12d491f6dca101a1e0e734a539368a6eba0",
+        "b": "0735f6d0fd607301f9823897a40c329bbe3e1fd6cc9962052b39fe6820cf8e96",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 2731
+    },
+    {
+      "id": "n097",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "B-5\n古典\nヒント閲覧済み\n回る影\n\nSpinning Silhouette\n\n茅原伸幸 (2003) のシルエット錯視と同じ現象（人型は独自）\n\n鑑賞のしかた\n\nスクリーンに映る、回転する人の影をしばらく眺めてください。\n\nヒントを隠す\nどう見える？\n\n影の人は、右回りにも左回りにも見えます。見ているうちに、回転の向きが突然反転することがあります。最初にどちらに見えるか、反転しやすいかには個人差があります。\n\nしくみを知る\n▶ 確かめる\n奥行きの手がかりを加える\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "4955068e79dfd227bf122070ec91a6c97e975139a1bd330ff0dbb289d68b66da",
+        "b": "e4c968eccbe6210d24f498e83572cef5d7612cd6492cdea0dbd949a470bcc0d2",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 2656
+    },
+    {
+      "id": "n098",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "C-1\nオリジナル\nヒント閲覧済み\n円とハートのあいだ\n\nBetween a Circle and a Heart\n\n鑑賞のしかた\n\n床の「ここから見る」マークに立ち、台座の上の筒と、その後ろの鏡を見比べてください。\n\nヒントを隠す\nどう見える？\n\n手前の筒の縁は丸い「円」に見えるのに、後ろの鏡に映った姿は「ハート」に見えます。同じ 1 本の筒です。見えにくい場合は、マークの中心に立ち直してみてください。\n\nしくみを知る\n▶ 確かめる\n筒を 180° 回す\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "5f730ff58d235db04d7e8498a24cfb33e8a802cf32cba7b06d70eb95a24cc2fb",
+        "b": "6361f4d501c013ae99b7eabb5a8af6cf17d87878269aa6d95719a4a5723331f8",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 2599
+    },
+    {
+      "id": "n099",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "C-2\nオリジナル\nヒント閲覧済み\n色のない果実\n\nColorless Fruit\n\n色の恒常性（北岡明佳氏の「赤くないイチゴ」で広く知られる現象）\n\n鑑賞のしかた\n\n暗室に入り、テーブルの上の果物を眺めてください。画面をクリック（タップ）すると、その場所の実際の色を調べられます。\n\nヒントを隠す\nどう見える？\n\nシアン色の光に満たされた部屋で、イチゴやリンゴは赤く見えます。ところが、スポイトで果物の色を調べると、灰色の値しか出てきません。赤く見える度合いには個人差があります。\n\nしくみを知る\n▶ 確かめる\n照明を白に切り替える\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "df6ef4830f042508d216e64dc9fead9b7a23dcbe90d5141cd24e76b0641aa9ab",
+        "b": "c4d47f491142908f85ddd713416c315219a6acef7a0b328635b999298cfb3a72",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 2612
+    },
+    {
+      "id": "n100",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "buildFingerprint": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+      "core": {
+        "action": "reveal hint, explain mechanism, run native demonstration when available",
+        "demonstrated": true,
+        "text": "C-3\nオリジナル\nヒント閲覧済み\n見えない三角形\n\nThe Invisible Triangle\n\nG. Kanizsa (1955) の主観的輪郭を立体にした作品\n\n鑑賞のしかた\n\n床の「ここから見る」マークに立ち、白い壁の前に吊るされた作品を眺めてください。\n\nヒントを隠す\nどう見える？\n\n空間の中に、周りより少し明るい白い三角形が浮かんで見えます。三角形の輪郭線まで見える人もいます。見え方には個人差があります。\n\nしくみを知る\n▶ 確かめる\n横から見る\n← 前の作品\n戻る\n次の作品 →"
+      },
+      "frames": {
+        "a": "93ad9765be796c22cb52b956a9ebdfa0c3b50915365f4d74ce390068379c8f4b",
+        "b": "32355bacb057c7f06f134db35124a5261a2aa4d9eafce2b9d54c6d4aa0de1171",
+        "different": true
+      },
+      "viewport": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 844
+      },
+      "pass": true,
+      "elapsedMs": 2580
+    }
+  ]
+}

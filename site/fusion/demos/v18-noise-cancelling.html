@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>降噪耳机原理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@500;700;900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>html,body{margin:0;height:100%;background:#0f1318;overflow:hidden}canvas{position:absolute;display:block}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* 降噪耳机竖屏解说 — 20 s, 1080×1920 (9:16). Safe zones: top 150, bottom 170, sides 60 — all text inside.
+   One wave model s(τ) (3 sines, periods divide 20 s → loop-exact). Travelling waves y = s(t − x/v).
+   Anti-noise = −(leaked noise) point for point; sum is computed, not drawn by hand.
+   0.0– 2.8  hook: head in profile + headphones, coral noise flowing in, title question
+   2.8– 4.2  camera pushes into the ear cup → cross-section diagram
+   4.2– 7.8  ① outside mic samples the noise → scope row 1
+   7.8–11.4  ② chip flips it (peaks ↔ troughs, 180°) → scope row 2 flips live
+  11.4–15.2  ③ speaker plays the anti-wave; leaked + anti = 0 → eardrum stops; scope row 3 = sum
+  15.2–18.6  caveat: same model with processing lag → steady low tones cancel, sudden high tones leave residue
+  18.6–20.0  pull back to the hook frame (t = 20 ≡ t = 0)
+*/
+(() => {
+const W = 1080, H = 1920, DUR = 20, TAU = 6.2832;
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const FS = '"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif', FM = '"IBM Plex Mono",ui-monospace,Menlo,monospace';
+const C = { bg: '#0f1318', card: '#161c22', edge: '#26303a', coral: '#ff6a4d', cyan: '#37e2d0', yel: '#ffd23f', ink: '#f5f1e8', dim: '#8e99a3', shell: '#e9e4da', head: '#334052' };
+const cl = x => x < 0 ? 0 : x > 1 ? 1 : x, P = (t, a, b) => cl((t - a) / (b - a)), L = (a, b, k) => a + (b - a) * k;
+const E = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2, EO = x => 1 - Math.pow(1 - x, 3), EB = x => { const c1 = 1.4, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const mod = (a, n) => ((a % n) + n) % n;
+// ---- the wave model ----
+const s = tau => .62 * Math.sin(TAU * 28 * tau / DUR) + .25 * Math.sin(TAU * 67 * tau / DUR + 1.3) + .13 * Math.sin(TAU * 43 * tau / DUR + .4);
+const V = 300;                      // px per second (visual propagation speed)
+const LEAK = .45;                   // passive attenuation by the cup shell
+const sLow = tau => Math.sin(TAU * .75 * tau), sHigh = tau => Math.exp(-Math.pow((mod(tau, 1.3) - .65) / .17, 2)) * Math.sin(TAU * 9 * tau), LAG = .02;
+
+// ---- helpers ----
+function T(str, x, y, size, col, a = 1, align = 'left', weight = 900, font = FS) { if (a <= .003) return; ctx.globalAlpha = a; ctx.font = `${weight} ${size}px ${font}`; ctx.fillStyle = col; ctx.textAlign = align; ctx.textBaseline = 'alphabetic'; ctx.fillText(str, x, y); ctx.globalAlpha = 1; }
+function segs(parts, x, y, size, a, weight = 900, align = 'left') { // [[text,color],...] on one line
+  ctx.font = `${weight} ${size}px ${FS}`; let w = 0; for (const [s_] of parts) w += ctx.measureText(s_).width;
+  let cx = align === 'center' ? x - w / 2 : x; for (const [s_, c] of parts) { T(s_, cx, y, size, c, a, 'left', weight); ctx.font = `${weight} ${size}px ${FS}`; cx += ctx.measureText(s_).width; } }
+function rr(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+function wave(x0, x1, yc, amp, f, col, lw, a = 1, step = 4) { if (a <= .003 || x1 <= x0) return; ctx.globalAlpha = a; ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.beginPath();
+  for (let x = x0; x <= x1 + .1; x += step) { const xx = Math.min(x, x1), y = yc + amp * f(xx); xx === x0 ? ctx.moveTo(xx, y) : ctx.lineTo(xx, y); } ctx.stroke(); ctx.globalAlpha = 1; }
+
+// ---- background (pre-rendered) ----
+let BG = null;
+function makeBG() { const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
+  x.fillStyle = C.bg; x.fillRect(0, 0, W, H); x.fillStyle = 'rgba(255,255,255,.045)'; for (let yy = 30; yy < H; yy += 40) for (let xx = 20; xx < W; xx += 40) x.fillRect(xx, yy, 2, 2);
+  const g = x.createRadialGradient(540, 960, 200, 540, 960, 1150); g.addColorStop(0, 'rgba(40,60,70,.25)'); g.addColorStop(1, 'rgba(0,0,0,.5)'); x.fillStyle = g; x.fillRect(0, 0, W, H); return c; }
+
+// ---- scene 1: hook (head + headphones) ----
+const HC = { x: 520, y: 1070 }, CUP = { x: 590, y: 1105 };
+function hook(t, a, z) {
+  if (a <= .003) return; ctx.save(); ctx.globalAlpha = a;
+  ctx.translate(CUP.x, CUP.y); ctx.scale(z, z); ctx.translate(-CUP.x, -CUP.y);
+  // noise flowing in from both sides, damped near the head
+  for (let i = 0; i < 7; i++) { const y = 640 + i * 125, amp = 26 + (i % 3) * 8, ph = i * .37;
+    ctx.save(); const gl = ctx.createLinearGradient(40, 0, 330, 0); gl.addColorStop(0, C.coral); gl.addColorStop(1, 'rgba(255,106,77,0)');
+    ctx.globalAlpha = a * .9; ctx.strokeStyle = gl; ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.beginPath();
+    for (let x = 40; x <= 330; x += 5) { const yy = y + amp * s(t - x / V + ph) * (1 - (x - 40) / 420); x === 40 ? ctx.moveTo(x, yy) : ctx.lineTo(x, yy); } ctx.stroke();
+    const gr = ctx.createLinearGradient(1040, 0, 800, 0); gr.addColorStop(0, C.coral); gr.addColorStop(1, 'rgba(255,106,77,0)'); ctx.strokeStyle = gr; ctx.beginPath();
+    for (let x = 1040; x >= 800; x -= 5) { const yy = y + 12 + amp * s(t - (1040 - x) / V + ph + .5) * (1 - (1040 - x) / 360); x === 1040 ? ctx.moveTo(x, yy) : ctx.lineTo(x, yy); } ctx.stroke(); ctx.restore(); }
+  // quiet halo
+  ctx.globalAlpha = a; const hg = ctx.createRadialGradient(CUP.x, CUP.y, 60, CUP.x, CUP.y, 330); hg.addColorStop(0, 'rgba(55,226,208,.22)'); hg.addColorStop(1, 'rgba(55,226,208,0)'); ctx.fillStyle = hg; ctx.fillRect(CUP.x - 330, CUP.y - 330, 660, 660);
+  for (let k = 0; k < 3; k++) { const r = 200 + mod(t * 40 + k * 60, 180); ctx.strokeStyle = `rgba(55,226,208,${.35 * (1 - (r - 200) / 180)})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(CUP.x, CUP.y, r, -1.2, 1.2); ctx.stroke(); ctx.beginPath(); ctx.arc(CUP.x, CUP.y, r, Math.PI - 1.2, Math.PI + 1.2); ctx.stroke(); }
+  // head profile (facing left)
+  ctx.save(); ctx.translate(HC.x, HC.y);
+  ctx.fillStyle = C.head; ctx.beginPath(); ctx.moveTo(-150, -205); ctx.bezierCurveTo(-60, -300, 170, -290, 235, -120); ctx.bezierCurveTo(265, -30, 240, 110, 175, 175); ctx.lineTo(160, 420); ctx.lineTo(-45, 420); ctx.lineTo(-55, 265);
+  ctx.quadraticCurveTo(-110, 262, -150, 238); ctx.quadraticCurveTo(-178, 215, -186, 180); ctx.lineTo(-200, 150); ctx.quadraticCurveTo(-196, 128, -206, 118); ctx.lineTo(-222, 92); ctx.quadraticCurveTo(-262, 70, -258, 55);
+  ctx.quadraticCurveTo(-240, 20, -212, -6); ctx.quadraticCurveTo(-205, -40, -222, -62); ctx.quadraticCurveTo(-218, -150, -150, -205); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#1f2833'; ctx.beginPath(); ctx.moveTo(-150, -205); ctx.bezierCurveTo(-60, -300, 170, -290, 235, -120); ctx.bezierCurveTo(250, -80, 250, -20, 240, 20); ctx.quadraticCurveTo(150, -150, -40, -175); ctx.quadraticCurveTo(-120, -178, -165, -140); ctx.quadraticCurveTo(-170, -180, -150, -205); ctx.fill();
+  ctx.restore();
+  // headphones
+  ctx.save(); ctx.translate(CUP.x, CUP.y);
+  ctx.strokeStyle = '#cfc9bd'; ctx.lineWidth = 44; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(-6, -186); ctx.quadraticCurveTo(0, -292, -14, -342); ctx.stroke();
+  ctx.strokeStyle = C.shell; ctx.lineWidth = 30; ctx.beginPath(); ctx.moveTo(-6, -186); ctx.quadraticCurveTo(0, -292, -14, -342); ctx.stroke();
+  ctx.fillStyle = '#1a1f26'; ctx.beginPath(); ctx.ellipse(-8, 0, 150, 200, 0, 0, TAU); ctx.fill();
+  const cg = ctx.createLinearGradient(-150, -190, 150, 190); cg.addColorStop(0, '#f6f2ea'); cg.addColorStop(1, '#bfb8aa'); ctx.fillStyle = cg; ctx.beginPath(); ctx.ellipse(8, 0, 140, 190, 0, 0, TAU); ctx.fill();
+  ctx.strokeStyle = 'rgba(0,0,0,.12)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(8, 0, 100, 140, 0, 0, TAU); ctx.stroke();
+  ctx.fillStyle = '#2a3038'; for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) { ctx.beginPath(); ctx.arc(-40 + i * 12, -120 + j * 12, 3.5, 0, TAU); ctx.fill(); }
+  ctx.restore(); ctx.restore(); ctx.globalAlpha = 1;
+}
+
+// ---- scene 2: cross-section diagram ----
+const WY = 880, X0 = 80, WALL = [330, 356], SPK = [556, 654], DRUM = 950;
+const outNoise = (x, t) => s(t - (x - X0) / V);
+function diagram(t, a, zs) {
+  if (a <= .003) return; ctx.save(); ctx.globalAlpha = a; ctx.translate(540, 850); ctx.scale(zs, zs); ctx.translate(-540, -850);
+  rr(60, 520, 960, 660, 28); ctx.fillStyle = C.card; ctx.fill(); ctx.strokeStyle = C.edge; ctx.lineWidth = 2; ctx.stroke();
+  // head + ear canal
+  ctx.save(); rr(60, 520, 960, 660, 28); ctx.clip(); ctx.fillStyle = C.head; ctx.fillRect(790, 520, 240, 660); ctx.restore();
+  ctx.fillStyle = '#0d1115'; rr(780, 845, 175, 70, 20); ctx.fill();
+  const on3 = P(t, 11.6, 12.5), front = L(SPK[1], DRUM, on3);
+  const sumAt = x => LEAK * outNoise(x, t) + (x <= front ? -LEAK * outNoise(x, t) : 0);
+  const drum = t < 11.4 ? LEAK * outNoise(DRUM, t) : sumAt(DRUM);
+  ctx.strokeStyle = '#e9c3b0'; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(DRUM, 848); ctx.quadraticCurveTo(DRUM + 22 * drum, WY, DRUM, 912); ctx.stroke();
+  T('耳道', 820, 800, 36, C.ink, a * .9, 'left', 700);
+  // shell + cushions
+  ctx.fillStyle = C.shell; rr(WALL[0], 640, 26, 420, 10); ctx.fill(); rr(WALL[0], 640, 410, 26, 10); ctx.fill(); rr(WALL[0], 1034, 410, 26, 10); ctx.fill();
+  ctx.fillStyle = '#343c46'; rr(720, 606, 72, 90, 26); ctx.fill(); rr(720, 1004, 72, 90, 26); ctx.fill();
+  T('耳罩外壳 · 先挡掉一部分', 330, 1128, 36, C.dim, a, 'left', 700);
+  // mic
+  const m1 = P(t, 4.3, 4.9); ctx.fillStyle = '#1d242c'; rr(296, 676, 34, 58, 10); ctx.fill(); ctx.strokeStyle = C.yel; ctx.lineWidth = 3 * m1; if (m1 > 0) ctx.stroke();
+  ctx.fillStyle = '#6d7782'; for (let j = 0; j < 4; j++) ctx.fillRect(302, 684 + j * 12, 22, 3);
+  if (t > 4.4 && t < 11.6) for (let k = 0; k < 3; k++) { const r = mod(t * 1.6 + k / 3, 1); ctx.strokeStyle = `rgba(255,210,63,${.6 * (1 - r)})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(296, 705, 20 + r * 50, Math.PI * .6, Math.PI * 1.4); ctx.stroke(); }
+  T('外置麦克风', 80, 640, 36, m1 > .5 ? C.yel : C.ink, a, 'left', 900);
+  ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(180, 654); ctx.lineTo(290, 690); ctx.stroke();
+  // chip
+  const c2 = P(t, 7.9, 8.4); ctx.fillStyle = '#0c1014'; rr(400, 680, 84, 70, 8); ctx.fill(); ctx.fillStyle = '#6d7782'; for (let j = 0; j < 5; j++) { ctx.fillRect(390, 688 + j * 12, 10, 4); ctx.fillRect(484, 688 + j * 12, 10, 4); }
+  ctx.fillStyle = `rgba(55,226,208,${.25 + .6 * c2 * (.7 + .3 * Math.sin(t * 9))})`; rr(418, 696, 48, 38, 5); ctx.fill();
+  T('降噪芯片', 378, 800, 36, c2 > .5 ? C.cyan : C.ink, a, 'left', 900);
+  // wires + signal dots
+  ctx.strokeStyle = '#56616c'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(330, 706); ctx.lineTo(390, 706); ctx.moveTo(494, 715); ctx.quadraticCurveTo(540, 715, 575, 830); ctx.stroke();
+  if (t > 5.2 && t < 15.2) for (let k = 0; k < 4; k++) { const u = mod(t * 1.3 + k / 4, 1); ctx.fillStyle = C.coral; ctx.beginPath(); ctx.arc(L(330, 390, u), 706, 5, 0, TAU); ctx.fill(); }
+  if (t > 11.4 && t < 15.2) for (let k = 0; k < 4; k++) { const u = mod(t * 1.3 + k / 4, 1), x = (1 - u) * (1 - u) * 494 + 2 * u * (1 - u) * 540 + u * u * 575, y = (1 - u) * (1 - u) * 715 + 2 * u * (1 - u) * 715 + u * u * 830; ctx.fillStyle = C.cyan; ctx.beginPath(); ctx.arc(x, y, 5, 0, TAU); ctx.fill(); }
+  // speaker (cone moves with the anti signal once it is playing)
+  const dx = t > 11.4 ? -LEAK * outNoise(SPK[1], t) * 7 * on3 : 0;
+  ctx.fillStyle = '#3a444f'; rr(560, 830, 40, 100, 6); ctx.fill();
+  ctx.fillStyle = '#566270'; ctx.beginPath(); ctx.moveTo(600, 850); ctx.lineTo(645 + dx, 792); ctx.lineTo(645 + dx, 968); ctx.lineTo(600, 910); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = on3 > 0 ? C.cyan : '#7b8794'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(645 + dx, 790); ctx.lineTo(645 + dx, 970); ctx.stroke();
+  T('扬声器', 556, 1015, 36, on3 > 0 ? C.cyan : C.ink, a, 'left', 900);
+  // waves
+  wave(X0, WALL[0] - 6, WY, 56, x => outNoise(x, t), C.coral, 6, a);
+  T('外界噪音', 90, 990, 36, C.coral, a, 'left', 900);
+  const inA = t < 11.4 ? 1 : L(1, .35, on3);
+  wave(WALL[1] + 6, SPK[0] - 4, WY, 56, x => LEAK * outNoise(x, t), C.coral, 5, a * inA);
+  wave(SPK[1] + 8, DRUM - 6, WY, 56, x => LEAK * outNoise(x, t), C.coral, 5, a * inA);
+  if (t > 11.4) { wave(SPK[1] + 8, Math.min(front, DRUM - 6), WY, 56, x => -LEAK * outNoise(x, t), C.cyan, 5, a * .55);
+    wave(SPK[1] + 8, DRUM - 6, WY, 56, sumAt, C.ink, 6, a * on3); }
+  const q = P(t, 12.7, 13.1); if (q > 0) { ctx.globalAlpha = a * q; rr(820, 610, 170, 72, 36); ctx.fillStyle = C.ink; ctx.fill(); ctx.globalAlpha = 1; T('安静 ✓', 905, 660, 40, '#0f1318', a * q, 'center', 900); }
+  ctx.restore(); ctx.globalAlpha = 1;
+}
+function scope(t, a) {
+  if (a <= .003) return; ctx.save(); ctx.globalAlpha = a; rr(60, 1210, 960, 380, 28); ctx.fillStyle = C.card; ctx.fill(); ctx.strokeStyle = C.edge; ctx.lineWidth = 2; ctx.stroke(); ctx.restore();
+  const X1 = 250, X2 = 990, rows = [1300, 1405, 1510], samp = (u, f) => f(t - 2 + 2 * u);
+  const flip = E(P(t, 8.4, 9.6));
+  const r1 = P(t, 5.0, 6.0), r2 = P(t, 7.9, 8.3), r3 = P(t, 12.2, 13.0);
+  ctx.save(); ctx.globalAlpha = a * .25; ctx.strokeStyle = C.dim; ctx.lineWidth = 1.5; ctx.setLineDash([6, 8]); for (const y of rows) { ctx.beginPath(); ctx.moveTo(X1, y); ctx.lineTo(X2, y); ctx.stroke(); } ctx.restore();
+  T('噪音', 90, rows[0] + 13, 38, C.coral, a, 'left', 900);
+  T(flip > .5 ? '反相' : '复制', 90, rows[1] + 13, 38, C.cyan, a * r2, 'left', 900);
+  T('叠加', 90, rows[2] + 13, 38, C.ink, a * r3, 'left', 900);
+  T('+', 200, rows[1] - 40, 36, C.dim, a * r2, 'center', 700, FM); T('=', 200, rows[2] - 40, 36, C.dim, a * r3, 'center', 700, FM);
+  const tr = (row, f, col, k) => { if (k <= 0) return; wave(X1, L(X1, X2, k), row, 40, x => samp((x - X1) / (X2 - X1), f), col, 5, a, 5); };
+  tr(rows[0], s, C.coral, r1);
+  tr(rows[1], tau => Math.cos(Math.PI * flip) * s(tau), C.cyan, r2);
+  tr(rows[2], tau => s(tau) + Math.cos(Math.PI * flip) * s(tau), C.ink, r3);
+  if (r3 > .6) T('≈ 0', X2, rows[2] - 18, 36, C.ink, a * P(r3, .6, 1), 'right', 700, FM);
+  if (r2 > 0 && t < 11.6) T('波峰 ↔ 波谷', X2, rows[1] + 66, 36, C.cyan, a * P(t, 9.2, 9.6) * (1 - P(t, 11.2, 11.6)), 'right', 700);
+}
+// ---- scene 3: caveat ----
+function caveat(t, a) {
+  if (a <= .003) return;
+  const card = (y, title, tag, f, verdict, vcol, k) => { ctx.save(); ctx.globalAlpha = a * k; ctx.translate(0, (1 - k) * 60); rr(60, y, 960, 420, 28); ctx.fillStyle = C.card; ctx.fill(); ctx.strokeStyle = C.edge; ctx.lineWidth = 2; ctx.stroke(); ctx.restore();
+    const dy = (1 - k) * 60; T(title, 100, y + 84 + dy, 56, C.ink, a * k); T(tag, 100, y + 138 + dy, 36, C.dim, a * k, 'left', 700);
+    const yc = y + 270 + dy; wave(100, 980, yc, 64, x => f(t - (x - 100) / V), C.coral, 4, a * k * .45, 3);
+    wave(100, 980, yc, 64, x => { const tau = t - (x - 100) / V; return f(tau) - f(tau - LAG); }, C.ink, 5, a * k, 3);
+    T(verdict, 980, y + 84 + dy, 40, vcol, a * k, 'right', 900); };
+  card(540, '持续低频', '引擎 · 空调 · 车厢嗡嗡声', sLow, '残留很小 ✓', C.cyan, EO(P(t, 15.4, 15.9)));
+  card(1000, '突发高频', '说话 · 关门 · 敲键盘', sHigh, '残留较多 ✗', C.coral, EO(P(t, 15.8, 16.3)));
+  const k = P(t, 16.4, 16.8); ctx.save(); ctx.globalAlpha = a * k; ctx.fillStyle = C.coral; ctx.fillRect(100, 1452, 30, 5); ctx.fillStyle = C.ink; ctx.fillRect(470, 1452, 30, 5); ctx.restore();
+  T('原噪音', 142, 1466, 36, C.dim, a * k, 'left', 700); T('抵消后的残留', 512, 1466, 36, C.dim, a * k, 'left', 700);
+}
+// ---- text layers ----
+const HEAD = [[0, 2.8, null], [2.8, 4.2, [[['拆开耳罩', C.ink], ['看看', C.yel]]]], [4.2, 7.8, [[['① ', C.yel], ['麦克风先「', C.ink], ['听', C.yel], ['」噪音', C.ink]]]],
+  [7.8, 11.4, [[['② ', C.yel], ['芯片算出「', C.ink], ['反相', C.cyan], ['」声波', C.ink]]]], [11.4, 15.2, [[['③ ', C.yel], ['两波叠加，', C.ink], ['互相抵消', C.cyan]]]],
+  [15.2, 18.6, [[['它最擅长：', C.ink]], [['低频', C.yel], ['、', C.ink], ['持续', C.yel], ['的噪音', C.ink]]]], [18.6, 20, null]];
+const BODY = [[.3, 2.7, ['地铁、飞机上一戴，世界忽然安静了']], [4.4, 7.7, ['耳罩外侧的麦克风，', '实时采集周围的噪音']], [8.0, 11.3, ['波峰变波谷、波谷变波峰，', '相位正好差 180°']],
+  [11.6, 15.1, ['扬声器播放反相波，', '和漏进来的噪音相加 ≈ 0']], [16.6, 18.5, ['变化太快的声音，芯片跟不上，', '主要靠耳罩物理隔音']]];
+function headline(t) {
+  for (const [a, b, lines] of HEAD) { if (t < a || t >= b) continue; const kin = EO(P(t, a, a + .35)), kout = 1 - P(t, b - .22, b), k = (a === 0 || a === 18.6) ? 1 : kin * kout, dy = (1 - kin) * 34 * (a === 0 || a === 18.6 ? 0 : 1);
+    if (!lines) { segs([['降噪耳机', C.ink]], 60, 360, 132, k); segs([['怎么把噪音「', C.ink], ['消掉', C.yel], ['」？', C.ink]], 60, 470, 76, k); return; }
+    lines.forEach((ln, i) => segs(ln, 60, 350 + i * 96 + dy, 76, k)); }
+}
+function body(t) {
+  for (const [a, b, lines] of BODY) { if (t < a || t > b) continue; const k = P(t, a, a + .25) * (1 - P(t, b - .2, b));
+    lines.forEach((ln, i) => T(ln, 60, 1694 + i * 56 - (lines.length - 1) * 56 + (1 - k) * 16, 42, C.ink, k, 'left', 700)); }
+}
+function topBar(t) {
+  T('20 秒看懂 · 主动降噪 ANC', 60, 214, 36, C.dim, 1, 'left', 700);
+  const st = t >= 4.2 && t < 7.8 ? 0 : t >= 7.8 && t < 11.4 ? 1 : t >= 11.4 && t < 15.2 ? 2 : -1;
+  for (let i = 0; i < 3; i++) { const x = 872 + i * 62, on = i === st, done = st > i || (t >= 15.2 && t < 18.6); ctx.beginPath(); ctx.arc(x, 202, 24, 0, TAU);
+    ctx.fillStyle = on ? C.yel : done ? 'rgba(255,210,63,.28)' : 'rgba(255,255,255,.08)'; ctx.fill(); T(String(i + 1), x, 214, 30, on ? '#0f1318' : C.ink, on || done ? 1 : .5, 'center', 900, FM); }
+}
+// ---- frame ----
+function draw(t) {
+  ctx.setTransform(K, 0, 0, K, 0, 0); ctx.globalAlpha = 1; ctx.drawImage(BG, 0, 0);
+  const push = E(P(t, 2.8, 4.2)), back = P(t, 18.7, 19.4);
+  const hookA = t < 4.2 ? 1 - P(t, 3.55, 4.1) : back, hookZ = t < 4.2 ? 1 + 4.2 * push * push : L(1.7, 1, E(P(t, 18.7, 19.8)));
+  hook(t, hookA, hookZ);
+  const dA = P(t, 3.5, 4.15) * (1 - P(t, 15.2, 15.55)), dZ = L(1.8, 1, EO(P(t, 3.5, 4.3)));
+  diagram(t, dA, dZ);
+  scope(t, P(t, 4.6, 5.0) * (1 - P(t, 15.2, 15.55)));
+  caveat(t, P(t, 15.3, 15.5) * (1 - P(t, 18.6, 19.0)));
+  topBar(t); headline(t); body(t);
+}
+// ---- runtime (contract) ----
+let K = 1, cur = 0, playing = true, t0 = performance.now(), raf = 0;
+function render(t) { if (!BG) BG = makeBG(); draw(t); }
+function resize() {
+  const d = Math.min(devicePixelRatio || 1, 1.5), sc = Math.min(innerWidth / W, innerHeight / H);
+  cv.style.width = W * sc + 'px'; cv.style.height = H * sc + 'px'; cv.style.left = (innerWidth - W * sc) / 2 + 'px'; cv.style.top = (innerHeight - H * sc) / 2 + 'px';
+  cv.width = Math.round(W * sc * d); cv.height = Math.round(H * sc * d); K = sc * d; render(cur);
+}
+const fontsReady = Promise.race([Promise.all(['900 76px "Noto Sans SC"', '700 42px "Noto Sans SC"', '500 30px "IBM Plex Mono"'].map(f => document.fonts.load(f, '降噪耳机怎么把噪音消掉拆开看麦克风先听芯片算出反相声波两叠加互抵它最擅长低频持续的秒懂主动外置扬声器道壳安静复制残留很小较多突发高引擎空调关门说话 0123456789ANC≈'))), new Promise(r => setTimeout(r, 3500))]).catch(() => {});
+function loop(now) { if (!playing) return; cur = mod((now - t0) / 1000, DUR); render(cur); raf = requestAnimationFrame(loop); }
+window.DURATION = DUR;
+window.seek = t => { cur = mod(+t, DUR); t0 = performance.now() - cur * 1000; render(cur); return fontsReady.then(() => render(cur)); };
+window.__demo = { play() { if (playing) return; playing = true; t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); }, pause() { playing = false; cancelAnimationFrame(raf); }, get playing() { return playing; }, get time() { return cur; } };
+addEventListener('message', e => { const d = e.data || {}; if (d.type === 'demo:play') __demo.play(); else if (d.type === 'demo:pause') __demo.pause(); else if (d.type === 'demo:seek') seek(d.t || 0); });
+document.addEventListener('visibilitychange', () => { cancelAnimationFrame(raf); if (!document.hidden && playing) { t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); } });
+addEventListener('resize', resize); resize(); fontsReady.then(() => render(cur)); raf = requestAnimationFrame(loop);
+try { parent.postMessage({ type: 'demo:ready', id: 'v18-noise-cancelling', duration: DUR }, '*'); } catch (e) {}
+})();
+</script>
+</body>
+</html>

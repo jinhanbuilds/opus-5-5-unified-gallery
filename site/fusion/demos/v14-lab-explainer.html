@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Light Trapped in Glass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Barlow:wght@500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>html,body{margin:0;height:100%;background:#0e1113;overflow:hidden}canvas{position:absolute;display:block}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* LAB EXPLAINER — why light gets trapped in glass. 24 s, 1920×1080, one draw(t).
+   One physics model drives rays AND every number on screen:
+     Snell  n·sin θ1 = 1·sin θ2   (glass/water/diamond → air)     θc = arcsin(1/n)
+     Fresnel (unpolarised) R = (Rs+Rp)/2 → beam brightness + R/T readouts; R = 1 when n·sin θ1 > 1.
+   0.0– 2.5  bench wide, glass n=1.50, θ1 = 20°, title question
+   2.5– 7.6  slider drags θ1 20° → 41.7°: refracted ray swings toward the surface (skims at ~86°)
+   7.6– 8.4  hold just under θc (41.8°)
+   8.4–12.4  θ1 → 55°: TIR; camera pushes in to the boundary (macro), live formula shows n·sin θ1 > 1
+  12.4–16.4  click WATER (1.33): 55° → 45° escapes at 70.1°, then → 52° crosses θc 48.8° → trapped
+  16.4–20.4  click DIAMOND (2.42): → 15° escapes, → 30° crosses θc 24.4° → trapped
+  20.4–23.2  comparison cut: θc(n) curve + three escape cones, formula θc = arcsin(1/n)
+  23.2–24.0  cross-fade back to the opening bench state (glass, 20°) → seamless loop
+*/
+(() => {
+const W = 1920, H = 1080, DUR = 24, D2R = Math.PI / 180;
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const FH = '"Barlow Condensed","Arial Narrow",Arial,sans-serif', FB = '"Barlow","Helvetica Neue",Arial,sans-serif', FM = '"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace';
+const C = { bench: '#14171a', ink: '#e9eef0', dim: '#7f8a90', faint: 'rgba(190,205,212,.28)', red: '255,64,50', amber: '#ffb547', panel: 'rgba(9,12,14,.9)', line: 'rgba(130,146,152,.35)' };
+const cl = x => x < 0 ? 0 : x > 1 ? 1 : x, P = (t, a, b) => cl((t - a) / (b - a)), L = (a, b, k) => a + (b - a) * k;
+const E = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2, EO = x => 1 - Math.pow(1 - x, 3);
+const mod = (a, n) => ((a % n) + n) % n;
+function rng(s) { return () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+// ---------------- the model ----------------
+const MATS = [{ k: 'GLASS', n: 1.50, col: '160,222,236' }, { k: 'WATER', n: 1.33, col: '80,160,225' }, { k: 'DIAMOND', n: 2.42, col: '236,244,255' }];
+const crit = n => Math.asin(1 / n) / D2R;                       // degrees
+const snell = (n, th) => { const s = n * Math.sin(th * D2R); return s > 1 ? null : Math.asin(s) / D2R; };
+function fresnel(n, th) { const t2 = snell(n, th); if (t2 === null) return 1; const ci = Math.cos(th * D2R), ct = Math.cos(t2 * D2R);
+  const rs = ((n * ci - ct) / (n * ci + ct)) ** 2, rp = ((n * ct - ci) / (n * ct + ci)) ** 2; return (rs + rp) / 2; }
+const f1 = x => x.toFixed(1), f2 = x => x.toFixed(2);
+const TH = [[0, 20], [2.5, 20], [7.6, 41.7], [8.4, 41.7], [10.0, 55], [12.9, 55], [13.9, 45], [14.6, 45], [15.8, 52], [16.9, 52], [17.8, 15], [18.2, 15], [19.4, 30], [20.4, 30], [20.401, 20], [24, 20]];
+function theta(t) { for (let i = 0; i < TH.length - 1; i++) { const [a, x] = TH[i], [b, y] = TH[i + 1]; if (t <= b) return L(x, y, E(P(t, a, b))); } return 20; }
+const matAt = t => t < 12.5 ? 0 : t < 16.5 ? 1 : t < 20.4 ? 2 : 0;
+function matMix(t) { const m = matAt(t), sw = t >= 16.5 && t < 20.4 ? 16.5 : t >= 12.5 && t < 16.5 ? 12.5 : -9; return { m, prev: m === 1 ? 0 : m === 2 ? 1 : 0, k: sw > 0 ? E(P(t, sw, sw + .35)) : 1 }; }
+
+// ---------------- layout ----------------
+const O = { x: 860, y: 470 }, RB = 262, RP = 322, RL = 384;
+const PX = 1440, PY = 500, PW = 400, PHh = 480;
+const BTN = [[1460, 1572], [1584, 1696], [1708, 1820]].map(([a, b]) => ({ x: a, w: b - a, cx: (a + b) / 2, cy: PY + 97 }));
+const TRK = { x0: 1460, x1: 1820, y: PY + 212 };
+const knob = t => ({ x: TRK.x0 + theta(t) / 90 * (TRK.x1 - TRK.x0), y: TRK.y });
+const REST = { x: 1862, y: 1004 };
+function camZ(t) { return 1 + 1.25 * E(P(t, 8.3, 9.2)) * (1 - E(P(t, 11.5, 12.35))); }
+
+// ---------------- bench (pre-rendered once) ----------------
+let BENCH = null;
+function makeBench() {
+  const c = document.createElement('canvas'); c.width = 1920; c.height = 1080; const x = c.getContext('2d'), R = rng(12);
+  x.fillStyle = C.bench; x.fillRect(0, 0, 1920, 1080);
+  const g = x.createRadialGradient(900, 480, 60, 900, 520, 1100); g.addColorStop(0, 'rgba(120,140,150,.13)'); g.addColorStop(1, 'rgba(0,0,0,.35)'); x.fillStyle = g; x.fillRect(0, 0, 1920, 1080);
+  for (let i = 0; i < 9000; i++) { x.fillStyle = `rgba(${R() < .5 ? '255,255,255' : '0,0,0'},${.02 + R() * .04})`; x.fillRect(R() * 1920, R() * 1080, 1, 1); }
+  x.strokeStyle = 'rgba(255,255,255,.025)'; x.lineWidth = 1; for (let i = 0; i < 70; i++) { const px = R() * 1920, py = R() * 1080, a = R() * 3.14, l = 20 + R() * 90; x.beginPath(); x.moveTo(px, py); x.lineTo(px + Math.cos(a) * l, py + Math.sin(a) * l); x.stroke(); }
+  for (let gy = 36; gy < 1080; gy += 50) for (let gx = 28; gx < 1920; gx += 50) {
+    x.fillStyle = '#07090a'; x.beginPath(); x.arc(gx, gy, 5.5, 0, 6.283); x.fill();
+    x.strokeStyle = 'rgba(255,255,255,.07)'; x.lineWidth = 1.2; x.beginPath(); x.arc(gx, gy, 6.2, .2, 1.9); x.stroke(); }
+  x.font = `400 13px ${FM}`; x.fillStyle = 'rgba(200,210,215,.28)'; x.fillText('OPTICAL BENCH  ·  M6 / 50 mm  ·  CLASS 2 LASER  650 nm', 60, 1050);
+  return c;
+}
+
+// ---------------- drawing helpers ----------------
+function txt(s, x, y, font, col, a = 1, align = 'left', base = 'alphabetic', ls = 0) { if (a <= .003) return; ctx.globalAlpha = a; ctx.font = font; ctx.fillStyle = col; ctx.textAlign = align; ctx.textBaseline = base; ctx.letterSpacing = ls + 'px'; ctx.fillText(s, x, y); ctx.letterSpacing = '0px'; ctx.globalAlpha = 1; }
+function fitFont(s, weight, size, fam, maxW) { let z = size; ctx.font = `${weight} ${z}px ${fam}`; const w = ctx.measureText(s).width; if (w > maxW) z = Math.max(size * .6, size * maxW / w); return `${weight} ${z.toFixed(1)}px ${fam}`; }
+function rrect(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+function beam(x0, y0, x1, y1, I, z, fade) { // additive laser segment, intensity I 0..1
+  if (I <= .001) return; const a = .12 + .88 * Math.pow(I, .7);
+  const seg = (lw, col, al) => { ctx.lineWidth = lw; if (fade) { const g = ctx.createLinearGradient(x0, y0, x1, y1); g.addColorStop(0, `rgba(${col},${al})`); g.addColorStop(1, `rgba(${col},0)`); ctx.strokeStyle = g; } else ctx.strokeStyle = `rgba(${col},${al})`; ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); };
+  ctx.lineCap = 'round'; seg(22 * z, C.red, .07 * a); seg(8 * z, C.red, .28 * a); seg(2.6 * z, '255,190,180', .95 * a); ctx.lineCap = 'butt';
+}
+function blockPath(R) { ctx.beginPath(); ctx.moveTo(-R, 0); ctx.lineTo(R, 0); ctx.arc(0, 0, R, 0, Math.PI, false); ctx.closePath(); }
+function drawBlock(mi, a, t, z) {
+  if (a <= .003) return; const R = RB, m = MATS[mi]; ctx.globalAlpha = a;
+  ctx.save(); ctx.translate(16, 20); blockPath(R); ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fill(); ctx.restore();
+  blockPath(R);
+  if (mi === 0) { const g = ctx.createLinearGradient(-R, 0, R, R); g.addColorStop(0, 'rgba(170,225,238,.2)'); g.addColorStop(.6, 'rgba(120,190,210,.1)'); g.addColorStop(1, 'rgba(170,225,238,.22)'); ctx.fillStyle = g; ctx.fill();
+    ctx.strokeStyle = 'rgba(205,240,248,.75)'; ctx.lineWidth = 2 / z; ctx.stroke();
+    ctx.strokeStyle = 'rgba(205,240,248,.18)'; ctx.lineWidth = 7 / z; ctx.beginPath(); ctx.arc(0, 0, R - 9, .15, Math.PI - .15); ctx.stroke(); }
+  else if (mi === 1) { ctx.fillStyle = 'rgba(70,150,220,.26)'; ctx.fill(); ctx.strokeStyle = 'rgba(210,228,236,.4)'; ctx.lineWidth = 9 / z; ctx.stroke(); ctx.strokeStyle = 'rgba(230,242,248,.7)'; ctx.lineWidth = 1.5 / z; ctx.stroke();
+    const R2 = rng(4); ctx.strokeStyle = 'rgba(210,235,250,.45)'; ctx.lineWidth = 1.2 / z; for (let i = 0; i < 14; i++) { const an = R2() * Math.PI, rr_ = R2() * (R - 30), bx = Math.cos(an) * rr_, by = Math.sin(an) * rr_ * .9 + 10 - mod(t * 18 * (1 + R2()), 40); ctx.beginPath(); ctx.arc(bx, Math.max(8, by), 2 + R2() * 4, 0, 6.28); ctx.stroke(); }
+    ctx.fillStyle = 'rgba(160,210,240,.12)'; ctx.fillRect(-R, 0, 2 * R, 6); }
+  else { ctx.fillStyle = 'rgba(230,240,255,.13)'; ctx.fill(); ctx.strokeStyle = 'rgba(245,250,255,.85)'; ctx.lineWidth = 2 / z; ctx.stroke();
+    ctx.save(); blockPath(R); ctx.clip(); ctx.strokeStyle = 'rgba(235,245,255,.14)'; ctx.lineWidth = 1.2 / z; ctx.beginPath(); for (let i = 0; i <= 8; i++) { const an = i / 8 * Math.PI; ctx.moveTo(Math.cos(an) * R, Math.sin(an) * R); ctx.lineTo((i - 4) * R / 5, 0); ctx.moveTo(Math.cos(an) * R, Math.sin(an) * R); ctx.lineTo(Math.cos(an + .45) * R * .55, Math.sin(an + .45) * R * .55); } ctx.stroke(); ctx.restore();
+    const R2 = rng(9); for (let i = 0; i < 9; i++) { const an = .15 + R2() * 2.84, rr_ = R * (.35 + R2() * .6), x = Math.cos(an) * rr_, y = Math.sin(an) * rr_, tw = Math.max(0, Math.sin(t * 5.3 + i * 2.1)), s = (4 + 9 * tw) / z;
+      ctx.fillStyle = `rgba(255,255,255,${.8 * tw})`; ctx.beginPath(); ctx.moveTo(x, y - s * 2); ctx.lineTo(x + s * .3, y); ctx.lineTo(x, y + s * 2); ctx.lineTo(x - s * .3, y); ctx.closePath(); ctx.moveTo(x - s * 2, y); ctx.lineTo(x, y + s * .3); ctx.lineTo(x + s * 2, y); ctx.lineTo(x, y - s * .3); ctx.fill(); } }
+  ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 1.2 / z; ctx.beginPath(); ctx.moveTo(-R + 6, 2); ctx.lineTo(R - 6, 2); ctx.stroke();
+  ctx.globalAlpha = 1;
+}
+function protractor(z, n, a) {
+  ctx.globalAlpha = a; ctx.strokeStyle = C.faint; ctx.lineWidth = 1.2 / z;
+  ctx.beginPath(); ctx.arc(0, 0, RP, 0, Math.PI); ctx.stroke(); ctx.beginPath(); ctx.arc(0, 0, RP, -Math.PI / 2, 0); ctx.stroke();
+  ctx.beginPath(); for (let d = 0; d <= 90; d += 2) { const L_ = d % 10 === 0 ? 16 : 7; for (const [sx, sy] of [[-1, 1], [1, 1], [1, -1]]) { const an = d * D2R, ux = Math.sin(an) * sx, uy = Math.cos(an) * sy; ctx.moveTo(ux * RP, uy * RP); ctx.lineTo(ux * (RP - L_), uy * (RP - L_)); } } ctx.stroke();
+  ctx.font = `400 ${13 / z}px ${FM}`; ctx.fillStyle = 'rgba(190,205,212,.45)'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  for (let d = 10; d <= 80; d += 10) for (const [sx, sy] of [[-1, 1], [1, 1], [1, -1]]) { const an = d * D2R; ctx.fillText(String(d), Math.sin(an) * sx * (RP + 18), Math.cos(an) * sy * (RP + 18)); }
+  const c_ = crit(n) * D2R, ux = -Math.sin(c_), uy = Math.cos(c_); ctx.strokeStyle = C.amber; ctx.lineWidth = 3 / z; ctx.beginPath(); ctx.moveTo(ux * (RP - 22), uy * (RP - 22)); ctx.lineTo(ux * (RP + 6), uy * (RP + 6)); ctx.stroke();
+  ctx.font = `600 ${14 / z}px ${FM}`; ctx.fillStyle = C.amber; ctx.fillText('θc', ux * (RP + 40), uy * (RP + 40));
+  ctx.setLineDash([8 / z, 7 / z]); ctx.strokeStyle = 'rgba(210,222,228,.35)'; ctx.lineWidth = 1.3 / z; ctx.beginPath(); ctx.moveTo(0, -RP - 10); ctx.lineTo(0, RP + 10); ctx.stroke(); ctx.setLineDash([]);
+  ctx.globalAlpha = 1;
+}
+function laser(th, z) {
+  const an = th * D2R, ux = -Math.sin(an), uy = Math.cos(an), ax = ux * RL, ay = uy * RL;
+  ctx.strokeStyle = 'rgba(0,0,0,.45)'; ctx.lineWidth = 16 / z; ctx.beginPath(); ctx.arc(0, 0, RL + 64, Math.PI * .5, Math.PI * .98); ctx.stroke();
+  ctx.strokeStyle = 'rgba(255,255,255,.05)'; ctx.lineWidth = 1 / z; ctx.beginPath(); ctx.arc(0, 0, RL + 72, Math.PI * .5, Math.PI * .98); ctx.stroke();
+  ctx.save(); ctx.translate(ax, ay); ctx.rotate(Math.atan2(uy, ux));
+  ctx.fillStyle = 'rgba(0,0,0,.4)'; rrect(10, -14, 128, 40, 10); ctx.fill();
+  const g = ctx.createLinearGradient(0, -18, 0, 18); g.addColorStop(0, '#5a6166'); g.addColorStop(.45, '#2a2f33'); g.addColorStop(1, '#16191b'); ctx.fillStyle = g; rrect(0, -18, 128, 36, 8); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,.18)'; ctx.lineWidth = 1; ctx.stroke();
+  ctx.fillStyle = '#0c0e0f'; ctx.fillRect(-6, -11, 10, 22); ctx.fillStyle = '#b89a54'; ctx.fillRect(20, -18, 3, 36); ctx.fillRect(100, -18, 3, 36);
+  ctx.fillStyle = `rgba(${C.red},1)`; ctx.beginPath(); ctx.arc(112, 0, 3.2, 0, 6.28); ctx.fill();
+  ctx.save(); ctx.rotate(Math.PI); ctx.font = `600 11px ${FM}`; ctx.fillStyle = 'rgba(230,236,238,.75)'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('650 nm', -62, 0); ctx.restore();
+  ctx.restore();
+  return { ax: ax - ux * 4, ay: ay - uy * 4, ux, uy };
+}
+function arcLabel(r, a0, a1, label, z, col) { // angles in canvas radians
+  ctx.strokeStyle = col; ctx.lineWidth = 2 / z; ctx.beginPath(); ctx.arc(0, 0, r, Math.min(a0, a1), Math.max(a0, a1)); ctx.stroke();
+  const am = (a0 + a1) / 2; ctx.font = `600 ${17 / z}px ${FM}`; ctx.fillStyle = col; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(label, Math.cos(am) * (r + 30 / z), Math.sin(am) * (r + 30 / z));
+}
+
+// ---------------- scene: bench ----------------
+function bench(t, a) {
+  const z = camZ(t), th = theta(t), mm = matMix(t), n = MATS[mm.m].n, t2 = snell(n, th), R = fresnel(n, th);
+  ctx.save(); ctx.globalAlpha = a;
+  ctx.setTransform(K * z, 0, 0, K * z, K * (O.x - O.x * z), K * (O.y - O.y * z)); ctx.drawImage(BENCH, 0, 0);
+  ctx.restore(); ctx.save();
+  ctx.setTransform(K * z, 0, 0, K * z, K * O.x, K * O.y);
+  protractor(z, n, a);
+  ctx.globalAlpha = a;
+  if (mm.k < 1) drawBlock(mm.prev, a * (1 - mm.k), t, z); drawBlock(mm.m, a * mm.k, t, z);
+  const L_ = laser(th, z);
+  ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = a;
+  const an = th * D2R, ex = -Math.sin(an) * RB, ey = Math.cos(an) * RB;
+  beam(L_.ax, L_.ay, ex, ey, 1, 1); beam(ex, ey, 0, 0, 1, 1);                      // in → centre of flat face (radial: no bend at the curve)
+  const rx = Math.sin(an) * RB, ry = Math.cos(an) * RB; beam(0, 0, rx, ry, R, 1); beam(rx, ry, rx + Math.sin(an) * 420, ry + Math.cos(an) * 420, R, 1, 1); // reflected
+  if (t2 !== null) { const b2 = t2 * D2R; beam(0, 0, Math.sin(b2) * 1150, -Math.cos(b2) * 1150, 1 - R, 1, 1); }   // refracted into air
+  const sp = ctx.createRadialGradient(0, 0, 0, 0, 0, 46); sp.addColorStop(0, `rgba(255,220,210,${.9})`); sp.addColorStop(.3, `rgba(${C.red},.35)`); sp.addColorStop(1, `rgba(${C.red},0)`); ctx.fillStyle = sp; ctx.fillRect(-46, -46, 92, 92);
+  ctx.globalCompositeOperation = 'source-over';
+  const lk = a * (.55 + .45 * P(z, 1, 1.6));
+  ctx.globalAlpha = lk; arcLabel(84, Math.PI / 2, Math.PI / 2 + an, 'θ₁', z, '#ffd2c8');
+  if (t2 !== null) arcLabel(104, -Math.PI / 2, -Math.PI / 2 + t2 * D2R, 'θ₂', z, '#ffd2c8');
+  if (t2 === null) { ctx.globalAlpha = lk * .9; arcLabel(66, Math.PI / 2, Math.PI / 2 - an, 'θ₁', z, 'rgba(255,210,200,.7)'); }
+  ctx.globalAlpha = a * .75; ctx.font = `500 ${15 / z}px ${FM}`; ctx.fillStyle = 'rgba(210,222,228,.7)'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  ctx.fillText(`${MATS[mm.m].k.toLowerCase()} · n = ${f2(n)}`, -RB + 30, RB * .45); ctx.fillText('air · n = 1.00', RB * .55, -26);
+  ctx.restore(); ctx.globalAlpha = 1;
+  return { th, n, t2, R, m: mm.m };
+}
+// ---------------- console ----------------
+function consolePanel(t, s, a) {
+  if (a <= .003) return; ctx.save(); ctx.setTransform(K, 0, 0, K, 0, 0); ctx.globalAlpha = a;
+  rrect(PX, PY, PW, PHh, 14); ctx.fillStyle = C.panel; ctx.fill(); ctx.strokeStyle = C.line; ctx.lineWidth = 1; ctx.stroke();
+  ctx.restore(); ctx.save(); ctx.setTransform(K, 0, 0, K, 0, 0);
+  txt('CONSOLE', PX + 20, PY + 36, `600 15px ${FM}`, C.dim, a, 'left', 'alphabetic', 2);
+  txt('● LASER ON', PX + PW - 20, PY + 36, `600 15px ${FM}`, `rgb(${C.red})`, a, 'right', 'alphabetic', 1);
+  const cks = [12.45, 16.45];
+  BTN.forEach((b, i) => { const sel = s.m === i, press = cks.some((c, j) => j + 1 === i && t > c - .02 && t < c + .12);
+    ctx.globalAlpha = a; rrect(b.x, PY + 70, b.w, 54, 9); ctx.fillStyle = sel ? '#e7ecee' : press ? 'rgba(255,255,255,.14)' : 'rgba(255,255,255,.03)'; ctx.fill(); ctx.strokeStyle = sel ? '#e7ecee' : C.line; ctx.lineWidth = 1; ctx.stroke();
+    txt(MATS[i].k, b.cx, PY + 95, `600 21px ${FH}`, sel ? '#0e1215' : C.ink, a, 'center', 'alphabetic', 1.5);
+    txt('n ' + f2(MATS[i].n), b.cx, PY + 115, `400 14px ${FM}`, sel ? '#3b4448' : C.dim, a, 'center'); });
+  txt('INCIDENCE  θ₁', PX + 20, PY + 175, `600 15px ${FM}`, C.dim, a, 'left', 'alphabetic', 1);
+  const tc = crit(s.n), xc = TRK.x0 + tc / 90 * (TRK.x1 - TRK.x0);
+  ctx.globalAlpha = a; ctx.fillStyle = 'rgba(255,181,71,.16)'; ctx.fillRect(xc, TRK.y - 5, TRK.x1 - xc, 10);
+  ctx.fillStyle = 'rgba(255,255,255,.14)'; ctx.fillRect(TRK.x0, TRK.y - 2, xc - TRK.x0, 4);
+  ctx.fillStyle = 'rgba(255,255,255,.3)'; for (let d = 0; d <= 90; d += 10) { const x = TRK.x0 + d / 90 * 360; ctx.fillRect(x - .5, TRK.y + 10, 1, d % 30 ? 5 : 9); }
+  ctx.fillStyle = C.amber; ctx.fillRect(xc - 1, TRK.y - 13, 2, 26); txt(`θc ${f1(tc)}°`, xc, TRK.y - 20, `600 14px ${FM}`, C.amber, a, 'center');
+  txt('0°', TRK.x0, TRK.y + 34, `400 13px ${FM}`, C.dim, a, 'center'); txt('90°', TRK.x1, TRK.y + 34, `400 13px ${FM}`, C.dim, a, 'center');
+  const k = knob(t); ctx.globalAlpha = a; ctx.fillStyle = '#e7ecee'; ctx.beginPath(); ctx.arc(k.x, k.y, 11, 0, 6.28); ctx.fill(); ctx.fillStyle = `rgb(${C.red})`; ctx.beginPath(); ctx.arc(k.x, k.y, 4, 0, 6.28); ctx.fill();
+  const tir = s.t2 === null, rows = [['θ₁', f1(s.th) + '°', 'θ₂', tir ? '—' : f1(s.t2) + '°'], ['θc', f1(tc) + '°', 'n·sin θ₁', (s.n * Math.sin(s.th * D2R)).toFixed(3)], ['REFLECTED', (s.R * 100).toFixed(1) + '%', 'ESCAPES', ((1 - s.R) * 100).toFixed(1) + '%']];
+  rows.forEach((r, j) => { const y = PY + 290 + j * 62; txt(r[0], PX + 20, y - 26, `400 13px ${FM}`, C.dim, a, 'left', 'alphabetic', 1); txt(r[1], PX + 20, y + 6, `600 30px ${FM}`, j === 1 && r[0] === 'θc' ? C.amber : C.ink, a);
+    txt(r[2], PX + 212, y - 26, `400 13px ${FM}`, C.dim, a, 'left', 'alphabetic', 1); txt(r[3], PX + 212, y + 6, `600 30px ${FM}`, r[2] === 'n·sin θ₁' && tir ? C.amber : C.ink, a); });
+  const near = !tir && s.th > crit(s.n) - 1.2, st = tir ? 'TOTAL INTERNAL REFLECTION' : near ? 'GRAZING — NEAR CRITICAL' : 'REFRACTION + WEAK REFLECTION';
+  ctx.globalAlpha = a; rrect(PX + 20, PY + 424, PW - 40, 36, 8); ctx.fillStyle = tir ? 'rgba(255,181,71,.16)' : 'rgba(255,255,255,.05)'; ctx.fill();
+  txt(st, PX + PW / 2, PY + 448, `600 15px ${FM}`, tir ? C.amber : C.ink, a, 'center', 'alphabetic', 1);
+  ctx.restore(); ctx.globalAlpha = 1;
+}
+function cursorAt(t) {
+  const kb = knob(t), B1 = BTN[1], B2 = BTN[2], pt = (a, b, k) => ({ x: L(a.x, b.x, k), y: L(a.y, b.y, k) }), b1 = { x: B1.cx + 8, y: B1.cy + 6 }, b2 = { x: B2.cx + 8, y: B2.cy + 6 };
+  if (t < 2.1) return REST; if (t < 2.5) return pt(REST, kb, E(P(t, 2.1, 2.5))); if (t < 11.7) return kb; if (t < 12.2) return pt(kb, b1, E(P(t, 11.7, 12.2)));
+  if (t < 12.6) return b1; if (t < 12.9) return pt(b1, kb, E(P(t, 12.6, 12.9))); if (t < 15.9) return kb; if (t < 16.3) return pt(kb, b2, E(P(t, 15.9, 16.3)));
+  if (t < 16.6) return b2; if (t < 16.9) return pt(b2, kb, E(P(t, 16.6, 16.9))); if (t < 19.5) return kb; if (t < 20.2) return pt(kb, REST, E(P(t, 19.5, 20.2))); return REST;
+}
+function cursor(t, a) {
+  if (a <= .003) return; const p = cursorAt(t); ctx.save(); ctx.setTransform(K, 0, 0, K, K * p.x, K * p.y); ctx.globalAlpha = a;
+  for (const c of [12.45, 16.45]) { const k = (t - c) / .45; if (k > 0 && k < 1) { ctx.strokeStyle = `rgba(255,255,255,${.8 * (1 - k)})`; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(0, 0, 8 + 30 * EO(k), 0, 6.28); ctx.stroke(); } }
+  ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, 26); ctx.lineTo(7, 20); ctx.lineTo(12, 31); ctx.lineTo(16, 29); ctx.lineTo(11, 18.5); ctx.lineTo(19, 18.5); ctx.closePath();
+  ctx.fillStyle = '#f4f6f7'; ctx.fill(); ctx.strokeStyle = '#111'; ctx.lineWidth = 1.6; ctx.stroke(); ctx.restore(); ctx.globalAlpha = 1;
+}
+// ---------------- scene: comparison ----------------
+function compare(t, a) {
+  if (a <= .003) return; ctx.save(); ctx.setTransform(K, 0, 0, K, 0, 0); ctx.globalAlpha = a;
+  ctx.drawImage(BENCH, 0, 0); ctx.fillStyle = 'rgba(8,10,12,.72)'; ctx.fillRect(0, 0, W, H);
+  const x0 = 130, x1 = 850, y0 = 900, y1 = 360, nx = n => x0 + (n - 1) / 1.6 * (x1 - x0), ny = d => y0 - d / 90 * (y0 - y1);
+  ctx.strokeStyle = 'rgba(200,212,218,.14)'; ctx.lineWidth = 1; ctx.beginPath(); for (const n of [1, 1.5, 2, 2.5]) { ctx.moveTo(nx(n), y0); ctx.lineTo(nx(n), y1); } for (const d of [0, 30, 60, 90]) { ctx.moveTo(x0, ny(d)); ctx.lineTo(x1, ny(d)); } ctx.stroke();
+  ctx.restore();
+  for (const n of [1, 1.5, 2, 2.5]) txt(n.toFixed(1), nx(n), y0 + 30, `400 16px ${FM}`, C.dim, a, 'center');
+  for (const d of [0, 30, 60, 90]) txt(d + '°', x0 - 14, ny(d) + 5, `400 16px ${FM}`, C.dim, a, 'right');
+  txt('refractive index  n', (x0 + x1) / 2, y0 + 64, `500 20px ${FB}`, C.dim, a, 'center');
+  txt('critical angle  θc', x0, y1 - 22, `500 20px ${FB}`, C.dim, a, 'left');
+  ctx.save(); ctx.setTransform(K, 0, 0, K, 0, 0); ctx.globalAlpha = a;
+  const pr = E(P(t, 20.6, 21.5)); ctx.strokeStyle = C.amber; ctx.lineWidth = 3.5; ctx.beginPath();
+  for (let i = 0; i <= 120 * pr; i++) { const n = 1 + i / 120 * 1.6, x = nx(n), y = ny(crit(n)); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.stroke(); ctx.restore();
+  const order = [1, 0, 2], lab = [[16, -18, 'left'], [16, 34, 'left'], [0, -26, 'center']];
+  order.forEach((mi, j) => { const m = MATS[mi], k = EO(P(t, 21.2 + j * .3, 21.5 + j * .3)); if (k <= 0) return; const c = crit(m.n), x = nx(m.n), y = ny(c);
+    ctx.save(); ctx.setTransform(K, 0, 0, K, 0, 0); ctx.globalAlpha = a * k; ctx.setLineDash([5, 6]); ctx.strokeStyle = 'rgba(210,222,228,.35)'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(x, y0); ctx.lineTo(x, y); ctx.lineTo(x0, y); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = `rgb(${m.col})`; ctx.beginPath(); ctx.arc(x, y, 8 * k, 0, 6.28); ctx.fill(); ctx.strokeStyle = '#0e1113'; ctx.lineWidth = 2; ctx.stroke(); ctx.restore();
+    const [dx, dy, al] = lab[j]; txt(`${m.k}  ${f2(m.n)} → ${f1(c)}°`, x + dx, y + dy, `600 19px ${FM}`, C.ink, a * k, al); });
+  // escape cones
+  const cxs = [1090, 1380, 1670], oy = 470, R = 118;
+  order.forEach((mi, j) => { const m = MATS[mi], k = EO(P(t, 20.8 + j * .22, 21.3 + j * .22)); if (k <= 0) return; const c = crit(m.n) * D2R, cx = cxs[j];
+    ctx.save(); ctx.setTransform(K, 0, 0, K, K * cx, K * oy); ctx.globalAlpha = a * k;
+    blockPath(R); ctx.fillStyle = `rgba(${m.col},.1)`; ctx.fill(); ctx.strokeStyle = `rgba(${m.col},.75)`; ctx.lineWidth = 2; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, R, Math.PI / 2 - c, Math.PI / 2 + c); ctx.closePath(); ctx.fillStyle = `rgba(${C.red},.2)`; ctx.fill();
+    ctx.globalCompositeOperation = 'lighter';
+    for (const f of [-.85, -.45, 0, .45, .85]) { const th = f * c / D2R, an = th * D2R, t2 = snell(m.n, Math.abs(th)) * Math.sign(th || 1) * D2R, T = 1 - fresnel(m.n, Math.abs(th));
+      ctx.strokeStyle = `rgba(${C.red},.85)`; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.moveTo(-Math.sin(an) * R, Math.cos(an) * R); ctx.lineTo(0, 0); ctx.stroke();
+      ctx.strokeStyle = `rgba(${C.red},${.25 + .6 * T})`; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.sin(t2) * 150, -Math.cos(t2) * 150); ctx.stroke(); }
+    for (const sg of [-1, 1]) { const an = sg * (c + (Math.PI / 2 - c) * .55); ctx.strokeStyle = `rgba(${C.red},.35)`; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(-Math.sin(an) * R, Math.cos(an) * R); ctx.lineTo(0, 0); ctx.lineTo(Math.sin(an) * R, Math.cos(an) * R); ctx.stroke(); }
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = C.amber; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(0, 0, 46, Math.PI / 2, Math.PI / 2 + c); ctx.stroke();
+    ctx.restore();
+    txt(m.k, cx, oy + R + 44, `600 26px ${FH}`, C.ink, a * k, 'center', 'alphabetic', 2);
+    txt(`θc = ${f1(crit(m.n))}°`, cx, oy + R + 76, `600 20px ${FM}`, C.amber, a * k, 'center'); });
+  txt('escape cone: only rays inside it get out', 1380, oy + R + 130, `500 20px ${FB}`, C.dim, a * P(t, 21.6, 22), 'center');
+}
+// ---------------- text layers ----------------
+const C15 = f1(crit(1.5)), C133 = f1(crit(1.33)), C242 = f1(crit(2.42));
+const SUB = [[.3, 2.4, 'Aim a laser into a half-round glass block.'], [2.6, 5.0, 'Leaving the glass, light bends away from the normal.'], [5.2, 7.5, 'Tilt the beam further and the bend grows.'],
+  [7.7, 9.9, `Just under ${C15}°, the escaping ray skims the surface.`], [10.1, 12.3, 'Past it, all the light reflects back: total internal reflection.'],
+  [12.6, 14.5, 'Water bends light less…'], [14.6, 16.3, `…so it only traps light beyond ${C133}°.`], [16.6, 18.5, 'Diamond bends light the most:'],
+  [18.6, 20.3, `past just ${C242}°, light stays inside. That is the sparkle.`], [20.6, 23.0, 'Critical angle θc = arcsin(1 / n)']];
+function headline(t, s) {
+  const tir = s && s.t2 === null, nm = s ? MATS[s.m].k : '';
+  let h, f;
+  if (t < 2.5 || t >= 23.2) { h = 'Why does light get trapped in glass?'; f = 'n₁ sin θ₁ = n₂ sin θ₂'; }
+  else if (t >= 20.4) { h = 'Denser material, narrower way out'; f = 'θc = arcsin(1 / n)'; }
+  else { const pre = s.m === 0 ? '' : (s.m === 1 ? 'Water: ' : 'Diamond: ');
+    if (tir) { h = `${pre}at ${f1(s.th)}°, the light is trapped`; f = `${f2(s.n)} × sin ${f1(s.th)}° = ${(s.n * Math.sin(s.th * D2R)).toFixed(3)} > 1  →  no θ₂`; }
+    else { h = s.th > crit(s.n) - 1.2 && s.m === 0 ? `At ${f1(s.th)}°, it barely escapes at ${f1(s.t2)}°` : `${pre}at ${f1(s.th)}°, light escapes at ${f1(s.t2)}°`; f = `${f2(s.n)} × sin ${f1(s.th)}° = 1.00 × sin ${f1(s.t2)}°`; }
+    h = h[0].toUpperCase() + h.slice(1); }
+  ctx.save(); ctx.setTransform(K, 0, 0, K, 0, 0);
+  const g = ctx.createRadialGradient(360, 140, 40, 360, 140, 560); g.addColorStop(0, 'rgba(10,12,14,.55)'); g.addColorStop(1, 'rgba(10,12,14,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, 920, 700);
+  txt('LAB 03  ·  REFRACTION & TOTAL INTERNAL REFLECTION', 96, 92, `600 16px ${FM}`, C.amber, .9, 'left', 'alphabetic', 1.5);
+  txt(h, 96, 162, fitFont(h, 600, 62, FH, 730), C.ink, 1);
+  txt(f, 96, 214, fitFont(f, 400, 27, FM, 730), tir ? C.amber : '#b8c3c8', 1);
+  ctx.restore();
+}
+function subtitle(t) {
+  for (const [a, b, s] of SUB) { if (t < a || t > b) continue; const k = P(t, a, a + .2) * (1 - P(t, b - .2, b));
+    ctx.save(); ctx.setTransform(K, 0, 0, K, 0, 0); ctx.font = `500 40px ${FB}`; const w = ctx.measureText(s).width;
+    ctx.globalAlpha = k * .8; rrect(960 - w / 2 - 26, 990, w + 52, 64, 12); ctx.fillStyle = 'rgba(6,8,9,.78)'; ctx.fill(); ctx.restore();
+    txt(s, 960, 1034, `500 40px ${FB}`, '#f0f3f4', k, 'center'); }
+}
+// ---------------- frame ----------------
+function draw(t) {
+  ctx.setTransform(K, 0, 0, K, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = C.bench; ctx.fillRect(0, 0, W, H);
+  const cmp = t >= 20.4 ? P(t, 20.4, 20.65) * (1 - P(t, 23.2, 23.75)) : 0;
+  let s = null;
+  if (cmp < 1) { s = bench(t, 1); }
+  if (cmp > 0) compare(t, cmp);
+  const pa = 1 - cmp;
+  if (s) consolePanel(t, s, pa);
+  cursor(t, pa);
+  headline(t, s);
+  subtitle(t);
+  ctx.setTransform(K, 0, 0, K, 0, 0); const v = ctx.createRadialGradient(W / 2, H / 2, 600, W / 2, H / 2, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.45)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
+}
+
+// ---------------- runtime (contract) ----------------
+let K = 1, cur = 0, playing = true, t0 = performance.now(), raf = 0;
+function render(t) { if (!BENCH) BENCH = makeBench(); draw(t); }
+function resize() {
+  const d = Math.min(devicePixelRatio || 1, 1.5), s = Math.min(innerWidth / W, innerHeight / H);
+  cv.style.width = W * s + 'px'; cv.style.height = H * s + 'px'; cv.style.left = (innerWidth - W * s) / 2 + 'px'; cv.style.top = (innerHeight - H * s) / 2 + 'px';
+  cv.width = Math.round(W * s * d); cv.height = Math.round(H * s * d); K = s * d; render(cur);
+}
+const fontsReady = Promise.race([Promise.all(['600 40px "Barlow Condensed"', '500 40px "Barlow"', '400 20px "JetBrains Mono"', '600 20px "JetBrains Mono"'].map(f => document.fonts.load(f, 'Why0123456789θ°₁₂'))), new Promise(r => setTimeout(r, 3500))]).catch(() => {});
+function loop(now) { if (!playing) return; cur = mod((now - t0) / 1000, DUR); render(cur); raf = requestAnimationFrame(loop); }
+window.DURATION = DUR;
+window.seek = t => { cur = mod(+t, DUR); t0 = performance.now() - cur * 1000; render(cur); return fontsReady.then(() => render(cur)); };
+window.__demo = { play() { if (playing) return; playing = true; t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); }, pause() { playing = false; cancelAnimationFrame(raf); }, get playing() { return playing; }, get time() { return cur; } };
+addEventListener('message', e => { const d = e.data || {}; if (d.type === 'demo:play') __demo.play(); else if (d.type === 'demo:pause') __demo.pause(); else if (d.type === 'demo:seek') seek(d.t || 0); });
+document.addEventListener('visibilitychange', () => { cancelAnimationFrame(raf); if (!document.hidden && playing) { t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); } });
+addEventListener('resize', resize); resize(); fontsReady.then(() => render(cur)); raf = requestAnimationFrame(loop);
+try { parent.postMessage({ type: 'demo:ready', id: 'v14-lab-explainer', duration: DUR }, '*'); } catch (e) {}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-27T14:14:16.071818+00:00",
+  "files": 949,
+  "code": 31,
+  "image": 69,
+  "rawBytes": 39230184,
+  "archiveBytes": 17824740,
+  "archiveSha256": "857fbafa65e9408b472293f5bdd085cccdc1ad185c983f902f5bdb8b1fee600c",
+  "largestHtmlBytes": 1112585,
+  "changedSinceRuntimeTest": [
+    "CREDITS.md",
+    "case-allocation.json",
+    "docs/miaoda-update.md",
+    "docs/new-100-review.md"
+  ],
+  "runtimeChanged": [],
+  "forbiddenPaths": [],
+  "allSizeLimitsPassed": true
+}

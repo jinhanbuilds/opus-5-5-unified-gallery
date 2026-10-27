@@ -186,6 +186,38 @@ def main() -> None:
     assert {item["intent"] for item in items} == set(INTENTS)
     assert sum(item["medium"] == "video" for item in items) == 15
     assert sum(item["medium"] == "web" for item in items) == 103
+    # The historical 118/122 contract is checked before appending new originals.
+    additions = json.loads((ROOT / "data" / "new-cases.json").read_text())
+    assert len(additions) == 100
+    assert len({item["id"] for item in additions}) == 100
+    counts = {group: sum(x["group"] == group for x in additions) for group in {x["group"] for x in additions}}
+    assert 5 <= len(counts) <= 8 and max(counts.values()) - min(counts.values()) <= 2
+    for item in additions:
+        ident, note, source = item["id"], item["demo_note"], item["source"]
+        assert ident not in by_id
+        items.append({
+            "id": ident, "name": item["title"], "english": item["english"],
+            "description": item["effect"], "interaction": item["interaction"],
+            "medium": item["type"], "intent": item["intent"],
+            "style": item["style"], "motion": item["motion"],
+            "originalCategory": item["category"],
+            "thumbnail": f"fusion/new-thumbs/{ident}.jpg",
+            "prompt": item["prompt"], "promptKind": item["prompt_kind"],
+            "promptNote": item["prompt_note"], "promptFile": None,
+            "sourceUrl": source["url"], "sourceLabel": source["author"] + " · " + source["platform"],
+            "collections": ["new100"], "variants": [{
+                "id": ident, "label": "原作网页", "file": f"fusion/new-pages/{ident}.html",
+                "payload": f"fusion/new-payloads/{ident}.js", "medium": item["type"], "assetBase": True,
+            }],
+            "aspect": item["aspect"], "duration": note["duration"],
+            "sampleInputs": note["sample_inputs"], "demoNote": note["simplified"],
+            "templateZh": item["template_zh"], "audioMode": item["audio_mode"],
+            "detailLink": f"fusion/new-100/index.html#{ident}",
+            "sourceLinks": [["原作源码 · 固定版本", source["code_url"]], ["公开提示词 / 配方", source["recipe_url"]]],
+            "sourceSummary": source["model_evidence"] + " " + source["license"],
+            "searchExtra": " ".join(item["techniques"] + [item["use_when"], source["author"], item["group"]]),
+        })
+    assert len(items) == 218 and sum(len(x["variants"]) for x in items) == 222
     (HERE / "catalog.js").write_text("window.OPUS_FUSION_CATALOG = " + compact_json(items) + ";\n")
 
     pages = HERE / "pages"
@@ -198,12 +230,22 @@ def main() -> None:
             + compact_json(ident) + "]=" + compact_json(html) + ";\n"
         )
 
+    new_pages = HERE / "new-payloads"
+    new_pages.mkdir(exist_ok=True)
+    for item in additions:
+        ident = item["id"]
+        html = (HERE / "new-pages" / f"{ident}.html").read_text()
+        (new_pages / f"{ident}.js").write_text(
+            "window.OPUS_FUSION_PAGES ||= {};window.OPUS_FUSION_PAGES["
+            + compact_json(ident) + "]=" + compact_json(html) + ";\n"
+        )
+
     lines = [
         "# Opus 5.5 统一图鉴 · 条目映射",
         "",
-        "来源：两个固定版本的 Git 子模块。这个文件由 `scripts/fusion_catalog.py` 生成。",
+        "来源：两个固定版本的历史子模块，加七个来源的本地原作快照。这个文件由 `scripts/fusion_catalog.py` 生成。",
         "",
-        "- 118 个主题；122 个演示版本。15 个视频型效果，103 个网页作品。",
+        "- 218 个主题；222 个演示版本。58 个视频型效果，160 个网页作品。",
         "- W01/001、W02/008、W03/015、W04/026 共用创意提示词，保留两个不同演示。",
         "- 用途分类是本次编辑判断，来源原分类保留在数据中。风格、动作标签只对明确匹配的条目添加。",
         "",
@@ -212,7 +254,7 @@ def main() -> None:
     ]
     for item in items:
         medium = "视频型效果" if item["medium"] == "video" else "网页作品"
-        groups = "、".join("100 HTML" if x == "html100" else "精选 22" for x in item["collections"])
+        groups = "、".join({"html100": "100 HTML", "selected22": "原精选 22", "new100": "新增原作 100"}[x] for x in item["collections"])
         lines.append(f"| {item['id']} | {item['name']} | {medium} | {item['intent']} | {groups} | {len(item['variants'])} | {item['promptKind']} |")
     (HERE / "条目映射.md").write_text("\n".join(lines) + "\n")
     print("built", len(items), "subjects /", sum(len(x["variants"]) for x in items), "variants")

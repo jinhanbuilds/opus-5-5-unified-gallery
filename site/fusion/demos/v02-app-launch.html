@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Driftnote Launch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#0E2A27}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* v02-app-launch — 15 s, 1920x1080 logical stage. Fictional app "Driftnote" (voice notes), driftnote.example.
+   Brand: pine #0E2A27 · citron #DDF45B · coral #FF7A5C · mist #EEF2EA. Type: Bricolage Grotesque / DM Sans / DM Mono.
+   S0 name      0.00–2.75  logo squircle (voice bars) + "driftnote" wordmark, tagline rises 0.3/0.55, exits 1.7.
+                            1.85–2.75 logo flies and morphs squircle → round record button; app panel springs up (2.0).
+   S1 talk      2.50–5.60  panel: waveform records (2.85–4.1) → bars collapse → transcript types (4.35–5.2)
+                            → key phrases highlighted (5.15). Left: "01 Talk. It types."
+   S2 sort      5.60–8.90  panel morphs wider into a 3-column board; 7 note cards pop into a pile (6.15)
+                            then fly one by one into Errands / Work / Ideas with auto tags + counters (6.8–7.9).
+   S3 recap     8.90–12.1  panel morphs into recap: notification drops (9.35), ring, 3 ticks (10.2/10.5/10.8), week bars.
+   S4 url      12.10–14.25 panel shrinks and turns citron = the logo (12.2–12.9); wordmark rises; URL pill opens,
+                            "driftnote.example" types (13.2–13.85), caret blinks, hold.
+   loop        14.25–15.0  pill retracts, logo + wordmark scale back to the S0 layout → t=15 equals t=0.
+   All background drift lines and logo bars use integer cycles per 15 s, so the loop is exact. */
+(() => {
+const ID = 'v02-app-launch', W = 1920, H = 1080, D = 15, TAU = Math.PI * 2;
+const cv = document.getElementById('c'), X = cv.getContext('2d');
+let S = 1, OX = 0, OY = 0, CW = 1, CH = 1;
+const cl = (v, a = 0, b = 1) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t, k = (t, a, b) => cl((t - a) / (b - a));
+const eo3 = x => 1 - Math.pow(1 - x, 3), ei3 = x => x * x * x, eio3 = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const eoX = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+const eioX = x => x <= 0 ? 0 : x >= 1 ? 1 : x < .5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2;
+const spring = (t, w = 12, z = .8) => { if (t <= 0) return 0; const wd = w * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w * t) * (Math.cos(wd * t) + z * w / wd * Math.sin(wd * t)); };
+let sd = 20260922; const rnd = () => { sd = sd + 0x6D2B79F5 | 0; let r = Math.imul(sd ^ sd >>> 15, 1 | sd); r = r + Math.imul(r ^ r >>> 7, 61 | r) ^ r; return ((r ^ r >>> 14) >>> 0) / 4294967296; };
+
+const C = { pine: '#0E2A27', shadow: '#061614', line: '#153A35', mist: '#EEF2EA', col: '#E2E8DD', card: '#FFFFFF', ink: '#0E2A27', muted: '#6E857F', rule: '#D5DDD2', cit: '#DDF45B', coral: '#FF7A5C', coralT: '#C9492D', sage: '#A4BDB2' };
+const DF = '"Bricolage Grotesque","Arial Black",Arial,sans-serif', UF = '"DM Sans","Helvetica Neue",Arial,sans-serif', MF = '"DM Mono",ui-monospace,Menlo,monospace';
+const setF = (w, s, f = DF, ls = 0) => { X.font = `${w} ${s}px ${f}`; X.letterSpacing = ls + 'px'; };
+const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+const mixC = (a, b, t) => { const A = hex(a), B = hex(b); return `rgb(${A.map((v, i) => Math.round(lerp(v, B[i], t))).join(',')})`; };
+function rr(x, y, w, h, r) { w = Math.max(0, w); h = Math.max(0, h); X.beginPath(); X.roundRect(x, y, w, h, Math.max(0, Math.min(r, w / 2, h / 2))); }
+
+// per-character rise inside a clip box. off(i,n): 0 = in place, +1 = hidden below, -1 = hidden above
+function rise(str, x, y, size, col, off, o = {}) {
+  setF(o.w || 800, size, o.f || DF, (o.ls ?? -0.035) * size);
+  const tw = X.measureText(str).width;
+  X.save(); X.beginPath(); X.rect(x - size * .3, y - size * 1.02, tw + size * .6, size * 1.3); X.clip(); X.fillStyle = col;
+  for (let i = 0; i < str.length; i++) {
+    const v = off ? off(i, str.length) : 0; if (v <= -1 || v >= 1) continue;
+    X.fillText(str[i], x + X.measureText(str.slice(0, i)).width, y + v * size * 1.3);
+  }
+  X.restore(); return tw;
+}
+const enter = (t, t0, dur = .55, st = .022) => i => 1 - eoX(k(t, t0 + i * st, t0 + i * st + dur));
+const exitUp = (t, t0, dur = .3, st = .014) => i => -ei3(k(t, t0 + i * st, t0 + i * st + dur)) * 1.001;
+const both = (a, b) => i => { const y = b(i); return y < 0 ? y : a(i); };
+
+// ---------- brand ----------
+const WORD = 'driftnote';
+const TL = { lx: 170, ly: 372, ls: 190, wx: 412, wy: 560, ws: 250 };
+const EL = { lx: 170, ly: 214, ls: 100, wx: 300, wy: 297, ws: 112 };
+const mixS = (a, b, e) => { const o = {}; for (const q in a) o[q] = lerp(a[q], b[q], e); return o; };
+function bars(cx, cy, s, t, en, ba = 1) {
+  if (ba <= .001) return;
+  const hs = [.30, .56, .42, .24], m = [19, 23, 17, 29], bw = s * .09, gap = s * .07, tot = 4 * bw + 3 * gap, x0 = cx - tot / 2;
+  X.save(); X.globalAlpha *= ba; X.fillStyle = C.pine;
+  for (let i = 0; i < 4; i++) { const w = Math.sin(TAU * m[i] * t / D + i * 1.9) * .5 + .5, h = s * hs[i] * (1 + en * (w * .9 - .35)); rr(x0 + i * (bw + gap), cy - h / 2, bw, h, bw / 2); X.fill(); }
+  X.restore();
+}
+function logo(x, y, s, rf, t, en, ba = 1, col = C.cit) { X.fillStyle = col; rr(x, y, s, s, s * rf); X.fill(); bars(x + s / 2, y + s / 2, s, t, en, ba); }
+function energy(t) { if (t < 2.85) return .5; return lerp(.5, 1, k(t, 2.85, 3.05)); }
+function metaLine(a) {
+  if (a <= 0) return;
+  X.save(); X.globalAlpha = a; X.fillStyle = C.sage; X.fillRect(170, H - 128, W - 340, 1.5);
+  setF(500, 18, MF, 2); X.fillText('DRIFTNOTE 1.0', 170, H - 86); X.textAlign = 'right'; X.fillText('iOS · ANDROID · WEB', W - 170, H - 86); X.restore(); X.textAlign = 'left';
+}
+
+// ---------- background ----------
+function bg(t) {
+  X.fillStyle = C.pine; X.fillRect(0, 0, W, H);
+  X.strokeStyle = C.line; X.lineWidth = 2;
+  for (let j = 0; j < 7; j++) {
+    const y0 = 120 + j * 140; X.beginPath();
+    for (let x = -40; x <= W + 40; x += 40) { const y = y0 + Math.sin(x * .0042 + TAU * t / D + j * .8) * 22 + Math.sin(x * .0017 - TAU * 2 * t / D + j) * 14; x < 0 ? X.moveTo(x, y) : X.lineTo(x, y); }
+    X.stroke();
+  }
+}
+
+// ---------- panel ----------
+const PF = [{ cx: 1330, cy: 560, w: 600, h: 760 }, { cx: 1350, cy: 560, w: 840, h: 700 }, { cx: 1330, cy: 560, w: 620, h: 780 }];
+function panel(t) {
+  const m1 = eio3(k(t, 5.6, 6.28)), m2 = eio3(k(t, 8.9, 9.55)), r = {};
+  for (const q of ['cx', 'cy', 'w', 'h']) r[q] = lerp(lerp(PF[0][q], PF[1][q], m1), PF[2][q], m2);
+  r.cy += (1 - spring(t - 2.0, 10, .84)) * 1000; r.rad = 40; r.col = C.mist; r.e = 0;
+  const e = eioX(k(t, 12.2, 12.9)); r.e = e;
+  if (e > 0) { r.cx = lerp(r.cx, EL.lx + EL.ls / 2, e); r.cy = lerp(r.cy, EL.ly + EL.ls / 2, e); r.w = lerp(r.w, EL.ls, e); r.h = lerp(r.h, EL.ls, e); r.rad = lerp(40, EL.ls * .28, e); r.col = mixC(C.mist, C.cit, cl(e * 1.3)); }
+  r.x = r.cx - r.w / 2; r.y = r.cy - r.h / 2; return r;
+}
+const BTN = { x: 300, y: 640, r: 62 };
+
+// S1 — talk
+const NOTE = ['Pick up oat milk, then', 'move Friday’s demo to', '3pm. Idea: tide-themed', 'onboarding.'];
+const HL = [[0, 'oat milk', C.coral, .45], [1, 'Friday’s demo', C.cit, 1], [2, 'tide-themed', C.sage, .55], [3, 'onboarding', C.sage, .55]];
+const PH = Array.from({ length: 26 }, () => rnd() * TAU);
+function f1(t, a) {
+  if (a <= 0) return;
+  X.save(); X.globalAlpha = a;
+  setF(500, 20, MF, 1.5); X.fillStyle = C.muted; X.fillText('NEW NOTE', 44, 68);
+  X.textAlign = 'right';
+  if (t < 4.3) { const sec = Math.min(3, 1 + Math.floor(Math.max(0, t - 2.85) * 2)); X.fillStyle = C.coralT; X.fillText('REC  0:0' + sec, 556, 68); const tw = X.measureText('REC  0:0' + sec).width; X.fillStyle = C.coral; X.beginPath(); X.arc(556 - tw - 16, 61, 6, 0, TAU); X.fill(); }
+  else if (t < 5.2) { X.fillStyle = C.muted; X.fillText('TRANSCRIBING', 556, 68); }
+  else { const p = eoX(k(t, 5.2, 5.5)); setF(600, 18, MF, 1.5); const tw = X.measureText('SAVED').width; X.globalAlpha = a * p; X.fillStyle = C.cit; rr(556 - tw - 28, 42, tw + 28, 36, 18); X.fill(); X.fillStyle = C.ink; X.fillText('SAVED', 542, 67); X.globalAlpha = a; }
+  X.textAlign = 'left';
+  X.fillStyle = C.rule; X.fillRect(44, 98, 512, 2);
+  // waveform
+  const wa = k(t, 2.75, 2.95) * (1 - k(t, 4.25, 4.5));
+  if (wa > 0) {
+    const rec = k(t, 2.85, 3.1) * (1 - k(t, 4.0, 4.22)), up = eio3(k(t, 4.18, 4.5)) * 110;
+    X.globalAlpha = a * wa; X.fillStyle = C.ink;
+    for (let i = 0; i < 26; i++) {
+      const shape = .35 + .65 * Math.sin(Math.PI * (i + .5) / 26), v = (.5 + .5 * Math.sin(t * 13 + PH[i])) * (.55 + .45 * Math.sin(t * 5.1 + i * .45));
+      const h = 10 + rec * 170 * shape * (.25 + .75 * v);
+      rr(60 + i * 19, 300 - h / 2 - up, 10, h, 5); X.fill();
+    }
+    setF(500, 26, MF, 1); X.textAlign = 'center'; X.fillStyle = C.muted; X.fillText('Listening…', 300, 450 - up); X.textAlign = 'left';
+    X.globalAlpha = a;
+  }
+  // transcript
+  const tot = NOTE.join('').length, n = Math.floor(tot * k(t, 4.35, 5.2));
+  if (n > 0) {
+    setF(500, 38, UF, -.4);
+    HL.forEach(([li, s, c, al], j) => {
+      const p = eio3(k(t, 5.12 + j * .07, 5.42 + j * .07)); if (p <= 0) return;
+      const idx = NOTE[li].indexOf(s), x0 = 44 + X.measureText(NOTE[li].slice(0, idx)).width, w = X.measureText(s).width;
+      X.globalAlpha = a * al; X.fillStyle = c; rr(x0 - 5, 190 + li * 60 - 33, (w + 10) * p, 44, 7); X.fill();
+    });
+    X.globalAlpha = a; X.fillStyle = C.ink;
+    let left = n, cx = 44, cy = 190;
+    for (let li = 0; li < NOTE.length && left > 0; li++) {
+      const s = NOTE[li].slice(0, left); left -= s.length; X.fillText(s, 44, 190 + li * 60);
+      cx = 44 + X.measureText(s).width; cy = 190 + li * 60;
+    }
+    if (n < tot) { X.fillStyle = C.ink; X.fillRect(cx + 3, cy - 32, 3, 40); }
+  }
+  // record button (the logo, now round)
+  const rec = k(t, 2.85, 3.1) * (1 - k(t, 4.0, 4.22));
+  if (rec > 0) { const fr = ((t - 2.85) * 1.3) % 1; X.strokeStyle = C.coral; X.lineWidth = 3; X.globalAlpha = a * rec * (1 - fr); X.beginPath(); X.arc(BTN.x, BTN.y, BTN.r + 6 + fr * 40, 0, TAU); X.stroke(); X.globalAlpha = a; }
+  if (t >= 2.75) logo(BTN.x - BTN.r, BTN.y - BTN.r, BTN.r * 2, .5, t, energy(t), 1 - k(t, 4.15, 4.35));
+  const ck = eo3(k(t, 4.3, 4.62));
+  if (ck > 0) {
+    const pts = [[-28, 2], [-8, 22], [30, -18]], L1 = Math.hypot(20, 20), L2 = Math.hypot(38, 40), d = ck * (L1 + L2);
+    X.strokeStyle = C.pine; X.lineWidth = 10; X.lineCap = 'round'; X.lineJoin = 'round'; X.beginPath(); X.moveTo(BTN.x + pts[0][0], BTN.y + pts[0][1]);
+    if (d <= L1) X.lineTo(BTN.x + lerp(pts[0][0], pts[1][0], d / L1), BTN.y + lerp(pts[0][1], pts[1][1], d / L1));
+    else { X.lineTo(BTN.x + pts[1][0], BTN.y + pts[1][1]); const q = (d - L1) / L2; X.lineTo(BTN.x + lerp(pts[1][0], pts[2][0], q), BTN.y + lerp(pts[1][1], pts[2][1], q)); }
+    X.stroke(); X.lineCap = 'butt';
+  }
+  X.restore();
+}
+
+// S2 — sort
+const COLW = (840 - 64 - 40) / 3;
+const COLS = [{ n: 'Errands', c: C.coral, tag: '#errand', tc: C.coralT }, { n: 'Work', c: C.cit, tag: '#work', tc: C.ink }, { n: 'Ideas', c: C.pine, tag: '#idea', tc: C.ink }];
+const CARDS = [['Oat milk', 0], ['Demo → 3pm', 1], ['Tide onboarding', 2], ['Return books', 0], ['Draft Q3 notes', 1], ['Podcast names', 2], ['Call the plumber', 0]].map(([s, c], i) => ({ s, c, i }));
+{ // pile layout + landing slots (fly order = top of pile first)
+  CARDS.forEach(q => { q.px = 420 - (COLW - 24) / 2 + (rnd() - .5) * 60; q.py = 250 + q.i * 12 + (rnd() - .5) * 20; q.pr = (rnd() - .5) * .16; });
+  const cnt = [0, 0, 0]; [...CARDS].reverse().forEach((q, o) => { q.fly = 6.8 + o * .15; q.slot = cnt[q.c]++; q.sx = 32 + q.c * (COLW + 20) + 12; q.sy = 114 + q.slot * 108; });
+}
+function card(q, x, y, rot, lift, tagA) {
+  const w = COLW - 24, h = 96;
+  X.save(); X.translate(x + w / 2, y + h / 2); X.rotate(rot); X.scale(1 + lift * .06, 1 + lift * .06);
+  X.fillStyle = 'rgba(14,42,39,' + (.08 + lift * .14) + ')'; rr(-w / 2, -h / 2 + 4 + lift * 14, w, h, 14); X.fill();
+  X.fillStyle = C.card; rr(-w / 2, -h / 2, w, h, 14); X.fill();
+  setF(600, 23, UF, -.2); X.fillStyle = C.ink; X.fillText(q.s, -w / 2 + 18, -h / 2 + 40);
+  setF(500, 15, MF, .5); const base = X.globalAlpha;
+  if (tagA < 1) { X.globalAlpha = base * (1 - tagA); X.fillStyle = C.muted; X.fillText('inbox', -w / 2 + 18, -h / 2 + 72); }
+  if (tagA > 0) {
+    const col = COLS[q.c], tw = X.measureText(col.tag).width;
+    X.globalAlpha = base * tagA * (q.c === 2 ? .14 : q.c === 0 ? .3 : 1); X.fillStyle = col.c;
+    rr(-w / 2 + 12, -h / 2 + 54, tw + 16, 26, 13); X.fill();
+    X.globalAlpha = base * tagA; X.fillStyle = col.tc; X.fillText(col.tag, -w / 2 + 20, -h / 2 + 72);
+  }
+  X.restore();
+}
+function f2(t, a) {
+  if (a <= 0) return;
+  X.save(); X.globalAlpha = a;
+  const landed = [0, 0, 0]; CARDS.forEach(q => { if (t >= q.fly + .6) landed[q.c]++; });
+  COLS.forEach((c, i) => {
+    const x = 32 + i * (COLW + 20), ap = eo3(k(t, 5.95 + i * .06, 6.35 + i * .06));
+    X.globalAlpha = a * ap;
+    X.fillStyle = C.col; rr(x, 100 + (1 - ap) * 30, COLW, 568, 18); X.fill();
+    X.fillStyle = c.c; X.beginPath(); X.arc(x + 20, 65, 7, 0, TAU); X.fill();
+    if (i === 1) { X.strokeStyle = C.pine; X.lineWidth = 1.5; X.stroke(); }
+    setF(600, 24, UF, -.2); X.fillStyle = C.ink; X.fillText(c.n, x + 36, 73);
+    setF(500, 20, MF); X.textAlign = 'right'; X.fillStyle = landed[i] ? C.ink : C.muted; X.fillText(String(landed[i]), x + COLW - 14, 73); X.textAlign = 'left';
+  });
+  X.globalAlpha = a;
+  const flying = [];
+  CARDS.forEach(q => {
+    const s = spring(t - (6.15 + q.i * .05), 14, .78); if (s <= 0) return;
+    const e = eio3(k(t, q.fly, q.fly + .6));
+    const d = { q, e, s, x: lerp(q.px, q.sx, e), y: lerp(q.py, q.sy, e) - Math.sin(Math.PI * e) * 70, rot: lerp(q.pr, 0, e), lift: Math.sin(Math.PI * e) };
+    if (e >= 1) card(q, d.x, d.y, 0, 0, eo3(k(t, q.fly + .55, q.fly + .8))); else flying.push(d);
+  });
+  flying.sort((p, r) => (p.e > 0) - (r.e > 0) || p.q.i - r.q.i);
+  flying.forEach(d => { X.save(); const w = COLW - 24; X.translate(d.x + w / 2, d.y + 48); X.scale(d.s, d.s); X.translate(-d.x - w / 2, -d.y - 48); card(d.q, d.x, d.y, d.rot, d.lift, 0); X.restore(); });
+  X.restore();
+}
+
+// S3 — recap
+const ROWS = [['Oat milk', 'ERRAND', 0], ['Demo → 3pm', 'WORK', 1], ['Return books', 'ERRAND', 0], ['Tide onboarding', 'IDEA', 2]];
+const TICK = [10.2, 10.5, 10.8], WEEK = [.45, .8, .6, .95, .4, .7, .3];
+function f3(t, a) {
+  if (a <= 0) return;
+  X.save(); X.globalAlpha = a;
+  // notification
+  const dy = (1 - spring(t - 9.35, 11, .8)) * -170;
+  X.fillStyle = C.pine; rr(24, 24 + dy, 572, 100, 24); X.fill();
+  logo(46, 48 + dy, 52, .28, t, 0);
+  setF(600, 24, UF, -.2); X.fillStyle = C.mist; X.fillText('Your morning recap is ready', 116, 66 + dy);
+  setF(500, 19, UF); X.fillStyle = C.sage; X.fillText('3 open · 1 idea worth keeping', 116, 98 + dy);
+  setF(500, 15, MF); X.textAlign = 'right'; X.fillText('now', 574, 62 + dy); X.textAlign = 'left';
+  const ap = i => eo3(k(t, 9.55 + i * .07, 9.95 + i * .07));
+  X.globalAlpha = a * ap(0); setF(500, 19, MF, 2); X.fillStyle = C.muted; X.fillText('TUESDAY · 09:00', 40, 186 + (1 - ap(0)) * 20);
+  X.globalAlpha = a * ap(1); setF(700, 54, DF, -1.5); X.fillStyle = C.ink; X.fillText('Good morning.', 40, 250 + (1 - ap(1)) * 24);
+  // ring
+  const tk = TICK.map(s => eo3(k(t, s, s + .35))), v = tk.reduce((p, q) => p + q, 0) / 4, done = TICK.filter(s => t > s + .12).length;
+  X.globalAlpha = a * ap(1); X.lineWidth = 12; X.strokeStyle = C.rule; X.beginPath(); X.arc(518, 214, 46, 0, TAU); X.stroke();
+  if (v > 0) { X.strokeStyle = C.pine; X.lineCap = 'round'; X.beginPath(); X.arc(518, 214, 46, -Math.PI / 2, -Math.PI / 2 + TAU * v); X.stroke(); X.lineCap = 'butt'; }
+  setF(700, 24, UF); X.textAlign = 'center'; X.fillStyle = C.ink; X.fillText(done + '/4', 518, 223); X.textAlign = 'left';
+  // rows
+  ROWS.forEach(([s, g, c], i) => {
+    const p = ap(i + 2), y0 = 290 + i * 78; X.globalAlpha = a * p;
+    X.save(); X.translate((1 - p) * 40, 0);
+    X.fillStyle = C.rule; X.fillRect(40, y0, 540, 1.5);
+    const d = i < 3 ? tk[i] : 0;
+    X.strokeStyle = C.pine; X.lineWidth = 3; rr(40, y0 + 22, 34, 34, 10); X.stroke();
+    if (d > 0) { X.fillStyle = C.pine; X.globalAlpha = a * p * d; rr(40, y0 + 22, 34, 34, 10); X.fill(); X.strokeStyle = C.cit; X.lineWidth = 4; X.lineCap = 'round'; X.beginPath(); X.moveTo(49, y0 + 39); X.lineTo(55, y0 + 45); X.lineTo(66, y0 + 32); X.stroke(); X.lineCap = 'butt'; X.globalAlpha = a * p; }
+    setF(500, 28, UF, -.3); X.fillStyle = mixC(C.ink, C.muted, d); X.fillText(s, 94, y0 + 49);
+    if (d > 0) { const w = X.measureText(s).width; X.fillStyle = C.muted; X.fillRect(94, y0 + 39, w * d, 2.5); }
+    setF(500, 15, MF, 1); const tw = X.measureText(g).width, col = COLS[c];
+    X.fillStyle = col.c; X.globalAlpha = a * p * (c === 2 ? .14 : c === 0 ? .3 : 1); rr(580 - tw - 24, y0 + 25, tw + 24, 28, 14); X.fill();
+    X.globalAlpha = a * p; X.fillStyle = col.tc; X.fillText(g, 580 - tw - 12, y0 + 44);
+    X.restore();
+  });
+  // week bars
+  X.globalAlpha = a * ap(6); setF(500, 16, MF, 1.5); X.fillStyle = C.muted; X.fillText('NOTES THIS WEEK', 40, 640);
+  X.textAlign = 'right'; X.fillText('12-DAY STREAK', 580, 640); X.textAlign = 'center';
+  'MTWTFSS'.split('').forEach((d, i) => {
+    const g = eo3(k(t, 9.95 + i * .045, 10.55 + i * .045)), h = 8 + 62 * WEEK[i] * g;
+    X.globalAlpha = a * ap(6); X.fillStyle = i === 1 ? C.cit : C.pine; rr(40 + i * 78, 730 - h, 46, h, 8); X.fill();
+    if (i === 1) { X.strokeStyle = C.pine; X.lineWidth = 2; X.stroke(); }
+    X.fillStyle = C.muted; X.fillText(d, 63 + i * 78, 758);
+  });
+  X.textAlign = 'left';
+  X.restore();
+}
+
+// ---------- left column ----------
+const FEAT = [
+  { h: ['Talk.', 'It types.'], s: ['Voice notes turn into clean,', 'searchable text as you speak.'], a: 2.5, b: 5.58, lab: 'TALK' },
+  { h: ['Sorts', 'itself.'], s: ['Every note lands in the right', 'list: errands, work, ideas.'], a: 5.78, b: 8.88, lab: 'SORT' },
+  { h: ['Your day,', 'recapped.'], s: ['One calm summary each morning', 'of what actually matters.'], a: 9.08, b: 12.0, lab: 'RECAP' }];
+function left(t) {
+  FEAT.forEach((f, i) => {
+    if (t < f.a || t > f.b + .6) return;
+    rise('FEATURE 0' + (i + 1), 152, 318, 24, C.cit, both(enter(t, f.a, .5, .012), exitUp(t, f.b, .3, .006)), { w: 500, f: MF, ls: .08 });
+    f.h.forEach((s, li) => rise(s, 146, 470 + li * 150, 150, C.mist, both(enter(t, f.a + .06 + li * .09, .6, .024), exitUp(t, f.b + li * .05, .3, .012)), { w: 800, ls: -.028 }));
+    f.s.forEach((s, li) => rise(s, 152, 728 + li * 44, 32, C.sage, both(enter(t, f.a + .3 + li * .06, .6, .004), exitUp(t, f.b + .02, .28, .002)), { w: 500, f: UF, ls: -.01 }));
+  });
+  const pa = k(t, 2.5, 2.9) * (1 - k(t, 11.9, 12.15));
+  if (pa > 0) {
+    X.save(); X.globalAlpha = pa;
+    FEAT.forEach((f, i) => {
+      const x = 152 + i * 170, y = H - 150, p = k(t, f.a, f.b + .2), act = t >= f.a && t < f.b + .2;
+      X.fillStyle = 'rgba(164,189,178,.25)'; X.fillRect(x, y, 150, 4); X.fillStyle = C.cit; X.fillRect(x, y, 150 * p, 4);
+      setF(500, 16, MF, 2); X.fillStyle = act ? C.mist : C.sage; X.fillText(f.lab, x, y + 34);
+    });
+    X.restore();
+  }
+}
+
+// ---------- end card ----------
+const URL1 = 'driftnote', URL2 = '.example';
+function urlPill(t) {
+  const al = k(t, 12.95, 13.1) * (1 - k(t, 14.52, 14.66)); if (al <= 0) return;
+  const open = eoX(k(t, 13.0, 13.55)) * (1 - eio3(k(t, 14.22, 14.62)));
+  setF(700, 92, UF, -2.5); const w1 = X.measureText(URL1).width; setF(500, 92, UF, -2.5); const w2 = X.measureText(URL2).width;
+  const x = EL.lx, y = 404, h = 150, full = 118 + w1 + w2 + 190, pw = lerp(h, full, open);
+  X.save(); X.globalAlpha = al;
+  X.fillStyle = C.mist; rr(x, y, pw, h, h / 2); X.fill(); X.clip();
+  // lock
+  X.strokeStyle = C.muted; X.fillStyle = C.muted; X.lineWidth = 5; X.beginPath(); X.arc(x + 70, y + 66, 12, Math.PI, 0); X.stroke(); rr(x + 52, y + 66, 36, 30, 6); X.fill();
+  // typed url
+  const all = URL1 + URL2, n = Math.floor(all.length * k(t, 13.2, 13.85));
+  const s1 = all.slice(0, Math.min(n, URL1.length)), s2 = n > URL1.length ? all.slice(URL1.length, n) : '';
+  setF(700, 92, UF, -2.5); X.fillStyle = C.ink; X.fillText(s1, x + 118, y + 106); let cx = x + 118 + X.measureText(s1).width;
+  setF(500, 92, UF, -2.5); X.fillStyle = C.muted; X.fillText(s2, cx, y + 106); cx += X.measureText(s2).width;
+  if (t < 14.22 && (n < all.length || Math.floor(t * 2.4) % 2 === 0)) { X.fillStyle = C.ink; X.fillRect(cx + 6, y + 36, 5, 82); }
+  // go button
+  const ga = k(open, .82, 1); if (ga > 0) {
+    const bx = x + pw - 20 - 110, by = y + 20; X.globalAlpha = al * ga; X.fillStyle = C.cit; rr(bx, by, 110, 110, 55); X.fill();
+    X.strokeStyle = C.pine; X.lineWidth = 9; X.lineCap = 'round'; X.lineJoin = 'round'; X.beginPath(); X.moveTo(bx + 33, by + 55); X.lineTo(bx + 77, by + 55); X.moveTo(bx + 60, by + 37); X.lineTo(bx + 78, by + 55); X.lineTo(bx + 60, by + 73); X.stroke(); X.lineCap = 'butt';
+  }
+  X.restore();
+  const la = k(t, 13.55, 13.85) * (1 - k(t, 14.2, 14.4));
+  if (la > 0) rise('Free on iOS, Android and the web.', 176, 640, 36, C.sage, i => (1 - eo3(la)) * .8, { w: 500, f: UF, ls: -.01 });
+}
+
+// ---------- compose ----------
+function draw(t) {
+  bg(t);
+  // S0 title
+  if (t < 2.8) {
+    brand0(t);
+    rise('Speak it.', TL.wx + 8, TL.wy + 108, 38, C.mist, both(enter(t, .3, .55, .02), exitUp(t, 1.68, .3, .01)), { w: 500, f: MF, ls: 0 });
+    setF(500, 38, MF, 0); const tw = X.measureText('Speak it. ').width;
+    rise('Keep it.', TL.wx + 8 + tw, TL.wy + 108, 38, C.cit, both(enter(t, .55, .55, .02), exitUp(t, 1.72, .3, .01)), { w: 500, f: MF, ls: 0 });
+  }
+  metaLine(k(t, .35, .7) * (1 - k(t, 1.7, 1.9)) + k(t, 13.5, 13.8) * (1 - k(t, 14.2, 14.4)));
+  left(t);
+  // panel
+  if (t > 2.0 && t < 12.9) {
+    const p = panel(t);
+    X.save(); X.globalAlpha = .55 * (1 - p.e); X.fillStyle = C.shadow; rr(p.x, p.y + 22, p.w, p.h, p.rad); X.fill(); X.restore();
+    X.fillStyle = p.col; rr(p.x, p.y, p.w, p.h, p.rad); X.fill();
+    X.save(); rr(p.x, p.y, p.w, p.h, p.rad); X.clip(); X.translate(p.x, p.y);
+    if (t < 5.85) f1(t, 1 - k(t, 5.5, 5.75));
+    if (t > 5.9 && t < 9.1) f2(t, k(t, 6.0, 6.3) * (1 - k(t, 8.82, 9.02)));
+    if (t > 9.3 && t < 12.25) f3(t, k(t, 9.38, 9.6) * (1 - k(t, 12.0, 12.2)));
+    X.restore();
+    if (p.e > .8) bars(p.cx, p.cy, Math.min(p.w, p.h), t, .5, k(p.e, .8, 1));
+    // flying logo → record button (drawn above the panel)
+    if (t >= 1.85 && t < 2.75) {
+      const e = eioX(k(t, 1.85, 2.75)), s = lerp(TL.ls, BTN.r * 2, e), tx = p.x + BTN.x - BTN.r, ty = p.y + BTN.y - BTN.r;
+      logo(lerp(TL.lx, tx, e), lerp(TL.ly, ty, e), s, lerp(.28, .5, e), t, energy(t));
+    }
+  }
+  // S4 end card + loop return
+  if (t >= 12.75) {
+    const st = mixS(EL, TL, eioX(k(t, 14.4, 15)));
+    if (t >= 12.9) logo(st.lx, st.ly, st.ls, .28, t, .5);
+    rise(WORD, st.wx, st.wy, st.ws, C.mist, enter(t, 12.8, .55, .035), { w: 800, ls: -.028 });
+    urlPill(t);
+  }
+}
+function brand0(t) {
+  if (t < 1.85) logo(TL.lx, TL.ly, TL.ls, .28, t, .5);
+  rise(WORD, TL.wx, TL.wy, TL.ws, C.mist, exitUp(t, 1.72, .32, .018), { w: 800, ls: -.028 });
+}
+function frame(t) {
+  X.setTransform(1, 0, 0, 1, 0, 0); X.fillStyle = C.pine; X.fillRect(0, 0, CW, CH);
+  X.setTransform(S, 0, 0, S, OX, OY); X.save(); X.beginPath(); X.rect(0, 0, W, H); X.clip(); X.textBaseline = 'alphabetic'; draw(t); X.restore();
+}
+
+// ---------- runtime ----------
+function fit() { const dpr = Math.min(window.devicePixelRatio || 1, 1.5), vw = Math.max(1, innerWidth), vh = Math.max(1, innerHeight);
+  CW = cv.width = Math.round(vw * dpr); CH = cv.height = Math.round(vh * dpr); S = Math.min(CW / W, CH / H); OX = (CW - W * S) / 2; OY = (CH - H * S) / 2; }
+let cur = 0, playing = true, t0 = performance.now(), raf = 0;
+const kick = () => { if (!raf && !document.hidden) raf = requestAnimationFrame(loop); };
+function loop(now) { raf = 0; if (!playing) return; cur = ((now - t0) / 1000) % D; frame(cur); kick(); }
+const fontsReady = Promise.race([
+  Promise.all([document.fonts.load(`800 100px "Bricolage Grotesque"`, 'driftnoteTalkIYsrcpd.'), document.fonts.load(`700 50px "Bricolage Grotesque"`, 'Good morning.'),
+    document.fonts.load(`500 30px "DM Sans"`, 'abc'), document.fonts.load(`600 30px "DM Sans"`, 'abc'), document.fonts.load(`700 30px "DM Sans"`, 'abc'),
+    document.fonts.load(`500 20px "DM Mono"`, 'ABC0'), document.fonts.load(`600 20px "DM Mono"`, 'ABC')]).catch(() => {}),
+  new Promise(r => setTimeout(r, 3000))
+]).then(() => frame(cur));
+window.DURATION = D;
+window.seek = (t) => { cur = ((+t % D) + D) % D; t0 = performance.now() - cur * 1000; return fontsReady.then(() => frame(cur)); };
+window.__demo = { play() { if (playing) return; playing = true; t0 = performance.now() - cur * 1000; kick(); }, pause() { playing = false; }, get playing() { return playing; }, get time() { return cur; } };
+addEventListener('message', e => { const d = e.data || {}; if (d.type === 'demo:play') __demo.play(); else if (d.type === 'demo:pause') __demo.pause(); else if (d.type === 'demo:seek') seek(+d.t || 0); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = 0; } else if (playing) { t0 = performance.now() - cur * 1000; kick(); } });
+addEventListener('resize', () => { fit(); frame(cur); });
+fit(); frame(0); kick();
+fontsReady.then(() => { try { parent.postMessage({ type: 'demo:ready', id: ID, duration: D }, '*'); } catch (e) {} });
+})();
+</script>
+</body>
+</html>

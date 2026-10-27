@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-27T13:57:02.545Z",
+  "count": 7,
+  "passed": 7,
+  "scope": "Seven backup original pages, desktop file protocol, load and visual-state smoke test.",
+  "results": [
+    {
+      "id": "b001",
+      "group": "lemo",
+      "errors": [],
+      "external": [],
+      "framesDifferent": true,
+      "pass": true
+    },
+    {
+      "id": "b002",
+      "group": "mg",
+      "errors": [],
+      "external": [],
+      "framesDifferent": true,
+      "pass": true
+    },
+    {
+      "id": "b003",
+      "group": "openvg",
+      "errors": [],
+      "external": [],
+      "framesDifferent": true,
+      "pass": true
+    },
+    {
+      "id": "b004",
+      "group": "avi",
+      "errors": [],
+      "external": [],
+      "framesDifferent": true,
+      "pass": true
+    },
+    {
+      "id": "b005",
+      "group": "swan",
+      "errors": [],
+      "external": [],
+      "framesDifferent": true,
+      "pass": true
+    },
+    {
+      "id": "b006",
+      "group": "threejs",
+      "errors": [],
+      "external": [],
+      "framesDifferent": true,
+      "pass": true
+    },
+    {
+      "id": "b007",
+      "group": "optical",
+      "errors": [],
+      "external": [],
+      "framesDifferent": true,
+      "pass": true
+    }
+  ]
+}

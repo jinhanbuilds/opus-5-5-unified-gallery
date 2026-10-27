@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LA to NYC Route</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#D6DFE0;overflow:hidden}
+canvas{position:absolute;display:block}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* Route LA → NYC, 12 s, 1920×1080. Canvas 2D, Albers equal-area conic (29.5°/45.5°, λ0 −96°, φ0 37.5°).
+   0.0– 1.0  hold on Los Angeles (zoom 2.6)
+   1.0– 8.6  great-circle route draws on as a raised arc (+ dashed ground track); 2D camera follows the head,
+             zooms out mid-route (≈1.6) and back in toward New York; distance counter ticks up
+   8.6– 9.2  New York pin lands
+   9.0–10.4  camera pulls back to frame the whole route; 10.4–11.0 hold
+  10.9–11.9  camera flies back to LA while the route rewinds (counter runs back to 0) → frame 12.0 == frame 0
+*/
+(() => {
+const W = 1920, H = 1080, DUR = 12;
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const C = { sea:'#D6DFE0', grat:'#C3CFD1', land:'#F6F2E9', dot:'#E4DDCD', coast:'#8B979A', ink:'#1D2A30', dim:'#6B777B', acc:'#E4572E', panel:'rgba(252,250,245,0.9)' };
+const SANS = '"DM Sans","Helvetica Neue",Arial,sans-serif', MONO = '"DM Mono","SFMono-Regular",Menlo,Consolas,monospace';
+
+// ---------- geography (approximate, [lon, lat]) ----------
+const OUT = [[-124.7,48.4],[-124.1,46.9],[-124.0,46.2],[-123.9,45.5],[-124.1,44.0],[-124.5,42.8],[-124.2,42.0],[-124.1,41.0],[-124.4,40.4],[-123.8,39.6],[-123.0,38.3],[-122.5,37.8],[-122.4,37.2],[-121.9,36.6],[-121.3,35.7],[-120.6,34.6],[-119.2,34.2],[-118.5,34.0],[-118.2,33.75],[-117.9,33.6],[-117.3,33.0],[-117.1,32.5],
+[-114.7,32.7],[-111.1,31.3],[-108.2,31.3],[-108.2,31.8],[-106.5,31.8],[-105.0,30.6],[-104.5,29.6],[-103.1,29.0],[-102.4,29.8],[-101.4,29.8],[-100.3,28.3],[-99.5,27.5],[-99.1,26.4],[-97.4,25.9],
+[-97.2,27.0],[-97.2,27.7],[-96.4,28.5],[-94.8,29.3],[-93.8,29.7],[-92.0,29.6],[-91.2,29.2],[-90.2,29.1],[-89.4,29.0],[-89.2,29.4],[-89.6,30.2],[-88.0,30.4],[-86.5,30.4],[-85.3,29.7],[-84.0,30.1],[-83.0,29.2],[-82.7,28.0],[-82.6,27.4],[-81.8,26.1],[-81.1,25.2],[-80.4,25.2],[-80.1,26.7],[-80.6,28.4],[-81.0,29.4],[-81.4,30.4],[-81.2,31.7],[-80.0,32.7],[-78.9,33.7],[-77.9,34.0],[-76.5,34.7],[-75.5,35.2],[-75.9,36.6],[-76.3,37.0],[-75.6,37.9],[-75.1,38.6],[-74.9,39.0],[-74.1,39.8],[-74.0,40.5],[-73.8,40.8],[-72.9,41.25],[-71.9,41.3],[-71.4,41.5],[-70.7,41.5],[-70.0,41.7],[-70.2,42.1],[-70.9,42.3],[-70.8,42.9],[-70.6,43.2],[-70.2,43.7],[-69.0,44.1],[-68.2,44.4],[-67.0,44.8],
+[-67.8,45.7],[-67.8,47.1],[-68.3,47.35],[-69.2,47.45],[-70.0,46.7],[-70.9,45.3],[-71.5,45.0],[-74.7,45.0],[-75.8,44.4],[-76.4,43.6],[-77.6,43.3],[-79.0,43.25],[-78.9,42.9],[-80.1,42.15],[-81.7,41.5],[-82.7,41.45],[-83.5,41.7],[-83.1,42.3],[-82.4,43.0],[-82.6,43.9],[-83.9,43.7],[-83.3,44.8],[-83.5,45.4],[-84.7,45.8],[-84.4,46.5],[-85.0,46.75],[-86.5,46.45],[-87.4,46.5],[-88.2,47.4],[-89.0,46.85],[-90.4,46.6],[-92.1,46.75],[-91.3,47.3],[-90.3,47.8],[-89.6,48.0],[-90.9,48.2],[-93.0,48.6],[-94.6,48.7],[-95.2,49.0],[-104.0,49.0],[-114.0,49.0],[-123.3,49.0],[-122.7,48.3],[-123.2,48.15]];
+const LAKE = [[-87.8,41.6],[-87.2,41.62],[-86.6,42.1],[-86.25,42.8],[-86.2,43.5],[-86.5,44.1],[-86.0,44.9],[-85.5,45.2],[-85.0,45.7],[-85.9,45.95],[-86.8,45.8],[-87.3,45.3],[-87.7,44.6],[-87.6,44.0],[-87.9,43.2],[-87.8,42.4]];
+const CITIES = [['Seattle',-122.33,47.61],['San Francisco',-122.42,37.77],['Las Vegas',-115.14,36.17],['Denver',-104.99,39.74],['Dallas',-96.80,32.78],['Chicago',-87.63,41.88],['Atlanta',-84.39,33.75],['Miami',-80.19,25.76],['Kansas City',-94.58,39.10]];
+const LA = [-118.2437, 34.0522], NY = [-74.0060, 40.7128];
+
+// ---------- Albers equal-area conic ----------
+const rad = d => d * Math.PI / 180;
+const p1 = rad(29.5), p2 = rad(45.5), p0 = rad(37.5), l0 = rad(-96);
+const n = (Math.sin(p1) + Math.sin(p2)) / 2, Cc = Math.cos(p1) ** 2 + 2 * n * Math.sin(p1), r0 = Math.sqrt(Cc - 2 * n * Math.sin(p0)) / n;
+function alb(lon, lat) { const r = Math.sqrt(Cc - 2 * n * Math.sin(rad(lat))) / n, th = n * (rad(lon) - l0); return [r * Math.sin(th), r0 - r * Math.cos(th)]; }
+const raw = OUT.map(p => alb(...p));
+const bx0 = Math.min(...raw.map(p => p[0])), bx1 = Math.max(...raw.map(p => p[0])), by0 = Math.min(...raw.map(p => p[1])), by1 = Math.max(...raw.map(p => p[1]));
+const SC = Math.min(1560 / (bx1 - bx0), 820 / (by1 - by0));
+const PR = (lon, lat) => { const [x, y] = alb(lon, lat); return [(x - (bx0 + bx1) / 2) * SC + 960, -(y - (by0 + by1) / 2) * SC + 560]; };
+const OUTP = OUT.map(p => PR(...p)), LAKEP = LAKE.map(p => PR(...p));
+const GRAT = [];
+for (let lon = -130; lon <= -60; lon += 5) { const a = []; for (let lat = 20; lat <= 54; lat += 1) a.push(PR(lon, lat)); GRAT.push(a); }
+for (let lat = 20; lat <= 55; lat += 5) { const a = []; for (let lon = -132; lon <= -58; lon += 1) a.push(PR(lon, lat)); GRAT.push(a); }
+
+// ---------- great circle ----------
+const v3 = (lon, lat) => [Math.cos(rad(lat)) * Math.cos(rad(lon)), Math.cos(rad(lat)) * Math.sin(rad(lon)), Math.sin(rad(lat))];
+const A3 = v3(...LA), B3 = v3(...NY);
+const OM = Math.acos(A3[0] * B3[0] + A3[1] * B3[1] + A3[2] * B3[2]);
+const KM = OM * 6371, MI = KM / 1.609344;             // ≈ 3,936 km / 2,445 mi
+function gc(u) {
+  const a = Math.sin((1 - u) * OM) / Math.sin(OM), b = Math.sin(u * OM) / Math.sin(OM);
+  const x = a * A3[0] + b * B3[0], y = a * A3[1] + b * B3[1], z = a * A3[2] + b * B3[2];
+  return [Math.atan2(y, x) * 180 / Math.PI, Math.atan2(z, Math.hypot(x, y)) * 180 / Math.PI];
+}
+const NSEG = 220, GROUND = [], LL = [];
+for (let i = 0; i <= NSEG; i++) { const ll = gc(i / NSEG); LL.push(ll); GROUND.push(PR(...ll)); }
+const HMAX = 70;
+const arcPt = u => { const f = u * NSEG, i = Math.min(NSEG - 1, Math.floor(f)), k = f - i; const g0 = GROUND[i], g1 = GROUND[i + 1];
+  const x = g0[0] + (g1[0] - g0[0]) * k, y = g0[1] + (g1[1] - g0[1]) * k; return [x, y - HMAX * Math.sin(Math.PI * u), x, y]; };
+const LAP = PR(...LA), NYP = PR(...NY);
+const MID = [(Math.min(...GROUND.map(p => p[0])) + Math.max(...GROUND.map(p => p[0]))) / 2, (Math.min(...GROUND.map(p => p[1])) + Math.max(...GROUND.map(p => p[1]))) / 2 - 20];
+
+// ---------- helpers ----------
+const cl = x => x < 0 ? 0 : x > 1 ? 1 : x;
+const P = (t, a, b) => cl((t - a) / (b - a));
+const EIO = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const ES = x => -(Math.cos(Math.PI * x) - 1) / 2;
+const EO = x => 1 - Math.pow(1 - x, 3);
+const L = (a, b, k) => a + (b - a) * k;
+function T(s, x, y, font, col, a = 1, align = 'left', base = 'alphabetic') { if (a <= .002) return; ctx.globalAlpha = a; ctx.font = font; ctx.fillStyle = col; ctx.textAlign = align; ctx.textBaseline = base; ctx.fillText(s, x, y); ctx.globalAlpha = 1; }
+function rr(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+const fmt = v => (Math.round(Math.max(0, v)) + 0).toLocaleString('en-US');
+let dotPat = null;
+function pat() { const g = document.createElement('canvas'); g.width = g.height = 14; const x = g.getContext('2d'); x.fillStyle = C.dot; x.beginPath(); x.arc(7, 7, 1.6, 0, 7); x.fill(); return ctx.createPattern(g, 'repeat'); }
+
+// ---------- camera ----------
+function camera(t) {
+  const u = routeU(t);
+  if (t < 9.0) {
+    const a = arcPt(Math.min(1, u + .02));
+    return { x: a[0], y: a[1] + 30, z: L(2.6, 2.4, u) - .95 * Math.sin(Math.PI * u) };
+  }
+  if (t < 10.9) { const k = EIO(P(t, 9.0, 10.4)); const a = arcPt(1); return { x: L(a[0], MID[0], k), y: L(a[1] + 30, MID[1], k), z: L(2.4, 1.18, k) }; }
+  const k = EIO(P(t, 10.9, 11.9)); const a = arcPt(0.02);
+  return { x: L(MID[0], a[0], k), y: L(MID[1], a[1] + 30, k), z: L(1.18, 2.6, k) };
+}
+const routeU = t => t < 10.9 ? ES(P(t, 1.0, 8.6)) : 1 - EIO(P(t, 10.9, 11.8));   // rewinds during the fly-back
+
+function pin(x, y, label, sub, k, side) {
+  if (k <= 0) return;
+  const s = EO(k);
+  ctx.globalAlpha = k; ctx.fillStyle = 'rgba(29,42,48,0.18)'; ctx.beginPath(); ctx.ellipse(x, y + 2, 14 * s, 5 * s, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = C.acc; ctx.beginPath(); ctx.arc(x, y - 30 * s, 13 * s, Math.PI * .8, Math.PI * .2); ctx.lineTo(x, y); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x, y - 30 * s, 5 * s, 0, 7); ctx.fill(); ctx.globalAlpha = 1;
+  const f = `700 34px ${SANS}`; ctx.font = f; const w = Math.max(ctx.measureText(label).width, (ctx.font = `400 20px ${MONO}`, ctx.measureText(sub).width)) + 36;
+  const bx = side < 0 ? x - 30 - w : x + 30, by = y - 96;
+  ctx.globalAlpha = k; ctx.fillStyle = C.panel; rr(bx, by, w, 78, 10); ctx.fill(); ctx.strokeStyle = 'rgba(29,42,48,0.15)'; ctx.lineWidth = 1.5; ctx.stroke(); ctx.globalAlpha = 1;
+  T(label, bx + 18, by + 38, f, C.ink, k);
+  T(sub, bx + 18, by + 64, `400 20px ${MONO}`, C.dim, k);
+}
+
+function scene(t) {
+  const cam = camera(t), z = cam.z, u = routeU(t);
+  const S = p => [(p[0] - cam.x) * z + 960, (p[1] - cam.y) * z + 540];
+  const fade = 1;
+  // ---- world layer ----
+  ctx.fillStyle = C.sea; ctx.fillRect(0, 0, W, H);
+  ctx.save(); ctx.transform(z, 0, 0, z, 960 - cam.x * z, 540 - cam.y * z);
+  ctx.strokeStyle = C.grat; ctx.lineWidth = 1.2 / z; ctx.beginPath();
+  GRAT.forEach(a => a.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); ctx.stroke();
+  const poly = pts => { ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); };
+  ctx.fillStyle = 'rgba(29,42,48,0.07)'; ctx.save(); ctx.translate(0, 5 / z); poly(OUTP); ctx.fill(); ctx.restore();
+  ctx.fillStyle = C.land; poly(OUTP); ctx.fill();
+  if (!dotPat) dotPat = pat();
+  ctx.fillStyle = dotPat; poly(OUTP); ctx.fill();
+  ctx.fillStyle = C.sea; poly(LAKEP); ctx.fill();
+  ctx.strokeStyle = C.coast; ctx.lineWidth = 2 / z; ctx.lineJoin = 'round'; poly(OUTP); ctx.stroke(); poly(LAKEP); ctx.stroke();
+  ctx.restore();
+  // ---- reference cities ----
+  CITIES.forEach(([nm, lo, la]) => {
+    const [x, y] = S(PR(lo, la)); if (x < -100 || x > W + 100 || y < -50 || y > H + 50) return;
+    ctx.fillStyle = C.dim; ctx.beginPath(); ctx.arc(x, y, 5, 0, 7); ctx.fill();
+    T(nm, x + 12, y + 7, `500 22px ${SANS}`, C.dim, .9);
+  });
+  // ---- ground track (dashed) + raised arc ----
+  const N = Math.floor(u * NSEG);
+  if (u > 0 && fade > 0) {
+    ctx.globalAlpha = .45 * fade; ctx.strokeStyle = C.ink; ctx.lineWidth = 2.5; ctx.setLineDash([10, 10]); ctx.beginPath();
+    for (let i = 0; i <= N; i++) { const p = S(GROUND[i]); i ? ctx.lineTo(...p) : ctx.moveTo(...p); }
+    const h = arcPt(u), hg = S([h[2], h[3]]); ctx.lineTo(...hg); ctx.stroke(); ctx.setLineDash([]);
+    ctx.globalAlpha = fade; ctx.strokeStyle = C.acc; ctx.lineWidth = 6; ctx.lineCap = 'round'; ctx.beginPath();
+    for (let i = 0; i <= N; i++) { const a = arcPt(i / NSEG), p = S(a); i ? ctx.lineTo(...p) : ctx.moveTo(...p); }
+    const hp = S(h); ctx.lineTo(...hp); ctx.stroke(); ctx.lineCap = 'butt';
+    // tether + head
+    if (u < 1) {
+      ctx.globalAlpha = .5 * fade; ctx.strokeStyle = C.ink; ctx.lineWidth = 1.5; ctx.setLineDash([3, 5]); ctx.beginPath(); ctx.moveTo(...hp); ctx.lineTo(...hg); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(29,42,48,0.25)'; ctx.beginPath(); ctx.ellipse(hg[0], hg[1], 9, 4, 0, 0, 7); ctx.fill();
+      const ph = (t * 1.3) % 1; ctx.globalAlpha = (1 - ph) * .6 * fade; ctx.strokeStyle = C.acc; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(hp[0], hp[1], 14 + ph * 26, 0, 7); ctx.stroke();
+      const nx = S(arcPt(Math.min(1, u + .004))), ang = Math.atan2(nx[1] - hp[1], nx[0] - hp[0]);
+      ctx.globalAlpha = fade; ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(hp[0], hp[1], 13, 0, 7); ctx.fill();
+      ctx.strokeStyle = C.acc; ctx.lineWidth = 4; ctx.stroke();
+      ctx.save(); ctx.translate(hp[0], hp[1]); ctx.rotate(ang); ctx.fillStyle = C.acc; ctx.beginPath(); ctx.moveTo(7, 0); ctx.lineTo(-4, -5); ctx.lineTo(-2, 0); ctx.lineTo(-4, 5); ctx.closePath(); ctx.fill(); ctx.restore();
+    }
+    ctx.globalAlpha = 1;
+  }
+  // ---- endpoints ----
+  const la = S(LAP), ny = S(NYP);
+  pin(la[0], la[1], 'Los Angeles', '34.05° N  118.24° W', 1, -1);
+  pin(ny[0], ny[1], 'New York', '40.71° N  74.01° W', P(t, 8.5, 9.1) * (1 - P(t, 10.9, 11.3)), 1);
+  // ---- HUD ----
+  ctx.fillStyle = C.panel; rr(64, 60, 640, 128, 14); ctx.fill(); ctx.strokeStyle = 'rgba(29,42,48,0.12)'; ctx.lineWidth = 1.5; ctx.stroke();
+  T('Los Angeles  →  New York', 92, 116, `700 40px ${SANS}`, C.ink);
+  T('great-circle route · camera follows the head', 92, 158, `400 24px ${SANS}`, C.dim);
+  const d = u;
+  ctx.fillStyle = C.panel; rr(64, 836, 560, 184, 14); ctx.fill(); ctx.stroke();
+  T('DISTANCE FLOWN', 92, 882, `500 20px ${MONO}`, C.dim);
+  T(fmt(d * MI), 92, 956, `500 72px ${MONO}`, C.ink);
+  ctx.font = `500 72px ${MONO}`; const wn = ctx.measureText(fmt(d * MI)).width;
+  T('mi', 92 + wn + 14, 956, `500 32px ${MONO}`, C.ink);
+  T(fmt(d * KM) + ' km', 596, 956, `400 30px ${MONO}`, C.dim, 1, 'right');
+  ctx.fillStyle = 'rgba(29,42,48,0.12)'; ctx.fillRect(92, 984, 504, 6);
+  ctx.fillStyle = C.acc; ctx.fillRect(92, 984, 504 * d, 6);
+  // live coordinates + scale bar
+  const ll = LL[Math.round(u * NSEG)];
+  ctx.fillStyle = C.panel; rr(1376, 900, 480, 120, 14); ctx.fill(); ctx.stroke();
+  T(`${ll[1].toFixed(2)}° N   ${Math.abs(ll[0]).toFixed(2)}° W`, 1404, 948, `500 28px ${MONO}`, C.ink);
+  const pxPerKm = z * SC / 6371, nice = [100, 200, 250, 500].filter(v => v * pxPerKm <= 170).pop() || 100, bar = nice * pxPerKm;
+  ctx.fillStyle = C.ink; ctx.fillRect(1404, 984, bar, 4); ctx.fillRect(1404, 976, 3, 16); ctx.fillRect(1404 + bar - 3, 976, 3, 16);
+  T(nice + ' km', 1404 + bar + 14, 994, `400 22px ${MONO}`, C.dim);
+  T(`ZOOM ${z.toFixed(2)}×`, 1828, 994, `400 22px ${MONO}`, C.dim, 1, 'right');
+}
+
+let cache0 = null;
+function draw(t) {
+  scene(t);
+}
+
+// ---------- runtime (contract) ----------
+let K = 1, cur = 0, playing = true, t0 = performance.now(), raf = 0;
+function render(t) { ctx.setTransform(K, 0, 0, K, 0, 0); draw(t); }
+function resize() {
+  const d = Math.min(devicePixelRatio || 1, 1.5), s = Math.min(innerWidth / W, innerHeight / H);
+  cv.style.width = W * s + 'px'; cv.style.height = H * s + 'px';
+  cv.style.left = (innerWidth - W * s) / 2 + 'px'; cv.style.top = (innerHeight - H * s) / 2 + 'px';
+  cv.width = Math.round(W * s * d); cv.height = Math.round(H * s * d); K = s * d; dotPat = null; cache0 = null; render(cur);
+}
+const fontsReady = Promise.race([
+  Promise.all(['700 40px "DM Sans"', '500 40px "DM Sans"', '400 40px "DM Sans"', '500 40px "DM Mono"', '400 40px "DM Mono"'].map(f => document.fonts.load(f, 'LosAngeles→NewYork0123456789°,.kmi'))),
+  new Promise(r => setTimeout(r, 4000))
+]).then(() => { cache0 = null; }).catch(() => {});
+function loop(now) { if (!playing) return; cur = ((now - t0) / 1000) % DUR; render(cur); raf = requestAnimationFrame(loop); }
+window.DURATION = DUR;
+window.seek = t => { cur = ((+t % DUR) + DUR) % DUR; t0 = performance.now() - cur * 1000; render(cur); return fontsReady.then(() => render(cur)); };
+window.__demo = {
+  play() { if (playing) return; playing = true; t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); },
+  pause() { playing = false; cancelAnimationFrame(raf); },
+  get playing() { return playing; }, get time() { return cur; }
+};
+addEventListener('message', e => {
+  const d = e.data || {};
+  if (d.type === 'demo:play') __demo.play(); else if (d.type === 'demo:pause') __demo.pause(); else if (d.type === 'demo:seek') seek(d.t || 0);
+});
+document.addEventListener('visibilitychange', () => {
+  cancelAnimationFrame(raf);
+  if (!document.hidden && playing) { t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); }
+});
+addEventListener('resize', resize);
+resize();
+fontsReady.then(() => render(cur));
+raf = requestAnimationFrame(loop);
+try { parent.postMessage({ type: 'demo:ready', id: 'v10-map-route', duration: DUR }, '*'); } catch (e) {}
+})();
+</script>
+</body>
+</html>

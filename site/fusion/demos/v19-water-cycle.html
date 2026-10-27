@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Water Cycle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&family=Noto+Serif+SC:wght@600&display=swap" rel="stylesheet">
+<style>html,body{margin:0;height:100%;background:#cfdde2;overflow:hidden}canvas{position:absolute;display:block}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* THE WATER CYCLE — 16 s seamless loop, 1920×1080, one draw(t).
+   Every moving thing is periodic in 16 s (integer frequencies of 2π/16, dash speeds that are whole
+   multiples of the dash period, 4 s particle life cycles) or has an envelope that is exactly 0 across
+   the wrap, so draw(16) ≡ draw(0).
+   0– 4  evaporation: sun-warmed sea gives off rising vapour           label 蒸发 (window 15.7→4.1, wraps)
+   4– 8  condensation: vapour gathers into a cloud that drifts inland    label 凝结 (follows the cloud)
+   8–12  precipitation: cloud darkens over the range and rains out       label 降水
+  12–16  runoff → collection: streams light up, river carries it home    labels 径流, 汇集
+*/
+(() => {
+const W = 1920, H = 1080, DUR = 16, TAU = 6.2832, OM = TAU / DUR;
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const FC = '"Noto Serif SC","Songti SC","PingFang SC","Noto Sans SC","Microsoft YaHei",serif', FE = '"Jost","Futura","Century Gothic",sans-serif';
+const cl = x => x < 0 ? 0 : x > 1 ? 1 : x, P = (t, a, b) => cl((t - a) / (b - a)), L = (a, b, k) => a + (b - a) * k;
+const E = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2, SM = x => { x = cl(x); return x * x * (3 - 2 * x); };
+const mod = (a, n) => ((a % n) + n) % n, gs = (x, c, w) => Math.exp(-(((x - c) / w) ** 2));
+function rng(s) { return () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const cd = (t, c) => { const d = Math.abs(mod(t - c, DUR)); return Math.min(d, DUR - d); };            // circular distance in time
+const win = (t, a, b, f = .35) => { const len = mod(b - a, DUR), u = mod(t - a, DUR); return u > len ? 0 : SM(u / f) * SM((len - u) / f); };
+
+// ---------------- geography ----------------
+const HOR = 640;
+const farY = x => 600 - (300 * gs(x, 1500, 190) + 190 * gs(x, 1190, 150) + 215 * gs(x, 1800, 150) + 120 * gs(x, 1010, 140) + 14 * Math.sin(x / 41) + 8 * Math.sin(x / 17)) * SM((x - 760) / 320);
+const midY = x => 668 - (215 * gs(x, 1380, 150) + 160 * gs(x, 1655, 130) + 120 * gs(x, 1150, 120) + 110 * gs(x, 1890, 120) + 10 * Math.sin(x / 29) + 5 * Math.sin(x / 11)) * SM((x - 900) / 260);
+const farS = x => 600 - (300 * gs(x, 1500, 190) + 190 * gs(x, 1190, 150) + 215 * gs(x, 1800, 150) + 120 * gs(x, 1010, 140)) * SM((x - 760) / 320);
+const midS = x => 668 - (215 * gs(x, 1380, 150) + 160 * gs(x, 1655, 130) + 120 * gs(x, 1150, 120) + 110 * gs(x, 1890, 120)) * SM((x - 900) / 260);
+const hillY = x => 708 - (44 + 24 * Math.sin(x / 140 + 1) + 13 * Math.sin(x / 57)) * SM((x - 860) / 220);
+const COAST = [[905, 640], [880, 672], [846, 716], [802, 800], [772, 880], [750, 975], [738, 1080]];
+const RIVER = [[1522, 560], [1492, 612], [1452, 660], [1400, 700], [1330, 728], [1250, 752], [1150, 770], [1050, 792], [950, 806], [860, 808], [800, 802]];
+const STREAMS = [[[1372, 470], [1382, 540], [1410, 610], [1440, 662]], [[1655, 522], [1618, 580], [1560, 612], [1500, 612]], [[1240, 560], [1270, 640], [1320, 700], [1345, 726]], [[1770, 560], [1700, 640], [1600, 690], [1520, 672]]];
+function spline(pts, n) { const out = []; for (let i = 0; i < pts.length - 1; i++) { const p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(pts.length - 1, i + 2)];
+  for (let k = 0; k < n; k++) { const t = k / n, t2 = t * t, t3 = t2 * t; out.push([.5 * (2 * p1[0] + (-p0[0] + p2[0]) * t + (2 * p0[0] - 5 * p1[0] + 4 * p2[0] - p3[0]) * t2 + (-p0[0] + 3 * p1[0] - 3 * p2[0] + p3[0]) * t3),
+    .5 * (2 * p1[1] + (-p0[1] + p2[1]) * t + (2 * p0[1] - 5 * p1[1] + 4 * p2[1] - p3[1]) * t2 + (-p0[1] + 3 * p1[1] - 3 * p2[1] + p3[1]) * t3)]); } } out.push(pts[pts.length - 1]); return out; }
+const RIV = spline(RIVER, 12), STR = STREAMS.map(s => spline(s, 10)), CST = spline(COAST, 10);
+const polyline = (x, pts) => { x.beginPath(); pts.forEach(([a, b], i) => i ? x.lineTo(a, b) : x.moveTo(a, b)); };
+
+// ---------------- static layers (rendered at display resolution on resize) ----------------
+let BACK = null, FRONT = null, BLOB = null, GRAIN = null;
+function mk(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
+function shadeRidge(x, f, fs, peaks, base, dcol, da) { // faceted shadow side: apex → next valley → base
+  for (const c of peaks) { let xa = c; for (let X = c - 60; X <= c + 60; X += 2) if (f(X) < f(xa)) xa = X;
+    let xv = c; while (xv < W && fs(xv + 4) >= fs(xv)) xv += 4; xv = Math.min(W, xv);
+    const g = x.createLinearGradient(0, f(xa), 0, base); g.addColorStop(0, `rgba(${dcol},${da})`); g.addColorStop(1, `rgba(${dcol},0)`); x.fillStyle = g;
+    x.beginPath(); x.moveTo(xa, f(xa)); for (let X = xa; X <= xv; X += 3) x.lineTo(X, f(X)); x.lineTo(xv, base); x.lineTo(xa + (xv - xa) * .3, base); x.closePath(); x.fill(); }
+}
+function paintBack(x) {
+  const g = x.createLinearGradient(0, 0, 0, HOR); g.addColorStop(0, '#86aec7'); g.addColorStop(.55, '#bcd3dc'); g.addColorStop(1, '#f1e4cc'); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  const sg = x.createRadialGradient(330, 290, 20, 330, 290, 620); sg.addColorStop(0, 'rgba(255,244,214,.95)'); sg.addColorStop(.12, 'rgba(255,236,196,.55)'); sg.addColorStop(1, 'rgba(255,230,190,0)'); x.fillStyle = sg; x.fillRect(0, 0, 1000, 900);
+  x.fillStyle = '#fff8e8'; x.beginPath(); x.arc(330, 290, 46, 0, TAU); x.fill();
+  x.fillStyle = '#a6b8c4'; x.beginPath(); x.moveTo(760, 780); for (let X = 760; X <= W; X += 6) x.lineTo(X, farY(X)); x.lineTo(W, 780); x.closePath(); x.fill();
+  x.save(); x.clip(); const fg = x.createLinearGradient(0, 280, 0, 640); fg.addColorStop(0, 'rgba(255,255,255,0)'); fg.addColorStop(1, 'rgba(241,228,204,.55)'); x.fillStyle = fg; x.fillRect(760, 280, W, 380);
+  x.fillStyle = '#f4f6f6'; x.beginPath(); x.moveTo(760, 370); for (let X = 760; X <= W; X += 6) x.lineTo(X, farY(X) - 2); for (let X = W; X >= 760; X -= 6) x.lineTo(X, 372 + 16 * Math.sin(X / 23) + 9 * Math.sin(X / 7)); x.closePath(); x.fill();
+  shadeRidge(x, farY, farS, [1010, 1190, 1500, 1800], 700, '70,92,114', .32);
+  x.restore();
+}
+function paintFront(x) {
+  const R = rng(7);
+  // mid range
+  x.fillStyle = '#6f8b8c'; x.beginPath(); x.moveTo(900, 760); for (let X = 900; X <= W; X += 5) x.lineTo(X, midY(X)); x.lineTo(W, 760); x.closePath(); x.fill();
+  x.save(); x.clip(); shadeRidge(x, midY, midS, [1150, 1380, 1655, 1890], 760, '30,50,54', .4);
+  const hz = x.createLinearGradient(0, 420, 0, 720); hz.addColorStop(0, 'rgba(210,222,226,.05)'); hz.addColorStop(1, 'rgba(210,222,226,.35)'); x.fillStyle = hz; x.fillRect(900, 400, W, 360); x.restore();
+  // hills
+  x.fillStyle = '#88996a'; x.beginPath(); x.moveTo(860, 780); for (let X = 860; X <= W; X += 5) x.lineTo(X, hillY(X)); x.lineTo(W, 780); x.closePath(); x.fill();
+  // plain (land right of the coast)
+  const lg = x.createLinearGradient(0, 640, 0, H); lg.addColorStop(0, '#b8b98a'); lg.addColorStop(1, '#8c9860'); x.fillStyle = lg;
+  x.beginPath(); x.moveTo(905, 640); for (let X = 905; X <= W; X += 8) x.lineTo(X, Math.max(hillY(X) + 26, 700 + (X - 905) * .02 + 8 * Math.sin(X / 90))); x.lineTo(W, H); x.lineTo(738, H); for (let i = CST.length - 1; i >= 0; i--) x.lineTo(CST[i][0], CST[i][1]); x.closePath(); x.fill();
+  x.save(); x.clip(); x.strokeStyle = 'rgba(255,248,220,.12)'; x.lineWidth = 14; for (let i = 0; i < 9; i++) { x.beginPath(); const y0 = 760 + i * 36 + i * i * 3; x.moveTo(800, y0); x.bezierCurveTo(1100, y0 - 30, 1500, y0 + 40, W, y0 - 10); x.stroke(); } x.restore();
+  // sea
+  const sg = x.createLinearGradient(0, HOR, 0, H); sg.addColorStop(0, '#9fc2c6'); sg.addColorStop(.25, '#5f9aa3'); sg.addColorStop(1, '#2b6571'); x.fillStyle = sg;
+  x.beginPath(); x.moveTo(0, HOR); CST.forEach(([a, b]) => x.lineTo(a, b)); x.lineTo(0, H); x.closePath(); x.fill();
+  x.save(); x.beginPath(); x.moveTo(0, HOR); CST.forEach(([a, b]) => x.lineTo(a, b)); x.lineTo(0, H); x.closePath(); x.clip(); x.translate(360, HOR + 10); x.scale(1, 2.2); const gl = x.createRadialGradient(0, 0, 0, 0, 0, 200); gl.addColorStop(0, 'rgba(255,240,205,.5)'); gl.addColorStop(1, 'rgba(255,240,205,0)'); x.fillStyle = gl; x.fillRect(-220, 0, 440, 220); x.restore();
+  // beach
+  x.strokeStyle = '#e6d8b4'; x.lineCap = 'round'; for (let i = 1; i < CST.length; i++) { x.lineWidth = 3 + (CST[i][1] - 640) * .05; x.beginPath(); x.moveTo(CST[i - 1][0] + 4, CST[i - 1][1]); x.lineTo(CST[i][0] + 4, CST[i][1]); x.stroke(); }
+  // dry creek beds + river
+  x.strokeStyle = 'rgba(70,96,92,.45)'; x.lineWidth = 2; for (const s of STR) { polyline(x, s); x.stroke(); }
+  for (let pass = 0; pass < 2; pass++) for (let i = 1; i < RIV.length; i++) { const u = i / (RIV.length - 1); x.lineWidth = (3 + 30 * Math.pow(u, 1.5)) + (pass ? 0 : 5); x.strokeStyle = pass ? '#9fc5cf' : '#6d8a66'; x.beginPath(); x.moveTo(RIV[i - 1][0], RIV[i - 1][1]); x.lineTo(RIV[i][0], RIV[i][1]); x.stroke(); }
+  x.lineCap = 'butt';
+  // trees
+  const riverNear = (px, py) => RIV.some(([a, b]) => Math.abs(a - px) < 30 && Math.abs(b - py) < 22);
+  for (let i = 0; i < 260; i++) { const X = 900 + R() * 1020, top = Math.max(hillY(X) + 4, 640), y = top + R() * (Math.min(1060, 700 + (X - 900) * .35) - top); if (y > 1070 || riverNear(X, y)) continue; const s = 5 + (y - 640) * .045;
+    x.fillStyle = '#4c6a4f'; x.beginPath(); x.moveTo(X, y - s * 2.6); x.lineTo(X + s, y); x.lineTo(X - s, y); x.closePath(); x.fill(); x.fillStyle = 'rgba(210,220,160,.25)'; x.beginPath(); x.moveTo(X, y - s * 2.6); x.lineTo(X - s, y); x.lineTo(X - s * .2, y); x.closePath(); x.fill(); }
+}
+function makeLayers() {
+  const w = cv.width, h = cv.height; BACK = mk(w, h); FRONT = mk(w, h);
+  const b = BACK.getContext('2d'); b.setTransform(K, 0, 0, K, 0, 0); paintBack(b);
+  const f = FRONT.getContext('2d'); f.setTransform(K, 0, 0, K, 0, 0); paintFront(f);
+  if (!BLOB) { BLOB = mk(64, 64); const x = BLOB.getContext('2d'), g = x.createRadialGradient(32, 32, 0, 32, 32, 32); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0, 0, 64, 64);
+    GRAIN = mk(256, 256); const gx = GRAIN.getContext('2d'), im = gx.createImageData(256, 256), R = rng(99); for (let i = 0; i < im.data.length; i += 4) { const v = R() < .5 ? 40 : 255; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = R() * 22; } gx.putImageData(im, 0, 0); }
+}
+
+// ---------------- dynamics ----------------
+const cloudX = t => t < 3.5 ? 700 : t < 9 ? L(700, 1480, E(P(t, 3.5, 9))) : L(1480, 1540, P(t, 9, 14.5));
+const cloudY = t => t < 9 ? L(335, 262, E(P(t, 3.5, 9))) : 262;
+const mass = t => E(P(t, 3.2, 7.4)) * (1 - .62 * E(P(t, 9.2, 12.4))) * (1 - E(P(t, 12.2, 14.4)));
+const dark = t => E(P(t, 7.9, 9)) * (1 - E(P(t, 11.6, 12.8)));
+const rainI = t => P(t, 8.3, 9.0) * (1 - P(t, 11.8, 12.6));
+const runI = t => P(t, 9.3, 10.4) * (1 - P(t, 14.4, 15.8));
+const evI = t => .4 + .6 * SM(1 - cd(t, 1.6) / 3.4);
+const PUFFS = [[-150, 22, 70], [-92, -8, 92], [-12, -40, 112], [82, -14, 96], [152, 16, 72], [-40, 26, 82], [52, 30, 82], [-112, 38, 56], [122, 40, 56], [0, 2, 102], [32, -74, 72], [-62, -58, 66]];
+let CB = null;
+function cloud(cx, cy, m, dk, sc, alpha) {
+  if (m <= .01 || alpha <= .01) return; const bw = 900 * sc, bh = 480 * sc, pw = Math.ceil(bw * K), ph = Math.ceil(bh * K), oy = bh * .62;
+  if (!CB || CB.width < pw || CB.height < ph) CB = mk(Math.max(pw, CB ? CB.width : 0), Math.max(ph, CB ? CB.height : 0));
+  const x = CB.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, pw, ph); x.setTransform(K, 0, 0, K, K * (bw / 2 - cx), K * (oy - cy));
+  const base = cy + 52 * sc * Math.pow(m, .5), mix = (a, b) => `rgb(${L(a[0], b[0], dk) | 0},${L(a[1], b[1], dk) | 0},${L(a[2], b[2], dk) | 0})`;
+  const pz = PUFFS.map(([dx, dy, r]) => [cx + dx * sc * (.6 + .4 * m), cy + dy * sc * (.6 + .4 * m), r * sc * Math.pow(m, .55)]);
+  x.save(); x.beginPath(); x.rect(cx - bw / 2, cy - oy, bw, base - (cy - oy)); x.clip();
+  const layer = (col, f) => { x.fillStyle = col; x.beginPath(); for (const [px, py, r] of pz) { const [a, b, rr] = f(px, py, r); x.moveTo(a + rr, b); x.arc(a, b, rr, 0, TAU); } x.fill(); };
+  layer(mix([176, 196, 210], [104, 122, 136]), (a, b, r) => [a, b, r]);
+  layer(mix([250, 251, 251], [168, 182, 192]), (a, b, r) => [a - r * .05, b - r * .2, r * .86]);
+  layer(dk > .5 ? 'rgba(214,222,228,.45)' : 'rgba(255,247,230,.85)', (a, b, r) => [a - r * .3, b - r * .4, r * .46]);
+  x.restore();
+  ctx.save(); ctx.globalAlpha = alpha * Math.min(1, m * 1.6); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(CB, 0, 0, pw, ph, K * (cx - bw / 2), K * (cy - oy), pw, ph); ctx.restore();
+}
+const VAP = (() => { const R = rng(3), a = []; for (let i = 0; i < 90; i++) a.push([100 + R() * 660, R(), R(), R(), 690 + R() * 250]); return a; })();
+const RAINS = (() => { const R = rng(11), a = []; for (let i = 0; i < 190; i++) a.push([R() * 2 - 1, R(), R(), R()]); return a; })();
+const WAVES = (() => { const R = rng(5), a = []; for (let i = 0; i < 150; i++) { const y = HOR + 6 + Math.pow(R(), 1.7) * 430; a.push([R() * 780, y, R(), R()]); } return a; })();
+function sea(t) {
+  ctx.lineCap = 'round';
+  for (const [x0, y, p, q] of WAVES) { const k = (y - HOR) / 440, cx_ = CST.reduce((m, [a, b]) => Math.abs(b - y) < Math.abs(m[1] - y) ? [a, b] : m, CST[0])[0]; const x = x0 * (cx_ / 800) + 10 * Math.sin(OM * 2 * t + p * TAU); if (x > cx_ - 20) continue;
+    const len = 8 + 40 * k, sun = Math.exp(-(((x - (330 + (y - HOR) * .35)) / (60 + 170 * k)) ** 2)), tw = .5 + .5 * Math.sin(OM * (3 + (q * 4 | 0)) * t + q * TAU);
+    ctx.strokeStyle = sun > .25 ? `rgba(255,246,222,${(.35 + .65 * tw) * sun})` : `rgba(230,244,244,${.12 + .22 * tw * (1 - k * .5)})`; ctx.lineWidth = 1 + 2.4 * k; ctx.beginPath(); ctx.moveTo(x - len / 2, y); ctx.lineTo(x + len / 2, y); ctx.stroke(); }
+  ctx.lineCap = 'butt';
+}
+function vapour(t) {
+  const ev = evI(t);
+  for (const [x0, ph, r2, r3, y0] of VAP) { const u = mod(t / 4 + ph, 1), y = L(y0, 380 + r2 * 60, u), x = x0 + u * (90 + 200 * r3) + 12 * Math.sin(TAU * (u * 1.5 + r2)), a = Math.pow(Math.sin(Math.PI * u), 1.3) * .72 * ev * (.5 + .5 * (y0 - 690) / 250);
+    if (a < .01) continue; const r = (8 + 22 * u) * (.6 + .5 * r3); ctx.globalAlpha = a; ctx.drawImage(BLOB, x - r, y - r * 1.4, r * 2, r * 2.8); }
+  ctx.globalAlpha = 1;
+}
+function rain(t) {
+  const I = rainI(t); if (I <= 0) return; const cx = cloudX(t), cy = cloudY(t), m = mass(t), base = cy + 52 * Math.pow(m, .5), span = 175 * (.6 + .4 * m);
+  const cur = ctx.createLinearGradient(0, base, 0, base + 330); cur.addColorStop(0, `rgba(96,116,132,${.24 * I})`); cur.addColorStop(1, 'rgba(96,116,132,0)'); ctx.fillStyle = cur;
+  ctx.beginPath(); ctx.moveTo(cx - span, base); ctx.lineTo(cx + span, base); ctx.lineTo(cx + span - 40, base + 330); ctx.lineTo(cx - span - 40, base + 330); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = `rgba(78,102,120,${.55 * I})`; ctx.lineWidth = 1.6; ctx.beginPath();
+  for (const [u, p, q, r] of RAINS) { const x0 = cx + u * span * (.95 - .2 * r), gy = midY(x0) + q * 110, fall = gy - base; if (fall < 20) continue; const y = base + mod(p * fall + (900 + 300 * r) * t, fall), x = x0 - (y - base) * .12;
+    if (u * u > I * 1.2) continue; ctx.moveTo(x, y); ctx.lineTo(x + 3.4, y - 28); }
+  ctx.stroke();
+  ctx.fillStyle = `rgba(230,238,242,${.5 * I})`; for (let i = 0; i < 26; i++) { const u = (i / 26) * 2 - 1, x = cx + u * span * .9 - 34, k = mod(t * 3 + i * .37, 1), gy = midY(x + 34) + ((i * 53) % 100); ctx.beginPath(); ctx.ellipse(x, gy, 2 + 6 * k, 1 + 2 * k, 0, 0, TAU); ctx.globalAlpha = I * (1 - k); ctx.fill(); }
+  ctx.globalAlpha = 1;
+  const sh = ctx.createRadialGradient(cx - 30, midY(cx) + 60, 10, cx - 30, midY(cx) + 60, 260); sh.addColorStop(0, `rgba(30,45,55,${.22 * dark(t)})`); sh.addColorStop(1, 'rgba(30,45,55,0)'); ctx.fillStyle = sh; ctx.fillRect(cx - 300, midY(cx) - 200, 540, 520);
+}
+function water(t) {
+  const U = runI(t), base = .32;
+  ctx.lineCap = 'round'; ctx.setLineDash([12, 24]); ctx.lineDashOffset = -72 * t;                   // 72 px/s × 16 s = 32 dash periods → loops exactly
+  if (U > 0) { ctx.strokeStyle = `rgba(214,238,246,${.95 * U})`; ctx.lineWidth = 3; for (const s of STR) { polyline(ctx, s); ctx.stroke(); }
+    ctx.setLineDash([]); ctx.strokeStyle = `rgba(160,205,220,${.5 * U})`; ctx.lineWidth = 2.5; for (const s of STR) { polyline(ctx, s); ctx.stroke(); } ctx.setLineDash([12, 24]); }
+  ctx.strokeStyle = `rgba(255,255,255,${base + .55 * U})`; ctx.lineWidth = 2.2; polyline(ctx, RIV); ctx.stroke();
+  ctx.setLineDash([]); ctx.lineCap = 'butt';
+  const mA = .35 + .65 * (P(t, 11, 13) * (1 - P(t, 15.2, 16))); ctx.strokeStyle = 'rgba(235,246,248,1)'; ctx.lineWidth = 2;
+  for (let k = 0; k < 4; k++) { const u = mod(t / 2 + k / 4, 1); ctx.globalAlpha = mA * (1 - u) * .8; ctx.beginPath(); ctx.ellipse(796, 804, 14 + 90 * u, 4 + 22 * u, 0, Math.PI * .5, Math.PI * 1.5); ctx.stroke(); }
+  ctx.globalAlpha = 1;
+}
+// ---------------- labels ----------------
+function label(zh, en, ax, ay, lx, ly, a, light) {
+  if (a <= .01) return; const col = light ? '#f6f1e6' : '#1d3441', sub = light ? 'rgba(246,241,230,.8)' : '#436171';
+  ctx.globalAlpha = a; ctx.strokeStyle = col; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(lx, ly + 10); ctx.stroke();
+  ctx.fillStyle = col; ctx.beginPath(); ctx.arc(ax, ay, 4, 0, TAU); ctx.fill(); ctx.beginPath(); ctx.arc(ax, ay, 9 + 3 * Math.sin(a * 3), 0, TAU); ctx.globalAlpha = a * .35; ctx.stroke(); ctx.globalAlpha = a;
+  const dy = (1 - a) * 8; ctx.font = `600 34px ${FC}`; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic'; ctx.fillText(zh, lx + 8, ly - 10 + dy);
+  ctx.font = `500 15px ${FE}`; ctx.fillStyle = sub; ctx.letterSpacing = '5px'; ctx.fillText(en, lx + 10, ly + 16 + dy); ctx.letterSpacing = '0px'; ctx.globalAlpha = 1;
+}
+function labels(t) {
+  label('蒸发', 'EVAPORATION', 470, 700, 470, 560, win(t, 15.7, 4.1), false);
+  const cx = cloudX(t), cy = cloudY(t); label('凝结', 'CONDENSATION', cx + 60, cy - 60 * mass(t), cx + 190, cy - 150, win(t, 4.3, 8.2) * cl(mass(t) * 2), false);
+  label('降水', 'PRECIPITATION', 1560, 470, 1690, 400, win(t, 8.4, 12.1), false);
+  label('径流', 'RUNOFF', 1330, 690, 1180, 590, win(t, 11.8, 14.3), true);
+  label('汇集', 'COLLECTION', 800, 806, 560, 930, win(t, 14.0, 15.95), true);
+}
+function ring(t) {
+  const x = 1800, y = 980, r = 34, st = [[15.7, 4.1], [4.3, 8.2], [8.4, 12.1], [11.8, 15.95]];
+  ctx.lineWidth = 3; for (let i = 0; i < 4; i++) { const a0 = -Math.PI / 2 + i * TAU / 4 + .12, a1 = a0 + TAU / 4 - .24, on = win(t, st[i][0], st[i][1]);
+    ctx.strokeStyle = `rgba(246,241,230,${.3 + .6 * on})`; ctx.beginPath(); ctx.arc(x, y, r, a0, a1); ctx.stroke(); }
+  const an = -Math.PI / 2 + OM * t; ctx.fillStyle = '#f6f1e6'; ctx.beginPath(); ctx.arc(x + Math.cos(an) * r, y + Math.sin(an) * r, 6, 0, TAU); ctx.fill();
+  ctx.font = `500 13px ${FE}`; ctx.fillStyle = 'rgba(246,241,230,.75)'; ctx.textAlign = 'right'; ctx.letterSpacing = '4px'; ctx.fillText('16 S LOOP', x - 54, y + 5); ctx.letterSpacing = '0px';
+}
+// ---------------- frame ----------------
+function draw(t) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.fillStyle = '#cfdde2'; ctx.fillRect(0, 0, cv.width, cv.height); ctx.drawImage(BACK, 0, 0);
+  ctx.setTransform(K, 0, 0, K, 0, 0);
+  const sw = Math.sin(OM * t), sw2 = Math.sin(OM * t + 2);
+  cloud(560 + 18 * sw, 150, .8, 0, .42, .55); cloud(1210 - 14 * sw2, 185, .9, 0, .55, .6); cloud(1770 + 10 * sw, 150, .7, 0, .38, .5);
+  const m = mass(t); cloud(cloudX(t), cloudY(t), m, dark(t), 1, 1);
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(FRONT, 0, 0); ctx.setTransform(K, 0, 0, K, 0, 0);
+  sea(t); water(t); rain(t); vapour(t);
+  labels(t);
+  ctx.fillStyle = '#1d3441'; ctx.font = `600 40px ${FC}`; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic'; ctx.fillText('水循环', 80, 122);
+  ctx.font = `500 15px ${FE}`; ctx.fillStyle = '#436171'; ctx.letterSpacing = '6px'; ctx.fillText('THE WATER CYCLE', 82, 152); ctx.letterSpacing = '0px';
+  ring(t);
+  ctx.fillStyle = ctx.createPattern(GRAIN, 'repeat'); ctx.fillRect(0, 0, W, H);
+  const v = ctx.createRadialGradient(W / 2, H / 2, 650, W / 2, H / 2, 1200); v.addColorStop(0, 'rgba(20,40,50,0)'); v.addColorStop(1, 'rgba(20,40,50,.28)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
+}
+// ---------------- runtime (contract) ----------------
+let K = 1, cur = 0, playing = true, t0 = performance.now(), raf = 0;
+function render(t) { draw(t); }
+function resize() {
+  const d = Math.min(devicePixelRatio || 1, 1.5), s = Math.min(innerWidth / W, innerHeight / H);
+  cv.style.width = W * s + 'px'; cv.style.height = H * s + 'px'; cv.style.left = (innerWidth - W * s) / 2 + 'px'; cv.style.top = (innerHeight - H * s) / 2 + 'px';
+  cv.width = Math.round(W * s * d); cv.height = Math.round(H * s * d); K = s * d; makeLayers(); render(cur);
+}
+const fontsReady = Promise.race([Promise.all(['600 34px "Noto Serif SC"', '500 15px "Jost"'].map(f => document.fonts.load(f, '水循环蒸发凝结降水径流汇集EVAPORTINCDLSU16'))), new Promise(r => setTimeout(r, 3500))]).catch(() => {});
+function loop(now) { if (!playing) return; cur = mod((now - t0) / 1000, DUR); render(cur); raf = requestAnimationFrame(loop); }
+window.DURATION = DUR;
+window.seek = t => { cur = mod(+t, DUR); t0 = performance.now() - cur * 1000; render(cur); return fontsReady.then(() => render(cur)); };
+window.__demo = { play() { if (playing) return; playing = true; t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); }, pause() { playing = false; cancelAnimationFrame(raf); }, get playing() { return playing; }, get time() { return cur; } };
+addEventListener('message', e => { const d = e.data || {}; if (d.type === 'demo:play') __demo.play(); else if (d.type === 'demo:pause') __demo.pause(); else if (d.type === 'demo:seek') seek(d.t || 0); });
+document.addEventListener('visibilitychange', () => { cancelAnimationFrame(raf); if (!document.hidden && playing) { t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); } });
+addEventListener('resize', resize); resize(); fontsReady.then(() => render(cur)); raf = requestAnimationFrame(loop);
+try { parent.postMessage({ type: 'demo:ready', id: 'v19-water-cycle', duration: DUR }, '*'); } catch (e) {}
+})();
+</script>
+</body>
+</html>

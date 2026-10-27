@@ -1,0 +1,4 @@
+# Preserve the verified public snapshot, including third-party shader strings and notices.
+site/** -text linguist-generated=true
+site/fusion/web-runtime/** -whitespace
+site/licenses/** -whitespace

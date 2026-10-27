@@ -1,6 +1,8 @@
 (() => {
   'use strict';
   const catalog = window.OPUS_FUSION_CATALOG || [];
+  const isSelected = item => item.collections.some(x => x === 'selected22' || x === 'new100');
+  const promptLabel = item => ['公开配方','创作简报'].includes(item.promptKind) ? item.promptKind : item.promptKind === '摘录' ? '提示词摘录' : '完整提示词';
   const showcase = ['001','v01-showreel','043','v07-ui-morph','008','v05-transformer','026','v03-high-end-product','068','w05-escapement'];
   catalog.sort((a,b) => {
     const ai=showcase.indexOf(a.id), bi=showcase.indexOf(b.id);
@@ -45,7 +47,7 @@
     heading.append(el('span','work-no',shortId(item.id)),el('span','work-title',item.name));
     const labels=el('span','work-labels');
     labels.append(el('span','work-medium',item.medium==='video'?'视频型效果':'网页作品'),el('span','work-intent',item.intent));
-    if(item.collections.includes('selected22'))labels.append(el('span','work-selected','精选 22'));
+    if(isSelected(item))labels.append(el('span','work-selected',item.collections.includes('new100')?'新增精选':'精选'));
     if(item.variants.length>1)labels.append(el('span','work-dual','双版本'));
     caption.append(heading,labels);
     if(item.english)caption.append(el('span','work-english',item.english));
@@ -54,6 +56,8 @@
     inner.append(button); article.append(inner); nodes.set(item.id,article); return article;
   }
   gallery.append(...catalog.map(createCard));
+  for(const b of document.querySelectorAll('#mediumFilters button'))b.querySelector('small').textContent=catalog.filter(i=>b.dataset.medium==='all'||i.medium===b.dataset.medium).length;
+  $('#selectedFilter').textContent=`只看精选 ${catalog.filter(isSelected).length} 条`;
 
   function layout() {
     cancelAnimationFrame(layoutFrame);
@@ -84,11 +88,11 @@
       &&(!filters.intents.size||filters.intents.has(i.intent))
       &&(!filters.style||i.style.includes(filters.style))
       &&(!filters.motion||i.motion.includes(filters.motion))
-      &&(!filters.selected||i.collections.includes('selected22'))
+      &&(!filters.selected||isSelected(i))
       &&(/^\d{1,3}$/.test(query)?i.id===query.padStart(3,'0'):terms.every(term=>searchText.get(i.id).includes(term))));
     const ids=new Set(visible.map(i=>i.id));
     for(const [id,node] of nodes){node.hidden=!ids.has(id);node.querySelector('.work-inner').style.animation='none';}
-    $('#resultCount').textContent=`${visible.length} / 118`;
+    $('#resultCount').textContent=`${visible.length} / ${catalog.length}`;
     $('#empty').hidden=visible.length>0; gallery.hidden=visible.length===0; layout();
   }
   $('#search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(filter,100);});
@@ -159,7 +163,7 @@
     $('#detailTitle').textContent=item.name;
     $('#detailDescription').textContent=item.description;$('#detailInteraction').textContent=item.interaction;
     $('#detailPrompt').textContent=item.prompt;
-    $('#promptTitle').textContent=item.promptKind==='摘录'?'提示词摘录':'原始提示词';
+    $('#promptTitle').textContent=['公开配方','创作简报'].includes(item.promptKind)?item.promptKind:item.promptKind==='摘录'?'提示词摘录':'原始提示词';
     $('#promptKind').textContent=item.promptKind;
     $('#promptNote').textContent=item.promptNote;
     $('#briefDetails').hidden=!item.briefPrompt;
@@ -171,7 +175,7 @@
     if(item.promptFile)$('#promptFile').href=item.promptFile;
     const badges=$('#detailBadges');badges.replaceChildren();
     for(const label of [item.originalCategory,...item.style,...item.motion])badges.append(el('span','',label));
-    if(item.collections.includes('selected22'))badges.append(el('span','badge-selected','精选 22'));
+    if(isSelected(item))badges.append(el('span','badge-selected',item.collections.includes('new100')?'新增精选':'精选'));
     const sources=$('#sourceLinks');sources.replaceChildren();
     function sourceLink(label,url){const a=el('a','',label+' ↗');a.href=url;a.target='_blank';a.rel='noopener';sources.append(a);}
     sourceLink(item.sourceLabel,item.sourceUrl);
@@ -182,11 +186,13 @@
       if(recipe)sourceLink('动效词典 · 对应配方',recipe);
       sourceLink('原 22 条片库 · 完整技法拆解',`fusion/legacy-22/index.html#${encodeURIComponent(caseId)}`);
     }
-    $('#sourceSummary').textContent=item.variants.length>1
+    if(item.detailLink)sourceLink('完整技法拆解',item.detailLink);
+    for(const [label,url] of item.sourceLinks||[])sourceLink(label,url);
+    $('#sourceSummary').textContent=item.sourceSummary || (item.variants.length>1
       ? '同一创意提示词保留两个不同演示。动效片库版本是按提示词制作的另一种呈现。'
       :item.collections.includes('selected22')
         ? '此演示按公开提示词与示例输入制作。原作者作品请从上方来源查看。'
-        :'此作品及其完整提示词由原仓库提供。';
+        :'此作品及其完整提示词由原仓库提供。');
     const picker=$('#variantPicker');picker.replaceChildren();picker.hidden=item.variants.length<2;
     for(const variant of item.variants){
       const button=el('button','',variant.label);button.type='button';button.dataset.variant=variant.id;
@@ -197,21 +203,21 @@
     updateVariantLinks();
     $('#poster').src=item.thumbnail;$('#poster').alt=`${item.name} 预览图`;
     flight.src=item.thumbnail;
-    $('#copyPrompt span').textContent=item.promptKind==='摘录'?'复制提示词摘录':'复制完整提示词';
+    $('#copyPrompt span').textContent='复制'+promptLabel(item);
     $('#copyStatus').textContent='复制内容与上方显示一致';
     $('#previewError').hidden=true;
     stage.classList.remove('is-ready');$('#screenState').textContent='正在载入';
     stage.classList.toggle('is-portrait',item.medium==='video'&&item.aspect==='9:16');
     stage.classList.toggle('is-square',item.medium==='video'&&item.aspect==='1:1');
     $('#videoControls').hidden=item.medium!=='video';
-    $('#screenHint').textContent=item.medium==='video'?'原演示无音轨 · 可手动开启后补音效':'点击画面交互；有声作品可播放';
+    $('#screenHint').textContent=item.medium==='video'?(item.audioMode==='original'?'原作音轨 · 可手动开启':'原演示无音轨 · 可手动开启后补音效'):'点击画面交互；有声作品可播放';
     if(item.medium==='video'){
       $('#videoSeek').max=String(item.duration||15);$('#videoSeek').value='0';
       $('#videoTime').textContent=`00:00 / ${fmtTime(item.duration||15)}`;
       $('#videoPlay').textContent='暂停';$('#videoPlay').setAttribute('aria-label','暂停');
       $('#soundToggle').disabled=true;
       state.soundTrackReady=false;
-      loadSoundTrack(item);
+      if(item.audioMode==='original')state.soundTrackReady=true;else loadSoundTrack(item);
     }
     updateSoundButton();
     $('#frameHost').replaceChildren();
@@ -230,8 +236,10 @@
   function updateSoundButton(){
     const button=$('#soundToggle');
     button.setAttribute('aria-pressed',String(state.soundEnabled));
-    button.setAttribute('aria-label',state.soundEnabled?'关闭后补背景音效':'开启后补背景音效');
-    button.textContent=state.soundEnabled?'♫ 关闭音效':'♫ 开启音效';
+    const original=state.item?.audioMode==='original';
+    button.setAttribute('aria-label',(state.soundEnabled?'关闭':'开启')+(original?'原作音轨':'后补背景音效'));
+    button.title=original?'原作配乐与音效':'原创后补音效，非原作者音轨';
+    button.textContent=state.soundEnabled?'♫ 关闭声音':'♫ 开启声音';
   }
   function ensureAudioContext(){
     if(audioContext)return audioContext;
@@ -276,6 +284,7 @@
     if(source){try{source.stop();}catch{}source.disconnect();}
   }
   function stopSound(clearSource=false){
+    try{$('#frameHost iframe')?.contentWindow?.__demo?.setSound?.(false);}catch{}
     pauseSound();state.soundEnabled=false;updateSoundButton();
     if(clearSource){state.soundBuffer=null;state.soundTrackReady=false;}
   }
@@ -299,6 +308,11 @@
   }
   $('#soundToggle').addEventListener('click',()=>{
     if(state.item?.medium!=='video')return;
+    if(state.item.audioMode==='original'){
+      state.soundEnabled=!state.soundEnabled;updateSoundButton();
+      try{$('#frameHost iframe')?.contentWindow?.__demo?.setSound?.(state.soundEnabled);}catch{}
+      $('#screenHint').textContent=state.soundEnabled?'正在播放原作音轨':'原作音轨已关闭';return;
+    }
     if(state.soundEnabled){
       stopSound();$('#screenHint').textContent='原演示无音轨 · 后补音效已关闭';return;
     }
@@ -382,6 +396,12 @@
     payloads.set(variant.payload,promise);return promise;
   }
 
+  function previewDocument(html,variant,bridge){
+    const href=variant.assetBase?new URL(variant.file,document.baseURI).href:'about:srcdoc';
+    const base=document.createElement('base');base.href=href;
+    return html.replace(/<head([^>]*)>/i,match=>match+base.outerHTML+bridge);
+  }
+
   function cardPreviewEnabled(){return previewPreference ?? !reduced.matches;}
   function updateCardPreviewToggle(){
     const button=$('#livePreviewToggle'), enabled=cardPreviewEnabled();
@@ -430,7 +450,7 @@
       frame.setAttribute('allow','autoplay \'none\'');
       frame.setAttribute('referrerpolicy','no-referrer');
       const bridge=`<script>window.addEventListener('error',()=>parent.postMessage({opusCardPreview:true},'*'));window.addEventListener('unhandledrejection',()=>parent.postMessage({opusCardPreview:true},'*'))<\/script>`;
-      frame.srcdoc=html.replace(/<head([^>]*)>/i,match=>match+'<base href="about:srcdoc">'+bridge);
+      frame.srcdoc=previewDocument(html,item.variants[0],bridge);
       preview.timer=setTimeout(()=>{
         if(cardPreviews.get(item.id)===preview){cardPreviewFailures.add(item.id);stopCardPreview(item.id);scheduleCardPreviews(0);}
       },12000);
@@ -484,7 +504,7 @@
       frame.setAttribute('allow','fullscreen');frame.setAttribute('referrerpolicy','no-referrer');
       // Render from saved source text so a direct file:// launch works without fetch.
       const bridge=`<script>(()=>{const send=(type,message)=>parent.postMessage({opusPreview:true,token:${token},type,message},'*');window.addEventListener('error',e=>send('error',e.message));window.addEventListener('unhandledrejection',e=>send('error',String(e.reason)));window.addEventListener('keydown',e=>{if(e.key==='Escape')queueMicrotask(()=>{if(!e.defaultPrevented)send('escape','');});});})();<\/script>`;
-      frame.srcdoc=html.replace(/<head([^>]*)>/i,(match)=>match+'<base href="about:srcdoc">'+bridge);
+      frame.srcdoc=previewDocument(html,variant,bridge);
       state.timer=setTimeout(()=>fail('页面启动超时'),12000);
       frame.addEventListener('load',()=>{
         if(!current())return;
@@ -612,7 +632,7 @@
         copied=document.execCommand('copy');field.remove();$('#copyPrompt').focus({preventScroll:true});
       }
       if(!copied)throw new Error('clipboard unavailable');
-      if(state.item?.id===item.id){$('#copyPrompt span').textContent=item.promptKind==='摘录'?'已复制提示词摘录':'已复制完整提示词';$('#copyStatus').textContent='复制内容与上方显示一致';}
+      if(state.item?.id===item.id){$('#copyPrompt span').textContent='已复制'+promptLabel(item);$('#copyStatus').textContent='复制内容与上方显示一致';}
       notify(`已复制「${item.name}」${item.promptKind==='摘录'?'提示词摘录':'提示词'}`);
     }catch{
       $('#copyStatus').textContent='复制受限，可选中上方原文手动复制';

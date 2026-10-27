@@ -72,8 +72,10 @@ def build_legacy_page() -> None:
 
 
 def run_generators() -> None:
+    subprocess.run(["node", str(ROOT / "scripts" / "build_new_originals.cjs")], check=True)
     for name in ("build_preview.py", "fusion_catalog.py"):
         subprocess.run([sys.executable, str(ROOT / "scripts" / name)], check=True)
+    subprocess.run([sys.executable, str(ROOT / "scripts" / "build_new_details.py")], check=True)
 
 
 def verify() -> None:
@@ -82,7 +84,7 @@ def verify() -> None:
     variants = sum(len(item["variants"]) for item in items)
     videos = sum(item["medium"] == "video" for item in items)
     overlaps = sum(len(item["variants"]) == 2 for item in items)
-    if (len(items), variants, videos, overlaps) != (118, 122, 15, 4):
+    if (len(items), variants, videos, overlaps) != (218, 222, 58, 4):
         raise SystemExit("Generated gallery counts do not match the reviewed release")
     for item in items:
         for path in [item["thumbnail"], item.get("promptFile")]:
@@ -93,11 +95,13 @@ def verify() -> None:
                 path = variant[key]
                 if not (DIST / path).is_file():
                     raise SystemExit(f"Missing generated asset: {path}")
-        if item["medium"] == "video":
+        if item["medium"] == "video" and item.get("audioMode") != "original":
             path = f"fusion/audio/{item['id']}.js"
             if not (DIST / path).is_file():
                 raise SystemExit(f"Missing audio track: {path}")
-    print(f"Ready: {len(items)} themes, {variants} demos, {videos} soundtracks, {overlaps} paired themes")
+        if item.get("detailLink") and not (DIST / item["detailLink"].split("#")[0]).is_file():
+            raise SystemExit(f"Missing detail page: {item['detailLink']}")
+    print(f"Ready: {len(items)} themes, {variants} demos, {videos} timed demos, {overlaps} paired themes")
 
 
 def main() -> None:
@@ -107,6 +111,10 @@ def main() -> None:
     build_legacy_page()
     run_generators()
     verify()
+    entries = [{"file": str(p.relative_to(DIST)), "bytes": p.stat().st_size,
+                "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
+               for p in sorted(DIST.rglob("*")) if p.is_file()]
+    (DIST / "build-manifest.json").write_text(json.dumps({"files": entries}, indent=2) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Showreel ’26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#ECE8E1}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* v01-showreel — 15 s, 1920x1080 logical stage, 120 BPM grid (beat = 0.5 s)
+   S0 title     0.00–1.55  paper. "SHOW / REEL●" + index. Exit 1.0: letters mask out, disc floods accent then ink.
+   S1 type      1.55–4.35  ink. EVERY(2.0) FRAME(2.5, brackets) ON(3.0) PURPOSE(3.25). Exit 3.6; O counter floods accent.
+   S2 geometry  4.35–7.40  accent. 12x6 grid ripple: circle → diamond → plus → wave → bars → one line; bg band collapses.
+   S3 timing    7.40–10.40 paper. Line splits into graph axis + track. Bezier draws, handles, spacing chart run. Square fills frame.
+   S4 depth     10.40–13.0 ink. Three rotating text cylinders, back faces mirrored. Collapse into the accent disc, bar wipe.
+   S5 title     13.0–15.00 paper. SHOW / REEL rebuild, index list, hold = frame 0 (seamless loop).
+   HUD (all scenes): scene index roll, timecode @25fps, progress with scene ticks, crop marks. */
+(() => {
+const ID = 'v01-showreel', W = 1920, H = 1080, D = 15;
+const cv = document.getElementById('c'), X = cv.getContext('2d');
+let S = 1, OX = 0, OY = 0, CW = 1, CH = 1;
+const cl = (v, a = 0, b = 1) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t, k = (t, a, b) => cl((t - a) / (b - a));
+const eo3 = x => 1 - Math.pow(1 - x, 3), ei3 = x => x * x * x, eio3 = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const eoX = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x), eiX = x => x <= 0 ? 0 : Math.pow(2, 10 * x - 10);
+const eioX = x => x <= 0 ? 0 : x >= 1 ? 1 : x < .5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2;
+const spring = (t, w = 16, z = .75) => { if (t <= 0) return 0; const wd = w * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w * t) * (Math.cos(wd * t) + z * w / wd * Math.sin(wd * t)); };
+
+const P = '#ECE8E1', K = '#121212', A = '#FF4D1A';
+const FF = 'Archivo,"Arial Black","Helvetica Neue",Arial,sans-serif', MF = '"Geist Mono",ui-monospace,Menlo,monospace';
+const font = (w, s) => { X.font = `${w} ${s}px ${FF}`; };
+const mono = (s, w = 400) => { X.font = `${w} ${s}px ${MF}`; X.letterSpacing = '0px'; };
+
+// ---------- type helpers ----------
+// draws str char by char; off(i,n) → vertical offset in line units (0 in place, 1 below, -1 above); clipped to cap box
+function line(str, x, y, size, col, off, opt = {}) {
+  font(opt.w || 900, size); X.letterSpacing = (opt.ls ?? -0.035) * size + 'px';
+  const tw = X.measureText(str).width;
+  X.save();
+  if (opt.clip !== false) { X.beginPath(); X.rect(x - size * .2, y - size * .80, tw + size * .4, size * .86); X.clip(); }
+  X.fillStyle = col;
+  for (let i = 0; i < str.length; i++) {
+    const o = off ? off(i, str.length) : 0; if (o >= 1 || o <= -1) continue;
+    X.fillText(str[i], x + X.measureText(str.slice(0, i)).width, y + o * size * .86);
+  }
+  X.restore();
+  return tw;
+}
+function mw(str, size, w = 900, ls = -0.035) { font(w, size); X.letterSpacing = ls * size + 'px'; return X.measureText(str).width; }
+const enter = (t, t0, dur = .45, st = .03) => (i) => 1 - eoX(k(t, t0 + i * st, t0 + i * st + dur));
+const exitUp = (t, t0, dur = .32, st = .02) => (i) => -ei3(k(t, t0 + i * st, t0 + i * st + dur)) * 1.001;
+
+// ---------- title layout (shared by S0 and S5 so the loop is exact) ----------
+const T = { x: 132, y1: 452, y2: 742, size: 318 };
+function discPos() { const w = mw('REEL', T.size); return { x: T.x + w + 64, y: T.y2 - 44 }; }
+const INDEX = ['01  Type', '02  Geometry', '03  Timing', '04  Depth'];
+
+function drawTitle(t, mode) { // mode 'out' (S0) or 'in' (S5)
+  let o1, o2, sub, idx;
+  if (mode === 'out') { o1 = exitUp(t, 1.0); o2 = exitUp(t, 1.05); sub = 1 - k(t, 0.95, 1.2); idx = i => 1 - k(t, .9 + i * .03, 1.15 + i * .03); }
+  else { o1 = enter(t, 13.15, .6, .035); o2 = enter(t, 13.27, .6, .035); sub = eo3(k(t, 13.7, 14.1)); idx = i => eo3(k(t, 13.75 + i * .06, 14.15 + i * .06)); }
+  line('SHOW', T.x, T.y1, T.size, K, o1);
+  line('REEL', T.x, T.y2, T.size, K, o2);
+  // subline
+  if (sub > 0) {
+    X.save(); X.globalAlpha = sub; mono(22); X.fillStyle = K; X.letterSpacing = '1px';
+    X.fillText('FIVE STUDIES IN MOVEMENT — 15 SECONDS, NO CUTS WASTED', T.x + 8, T.y2 + 96 + (1 - sub) * 16);
+    X.restore();
+  }
+  // right index column
+  const cx = 1428;
+  mono(20); X.fillStyle = K;
+  X.save(); X.globalAlpha = cl(idx(0) * 1.2); X.fillText('INDEX', cx, 300); X.restore();
+  X.save(); X.globalAlpha = idx(0); X.fillStyle = K; X.fillRect(cx, 320, 360 * idx(0), 2); X.restore();
+  for (let i = 0; i < INDEX.length; i++) {
+    const a = idx(i + 1); if (a <= 0) continue;
+    X.save(); X.beginPath(); X.rect(cx, 340 + i * 58, 400, 52); X.clip();
+    font(800, 38); X.letterSpacing = '-1px'; X.fillStyle = K;
+    X.fillText(INDEX[i], cx, 385 + i * 58 + (1 - a) * 50); X.restore();
+  }
+}
+
+// ---------- S1 kinetic type ----------
+const L1 = { x: 132, y: 348, s: 250 }, L2 = { x: 560, y: 610, s: 250 }, L3 = { x: 132, y: 872, s: 236 };
+function oCenter() { // centre of the O in PURPOSE (line 3 after "ON ")
+  const pre = mw('ON ', L3.s) + mw('PURP', L3.s), ow = mw('O', L3.s) - (-0.035 * L3.s);
+  return { x: L3.x + pre + ow / 2, y: L3.y - L3.s * .36, ow };
+}
+function drawS1(t) {
+  const ex = t >= 3.6;
+  // line 1: EVERY — slides left on exit
+  const sx1 = -ei3(k(t, 3.6, 3.95)) * 1500;
+  line('EVERY', L1.x + sx1, L1.y, L1.s, P, enter(t, 1.52, .45, .035));
+  // line 2: FRAME + brackets
+  const sx2 = ei3(k(t, 3.64, 3.99)) * 1600;
+  const w2 = line('FRAME', L2.x + sx2, L2.y, L2.s, P, enter(t, 2.12, .45, .035));
+  const b = eoX(k(t, 2.28, 2.7)) * (1 - k(t, 3.55, 3.7));
+  if (b > 0) {
+    const pad = 34 + (1 - b) * 90, x0 = L2.x + sx2 - pad, x1 = L2.x + sx2 + w2 + pad - 10, y0 = L2.y - L2.s * .74 - pad, y1 = L2.y + pad - 8, arm = 46;
+    X.save(); X.strokeStyle = A; X.lineWidth = 7; X.globalAlpha = b; X.lineCap = 'square';
+    X.beginPath();
+    X.moveTo(x0, y0 + arm); X.lineTo(x0, y0); X.lineTo(x0 + arm, y0);
+    X.moveTo(x1 - arm, y0); X.lineTo(x1, y0); X.lineTo(x1, y0 + arm);
+    X.moveTo(x1, y1 - arm); X.lineTo(x1, y1); X.lineTo(x1 - arm, y1);
+    X.moveTo(x0 + arm, y1); X.lineTo(x0, y1); X.lineTo(x0, y1 - arm);
+    X.stroke(); X.restore();
+    // tiny label on the bracket
+    mono(18); X.fillStyle = A; X.save(); X.globalAlpha = b; X.fillText('1920 × 1080 · 25 FPS', x0, y1 + 40); X.restore();
+  }
+  // line 3: ON (accent) PURPOSE — letters drop except the O
+  const onW = mw('ON ', L3.s);
+  line('ON', L3.x, L3.y, L3.s, A, (i) => { const e = enter(t, 2.62, .45, .04)(i); return ex ? Math.max(e, ei3(k(t, 3.62 + i * .03, 3.88 + i * .03))) : e; });
+  const pur = 'PURPOSE';
+  line(pur, L3.x + onW, L3.y, L3.s, P, (i) => {
+    const e = enter(t, 2.9, .42, .03)(i);
+    if (i === 4) return e;
+    return ex ? Math.max(e, ei3(k(t, 3.66 + Math.abs(i - 4) * .035, 3.92 + Math.abs(i - 4) * .035))) : e;
+  });
+  // accent flood from inside the O counter
+  const f = k(t, 3.92, 4.42);
+  if (f > 0) {
+    const c = oCenter(), r = lerp(c.ow * .18, 2300, eioX(f));
+    X.fillStyle = A; X.beginPath(); X.arc(c.x, c.y, r, 0, 7); X.fill();
+  }
+}
+
+// ---------- S2 geometry grid ----------
+const GC = 12, GR = 6, GP = 140, GX0 = (W - (GC - 1) * GP) / 2, GY0 = (H - (GR - 1) * GP) / 2;
+const cells = []; { const cx = (GC - 1) / 2, cy = (GR - 1) / 2, md = Math.hypot(cx, cy);
+  for (let r = 0; r < GR; r++) for (let c = 0; c < GC; c++) cells.push({ c, r, x: GX0 + c * GP, y: GY0 + r * GP, d: Math.hypot(c - cx, r - cy) / md }); }
+// keyframes: [hw, hh, vw, vh, radius, rot(deg)]
+const KF = {
+  circle: [84, 84, 84, 84, 42, 0], diamond: [78, 78, 78, 78, 6, 45], plus: [96, 26, 26, 96, 3, 90],
+  bar: [GP + 1, 12, 12, 12, 0, 180]
+};
+function mix(a, b, e) { return a.map((v, i) => lerp(v, b[i], e)); }
+function drawS2(t) {
+  // bg band collapses to the line
+  const cb = eioX(k(t, 7.0, 7.42)), bandH = lerp(H, 0, cb);
+  X.fillStyle = A; X.fillRect(0, H / 2 - bandH / 2, W, bandH);
+  X.fillStyle = K;
+  const conv = eioX(k(t, 6.98, 7.4));
+  for (const q of cells) {
+    const d = q.d * .34;
+    const sIn = spring(t - 4.24 - d, 17, .72);
+    let st = KF.circle;
+    st = mix(st, KF.diamond, eio3(k(t, 4.95 + d, 5.35 + d)));
+    st = mix(st, KF.plus, eio3(k(t, 5.45 + d, 5.85 + d)));
+    const barE = eio3(k(t, 6.45 + d * .6, 6.85 + d * .6));
+    st = mix(st, KF.bar, barE);
+    // travelling diagonal wave between plus and bar
+    const wv = Math.sin((t - 5.9) * 9 - (q.c + q.r) * .55) * .5 + .5, env = k(t, 5.9, 6.1) * (1 - k(t, 6.35, 6.6));
+    const s = sIn * (1 + env * (wv - .5) * .7);
+    if (s <= .001) continue;
+    const [hw, hh, vw, vh, rad, rot] = st;
+    const y = lerp(q.y, H / 2, conv);
+    X.save(); X.translate(q.x, y); X.rotate(rot * Math.PI / 180); X.scale(s, s * (1 - conv * .5));
+    X.beginPath(); X.roundRect(-hw / 2, -hh / 2, hw, hh, Math.min(rad, hh / 2, hw / 2)); X.fill();
+    if (barE < .98) { X.beginPath(); X.roundRect(-vw / 2, -vh / 2, vw, vh, Math.min(rad, vh / 2, vw / 2)); X.fill(); }
+    X.restore();
+  }
+}
+
+// ---------- S3 timing / easing ----------
+const G = { x: 300, y: 830, s: 560 }, TR = { x0: 1060, x1: 1760, y: 540 }, SQ = 118;
+const bz = (a, b, s) => 3 * (1 - s) * (1 - s) * s * a + 3 * (1 - s) * s * s * b + s * s * s;
+function easeCB(u, x1, y1, x2, y2) { let lo = 0, hi = 1, s = u; for (let i = 0; i < 22; i++) { s = (lo + hi) / 2; if (bz(x1, x2, s) < u) lo = s; else hi = s; } return bz(y1, y2, s); }
+const CB = [.7, 0, .2, 1];
+const ez = u => easeCB(cl(u), ...CB);
+function runP(t) { return ez(k(t, 8.78, 9.78)); }
+function drawS3(t) {
+  const sp = eioX(k(t, 7.42, 7.92)); // line split
+  const fade = 1 - eo3(k(t, 9.9, 10.2));
+  X.lineCap = 'butt';
+  // segment A → x axis
+  X.save(); X.globalAlpha = fade;
+  X.fillStyle = K;
+  const ay = lerp(H / 2, G.y, sp), ax0 = lerp(GX0 - GP / 2, G.x, sp), ax1 = lerp(W / 2, G.x + G.s, sp), th = lerp(6, 4, sp);
+  X.fillRect(ax0, ay - th / 2, ax1 - ax0, th);
+  // y axis
+  const ya = eoX(k(t, 7.8, 8.2));
+  X.fillRect(G.x - 2, G.y - G.s * ya, 4, G.s * ya);
+  // grid ticks
+  mono(16); X.fillStyle = K;
+  const lab = k(t, 7.95, 8.2);
+  X.globalAlpha = fade * lab;
+  for (let i = 1; i <= 4; i++) { X.fillRect(G.x + G.s * i / 4 - 1, G.y + 6, 2, 12); X.fillRect(G.x - 18, G.y - G.s * i / 4 - 1, 12, 2); }
+  X.fillText('TIME →', G.x + G.s - 70, G.y + 48); X.save(); X.translate(G.x - 40, G.y - G.s + 70); X.rotate(-Math.PI / 2); X.fillText('VALUE →', 0, 0); X.restore();
+  X.fillText('0', G.x - 26, G.y + 40);
+  X.restore();
+  // curve draw
+  const cd = eio3(k(t, 8.0, 8.6));
+  const px = u => G.x + u * G.s, py = v => G.y - v * G.s;
+  if (cd > 0) {
+    X.save(); X.globalAlpha = fade;
+    // handles
+    const hd = eo3(k(t, 8.3, 8.6));
+    if (hd > 0) {
+      X.strokeStyle = A; X.lineWidth = 3; X.globalAlpha = fade * hd;
+      X.beginPath(); X.moveTo(px(0), py(0)); X.lineTo(px(lerp(0, CB[0], hd)), py(CB[1])); X.moveTo(px(1), py(1)); X.lineTo(px(lerp(1, CB[2], hd)), py(CB[3])); X.stroke();
+      X.fillStyle = A; X.beginPath(); X.arc(px(lerp(0, CB[0], hd)), py(CB[1]), 12, 0, 7); X.arc(px(lerp(1, CB[2], hd)), py(CB[3]), 12, 0, 7); X.fill();
+      X.globalAlpha = fade;
+    }
+    X.strokeStyle = K; X.lineWidth = 7; X.lineJoin = 'round'; X.lineCap = 'round';
+    X.beginPath();
+    const N = 90;
+    for (let i = 0; i <= N * cd; i++) { const s = i / N; const x = px(bz(CB[0], CB[2], s)), y = py(bz(CB[1], CB[3], s)); i ? X.lineTo(x, y) : X.moveTo(x, y); }
+    X.stroke();
+    // label types on
+    const lbl = 'cubic-bezier(.70, 0, .20, 1)', n = Math.floor(lbl.length * k(t, 8.2, 8.7));
+    mono(22, 500); X.fillStyle = K; X.fillText(lbl.slice(0, n) + (n < lbl.length && n > 0 ? '▍' : ''), G.x + 20, G.y - G.s - 22);
+    X.restore();
+  }
+  // track (segment B)
+  const bx0 = lerp(W / 2, TR.x0, sp), bx1 = lerp(GX0 + (GC - 1) * GP + GP / 2, TR.x1, sp);
+  X.fillStyle = K; X.save(); X.globalAlpha = fade;
+  X.fillRect(bx0, TR.y - lerp(3, 2, sp), bx1 - bx0, lerp(6, 4, sp));
+  X.restore();
+  // spacing chart + moving square
+  const run = k(t, 8.78, 9.78), p = runP(t);
+  const sqx = u => TR.x0 + u * (TR.x1 - TR.x0 - SQ);
+  const inS = eoX(k(t, 8.25, 8.65));
+  if (inS > 0) {
+    X.save(); X.globalAlpha = fade;
+    // spacing ticks at equal time steps (appear once the run passes them)
+    for (let i = 0; i <= 12; i++) {
+      const u = i / 12; if (run < u - 1e-6) continue;
+      const x = sqx(ez(u)) + SQ / 2;
+      X.fillStyle = A; X.fillRect(x - 1.5, TR.y + 90, 3, i % 3 ? 22 : 38);
+    }
+    // onion skins
+    for (let g = 5; g >= 1; g--) {
+      const pg = runP(t - g * .055); if (Math.abs(pg - p) < .004) continue;
+      X.strokeStyle = K; X.globalAlpha = fade * (.10 + .05 * (5 - g)); X.lineWidth = 2;
+      X.strokeRect(sqx(pg) + 1, TR.y - SQ - 18 + 1, SQ - 2, SQ - 2);
+    }
+    X.globalAlpha = fade;
+    X.restore();
+    // dot on curve + guides
+    if (run > 0 && run < 1 || (t > 9.78 && t < 10.2)) {
+      const u = cl(run), v = ez(u);
+      X.save(); X.globalAlpha = fade; X.setLineDash([6, 8]); X.strokeStyle = K; X.lineWidth = 2;
+      X.beginPath(); X.moveTo(px(u), py(v)); X.lineTo(px(u), G.y); X.moveTo(px(u), py(v)); X.lineTo(G.x, py(v)); X.stroke(); X.setLineDash([]);
+      X.fillStyle = A; X.beginPath(); X.arc(px(u), py(v), 13, 0, 7); X.fill(); X.restore();
+    }
+    // readout
+    X.save(); X.globalAlpha = fade * inS; mono(20); X.fillStyle = K;
+    X.fillText('t  ' + run.toFixed(2), TR.x0, TR.y - SQ - 70);
+    X.fillText('p  ' + p.toFixed(2), TR.x0 + 170, TR.y - SQ - 70);
+    X.fillText('SPACING', TR.x0, TR.y + 170);
+    X.restore();
+  }
+  // the square: grows to fill frame → S4
+  const gE = eioX(k(t, 9.92, 10.42));
+  if (inS > 0) {
+    const cx = sqx(p) + SQ / 2, cy = TR.y - SQ / 2 - 18;
+    const s = lerp(SQ * inS, 2600, gE), rot = gE * Math.PI / 2;
+    X.save(); X.translate(lerp(cx, W / 2, gE * gE), lerp(cy, H / 2, gE * gE)); X.rotate(rot); X.fillStyle = K; X.fillRect(-s / 2, -s / 2, s, s); X.restore();
+  }
+}
+
+// ---------- S4 depth: text cylinders ----------
+const RINGS = [
+  { s: 'MOTION DESIGN•', y: 330, dir: 1 },
+  { s: 'TYPE•RHYTHM•', y: 540, dir: -1 },
+  { s: 'SYSTEMS•CRAFT•', y: 750, dir: 1 }
+];
+const RR = 600, RS = 92;
+let ringMeta = null;
+function prepRings() {
+  font(800, RS); X.letterSpacing = '0px';
+  ringMeta = RINGS.map(r => {
+    const chars = [...r.s], ws = chars.map(c => c === '•' ? RS * .9 : X.measureText(c).width + RS * .06);
+    const rep = ws.reduce((a, b) => a + b, 0), n = Math.max(1, Math.round(2 * Math.PI * RR / rep));
+    const out = []; let acc = 0; const k2 = 2 * Math.PI / (n * rep);
+    for (let j = 0; j < n; j++) chars.forEach((c, i) => { out.push({ c, a: (acc + ws[i] / 2) * k2 }); acc += ws[i]; });
+    return out;
+  });
+}
+function drawS4(t) {
+  if (!ringMeta) prepRings();
+  const dp = discPos();
+  const inE = eoX(k(t, 10.3, 11.0));
+  const outBase = 12.28;
+  font(800, RS); X.letterSpacing = '0px'; X.textAlign = 'center';
+  X.save(); X.translate(W / 2, 0);
+  RINGS.forEach((r, ri) => {
+    const oe = eioX(k(t, outBase + ri * .07, outBase + .5 + ri * .07));
+    if (oe >= 1) return;
+    const spin = r.dir * (2.4 * (1 - Math.exp(-3.2 * Math.max(0, t - 10.3))) + (t - 10.3) * .35) + ri * .7;
+    const R = RR * lerp(.55, 1, inE) * (1 - oe), tilt = .2;
+    const cx = lerp(0, dp.x - W / 2, oe), cy = lerp(r.y, dp.y, oe);
+    const sc = (1 - oe * .85);
+    const list = ringMeta[ri].map(m => { const a = m.a + spin; return { c: m.c, sx: Math.sin(a), cz: Math.cos(a) }; }).sort((p, q) => p.cz - q.cz);
+    for (const m of list) {
+      const x = cx + R * m.sx, y = cy + R * m.cz * tilt * .5 + RS * .35 * sc;
+      const persp = (1 + .16 * m.cz) * sc;
+      const front = m.cz > 0;
+      X.save(); X.translate(x, y); X.rotate(-.12);
+      X.scale(persp * (m.cz), persp);
+      X.globalAlpha = (front ? 1 : .22) * cl(inE * 1.4) ;
+      if (m.c === '•') { X.fillStyle = A; X.beginPath(); X.arc(0, -RS * .34, RS * .14, 0, 7); X.fill(); }
+      else { X.fillStyle = P; X.fillText(m.c, 0, 0); }
+      X.restore();
+    }
+  });
+  X.restore(); X.textAlign = 'left';
+}
+
+// ---------- HUD ----------
+const SCENES = [[0, '00', 'SHOWREEL'], [1.6, '01', 'TYPE'], [4.4, '02', 'GEOMETRY'], [7.45, '03', 'TIMING'], [10.45, '04', 'DEPTH'], [13.05, '00', 'SHOWREEL']];
+function hudCol(t) { return (t >= 1.52 && t < 4.3) || (t >= 10.36 && t < 13.08) ? P : K; }
+function drawHUD(t) {
+  const c = hudCol(t); X.fillStyle = c; X.strokeStyle = c;
+  // crop marks
+  X.lineWidth = 2; X.beginPath();
+  const m = 48, a = 22;
+  [[m, m, 1, 1], [W - m, m, -1, 1], [m, H - m, 1, -1], [W - m, H - m, -1, -1]].forEach(([x, y, sx, sy]) => { X.moveTo(x, y + a * sy); X.lineTo(x, y); X.lineTo(x + a * sx, y); });
+  X.stroke();
+  mono(18, 500); X.letterSpacing = '1.5px';
+  // scene index roll
+  let si = 0; for (let i = 0; i < SCENES.length; i++) if (t >= SCENES[i][0]) si = i;
+  const r = eoX(k(t, SCENES[si][0], SCENES[si][0] + .4));
+  X.save(); X.beginPath(); X.rect(84, 62, 420, 34); X.clip();
+  const lab = s => s[1] + ' — ' + s[2];
+  X.fillText(lab(SCENES[si]), 90, 88 + (1 - r) * 30);
+  if (si > 0 && r < 1) X.fillText(lab(SCENES[si - 1]), 90, 88 - r * 30);
+  X.restore();
+  X.textAlign = 'right'; X.fillText('MOTION DESIGN / PORTFOLIO', W - 90, 88);
+  // timecode
+  X.textAlign = 'left';
+  const fr = Math.floor(t * 25), ss = Math.floor(fr / 25), ff = fr % 25, p2 = n => String(n).padStart(2, '0');
+  X.fillText('TC 00:00:' + p2(ss) + ':' + p2(ff), 90, H - 72);
+  // progress
+  const px0 = W - 470, px1 = W - 90, py = H - 78;
+  X.globalAlpha = .3; X.fillRect(px0, py, px1 - px0, 2); X.globalAlpha = 1;
+  X.fillRect(px0, py, (px1 - px0) * (t / D), 2);
+  SCENES.slice(1, 5).forEach(s => X.fillRect(px0 + (px1 - px0) * s[0] / D - 1, py - 8, 2, 18));
+  X.fillText(p2(Math.floor(t)) + '/15', px0 - 96, py + 7);
+  X.letterSpacing = '0px';
+}
+
+// ---------- compose ----------
+function bgAt(t) {
+  if (t < 1.4) return P; if (t < 4.3) return K; if (t < 7.3) return A; if (t < 10.3) return P; if (t < 13.1) return K; return P;
+}
+function draw(t) {
+  X.textBaseline = 'alphabetic';
+  const dp = discPos();
+  if (t < 1.75) {
+    X.fillStyle = P; X.fillRect(0, 0, W, H);
+    drawTitle(t, 'out');
+    // disc: accent flood, then ink flood from the same centre
+    const r1 = lerp(44, 2400, eioX(k(t, 1.05, 1.55))), r2 = lerp(0, 2400, eioX(k(t, 1.2, 1.72)));
+    X.fillStyle = A; X.beginPath(); X.arc(dp.x, dp.y, r1, 0, 7); X.fill();
+    if (r2 > 0) { X.fillStyle = K; X.beginPath(); X.arc(dp.x, dp.y, r2, 0, 7); X.fill(); }
+  }
+  if (t >= 1.55 && t < 4.5) { if (t >= 1.72) { X.fillStyle = K; X.fillRect(0, 0, W, H); } drawS1(t); }
+  if (t >= 4.26 && t < 7.45) { X.fillStyle = P; X.fillRect(0, 0, W, H); drawS2(t); }
+  if (t >= 7.4 && t < 10.45) {
+    if (t >= 7.45) { X.fillStyle = P; X.fillRect(0, 0, W, H); }
+    drawS3(t);
+  }
+  if (t >= 10.42 && t < 13.4) {
+    // bar wipe ink → paper
+    X.fillStyle = K; X.fillRect(0, 0, W, H);
+    drawS4(t);
+    const nb = 8;
+    for (let i = 0; i < nb; i++) {
+      const e = eoX(k(t, 12.72 + i * .035, 13.12 + i * .035));
+      if (e <= 0) continue;
+      X.fillStyle = P; X.fillRect(-4, i * H / nb - .5, (W + 12) * e, H / nb + 1);
+    }
+  }
+  if (t >= 12.6) {
+    if (t >= 13.4) { X.fillStyle = P; X.fillRect(0, 0, W, H); }
+    const de = spring(t - 12.66, 15, .8);
+    if (t >= 13.1) drawTitle(t, 'in');
+    X.fillStyle = A; X.beginPath(); X.arc(dp.x, dp.y, 44 * de, 0, 7); X.fill();
+  }
+  drawHUD(t);
+}
+
+function frame(t) {
+  X.setTransform(1, 0, 0, 1, 0, 0); X.fillStyle = bgAt(t); X.fillRect(0, 0, CW, CH);
+  X.setTransform(S, 0, 0, S, OX, OY); X.save(); X.beginPath(); X.rect(0, 0, W, H); X.clip(); draw(t); X.restore();
+}
+
+// ---------- runtime ----------
+function fit() { const dpr = Math.min(window.devicePixelRatio || 1, 1.5); const vw = Math.max(1, innerWidth), vh = Math.max(1, innerHeight);
+  CW = cv.width = Math.round(vw * dpr); CH = cv.height = Math.round(vh * dpr); S = Math.min(CW / W, CH / H); OX = (CW - W * S) / 2; OY = (CH - H * S) / 2; }
+let cur = 0, playing = true, t0 = performance.now(), raf = 0;
+const kick = () => { if (!raf && !document.hidden) raf = requestAnimationFrame(loop); };
+function loop(now) { raf = 0; if (!playing) return; cur = ((now - t0) / 1000) % D; frame(cur); kick(); }
+const fontsReady = Promise.race([
+  Promise.all([document.fonts.load(`900 100px Archivo`, 'SHOWREL'), document.fonts.load(`800 100px Archivo`, 'MOTIN'), document.fonts.load(`500 20px "Geist Mono"`, 'TC0'), document.fonts.load(`400 20px "Geist Mono"`, 'a')]).catch(() => {}),
+  new Promise(r => setTimeout(r, 3000))
+]).then(() => { ringMeta = null; frame(cur); });
+window.DURATION = D;
+window.seek = (t) => { cur = ((+t % D) + D) % D; t0 = performance.now() - cur * 1000; return fontsReady.then(() => frame(cur)); };
+window.__demo = { play() { if (playing) return; playing = true; t0 = performance.now() - cur * 1000; kick(); }, pause() { playing = false; }, get playing() { return playing; }, get time() { return cur; } };
+addEventListener('message', e => { const d = e.data || {}; if (d.type === 'demo:play') __demo.play(); else if (d.type === 'demo:pause') __demo.pause(); else if (d.type === 'demo:seek') seek(+d.t || 0); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = 0; } else if (playing) { t0 = performance.now() - cur * 1000; kick(); } });
+addEventListener('resize', () => { fit(); frame(cur); });
+fit(); frame(0); kick();
+fontsReady.then(() => { try { parent.postMessage({ type: 'demo:ready', id: ID, duration: D }, '*'); } catch (e) {} });
+})();
+</script>
+</body>
+</html>

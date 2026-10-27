@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Build the Floor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#102820;overflow:hidden}
+canvas{position:absolute;display:block}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* BUILD THE FLOOR — 20.00 s, 1080×1080. Serif = speech, heavy grotesque = load-bearing words, mono = timing marks.
+   0.00– 1.40  title card (BUILD / THE / FLOOR)
+   1.40– 4.60  L1 "We were told to wait."            WAIT is lowered on a cord and hangs — frame is suspended from the top
+   4.60– 8.20  L2 "So we learned the weight of waiting."  cord snaps on "weight", WAIT falls, lands, re-spells into WEIGHT = foundation
+   8.20–11.60  L3 "Then one voice made room."        ROOM rises out of the foundation as a column and shoves the line sideways
+  11.60–14.60  L4 "Then another."                     ANOTHER rises on the right — a portal
+  14.60–19.20  L5 "Now the floor belongs to us."      FLOOR lintel is set across both columns; the declaration stands on it
+  17.80–19.20  slow pull-back; 19.20–20.00 structure dissolves and the title returns (= frame 0)
+*/
+(() => {
+const S = 1080, DUR = 20;
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const BG = '#102820', PAPER = '#F4E9D5', ACC = '#F2B544';
+const SERIF = '"Bodoni Moda","Bodoni 72","Didot","Playfair Display",Georgia,serif';
+const GROT = '"Archivo Black","Arial Black","Helvetica Neue",Impact,sans-serif';
+const MONO = '"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace';
+
+const cl = x => x < 0 ? 0 : x > 1 ? 1 : x;
+const P = (t, a, b) => cl((t - a) / (b - a));
+const EO = x => 1 - Math.pow(1 - x, 3);
+const EIO = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const EX = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+const L = (a, b, k) => a + (b - a) * k;
+
+function T(s, x, y, font, col, a = 1, align = 'left', ls = 0) {
+  if (a <= .002) return;
+  ctx.globalAlpha = a; ctx.font = font; ctx.fillStyle = col; ctx.textAlign = align; ctx.textBaseline = 'alphabetic';
+  ctx.letterSpacing = ls + 'px'; ctx.fillText(s, x, y); ctx.letterSpacing = '0px'; ctx.globalAlpha = 1;
+}
+const MW = (s, font, ls = 0) => { ctx.font = font; ctx.letterSpacing = ls + 'px'; const w = ctx.measureText(s).width; ctx.letterSpacing = '0px'; return w; };
+const CAP = (s, font) => { ctx.font = font; return ctx.measureText(s).actualBoundingBoxAscent; };
+const fit = (s, fam, w) => w / MW(s, `100px ${fam}`) * 100;
+
+// words appear one by one, each set down from slightly above
+function speak(words, times, x, y, size, t, a = 1, italicFrom = 99, col = PAPER) {
+  let cx = x;
+  words.forEach((w, i) => {
+    const f = `${i >= italicFrom ? 'italic ' : ''}400 ${size}px ${SERIF}`;
+    const k = P(t, times[i], times[i] + .28), ww = MW(w + ' ', f);
+    T(w, cx, y - (1 - EO(k)) * size * .22, f, col, a * k);
+    cx += ww;
+  });
+  return cx;
+}
+function mono(s, x, y, a = .6, align = 'left', col = PAPER, size = 15) { T(s, x, y, `400 ${size}px ${MONO}`, col, a, align, 1.5); }
+
+function geom() {
+  const g = {};
+  g.fW = fit('WEIGHT', GROT, 960); g.capW = CAP('WEIGHT', `${g.fW}px ${GROT}`);
+  g.BASE = 1010; g.FT = g.BASE - g.capW;               // foundation top
+  g.CH = 360; g.CT = g.FT - g.CH;                       // column top
+  g.fR = fit('ROOM', GROT, g.CH); g.capR = CAP('ROOM', `${g.fR}px ${GROT}`);
+  g.fA = fit('ANOTHER', GROT, g.CH); g.capA = CAP('ANOTHER', `${g.fA}px ${GROT}`);
+  g.DH = 118; g.DT = g.CT - g.DH;                       // deck top
+  g.fWait = fit('WAIT', GROT, 380); g.capWait = CAP('WAIT', `${g.fWait}px ${GROT}`);
+  return g;
+}
+
+function title(a, dy = 0) {
+  if (a <= 0) return;
+  const f = `${188}px ${GROT}`;
+  T('BUILD', 56, 400 + dy, f, PAPER, a);
+  T('THE', 56, 610 + dy, f, PAPER, a);
+  T('FLOOR', 56, 820 + dy, f, ACC, a);
+  ctx.globalAlpha = a; ctx.fillStyle = ACC; ctx.fillRect(60, 860 + dy, 960, 6); ctx.globalAlpha = 1;
+  mono('A KINETIC SPOKEN-WORD FILM', 60, 920 + dy, a * .8);
+  mono('FIVE LINES · 20.00 S', 1020, 920 + dy, a * .8, 'right');
+}
+
+function scene(t, g) {
+  // ---------- L1 : we were told to wait ----------
+  const l1a = 1 - P(t, 4.4, 4.9);
+  speak(['We', 'were', 'told', 'to', 'wait.'], [1.45, 1.7, 1.95, 2.25, 2.55], 60, 196, 70, t, l1a, 4);
+
+  // ---------- WAIT: hang → fall → land → WEIGHT ----------
+  const fWait = `${g.fWait}px ${GROT}`, cx = 820, hangTop = 440;
+  const land = g.BASE - g.capWait, tSnap = 5.55, tLand = 6.0;
+  const grav = 2 * (land - hangTop) / Math.pow(tLand - tSnap, 2);
+  let topY, ang = 0;
+  if (t < tSnap) {
+    topY = L(-260, hangTop, EO(P(t, 2.55, 3.45)));
+    ang = .018 * Math.sin((t - 2.55) * 2.6) * P(t, 2.9, 3.4) * (1 - P(t, 5.0, 5.5));
+  } else topY = Math.min(land, hangTop + .5 * grav * Math.pow(t - tSnap, 2));
+  const morph = EIO(P(t, 6.1, 6.9));
+  if (t >= 2.5 && t < 6.1) {
+    // cord
+    const cordEnd = t < tSnap ? topY - 14 : L(topY - 14, 0, EO(P(t, tSnap, tSnap + .35)));
+    ctx.save(); ctx.translate(cx, 0); ctx.rotate(ang); ctx.translate(-cx, 0);
+    ctx.strokeStyle = ACC; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, t < tSnap ? cordEnd : Math.min(cordEnd, topY - 14)); ctx.stroke();
+    if (t < tSnap) { ctx.fillStyle = ACC; ctx.fillRect(cx - 36, topY - 14, 72, 4); }
+    T('WAIT', cx, topY + g.capWait, fWait, PAPER, 1, 'center');
+    ctx.restore();
+    if (t > 3.4 && t < 6.2) {
+      const held = Math.min(t, tSnap) - 2.55;
+      mono(`HOLD ${held.toFixed(2).padStart(5, '0')} S`, cx, hangTop + g.capWait + 44, .7 * (1 - P(t, 5.9, 6.1)), 'center', ACC);
+    }
+  }
+  if (t >= 6.1) {
+    // letter-by-letter re-spelling WAIT → WEIGHT, growing into the foundation
+    const fs = L(g.fWait, g.fW, morph), f = `${fs}px ${GROT}`;
+    const fA = fWait, fB = `${g.fW}px ${GROT}`, wA = MW('WAIT', fA), sA = cx - wA / 2;
+    const xa = i => sA + MW('WAIT'.slice(0, i), fA), xb = j => 60 + MW('WEIGHT'.slice(0, j), fB);
+    const draw = (ch, x, a) => T(ch, x, g.BASE, f, PAPER, a);
+    draw('W', L(xa(0), xb(0), morph), 1);
+    draw('A', L(xa(1), xb(1), morph), 1 - P(morph, 0, .5));
+    draw('E', L(xa(1), xb(1), morph), P(morph, .4, .9));
+    draw('I', L(xa(2), xb(2), morph), 1);
+    const gx = xa(3);
+    draw('G', L(gx, xb(3), morph), P(morph, .3, .9));
+    draw('H', L(gx, xb(4), morph), P(morph, .45, 1));
+    draw('T', L(xa(3), xb(5), morph), 1);
+  }
+
+  // ---------- L2 : so we learned the weight of waiting ----------
+  const l2a = P(t, 4.6, 4.7) * (1 - P(t, 8.1, 8.6));
+  speak(['So', 'we', 'learned', 'the'], [4.7, 4.9, 5.1, 5.33], 60, g.FT - 104, 62, t, l2a);
+  speak(['weight', 'of', 'waiting.'], [5.55, 6.25, 6.5], 60, g.FT - 32, 62, t, l2a, 2);
+
+  // ---------- columns ----------
+  const rise = (word, fsz, cap, xBase, k) => {
+    if (k <= 0) return;
+    ctx.save(); ctx.beginPath(); ctx.rect(0, 0, S, g.FT); ctx.clip();
+    ctx.translate(xBase, g.FT + (1 - k) * g.CH); ctx.rotate(-Math.PI / 2);
+    T(word, 0, 0, `${fsz}px ${GROT}`, PAPER, 1);
+    ctx.restore();
+  };
+  const kR = EX(P(t, 9.6, 10.5)), kA = EX(P(t, 12.3, 13.2));
+  rise('ROOM', g.fR, g.capR, 60 + g.capR, kR);
+  rise('ANOTHER', g.fA, g.capA, 1020, kA);
+
+  // ---------- L3 : then one voice made room ----------
+  const l3a = 1 - P(t, 11.5, 12.0), push = kR * (g.capR + 44);
+  speak(['Then', 'one', 'voice'], [8.4, 8.7, 8.95], 60 + push, 640, 72, t, l3a);
+  speak(['made', 'room.'], [9.3, 9.6], 60 + push, 726, 72, t, l3a, 1);
+
+  // ---------- L4 : then another ----------
+  const l4a = 1 - P(t, 14.5, 15.0);
+  const w4 = MW('Then ', `400 84px ${SERIF}`) + MW('another.', `italic 400 84px ${SERIF}`);
+  speak(['Then', 'another.'], [11.9, 12.3], 540 - w4 / 2, 700, 84, t, l4a, 1);
+
+  // ---------- FLOOR lintel ----------
+  const kD = P(t, 15.0, 15.8);
+  if (kD > 0) {
+    const y = L(-g.DH - 20, g.DT, EO(kD));
+    ctx.fillStyle = ACC; ctx.fillRect(60, y, 960, g.DH);
+    const fD = 104, fs = `${fD}px ${GROT}`, cap = CAP('FLOOR', fs);
+    const ls = (840 - MW('FLOOR', fs)) / 4;
+    T('FLOOR', 540 + ls / 2, y + g.DH / 2 + cap / 2, fs, BG, 1, 'center', ls);
+  }
+  // ---------- L5 : the declaration stands on the lintel ----------
+  speak(['Now', 'the', 'floor'], [16.2, 16.45, 16.7], 60, g.DT - 128, 104, t, 1);
+  speak(['belongs', 'to', 'us.'], [17.05, 17.35, 17.6], 60, g.DT - 26, 104, t, 1, 2);
+
+  // ---------- elevation marks (mono) ----------
+  const em = (y, s, a) => { if (a <= 0) return; ctx.globalAlpha = a * .55; ctx.fillStyle = PAPER; ctx.fillRect(1030, y, 18, 1.5); ctx.globalAlpha = 1; mono(s, 1030, y - 6, a * .55, 'left', PAPER, 12); };
+  em(g.FT, '±0', P(t, 6.9, 7.3));
+  em(g.CT, '+' + g.CH, P(t, 10.4, 10.8));
+  em(g.DT, '+' + (g.CH + g.DH), P(t, 15.8, 16.2));
+}
+
+function frame(t) {
+  const g = geom();
+  ctx.fillStyle = BG; ctx.fillRect(0, 0, S, S);
+  // impact shakes (deterministic, tiny, no bounce easing on type)
+  let sh = 0;
+  if (t > 6.0 && t < 6.35) sh += 5 * Math.exp(-(t - 6.0) * 16) * Math.sin((t - 6.0) * 70);
+  if (t > 15.8 && t < 16.1) sh += 3 * Math.exp(-(t - 15.8) * 18) * Math.sin((t - 15.8) * 70);
+  const pull = L(1, .93, EIO(P(t, 17.8, 19.2)));
+  const out = 1 - P(t, 19.15, 19.6);
+  ctx.save();
+  ctx.translate(540, 560 + sh); ctx.scale(pull, pull); ctx.translate(-540, -560);
+  ctx.globalAlpha = 1;
+  if (out > 0) scene(t, g);
+  ctx.restore();
+  if (out < 1) { ctx.globalAlpha = 1 - out; ctx.fillStyle = BG; ctx.fillRect(0, 0, S, S); ctx.globalAlpha = 1; }
+  // title: in at start (exits 1.0–1.4), returns at the end
+  const tin = P(t, 19.6, 20), tout = 1 - P(t, 1.0, 1.4);
+  if (t < 1.4) title(tout, -EO(P(t, 1.0, 1.4)) * 40);
+  if (tin > 0) title(tin, (1 - EO(tin)) * 30);
+  // timing marks
+  const lineNo = t < 1.4 || t >= 19.6 ? 'TITLE' : t < 4.6 ? 'LINE 01/05' : t < 8.2 ? 'LINE 02/05' : t < 11.6 ? 'LINE 03/05' : t < 14.6 ? 'LINE 04/05' : 'LINE 05/05';
+  const sec = t.toFixed(2).padStart(5, '0');
+  mono('BUILD THE FLOOR', 60, 52);
+  mono(`00:${sec} / 20.00`, 1020, 52, .6, 'right');
+  mono(lineNo, 60, 1052);
+  mono('F ' + String(Math.floor(t * 60)).padStart(4, '0'), 1020, 1052, .6, 'right');
+}
+
+// ---------- runtime (contract) ----------
+let K = 1, cur = 0, playing = true, t0 = performance.now(), raf = 0;
+function render(t) { ctx.setTransform(K, 0, 0, K, 0, 0); ctx.globalAlpha = 1; frame(t); }
+function resize() {
+  const d = Math.min(devicePixelRatio || 1, 1.5), s = Math.min(innerWidth / S, innerHeight / S);
+  cv.style.width = S * s + 'px'; cv.style.height = S * s + 'px';
+  cv.style.left = (innerWidth - S * s) / 2 + 'px'; cv.style.top = (innerHeight - S * s) / 2 + 'px';
+  cv.width = Math.round(S * s * d); cv.height = Math.round(S * s * d); K = s * d; render(cur);
+}
+const fontsReady = Promise.race([
+  Promise.all(['100px "Archivo Black"', '400 40px "Bodoni Moda"', 'italic 400 40px "Bodoni Moda"', '400 15px "IBM Plex Mono"'].map(f => document.fonts.load(f, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.0123456789'))),
+  new Promise(r => setTimeout(r, 4000))
+]).catch(() => {});
+function loop(now) { if (!playing) return; cur = ((now - t0) / 1000) % DUR; render(cur); raf = requestAnimationFrame(loop); }
+window.DURATION = DUR;
+window.seek = t => { cur = ((+t % DUR) + DUR) % DUR; t0 = performance.now() - cur * 1000; render(cur); return fontsReady.then(() => render(cur)); };
+window.__demo = {
+  play() { if (playing) return; playing = true; t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); },
+  pause() { playing = false; cancelAnimationFrame(raf); },
+  get playing() { return playing; }, get time() { return cur; }
+};
+addEventListener('message', e => {
+  const d = e.data || {};
+  if (d.type === 'demo:play') __demo.play(); else if (d.type === 'demo:pause') __demo.pause(); else if (d.type === 'demo:seek') seek(d.t || 0);
+});
+document.addEventListener('visibilitychange', () => {
+  cancelAnimationFrame(raf);
+  if (!document.hidden && playing) { t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); }
+});
+addEventListener('resize', resize);
+resize();
+fontsReady.then(() => render(cur));
+raf = requestAnimationFrame(loop);
+try { parent.postMessage({ type: 'demo:ready', id: 'v08-kinetic-type', duration: DUR }, '*'); } catch (e) {}
+})();
+</script>
+</body>
+</html>

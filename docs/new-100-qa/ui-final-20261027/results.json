@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-27T13:55:18.077Z",
+  "catalogSha256": "72364c7a1615fb61591a6f62f4d15721d8d92196b0f06dcace543fe3045c8461",
+  "results": [
+    {
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "checks": [
+        "218 cards and count",
+        "medium, selected, intent and style filters",
+        "search, empty state, prompt copy handler, close removes iframe and restores focus",
+        "four paired works retain both versions and old detail/lexicon links",
+        "live card preview starts and stops",
+        "deep link and viewport"
+      ],
+      "pass": true
+    },
+    {
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "checks": [
+        "218 cards and count",
+        "medium, selected, intent and style filters",
+        "search, empty state, prompt copy handler, close removes iframe and restores focus",
+        "four paired works retain both versions and old detail/lexicon links",
+        "live card preview starts and stops",
+        "deep link and viewport"
+      ],
+      "pass": true
+    },
+    {
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "checks": [
+        "218 cards and count",
+        "medium, selected, intent and style filters",
+        "search, empty state, prompt copy handler, close removes iframe and restores focus",
+        "four paired works retain both versions and old detail/lexicon links",
+        "live card preview starts and stops",
+        "deep link and viewport"
+      ],
+      "pass": true
+    },
+    {
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "checks": [
+        "218 cards and count",
+        "medium, selected, intent and style filters",
+        "search, empty state, prompt copy handler, close removes iframe and restores focus",
+        "four paired works retain both versions and old detail/lexicon links",
+        "live card preview starts and stops",
+        "deep link and viewport"
+      ],
+      "pass": true
+    }
+  ]
+}

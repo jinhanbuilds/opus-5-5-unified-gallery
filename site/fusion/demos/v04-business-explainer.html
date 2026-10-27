@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>一月一山 解说</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&family=Noto+Sans+SC:wght@500;700&display=swap" rel="stylesheet">
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#F2EBDD}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* v04-business-explainer — 20 s, 1920x1080 logical stage, 5 scenes. Fictional Hangzhou tea subscription 「一月一山」.
+   Brand: 米纸 #F2EBDD · 茶绿 #2E5B3C · 深绿 #1D3A27 · 朱砂 #C4412A · 墨 #1E1D1A. Type: Noto Serif SC 900 / Noto Sans SC.
+   S1 难题    0.00–3.90  paper. 「好茶，难买。」 + messy pile of generic tea pouches (complete at t=0).
+                          Pain tags stamp in 0.45/0.95/1.45; "?" bubble pops 1.85; pile shakes; 3.25 pouches fall, text exits up.
+   S2 做什么  3.90–7.35  paper. 「每月一座山，一泡当季茶。」 rises; framed landscape: 3 ink ridges brush in L→R (4.25+),
+                          cinnabar moon rises (4.5), tea tin springs up in front (5.3).
+   wipe       7.35–8.05  tea-green wave rises from the bottom (leaf-colour lead wave), revealing S3.
+   S3 三步    7.90–12.35 green. Three step cards spring up 8.35/9.05/9.75 with live icons; timeline draws under them.
+   wipe      12.35–13.05 paper wave pours down from the top.
+   S4 证据   12.90–15.85 paper. 「86%」 counts up 13.1–14.5, 50-leaf grid fills to 43, footnote 「示例数据」.
+   wipe      15.85–16.55 deep-green wave (cinnabar lead) rises.
+   S5 名字   16.40–19.30 deep green. 「一月一山」 rises, seal stamps 17.05, city + URL, hold.
+   loop      19.30–20.00 paper wave pours down revealing S1 exactly as at t=0 → seamless.
+   Chrome (brand mark, 0N / 05 + scene label, 5 ticks) is drawn inside each scene, so the waves split it cleanly. */
+(() => {
+const ID = 'v04-business-explainer', W = 1920, H = 1080, D = 20, TAU = Math.PI * 2;
+const cv = document.getElementById('c'), X = cv.getContext('2d');
+let S = 1, OX = 0, OY = 0, CW = 1, CH = 1;
+const cl = (v, a = 0, b = 1) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t, k = (t, a, b) => cl((t - a) / (b - a));
+const eo3 = x => 1 - Math.pow(1 - x, 3), ei3 = x => x * x * x, eio3 = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const eoX = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+const spring = (t, w = 12, z = .8) => { if (t <= 0) return 0; const wd = w * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w * t) * (Math.cos(wd * t) + z * w / wd * Math.sin(wd * t)); };
+let sd = 8812; const rnd = () => { sd = sd + 0x6D2B79F5 | 0; let r = Math.imul(sd ^ sd >>> 15, 1 | sd); r = r + Math.imul(r ^ r >>> 7, 61 | r) ^ r; return ((r ^ r >>> 14) >>> 0) / 4294967296; };
+
+const C = { paper: '#F2EBDD', paper2: '#E9DFCB', ink: '#1E1D1A', green: '#2E5B3C', deep: '#1D3A27', cin: '#C4412A', leaf: '#B5CB8A', sand: '#D3C6AB' };
+const SERIF = '"Noto Serif SC","Songti SC","STSong","PingFang SC","Noto Sans SC","Microsoft YaHei",serif';
+const SANS = '"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif';
+const setF = (w, s, f = SANS, ls = 0) => { X.font = `${w} ${s}px ${f}`; X.letterSpacing = ls + 'px'; };
+function rr(x, y, w, h, r) { w = Math.max(0, w); h = Math.max(0, h); X.beginPath(); X.roundRect(x, y, w, h, Math.max(0, Math.min(r, w / 2, h / 2))); }
+function rise(str, x, y, size, col, off, o = {}) {
+  setF(o.w || 900, size, o.f || SERIF, (o.ls ?? -0.02) * size);
+  const chars = [...str], tw = X.measureText(str).width;
+  X.save(); X.beginPath(); X.rect(x - size * .3, y - size * 1.05, tw + size * .6, size * 1.35); X.clip(); X.fillStyle = col;
+  let acc = '';
+  for (let i = 0; i < chars.length; i++) {
+    const v = off ? off(i, chars.length) : 0;
+    if (v > -1 && v < 1) X.fillText(chars[i], x + X.measureText(acc).width, y + v * size * 1.35);
+    acc += chars[i];
+  }
+  X.restore(); return tw;
+}
+const enter = (t, t0, dur = .55, st = .04) => i => 1 - eoX(k(t, t0 + i * st, t0 + i * st + dur));
+const exitUp = (t, t0, dur = .3, st = .025) => i => -ei3(k(t, t0 + i * st, t0 + i * st + dur)) * 1.001;
+const both = (a, b) => i => { const y = b(i); return y < 0 ? y : a(i); };
+
+// ---------- brand mark (seal: moon over mountain) ----------
+function seal(x, y, s, fg = C.paper, bgc = C.cin) {
+  X.fillStyle = bgc; rr(x, y, s, s, s * .14); X.fill();
+  X.fillStyle = fg; X.beginPath(); X.arc(x + s * .68, y + s * .32, s * .15, 0, TAU); X.fill();
+  X.beginPath(); X.moveTo(x + s * .12, y + s * .84); X.lineTo(x + s * .4, y + s * .42); X.lineTo(x + s * .55, y + s * .62); X.lineTo(x + s * .7, y + s * .5); X.lineTo(x + s * .88, y + s * .84); X.closePath(); X.fill();
+  if (s > 80) { X.strokeStyle = fg; X.lineWidth = s * .02; rr(x + s * .06, y + s * .06, s * .88, s * .88, s * .1); X.stroke(); }
+}
+const LABELS = ['客户的难题', '我们做什么', '怎么运作', '一个数字', '我们是谁'];
+function chrome(i, dark, off = null, tick = i) {
+  const fg = dark ? C.paper : C.ink;
+  if (i < 4) { seal(150, 62, 42); setF(700, 26, SANS, 1); X.fillStyle = fg; X.fillText('一月一山', 206, 93); }
+  const num = '0' + (i + 1) + ' / 05', lab = LABELS[i];
+  setF(700, 24, SANS, .5); const nw = X.measureText(num).width; setF(500, 24, SANS, 1); const lw = X.measureText(lab).width;
+  const x0 = W - 150 - lw - 22 - nw;
+  rise(num, x0, 92, 24, fg, off, { w: 700, f: SANS, ls: .02 });
+  X.save(); X.globalAlpha = .72; rise(lab, x0 + nw + 22, 92, 24, fg, off, { w: 500, f: SANS, ls: .04 }); X.restore();
+  for (let j = 0; j < 5; j++) { X.fillStyle = fg; X.globalAlpha = j <= tick ? 1 : .22; X.fillRect(W - 150 - (5 - j) * 44 + 8, 114, 36, 4); }
+  X.globalAlpha = 1;
+}
+
+// ---------- S1 problem + S2 what we do (shared paper stage) ----------
+const POUCH = [
+  { x: 1330, y: 770, w: 210, h: 262, r: -.10, c: '#8C9A7C', l: '特级' }, { x: 1545, y: 790, w: 232, h: 250, r: .08, c: '#B08D57', l: '送礼' },
+  { x: 1722, y: 770, w: 170, h: 222, r: .16, c: '#6D6A5F', l: '散装' }, { x: 1440, y: 565, w: 190, h: 240, r: .12, c: '#A34A36', l: '¥¥¥' },
+  { x: 1645, y: 565, w: 200, h: 232, r: -.14, c: '#C9B28A', l: '明前？' }, { x: 1290, y: 520, w: 172, h: 212, r: -.2, c: '#5E7358', l: '高山' },
+  { x: 1545, y: 385, w: 182, h: 220, r: .05, c: '#7E7466', l: '限时' }];
+POUCH.forEach(p => { p.ph = rnd() * TAU; p.fall = rnd() * .18; p.spin = (rnd() - .5) * 1.6; });
+function pouch(p, dx, dy, rot) {
+  const { w, h } = p;
+  X.save(); X.translate(p.x + dx, p.y + dy); X.rotate(p.r + rot);
+  X.fillStyle = 'rgba(30,29,26,.13)'; rr(-w / 2 + 8, -h / 2 + 12, w, h, 16); X.fill();
+  X.fillStyle = p.c; rr(-w / 2, -h / 2, w, h, 16); X.fill();
+  X.fillStyle = 'rgba(0,0,0,.16)'; X.fillRect(-w / 2, -h / 2 + h * .15, w, 7);
+  X.fillStyle = 'rgba(255,255,255,.12)'; X.fillRect(-w / 2 + w * .1, -h / 2 + 8, w * .08, h - 16);
+  X.fillStyle = '#F7F1E6'; rr(-w * .34, -h * .06, w * .68, h * .34, 8); X.fill();
+  setF(700, Math.round(h * .13), SANS); X.textAlign = 'center'; X.fillStyle = p.c; X.fillText(p.l, 0, h * .16); X.textAlign = 'left';
+  X.restore();
+}
+const TAGS = ['真假难辨', '一买一大包', '放久就陈了'];
+const TAGR = TAGS.map(() => (rnd() - .5) * .07);
+function sceneA(t) {
+  X.fillStyle = C.paper; X.fillRect(0, 0, W, H);
+  // ----- S1 -----
+  if (t < 4.2) {
+    const ex = exitUp(t, 3.3, .32, .03);
+    rise('上班族的烦恼', 152, 300, 34, C.cin, ex, { w: 700, f: SANS, ls: .06 });
+    rise('好茶，难买。', 140, 480, 160, C.ink, exitUp(t, 3.36, .34, .035), { ls: -.02 });
+    let x = 150;
+    TAGS.forEach((s, i) => {
+      setF(700, 36, SANS, 1); const w = X.measureText(s).width + 84, a = eoX(k(t, .45 + i * .5, .8 + i * .5)), out = ei3(k(t, 3.25 + i * .04, 3.55 + i * .04));
+      if (a > 0 && out < 1) {
+        X.save(); X.translate(x + w / 2, 638 + out * 60); X.rotate(TAGR[i] * (1 + (1 - a) * 3)); const sc = lerp(1.35, 1, a); X.scale(sc, sc); X.globalAlpha = a * (1 - out);
+        X.strokeStyle = C.ink; X.lineWidth = 3; rr(-w / 2, -38, w, 76, 38); X.stroke();
+        X.fillStyle = C.cin; X.beginPath(); X.arc(-w / 2 + 34, 0, 7, 0, TAU); X.fill();
+        X.fillStyle = C.ink; X.fillText(s, -w / 2 + 54, 13); X.restore();
+      }
+      x += w + 22;
+    });
+    // pile
+    const shake = k(t, 1.8, 2.0) * (1 - k(t, 2.7, 3.0));
+    POUCH.forEach((p, i) => {
+      const ft = Math.max(0, t - 3.22 - p.fall), dy = 2600 * ft * ft, rot = Math.sin(t * 22 + p.ph) * .035 * shake + p.spin * ft * ft * 2;
+      if (dy < 1400) pouch(p, Math.sin(t * 17 + p.ph) * 5 * shake, dy, rot);
+    });
+    // "?" bubble
+    const b = spring(t - 1.85, 13, .6) * (1 - eo3(k(t, 3.15, 3.35)));
+    if (b > .01) {
+      X.save(); X.translate(1300, 330); X.scale(b, b); X.rotate(-.12);
+      X.fillStyle = C.cin; X.beginPath(); X.arc(0, 0, 74, 0, TAU); X.moveTo(20, 60); X.lineTo(58, 104); X.lineTo(52, 50); X.fill();
+      setF(900, 100, SERIF); X.textAlign = 'center'; X.fillStyle = C.paper; X.fillText('？', 4, 36); X.textAlign = 'left'; X.restore();
+    }
+  }
+  // ----- S2 -----
+  if (t > 3.85) {
+    rise('我们做什么', 152, 300, 34, C.cin, enter(t, 3.95, .5, .04), { w: 700, f: SANS, ls: .06 });
+    rise('每月一座山，', 140, 452, 128, C.ink, enter(t, 4.0, .6, .045));
+    rise('一泡当季茶。', 140, 604, 128, C.ink, enter(t, 4.14, .6, .045));
+    rise('从浙江小茶园直采，每月寄出三泡新茶。', 152, 708, 36, 'rgba(30,29,26,.78)', enter(t, 4.6, .55, .012), { w: 500, f: SANS, ls: .02 });
+    landscape(t);
+  }
+  // chrome: index rolls 01 → 02
+  chrome(0, false, t > 3.9 ? () => -1 : exitUp(t, 3.3, .3, .02), 0);
+  if (t > 3.9) chrome(1, false, enter(t, 3.95, .5, .02), 1);
+}
+const FR = { x: 1060, y: 200, w: 740, h: 660 };
+const RIDGE = [
+  { b: 560, a: 210, c: '#C9D3B2', pk: [[.30, .16, 1], [.62, .12, .75], [.86, .18, .6]] },
+  { b: 660, a: 170, c: '#7E9B69', pk: [[.14, .14, .7], [.48, .17, 1], [.80, .12, .55]] },
+  { b: 760, a: 128, c: C.green, pk: [[.34, .2, .85], [.72, .15, .95]] }];
+const ridgeY = (x, j) => { const r = RIDGE[j], u = (x - FR.x) / FR.w; let v = 0; for (const [c, w, h] of r.pk) v += h * Math.exp(-(((u - c) / w) ** 2)); return r.b - r.a * Math.min(1.1, v); };
+function landscape(t) {
+  const fa = eo3(k(t, 4.15, 4.5));
+  X.save(); X.globalAlpha = fa;
+  X.fillStyle = C.paper2; rr(FR.x, FR.y + (1 - fa) * 30, FR.w, FR.h, 30); X.fill(); X.clip();
+  // moon
+  const m = eo3(k(t, 4.5, 5.4)); X.fillStyle = C.cin; X.beginPath(); X.arc(1575, lerp(520, 360, m), 88, 0, TAU); X.fill();
+  RIDGE.forEach((r, j) => {
+    const rv = eio3(k(t, 4.25 + j * .18, 5.05 + j * .18)); if (rv <= 0) return;
+    X.save(); X.beginPath(); X.rect(FR.x, FR.y, FR.w * rv, FR.h); X.clip();
+    X.beginPath(); X.moveTo(FR.x - 10, FR.y + FR.h + 10);
+    for (let x = FR.x - 10; x <= FR.x + FR.w + 10; x += 10) X.lineTo(x, ridgeY(x, j));
+    X.lineTo(FR.x + FR.w + 10, FR.y + FR.h + 10); X.closePath(); X.fillStyle = r.c; X.fill();
+    X.beginPath(); for (let x = FR.x - 10; x <= FR.x + FR.w + 10; x += 10) { const y = ridgeY(x, j); x < FR.x ? X.moveTo(x, y) : X.lineTo(x, y); }
+    X.strokeStyle = C.ink; X.lineWidth = 3; X.stroke();
+    X.restore();
+    // mist band
+    if (j < 2) { X.save(); X.globalAlpha = fa * .55 * rv; X.fillStyle = C.paper; rr(FR.x - 40 + Math.sin(t * .8 + j) * 30, r.b + 18, FR.w * .7, 16, 8); X.fill(); X.restore(); }
+  });
+  X.restore();
+  // tin (in front, overlaps frame edge)
+  const ts = spring(t - 5.3, 10, .8); if (ts <= 0) return;
+  const tx = 1430, ty = 640 + (1 - ts) * 320, tw = 200, th = 240;
+  X.save(); X.globalAlpha = k(t, 5.3, 5.45);
+  X.fillStyle = 'rgba(30,29,26,.16)'; rr(tx - tw / 2 + 10, ty + 14, tw, th, 20); X.fill();
+  X.fillStyle = C.deep; rr(tx - tw / 2, ty, tw, th, 20); X.fill();
+  X.fillStyle = C.ink; rr(tx - tw / 2, ty, tw, 30, 12); X.fill();
+  X.fillStyle = C.paper; rr(tx - 72, ty + 62, 144, 132, 10); X.fill();
+  X.textAlign = 'center';
+  setF(700, 20, SANS, 2); X.fillStyle = C.cin; X.fillText('No.09', tx, ty + 96);
+  setF(900, 46, SERIF); X.fillStyle = C.ink; X.fillText('龙坞', tx, ty + 150);
+  setF(500, 18, SANS, 2); X.fillStyle = 'rgba(30,29,26,.7)'; X.fillText('秋 · 龙井', tx, ty + 180);
+  X.textAlign = 'left'; seal(tx + 50, ty + 204, 24);
+  X.restore();
+}
+
+// ---------- S3 three steps (green) ----------
+const STEPS = [
+  { n: '01', h: '选口味', s: ['清香、浓香、花香，', '挑一种你喜欢的。'] },
+  { n: '02', h: '茶山直发', s: ['每月 8 日从茶园寄出，', '采完三天内到你手上。'] },
+  { n: '03', h: '开泡', s: ['附一张冲泡卡，扫码', '听茶农讲这一泡茶。'] }];
+function icon(i, x, y, t, ts) {
+  const lt = t - ts;
+  if (i === 0) {
+    const cols = ['#C9D3B2', '#7E9B69', C.green]; cols.forEach((c, j) => { X.fillStyle = c; X.beginPath(); X.arc(x + 20 + j * 38, y + 58, 16, 0, TAU); X.fill(); });
+    const sel = lerp(0, 1, eio3(k(lt, .55, .85))); X.strokeStyle = C.cin; X.lineWidth = 4; X.beginPath(); X.arc(x + 20 + sel * 38, y + 58, 25, 0, TAU); X.stroke();
+  } else if (i === 1) {
+    X.fillStyle = C.paper2; rr(x + 10, y + 12, 96, 96, 14); X.fill(); X.fillStyle = C.cin; X.beginPath(); X.roundRect(x + 10, y + 12, 96, 26, [14, 14, 0, 0]); X.fill();
+    const f = k(lt, .55, .85), sy = Math.abs(Math.cos(f * Math.PI)), num = f < .5 ? '7' : '8';
+    X.save(); X.translate(x + 58, y + 76); X.scale(1, Math.max(.02, sy)); setF(900, 52, SERIF); X.textAlign = 'center'; X.fillStyle = C.ink; X.fillText(num, 0, 18); X.restore(); X.textAlign = 'left';
+  } else {
+    X.fillStyle = C.green; X.beginPath(); X.moveTo(x + 14, y + 62); X.lineTo(x + 102, y + 62); X.quadraticCurveTo(x + 98, y + 108, x + 58, y + 108); X.quadraticCurveTo(x + 18, y + 108, x + 14, y + 62); X.fill();
+    X.strokeStyle = C.ink; X.lineWidth = 3; X.stroke();
+    X.strokeStyle = 'rgba(30,29,26,.55)'; X.lineWidth = 3; X.lineCap = 'round';
+    for (let j = 0; j < 3; j++) { const sx = x + 38 + j * 20, a = k(lt, .3 + j * .1, .6 + j * .1); if (a <= 0) continue; X.globalAlpha = a; X.beginPath(); for (let q = 0; q <= 10; q++) { const yy = y + 50 - q * 4.2, xx = sx + Math.sin(q * .7 + t * 5 + j) * 5; q ? X.lineTo(xx, yy) : X.moveTo(xx, yy); } X.stroke(); }
+    X.globalAlpha = 1; X.lineCap = 'butt';
+  }
+}
+function sceneS3(t) {
+  X.fillStyle = C.green; X.fillRect(0, 0, W, H);
+  rise('怎么运作', 152, 250, 34, C.leaf, enter(t, 7.95, .5, .04), { w: 700, f: SANS, ls: .06 });
+  rise('三步，喝上当季茶。', 140, 372, 88, C.paper, enter(t, 8.02, .6, .035));
+  STEPS.forEach((s, i) => {
+    const ts = 8.35 + i * .7, sp = spring(t - ts, 11, .82); if (sp <= 0) return;
+    const x = 150 + i * 550, y = 450 + (1 - sp) * 150, w = 520, h = 440;
+    X.save(); X.globalAlpha = k(t, ts, ts + .22);
+    X.fillStyle = 'rgba(0,0,0,.18)'; rr(x + 10, y + 16, w, h, 28); X.fill();
+    X.fillStyle = C.paper; rr(x, y, w, h, 28); X.fill();
+    setF(900, 72, SERIF); X.fillStyle = C.cin; X.fillText(s.n, x + 40, y + 108);
+    icon(i, x + w - 156, y + 34, t, ts);
+    setF(900, 60, SERIF, -1); X.fillStyle = C.ink; X.fillText(s.h, x + 40, y + 256);
+    setF(500, 30, SANS, .5); X.fillStyle = 'rgba(30,29,26,.72)'; s.s.forEach((l, j) => X.fillText(l, x + 40, y + 322 + j * 46));
+    X.restore();
+  });
+  const lp = eio3(k(t, 8.4, 10.4));
+  if (lp > 0) {
+    X.fillStyle = 'rgba(181,203,138,.35)'; X.fillRect(150, 934, 1620, 3); X.fillStyle = C.leaf; X.fillRect(150, 934, 1620 * lp, 3);
+    [410, 960, 1510].forEach(cx => { const a = eoX(k(150 + 1620 * lp, cx - 20, cx + 40)); if (a > 0) { X.fillStyle = C.leaf; X.beginPath(); X.arc(cx, 935.5, 10 * a, 0, TAU); X.fill(); } });
+  }
+  chrome(2, true);
+}
+
+// ---------- S4 proof (paper) ----------
+const NF = 43, TOTAL = 50;
+function sceneS4(t) {
+  X.fillStyle = C.paper; X.fillRect(0, 0, W, H);
+  rise('一个数字', 152, 250, 34, C.cin, enter(t, 13.0, .5, .04), { w: 700, f: SANS, ls: .06 });
+  const cp = eo3(k(t, 13.1, 14.5)), n = Math.round(86 * cp), a = eo3(k(t, 13.02, 13.3));
+  X.save(); X.globalAlpha = a;
+  setF(900, 380, SERIF, -12); X.fillStyle = C.green; X.fillText(String(n), 132, 640 + (1 - a) * 40);
+  const nw = X.measureText('86').width; setF(900, 200, SERIF); X.fillText('%', 140 + nw, 640 + (1 - a) * 40);
+  X.restore();
+  rise('的订户，一年后还在续订。', 150, 762, 52, C.ink, enter(t, 13.4, .55, .025), { w: 700, f: SANS, ls: .02 });
+  rise('* 示例数据，仅作演示', 152, 832, 24, 'rgba(30,29,26,.55)', enter(t, 13.6, .5, .01), { w: 500, f: SANS, ls: .04 });
+  // leaf grid
+  const ga = eo3(k(t, 13.05, 13.35));
+  for (let i = 0; i < TOTAL; i++) {
+    const cx = 1152 + (i % 10) * 64, cy = 362 + Math.floor(i / 10) * 64, filled = i < NF && cp * NF > i;
+    X.save(); X.translate(cx, cy + (1 - ga) * 20); X.rotate(-.6); X.globalAlpha = ga;
+    if (filled) { const ti = 13.1 + 1.4 * (1 - Math.cbrt(1 - (i + 1) / NF)), s = spring(t - ti, 16, .6); X.scale(.6 + .4 * s, .6 + .4 * s); X.fillStyle = C.green; X.beginPath(); X.ellipse(0, 0, 21, 11, 0, 0, TAU); X.fill(); X.strokeStyle = C.paper; X.lineWidth = 2; X.beginPath(); X.moveTo(-16, 0); X.lineTo(16, 0); X.stroke(); }
+    else { X.strokeStyle = C.sand; X.lineWidth = 2.5; X.beginPath(); X.ellipse(0, 0, 20, 10, 0, 0, TAU); X.stroke(); }
+    X.restore();
+  }
+  rise('每 50 位订户里，有 43 位续订', 1122, 700, 26, 'rgba(30,29,26,.62)', enter(t, 13.5, .5, .01), { w: 500, f: SANS, ls: .04 });
+  chrome(3, false);
+}
+
+// ---------- S5 name (deep green) ----------
+function sceneS5(t) {
+  X.fillStyle = C.deep; X.fillRect(0, 0, W, H);
+  rise('一月一山', 136, 596, 230, C.paper, enter(t, 16.55, .7, .08), { ls: -.02 });
+  const st = eoX(k(t, 17.05, 17.45));
+  if (st > 0) { X.save(); X.globalAlpha = cl(st * 1.6); X.translate(1230, 494); X.rotate(-.07); const s = lerp(1.6, 1, st); X.scale(s, s); seal(-110, -110, 220); X.restore(); }
+  rise('杭州 · 当季茶订阅', 146, 712, 50, C.leaf, enter(t, 17.3, .55, .03), { w: 700, f: SANS, ls: .06 });
+  const ua = eo3(k(t, 17.55, 17.95));
+  if (ua > 0) { X.fillStyle = C.paper; X.globalAlpha = ua * .5; X.fillRect(150, 772, 60 * ua, 2); X.globalAlpha = 1; }
+  rise('yiyueyishan.example', 230, 790, 34, 'rgba(242,235,221,.85)', enter(t, 17.6, .5, .012), { w: 500, f: SANS, ls: .02 });
+  chrome(4, true);
+}
+
+// ---------- transitions: tea waves ----------
+const TR = [
+  { a: 7.35, b: 8.05, up: true, from: 'A', to: '3', acc: C.leaf },
+  { a: 12.35, b: 13.05, up: false, from: '3', to: '4', acc: C.cin },
+  { a: 15.85, b: 16.55, up: true, from: '4', to: '5', acc: C.cin },
+  { a: 19.3, b: 20.0, up: false, from: '5', to: 'A0', acc: C.leaf }];
+function scene(id, t) { if (id === 'A') sceneA(t); else if (id === 'A0') sceneA(0); else if (id === '3') sceneS3(t); else if (id === '4') sceneS4(t); else sceneS5(t); }
+function wave(p, up, t, lead = 0) {
+  const A = 46, L = lead * Math.sin(Math.PI * p), y0 = (up ? lerp(H + A + 30, -A - 30, p) - L : lerp(-A - 30, H + A + 30, p) + L), e = up ? H + 300 : -300;
+  X.beginPath(); X.moveTo(-20, e);
+  for (let x = -20; x <= W + 20; x += 24) X.lineTo(x, y0 + A * .62 * Math.sin(x * .0052 + t * 4.2) + A * .38 * Math.sin(x * .013 - t * 6.5));
+  X.lineTo(W + 20, e); X.closePath();
+}
+function draw(t) {
+  const tr = TR.find(q => t >= q.a && t < q.b);
+  if (!tr) { scene(t < 7.35 ? 'A' : t < 12.35 ? '3' : t < 15.85 ? '4' : '5', t); return; }
+  scene(tr.from, t);
+  const pm = eio3(k(t, tr.a, tr.b));
+  wave(pm, tr.up, t + .35, 120); X.fillStyle = tr.acc; X.fill();
+  X.save(); wave(pm, tr.up, t); X.clip(); scene(tr.to, t); X.restore();
+}
+function frame(t) {
+  X.setTransform(1, 0, 0, 1, 0, 0); X.fillStyle = C.paper; X.fillRect(0, 0, CW, CH);
+  X.setTransform(S, 0, 0, S, OX, OY); X.save(); X.beginPath(); X.rect(0, 0, W, H); X.clip(); X.textBaseline = 'alphabetic'; draw(t); X.restore();
+}
+
+// ---------- runtime ----------
+function fit() { const dpr = Math.min(window.devicePixelRatio || 1, 1.5), vw = Math.max(1, innerWidth), vh = Math.max(1, innerHeight);
+  CW = cv.width = Math.round(vw * dpr); CH = cv.height = Math.round(vh * dpr); S = Math.min(CW / W, CH / H); OX = (CW - W * S) / 2; OY = (CH - H * S) / 2; }
+let cur = 0, playing = true, t0 = performance.now(), raf = 0;
+const kick = () => { if (!raf && !document.hidden) raf = requestAnimationFrame(loop); };
+function loop(now) { raf = 0; if (!playing) return; cur = ((now - t0) / 1000) % D; frame(cur); kick(); }
+const SERIF_TXT = '好茶，难买。每月一座山，一泡当季茶。三步，喝上当季茶。选口味茶山直发开泡一月一山龙坞？0123456789%';
+const SANS_TXT = '上班族的烦恼真假难辨一买一大包放久就陈了特级送礼散装明前？高山限时我们做什么从浙江小茶园直采，每月寄出三泡新茶。怎么运作清香、浓香、花香，挑一种你喜欢的。每月8日从茶园寄出，采完三天内到你手上。附一张冲泡卡，扫码听茶农讲这一泡茶。一个数字的订户，一年后还在续订。*示例数据，仅作演示每50位订户里，有43位续订杭州·当季茶订阅yiyueyishan.exampleNo.09秋龙井客户的难题我们是谁/05¥';
+const fontsReady = Promise.race([
+  Promise.all([document.fonts.load(`900 100px "Noto Serif SC"`, SERIF_TXT), document.fonts.load(`700 40px "Noto Sans SC"`, SANS_TXT), document.fonts.load(`500 40px "Noto Sans SC"`, SANS_TXT)]).catch(() => {}),
+  new Promise(r => setTimeout(r, 4000))
+]).then(() => frame(cur));
+window.DURATION = D;
+window.seek = (t) => { cur = ((+t % D) + D) % D; t0 = performance.now() - cur * 1000; return fontsReady.then(() => frame(cur)); };
+window.__demo = { play() { if (playing) return; playing = true; t0 = performance.now() - cur * 1000; kick(); }, pause() { playing = false; }, get playing() { return playing; }, get time() { return cur; } };
+addEventListener('message', e => { const d = e.data || {}; if (d.type === 'demo:play') __demo.play(); else if (d.type === 'demo:pause') __demo.pause(); else if (d.type === 'demo:seek') seek(+d.t || 0); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = 0; } else if (playing) { t0 = performance.now() - cur * 1000; kick(); } });
+addEventListener('resize', () => { fit(); frame(cur); });
+fit(); frame(0); kick();
+fontsReady.then(() => { try { parent.postMessage({ type: 'demo:ready', id: ID, duration: D }, '*'); } catch (e) {} });
+})();
+</script>
+</body>
+</html>

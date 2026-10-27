@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Escapement — Calibre E-09</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Hanken+Grotesk:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bone:#f2efe9; --bone-2:#e9e4da; --ink:#232427; --ink-2:#5b5d61; --ink-3:#8b8c8e;
+  --rose:#b07a63; --rose-d:#8f5d49; --steel:#3e6a8c; --hair:rgba(35,36,39,.16);
+  --serif:"Bodoni Moda","Didot","Bodoni 72","Times New Roman","Noto Serif SC",serif;
+  --sans:"Hanken Grotesk","Helvetica Neue",Arial,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --slow:cubic-bezier(.45,.05,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bone);color:var(--ink);-webkit-font-smoothing:antialiased}
+body{font-family:var(--sans);font-weight:400;background:var(--bone);overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible{outline:1px solid var(--steel);outline-offset:4px}
+#gl{position:fixed;inset:0;width:100vw;height:100vh;display:block;z-index:0;pointer-events:none}
+.vignette{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(120% 90% at 66% 48%,rgba(242,239,233,0) 38%,rgba(214,206,193,.55) 100%)}
+.fallback{display:none;position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+   repeating-radial-gradient(circle at 68% 50%,rgba(176,122,99,0) 0 22px,rgba(176,122,99,.18) 22px 23px),
+   radial-gradient(circle at 68% 50%,#e7c9b8 0,#d9ad97 18%,#c7c9cc 34%,var(--bone) 60%)}
+.no-webgl .fallback{display:block}
+.no-webgl #gl,.no-webgl .labels,.no-webgl svg.lines{display:none}
+
+/* nav */
+.nav{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:space-between;
+  padding:clamp(10px,2.4vw,26px) clamp(16px,4vw,56px);transition:background .9s var(--slow)}
+.nav.frost{background:rgba(242,239,233,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--hair)}
+.mark{font-family:var(--serif);font-size:clamp(13px,1.35vw,17px);letter-spacing:.32em;font-weight:500}
+.nav ul{display:flex;gap:clamp(14px,2.4vw,36px);list-style:none;font-size:clamp(10px,.95vw,13px);color:var(--ink-2)}
+.nav ul a{position:relative;padding-bottom:3px}
+.nav ul a[aria-current]{color:var(--ink)}
+.nav ul a[aria-current]::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--rose)}
+
+/* hero */
+main{position:relative;z-index:2}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 clamp(16px,4vw,56px);position:relative}
+.hero-copy{max-width:min(44vw,560px)}
+.spec{font-family:var(--mono);font-size:clamp(9px,.85vw,12px);color:var(--steel);letter-spacing:.02em}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(34px,7.6vw,118px);line-height:.92;letter-spacing:-.01em;margin:clamp(8px,1.4vw,20px) 0 clamp(10px,1.8vw,26px)}
+.lede{font-size:clamp(11px,1.25vw,17px);line-height:1.55;color:var(--ink-2);max-width:34ch;font-weight:300}
+.ctas{display:flex;gap:clamp(8px,1.2vw,16px);margin-top:clamp(12px,2.4vw,36px);flex-wrap:wrap}
+.btn{font-size:clamp(10px,.95vw,13px);padding:clamp(7px,.9vw,13px) clamp(12px,1.6vw,24px);border:1px solid var(--ink);border-radius:999px;transition:background .9s var(--slow),color .9s var(--slow)}
+.btn.fill{background:var(--ink);color:var(--bone)}
+.btn.fill:hover{background:var(--rose-d);border-color:var(--rose-d)}
+.btn.line:hover{background:var(--ink);color:var(--bone)}
+.readout{position:absolute;right:clamp(16px,4vw,56px);bottom:clamp(12px,3vw,40px);text-align:right;font-family:var(--mono);font-size:clamp(9px,.8vw,11px);color:var(--ink-3);line-height:1.7}
+.readout b{color:var(--ink);font-weight:500}
+.cue{position:absolute;left:clamp(16px,4vw,56px);bottom:clamp(12px,3vw,40px);font-size:clamp(9px,.85vw,12px);color:var(--ink-3);display:flex;align-items:center;gap:10px}
+.cue i{display:block;width:clamp(24px,4vw,56px);height:1px;background:var(--ink-3)}
+
+/* strip */
+.strip{background:rgba(242,239,233,.86);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);
+  display:grid;grid-template-columns:repeat(4,1fr);padding:clamp(12px,2vw,28px) clamp(16px,4vw,56px);gap:12px}
+.strip div{font-size:clamp(9px,.85vw,12px);color:var(--ink-2)}
+.strip b{display:block;font-family:var(--mono);font-weight:400;font-size:clamp(13px,1.6vw,22px);color:var(--ink);margin-bottom:2px}
+
+/* interlude */
+.interlude{position:relative;height:400vh}
+.pin{position:relative;height:100vh;overflow:hidden}
+.il-head{position:absolute;left:clamp(16px,4vw,56px);top:clamp(44px,9vh,110px);max-width:30ch;z-index:3}
+.il-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(17px,2.6vw,40px);line-height:1.05;margin-top:6px}
+.il-head p{font-size:clamp(10px,.95vw,13px);color:var(--ink-2);line-height:1.5;margin-top:8px;font-weight:300}
+.il-foot{position:absolute;left:50%;bottom:clamp(10px,3vh,34px);transform:translateX(-50%);z-index:3;
+  display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:clamp(9px,.8vw,11px);color:var(--ink-2);white-space:nowrap}
+.il-foot .bar{width:clamp(60px,14vw,200px);height:1px;background:var(--hair);position:relative}
+.il-foot .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--rose);width:0}
+svg.lines{position:fixed;inset:0;width:100vw;height:100vh;z-index:3;pointer-events:none;overflow:visible}
+svg.lines path{fill:none;stroke:var(--steel);stroke-width:.75}
+svg.lines circle{fill:var(--bone);stroke:var(--steel);stroke-width:.75}
+.labels{position:fixed;inset:0;z-index:4;pointer-events:none}
+.lab{position:absolute;top:0;left:0;opacity:0;will-change:transform,opacity;max-width:clamp(96px,17vw,240px)}
+.lab b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(11px,1.3vw,18px);line-height:1.15;color:var(--ink)}
+.lab i{display:block;font-style:normal;font-size:clamp(9px,.82vw,12px);line-height:1.35;color:var(--ink-2);margin-top:2px}
+.lab span{display:block;font-family:var(--mono);font-size:clamp(8px,.72vw,10px);color:var(--steel);margin-bottom:1px}
+.lab.r{text-align:left}.lab.l{text-align:right}
+
+/* coda */
+.coda{position:relative;z-index:2;background:linear-gradient(90deg,rgba(242,239,233,.92) 0 42%,rgba(242,239,233,0) 70%);border-top:1px solid var(--hair);padding:clamp(40px,10vw,150px) clamp(16px,4vw,56px) clamp(20px,4vw,48px)}
+.coda blockquote{font-family:var(--serif);font-size:clamp(22px,4.4vw,64px);line-height:1.05;max-width:16ch;font-weight:400}
+.coda p{margin-top:clamp(12px,2vw,28px);max-width:min(44ch,46vw);color:var(--ink-2);font-size:clamp(11px,1.1vw,15px);line-height:1.6;font-weight:300}
+.coda .ctas{margin-top:clamp(16px,2.6vw,36px);max-width:46vw}
+@media (max-aspect-ratio:1/1){.coda p,.coda .ctas{max-width:none}}
+footer{margin-top:clamp(40px,8vw,120px);padding-top:16px;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:clamp(9px,.8vw,11px);color:var(--ink-3)}
+footer .mono{font-family:var(--mono)}
+
+@media (max-width:640px){.nav ul li:nth-child(n+3){display:none}.strip{grid-template-columns:repeat(2,1fr)}}
+@media (max-aspect-ratio:1/1){.hero{justify-content:flex-start;padding-top:18vh}.hero-copy{max-width:100%}}
+@media (max-height:420px){.lab i{display:none}.il-head p{display:none}.readout .extra{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+<div class="fallback" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="mark" href="#top" aria-label="Escapement home">ESCAPEMENT</a>
+  <nav aria-label="Primary"><ul>
+    <li><a href="#calibre" aria-current="page">Calibre</a></li>
+    <li><a href="#interlude">Collection</a></li>
+    <li><a href="#interlude">Atelier</a></li>
+    <li><a href="#enquire">Enquire</a></li>
+  </ul></nav>
+</header>
+
+<main id="top">
+  <section class="hero" id="calibre" aria-label="Calibre E-09">
+    <div class="hero-copy">
+      <p class="spec">Calibre E-09, hand-wound, 18,000 A/h</p>
+      <h1>Escapement</h1>
+      <p class="lede">A fictional maison. Twelve watches a year, each movement assembled and regulated at one bench.</p>
+      <div class="ctas">
+        <a class="btn fill" href="#interlude">See the movement</a>
+        <a class="btn line" href="#enquire">Enquire</a>
+      </div>
+    </div>
+    <div class="cue" aria-hidden="true"><i></i>Scroll to take it apart</div>
+    <div class="readout" aria-live="off">
+      <div>Beat <b id="beat">000000</b></div>
+      <div class="extra">Balance 2.5 Hz, amplitude 200°</div>
+      <div class="extra">Escape wheel 12° per beat</div>
+    </div>
+  </section>
+
+  <section class="strip" aria-label="House figures">
+    <div><b>2009</b>Founded</div>
+    <div><b>12</b>Pieces a year</div>
+    <div><b>7</b>Patents held</div>
+    <div><b>72 h</b>Power reserve</div>
+  </section>
+
+  <section class="interlude" id="interlude" aria-label="The movement, assembled">
+    <div class="pin" id="pin">
+      <div class="il-head">
+        <p class="spec">Calibre E-09, 142 components</p>
+        <h2>The movement, assembled</h2>
+        <p>Keep scrolling. Each part lifts away and names itself, then everything returns to its place.</p>
+      </div>
+      <div class="il-foot" aria-hidden="true"><span id="phase">Assembled</span><span class="bar"><i id="bar"></i></span><span id="pct">0%</span></div>
+    </div>
+  </section>
+
+  <section class="coda" id="enquire">
+    <blockquote>Made slowly, so it can be kept for a lifetime.</blockquote>
+    <p>Each E-09 takes eleven weeks from blank plate to final regulation. Enquiries are answered by the watchmaker who will build your piece.</p>
+    <div class="ctas"><a class="btn fill" href="#enquire">Begin an enquiry</a><a class="btn line" href="#calibre">Read about the calibre</a></div>
+    <footer><span>Escapement is a fictional maison created for this demo.</span><span class="mono">E-09, 21 jewels, 72 h, 18,000 A/h</span></footer>
+  </section>
+</main>
+
+<svg class="lines" id="lines" aria-hidden="true"></svg>
+<div class="labels" id="labels" aria-hidden="true"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+'use strict';
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const TIME_SCALE = RM ? 0.3 : 1;
+const nav = document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('frost',scrollY>40),{passive:true});
+
+function noGL(){document.documentElement.classList.add('no-webgl');window.__demo={play(){},pause(){}};}
+if(!window.THREE){noGL();return;}
+const canvas=document.getElementById('gl');
+let renderer;
+try{
+  renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'low-power'});
+}catch(e){noGL();return;}
+if(!renderer.getContext()){noGL();return;}
+renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
+renderer.outputEncoding=THREE.sRGBEncoding;           // r134 equivalent of SRGBColorSpace
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.05;
+renderer.setClearColor(0x000000,0);
+
+const {PI,sin,cos,atan2,sqrt,min,max,floor,round,pow}=Math;
+const clamp=(v,a=0,b=1)=>v<a?a:v>b?b:v;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const sstep=t=>t*t*(3-2*t);
+const ease=t=>t<.5?4*t*t*t:1-pow(-2*t+2,3)/2;
+let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(28,1,0.1,100);
+camera.position.set(0,0,16);
+
+/* ---------- procedural environment for metal reflections ---------- */
+(function(){
+  const env=new THREE.Scene();
+  const room=new THREE.Mesh(new THREE.BoxGeometry(12,12,12),new THREE.MeshBasicMaterial({color:new THREE.Color(.21,.2,.19),side:THREE.BackSide}));
+  env.add(room);
+  const panel=(w,h,c,p,r)=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(c[0],c[1],c[2]),side:THREE.DoubleSide}));m.position.set(...p);m.rotation.set(...r);env.add(m);};
+  panel(6,3,[5,4.9,4.7],[0,5.5,1],[PI/2,0,0]);       // top softbox
+  panel(1.2,8,[2.6,2.6,2.7],[-5.5,0,1],[0,PI/2,0]);  // left strip
+  panel(1.6,6,[2.2,1.8,1.5],[5.5,.5,-1],[0,-PI/2,0]); // warm right
+  panel(10,3,[.16,.15,.14],[0,-5.5,0],[-PI/2,0,0]);   // dark floor
+  panel(3,2.2,[2.4,2.4,2.4],[1.5,1.5,5.8],[0,PI,0]);panel(12,1.2,[1.1,1.05,1],[0,-2.5,-5.8],[0,0,0]);              // front fill
+  const pm=new THREE.PMREMGenerator(renderer);
+  scene.environment=pm.fromScene(env,0.03).texture;
+  pm.dispose();
+})();
+const key=new THREE.DirectionalLight(0xfff6ec,1.1);key.position.set(-4,6,8);scene.add(key);
+scene.add(new THREE.AmbientLight(0xffffff,.18));
+
+/* ---------- procedural finishes ---------- */
+function canvasTex(size,draw,rep){
+  const c=document.createElement('canvas');c.width=c.height=size;const g=c.getContext('2d');draw(g,size);
+  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.encoding=THREE.sRGBEncoding;t.repeat.set(rep,rep);
+  t.anisotropy=4;return t;
+}
+const perlage=canvasTex(256,(g,s)=>{
+  g.fillStyle='#e6e3df';g.fillRect(0,0,s,s);
+  const sp=32;
+  for(let row=-1;row<=s/sp*2+1;row++)for(let col=-1;col<=s/sp+1;col++){
+    const x=col*sp+(row%2?sp/2:0),y=row*sp/2;
+    for(let r=22;r>1;r-=1.5){g.strokeStyle=rnd()<.5?'rgba(255,255,255,.55)':'rgba(120,110,100,.22)';g.lineWidth=1;g.beginPath();g.arc(x,y,r,0,PI*2);g.stroke();}
+  }
+},0.9);
+const cotes=canvasTex(256,(g,s)=>{
+  const im=g.createImageData(s,s);
+  for(let y=0;y<s;y++)for(let x=0;x<s;x++){
+    const u=(x+0.0005*(y-128)*(y-128))/64;const b=.84+.16*pow(.5+.5*cos(2*PI*u),1.4)+(rnd()-.5)*.03;
+    const i=(y*s+x)*4;im.data[i]=im.data[i+1]=im.data[i+2]=clamp(b)*255;im.data[i+3]=255;
+  }
+  g.putImageData(im,0,0);
+},2.4);
+cotes.center.set(.5,.5);cotes.rotation=.62;
+
+const M_PLATE=new THREE.MeshStandardMaterial({color:0xe3b19b,metalness:1,roughness:.46,map:perlage});
+const M_ROSE =new THREE.MeshStandardMaterial({color:0xe9b7a0,metalness:1,roughness:.3,map:cotes});
+const M_STEEL=new THREE.MeshStandardMaterial({color:0xe4e7eb,metalness:1,roughness:.12});
+const M_STEEL2=new THREE.MeshStandardMaterial({color:0xbfc5cc,metalness:1,roughness:.3});
+const M_BLUE =new THREE.MeshStandardMaterial({color:0x2c4f94,metalness:.85,roughness:.24});
+const M_SLOT =new THREE.MeshStandardMaterial({color:0x14213d,metalness:.6,roughness:.5});
+const M_JEWEL=new THREE.MeshStandardMaterial({color:0xb3122e,metalness:0,roughness:.06,transparent:true,opacity:.86,emissive:0x40000c});
+const M_GOLD =new THREE.MeshStandardMaterial({color:0xf0c9a4,metalness:1,roughness:.2});
+
+/* ---------- geometry helpers ---------- */
+function extrude(shape,depth,z,bevel=.004,cs=10){
+  const g=new THREE.ExtrudeGeometry(shape,{depth,bevelEnabled:true,bevelThickness:bevel,bevelSize:bevel,bevelSegments:1,curveSegments:cs});
+  g.translate(0,0,z-depth/2);return g;
+}
+function spokeHoles(shape,rOut,rIn,n,halfW,rot=0){
+  for(let i=0;i<n;i++){
+    const a0=rot+i*2*PI/n,a1=rot+(i+1)*2*PI/n;
+    const dO=halfW/rOut,dI=halfW/rIn*1.25;
+    if(a1-a0-2*dI<.2)continue;
+    const h=new THREE.Path();
+    h.absarc(0,0,rOut,a0+dO,a1-dO,false);
+    h.absarc(0,0,rIn,a1-dI,a0+dI,true);
+    h.closePath();shape.holes.push(h);
+  }
+}
+function gearShape(N,m,spokes=5){
+  const rp=m*N/2,ra=rp+m*.95,rd=rp-m*1.2,pitch=2*PI/N;
+  const s=new THREE.Shape();
+  for(let i=0;i<N;i++){
+    const a=i*pitch;
+    const pts=[[rd,a-pitch*.28],[ra,a-pitch*.13],[ra,a+pitch*.13],[rd,a+pitch*.28]];
+    pts.forEach(([r,t],k)=>{const x=r*cos(t),y=r*sin(t);(i===0&&k===0)?s.moveTo(x,y):s.lineTo(x,y);});
+  }
+  s.closePath();
+  if(rp>.3&&spokes)spokeHoles(s,rd-m*1.7,max(.07,rp*.24),spokes,.035);
+  return s;
+}
+function escapeShape(n,Ro,Rr,dir){ // club-tooth escape wheel, teeth lean in direction of rotation
+  const s=new THREE.Shape(),p=2*PI/n;
+  for(let i=0;i<n;i++){
+    const a=i*p;
+    const pts=[[Rr,a],[Ro,a+dir*p*.34],[Ro*.985,a+dir*p*.46],[Rr+.03,a+dir*p*.2],[Rr,a+dir*p*.5]];
+    pts.forEach(([r,t],k)=>{const x=r*cos(t),y=r*sin(t);(i===0&&k===0)?s.moveTo(x,y):s.lineTo(x,y);});
+  }
+  s.closePath();
+  if(dir<0){/* keep winding consistent: ExtrudeGeometry normalises winding */}
+  spokeHoles(s,Rr-.05,.07,5,.022);
+  return s;
+}
+function ringShape(ro,ri){const s=new THREE.Shape();s.absarc(0,0,ro,0,PI*2,false);const h=new THREE.Path();h.absarc(0,0,ri,0,PI*2,true);s.holes.push(h);return s;}
+function strokeShape(pts,hw){
+  const n=pts.length,L=[],R=[],N=[];
+  for(let i=0;i<n;i++){
+    const a=pts[max(0,i-1)],b=pts[min(n-1,i+1)];
+    let tx=b[0]-a[0],ty=b[1]-a[1];const l=sqrt(tx*tx+ty*ty);tx/=l;ty/=l;
+    let nx=-ty,ny=tx,k=hw;
+    if(i>0&&i<n-1){const s0=pts[i],p0=pts[i-1];let ux=s0[0]-p0[0],uy=s0[1]-p0[1];const ul=sqrt(ux*ux+uy*uy);k=hw/max(.5,(-uy/ul)*nx+(ux/ul)*ny);}
+    N.push([nx,ny]);L.push([pts[i][0]+nx*k,pts[i][1]+ny*k]);R.push([pts[i][0]-nx*k,pts[i][1]-ny*k]);
+  }
+  const s=new THREE.Shape();s.moveTo(...L[0]);
+  for(let i=1;i<n;i++)s.lineTo(...L[i]);
+  const ae=atan2(N[n-1][1],N[n-1][0]);s.absarc(pts[n-1][0],pts[n-1][1],hw,ae,ae-PI,true);
+  for(let i=n-1;i>=0;i--)s.lineTo(...R[i]);
+  const as=atan2(N[0][1],N[0][0]);s.absarc(pts[0][0],pts[0][1],hw,as+PI,as,true);
+  return s;
+}
+function cyl(r,h,z,mat,seg=24){const g=new THREE.CylinderGeometry(r,r,h,seg);g.rotateX(PI/2);g.translate(0,0,z);return new THREE.Mesh(g,mat);}
+
+/* ---------- the movement ---------- */
+const root=new THREE.Group(),tiltG=new THREE.Group(),mv=new THREE.Group();
+root.add(tiltG);tiltG.add(mv);scene.add(root);
+const parts={};
+function part(id,lift,drift,delay){const g=new THREE.Group();g.userData={lift,drift,delay,p:0};parts[id]=g;mv.add(g);return g;}
+// part(id, z-lift when exploded, xy drift, stagger delay)
+const P_PLATE=part('plate',-1.35,[0,0],.45);
+const P_BARREL=part('barrel',.2,[-.4,.2],.42);
+const P_TRAIN=part('train',.72,[.3,-.05],.36);
+const P_ESC=part('escape',1.2,[.35,-.25],.30);
+const P_PAL=part('pallet',1.62,[-.05,-.35],.24);
+const P_BAL=part('balance',2.1,[-.4,-.25],.18);
+const P_BRI=part('bridges',2.7,[0,.1],.12);
+const P_JEW=part('jewels',3.12,[0,.1],.06);
+const P_SCR=part('screws',3.5,[0,.1],0);
+
+const MOD=.032, BEAT_HZ=2.5, BEAT_T=1/(2*BEAT_HZ), STEP=2*PI/15/2; // 12° per beat
+// meshing chain, every pair in contact: ω ∝ 1/teeth
+const chain=[{id:'Barrel',N:72,x:-1.2,y:1.2},{id:'W1',N:48,dir:-10},{id:'W2',N:36,dir:-75},{id:'W3',N:28,dir:-30},{id:'W4',N:20,dir:-140},{id:'EscPinion',N:12,dir:180}];
+chain.forEach((g,i)=>{
+  g.r=MOD*g.N/2;g.pitch=2*PI/g.N;
+  if(i===0){g.off=0;return;}
+  const a=chain[i-1],al=g.dir*PI/180;
+  g.x=a.x+(a.r+g.r)*cos(al);g.y=a.y+(a.r+g.r)*sin(al);
+  let fA=((al-a.off)/a.pitch)%1;if(fA<0)fA+=1;
+  g.off=al+PI-(.5-fA)*g.pitch;           // tooth of driver meets gap of driven
+});
+// angular multiplier relative to escape arbor (escape turns clockwise: -1)
+chain[chain.length-1].k=-1;
+for(let i=chain.length-2;i>=0;i--)chain[i].k=-(chain[i+1].N/chain[i].N)*chain[i+1].k;
+const E=chain[chain.length-1];
+const PIV={x:0,y:0},BAL={x:-.85,y:-1.33};
+{const dx=BAL.x-E.x,dy=BAL.y-E.y,l=sqrt(dx*dx+dy*dy);PIV.x=E.x+dx/l*.6;PIV.y=E.y+dy/l*.6;}
+const FORK_DIR=atan2(BAL.y-PIV.y,BAL.x-PIV.x);
+
+// main plate with a skeleton opening under the balance
+{
+  const s=new THREE.Shape();s.absarc(0,0,3,0,PI*2,false);
+  const h=new THREE.Path();h.absarc(BAL.x,BAL.y,.9,0,PI*2,true);s.holes.push(h);
+  const m=new THREE.Mesh(extrude(s,.16,-.08,.025,96),M_PLATE);P_PLATE.add(m);
+  const crown=cyl(.2,.28,0,M_STEEL,28);crown.geometry.rotateY(PI/2);crown.position.set(3.32,0,-.02);P_PLATE.add(crown);
+  const stem=cyl(.05,.4,0,M_STEEL2,12);stem.geometry.rotateY(PI/2);stem.position.set(3.05,0,-.02);P_PLATE.add(stem);
+  for(let i=0;i<3;i++){const c=cyl(.2+.005,.02,0,M_STEEL2,28);c.geometry.rotateY(PI/2);c.position.set(3.22+i*.09,0,-.02);P_PLATE.add(c);}
+}
+// wheels
+const wheels=[];
+chain.forEach((g,i)=>{
+  const grp=new THREE.Group();grp.position.set(g.x,g.y,0);
+  const holder=(i===0)?P_BARREL:(g.id==='EscPinion'?P_ESC:P_TRAIN);
+  holder.add(grp);
+  if(i===0){
+    grp.add(new THREE.Mesh(extrude(gearShape(g.N,MOD,0),.06,.12),M_STEEL2));
+    grp.add(cyl(g.r-MOD*1.3,.26,.16,M_STEEL,64));                       // barrel drum
+    grp.add(cyl(g.r-MOD*1.6,.01,.295,M_STEEL2,64));
+  }else{
+    grp.add(new THREE.Mesh(extrude(gearShape(g.N,MOD,g.N>=28?5:(g.N>=20?4:0)),.04,.12),g.id==='EscPinion'?M_STEEL2:M_STEEL));
+    grp.add(cyl(.028,.52,.26,M_STEEL2,10));                              // arbor
+    if(g.N>14)grp.add(cyl(max(.07,g.r*.24),.07,.12,M_STEEL2,20));         // hub
+  }
+  wheels.push({g,grp});
+});
+// escape wheel (upper level of the escape arbor)
+const escWheel=new THREE.Mesh(extrude(escapeShape(15,.46,.35,-1),.035,.24),M_STEEL);
+wheels[wheels.length-1].grp.add(escWheel);
+// pallet fork
+const fork=new THREE.Group();fork.position.set(PIV.x,PIV.y,0);P_PAL.add(fork);
+{
+  const box=(w,h,d,x,y,z,rot,mat)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.rotation.z=rot||0;fork.add(m);return m;};
+  const Lv=sqrt((BAL.x-PIV.x)**2+(BAL.y-PIV.y)**2)-.12;
+  box(Lv,.05,.035,Lv/2,0,.27,0,M_STEEL);                                   // lever
+  box(.11,.022,.035,Lv+.04,.042,.27,.18,M_STEEL);box(.11,.022,.035,Lv+.04,-.042,.27,-.18,M_STEEL); // horns
+  fork.add(Object.assign(cyl(.07,.05,.27,M_STEEL,20)));
+  // arms to the pallet stones straddling the escape wheel (escape wheel sits at -x, 0.6 away)
+  const ex=-.6;
+  [1,-1].forEach(sg=>{
+    const a=sg*38*PI/180, px=ex+.43*cos(a), py=.43*sin(a);
+    const ax=px*.5,ay=py*.5,al=sqrt(px*px+py*py);
+    box(al,.045,.035,ax,ay,.27,atan2(py,px),M_STEEL);
+    box(.12,.04,.05,ex+.40*cos(a),.40*sin(a),.25,a,M_JEWEL);               // ruby pallet stone
+  });
+}
+// balance wheel + hairspring
+const bal=new THREE.Group();bal.position.set(BAL.x,BAL.y,0);P_BAL.add(bal);
+const balRot=new THREE.Group();bal.add(balRot);
+{
+  balRot.add(new THREE.Mesh(extrude(ringShape(.78,.7),.06,.42,.006,48),M_GOLD));
+  for(let i=0;i<3;i++){const a=i*2*PI/3;const m=new THREE.Mesh(new THREE.BoxGeometry(.7,.05,.03),M_GOLD);m.position.set(.35*cos(a),.35*sin(a),.42);m.rotation.z=a;balRot.add(m);}
+  for(let i=0;i<16;i++){const a=i*2*PI/16+.1;const sc=cyl(.022,.05,0,i%2?M_BLUE:M_GOLD,10);sc.geometry.rotateY(PI/2);sc.position.set(.8*cos(a),.8*sin(a),.42);sc.rotation.z=a;balRot.add(sc);}
+  balRot.add(cyl(.06,.1,.42,M_STEEL,16));
+  balRot.add(cyl(.13,.025,.3,M_STEEL,24));                                   // roller
+  const pin=cyl(.018,.05,.28,M_JEWEL,8);pin.position.set(.1*cos(FORK_DIR+PI),.1*sin(FORK_DIR+PI),0);balRot.add(pin);
+  balRot.add(cyl(.025,.5,.28,M_STEEL2,8));
+}
+const HS_N=180;
+const hsGeo=new THREE.BufferGeometry();hsGeo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(HS_N*3),3));
+const hairspring=new THREE.Line(hsGeo,new THREE.LineBasicMaterial({color:0x2c4f94}));bal.add(hairspring);
+function updateHairspring(phi){
+  const a=hsGeo.attributes.position.array;
+  for(let i=0;i<HS_N;i++){const s=i/(HS_N-1),r=.09+s*.38,t=s*11*2*PI+phi*(1-s);a[i*3]=r*cos(t);a[i*3+1]=r*sin(t);a[i*3+2]=.365;}
+  hsGeo.attributes.position.needsUpdate=true;
+}
+// bridges (rose gold, Côtes de Genève) — world UVs keep the stripes continuous across bridges
+const W=Object.fromEntries(chain.map(g=>[g.id,g]));
+const bridgeDefs=[
+  [[[-2.55,.75],[W.Barrel.x,W.Barrel.y],[-.45,2.25]],.38,.5],
+  [[[.3,2.5],[W.W1.x,W.W1.y],[W.W2.x,W.W2.y],[W.W3.x,W.W3.y],[2.62,-1.05]],.19,.5],
+  [[[1.85,-2.1],[W.W4.x,W.W4.y],[E.x,E.y],[PIV.x,PIV.y]],.11,.5],
+  [[[-2.45,-1.75],[BAL.x,BAL.y]],.15,.585],
+];
+bridgeDefs.forEach(([pts,hw,z])=>P_BRI.add(new THREE.Mesh(extrude(strokeShape(pts,hw),.07,z,.012),M_ROSE)));
+// ratchet wheel on the barrel bridge
+{
+  const s=new THREE.Shape(),n=36,R=.62;
+  for(let i=0;i<n;i++){const a=i*2*PI/n;const p1=[R*cos(a),R*sin(a)],p2=[(R-.05)*cos(a+2*PI/n*.98),(R-.05)*sin(a+2*PI/n*.98)];i?s.lineTo(...p1):s.moveTo(...p1);s.lineTo(...p2);}
+  const m=new THREE.Mesh(extrude(s,.05,.575),M_STEEL);m.position.set(W.Barrel.x,W.Barrel.y,0);P_BRI.add(m);
+}
+// jewels in gold chatons
+const jewelAt=[[W.W1,.54],[W.W2,.54],[W.W3,.54],[W.W4,.54],[E,.54],[PIV,.54],[BAL,.625]];
+const jewelObjs=[];
+jewelAt.forEach(([p,z])=>{
+  const g=new THREE.Group();g.position.set(p.x,p.y,0);
+  g.add(cyl(.075,.02,z+.005,M_GOLD,24));g.add(cyl(.045,.03,z+.02,M_JEWEL,16));
+  P_JEW.add(g);jewelObjs.push(g);
+});
+// blued screws
+const screwAt=[[-2.3,.83,.54],[-.6,2.1,.54],[.45,2.33,.54],[2.46,-1.03,.54],[1.72,-1.95,.54],[-2.22,-1.68,.625],[W.Barrel.x,W.Barrel.y,.6]];
+const screwObjs=[];
+screwAt.forEach(([x,y,z],i)=>{
+  const g=new THREE.Group();g.position.set(x,y,0);const big=i===6;
+  g.add(cyl(big?.13:.07,.04,z+.02,M_BLUE,big?28:18));
+  const sl=new THREE.Mesh(new THREE.BoxGeometry(big?.24:.13,big?.03:.018,.02),M_SLOT);sl.position.z=z+.042;sl.rotation.z=rnd()*PI;g.add(sl);
+  P_SCR.add(g);screwObjs.push(g);
+});
+
+/* ---------- annotation anchors & labels ---------- */
+const anchor=(parent,x,y,z)=>{const o=new THREE.Object3D();o.position.set(x,y,z);parent.add(o);return o;};
+const LABELS=[
+  {id:'screws',side:'r',a:screwObjs[3],z:.58,n:'Part 09',t:'Blued screws',f:'Steel, flame-tempered to a cornflower blue'},
+  {id:'jewels',side:'l',a:jewelObjs[6],z:.64,n:'Part 08',t:'Jewel bearings',f:'Synthetic ruby pivots, 21 in all'},
+  {id:'bridges',side:'r',a:anchor(P_BRI,2.1,-1.0,.54),n:'Part 07',t:'Bridges',f:'Rose gold, hand-finished Côtes de Genève'},
+  {id:'balance',side:'l',a:anchor(P_BAL,BAL.x-.8,BAL.y,.42),n:'Part 06',t:'Balance and hairspring',f:'Swings 2.5 times a second; this is the regulator'},
+  {id:'pallet',side:'l',a:anchor(P_PAL,PIV.x+(BAL.x-PIV.x)*.45,PIV.y+(BAL.y-PIV.y)*.45,.27),n:'Part 05',t:'Pallet fork',f:'Locks the train, releases it once per beat'},
+  {id:'escape',side:'r',a:anchor(P_ESC,E.x+.46,E.y,.24),n:'Part 04',t:'Escape wheel',f:'15 teeth, advancing 12° per beat'},
+  {id:'train',side:'r',a:anchor(P_TRAIN,W.W3.x+.3,W.W3.y,.12),n:'Part 03',t:'Gear train',f:'48, 36, 28 and 20 teeth; speed rises as teeth fall'},
+  {id:'barrel',side:'l',a:anchor(P_BARREL,W.Barrel.x-1.15,W.Barrel.y-.2,.16),n:'Part 02',t:'Mainspring barrel',f:'72 teeth, stores 72 hours of energy'},
+  {id:'plate',side:'r',a:anchor(P_PLATE,2.75,-1.05,0),n:'Part 01',t:'Main plate',f:'Perlage-grained foundation for every part'},
+];
+const labelsEl=document.getElementById('labels'),linesEl=document.getElementById('lines');
+LABELS.forEach(L=>{
+  if(L.z!==undefined){L.a=anchor(L.a,0,0,L.z);}
+  const d=document.createElement('div');d.className='lab '+L.side;d.innerHTML=`<span>${L.n}</span><b>${L.t}</b><i>${L.f}</i>`;labelsEl.appendChild(d);L.el=d;
+  L.path=document.createElementNS('http://www.w3.org/2000/svg','path');L.dot=document.createElementNS('http://www.w3.org/2000/svg','circle');L.dot.setAttribute('r','2.2');
+  linesEl.appendChild(L.path);linesEl.appendChild(L.dot);
+});
+
+/* ---------- mechanics ---------- */
+function escapeAngle(t){ // discrete steps: 12° per beat, delivered in ~50ms around each zero crossing
+  const k=round(t/BEAT_T),lt=t-k*BEAT_T,u=clamp((lt+.012)/.05);
+  return STEP*(k-1+(1-pow(1-u,3)));
+}
+function forkSign(t){
+  const k=round(t/BEAT_T),lt=t-k*BEAT_T,u=sstep(clamp((lt+.018)/.036));
+  const after=(k%2===0)?1:-1;return -after+2*after*u;
+}
+const BAL_AMP=200*PI/180, FORK_B=9*PI/180;
+function setMechanism(t){
+  const e=escapeAngle(t);
+  wheels.forEach(({g,grp})=>{grp.rotation.z=g.off+g.k*e;});
+  const phi=BAL_AMP*sin(2*PI*BEAT_HZ*t);
+  balRot.rotation.z=phi;updateHairspring(phi);
+  fork.rotation.z=FORK_DIR-FORK_B*forkSign(t);
+  return floor(t/BEAT_T);
+}
+
+/* ---------- layout / choreography state ---------- */
+const S={focus:0,e:0,back:0};
+const mouse={x:0,y:0,sx:0,sy:0};
+addEventListener('pointermove',ev=>{mouse.x=ev.clientX/innerWidth*2-1;mouse.y=ev.clientY/innerHeight*2-1;},{passive:true});
+let VW=1,VH=1,hh=1,hw=1,FOC=0;const headEl=document.querySelector('.il-head');
+function resize(){
+  VW=innerWidth;VH=innerHeight;renderer.setSize(VW,VH,false);camera.aspect=VW/VH;camera.updateProjectionMatrix();
+  hh=Math.tan(camera.fov*PI/360)*camera.position.z;hw=hh*camera.aspect;
+  LABELS.forEach(L=>{L.w=L.el.offsetWidth;L.h=L.el.offsetHeight;});
+}
+addEventListener('resize',resize);resize();
+
+function compose(){
+  const portrait=VW/VH<1;
+  // hero composition: movement to the right of the copy
+  const hS=portrait?min(hw*.95/3.3,hh*.5/3):min(hh*.88/3,(hw*.46)/3.4);
+  const hX=portrait?0:hw*.44, hY=portrait?-hh*.38:-hh*.02;
+  // interlude, assembled then exploded (fits the stacked height)
+  const aS=min(hh*.8/3,hw*.5/3.3);
+  const xS=min(hh*1.42/7.4,hw*.56/3.4);
+  const pe=sstep(clamp(S.e*1.25));
+  const F=sstep(S.focus*(1-S.back));FOC=F;
+  const sc=lerp(hS,lerp(aS,xS,pe),F);
+  root.scale.setScalar(sc);
+  const tilt=lerp(.52,lerp(.78,1.02,pe),F);
+  root.position.x=lerp(hX,0,F);
+  root.position.y=lerp(hY,-hh*.05-1.05*sin(tilt)*sc*pe,F);
+  headEl.style.opacity=(1-sstep(clamp(S.e*3))).toFixed(3);
+  mouse.sx+=(mouse.x-mouse.sx)*.035;mouse.sy+=(mouse.y-mouse.sy)*.035;
+  tiltG.rotation.x=-tilt+mouse.sy*.07;
+  tiltG.rotation.y=mouse.sx*.1;
+  mv.rotation.z=-.35+pe*.5;
+  // explode each part with a stagger; top layers leave first, return last
+  Object.values(parts).forEach(g=>{
+    const u=g.userData,p=ease(clamp((S.e-u.delay)/(1-.45)));u.p=p;
+    g.position.set(u.drift[0]*p,u.drift[1]*p,u.lift*p);
+  });
+}
+
+const tmp=new THREE.Vector3();
+function layoutLabels(){
+  const cols={l:[],r:[]};
+  const pad=max(12,VW*.035);
+  LABELS.forEach(L=>{
+    const p=parts[L.id].userData.p;
+    L.o=sstep(clamp((p-.55)/.4))*FOC;
+    L.a.getWorldPosition(tmp);tmp.project(camera);
+    L.ax=(tmp.x*.5+.5)*VW;L.ay=(-tmp.y*.5+.5)*VH;L.ty=L.ay-L.h*.55;
+    cols[L.side].push(L);
+  });
+  const top=VH*.2,bot=VH*.9;
+  ['l','r'].forEach(side=>{
+    const c=cols[side].sort((a,b)=>a.ay-b.ay);
+    for(let i=0;i<c.length;i++){c[i].ty=max(c[i].ty,top);if(i)c[i].ty=max(c[i].ty,c[i-1].ty+c[i-1].h+6);}
+    for(let i=c.length-1;i>=0;i--){c[i].ty=min(c[i].ty,(i===c.length-1?bot:c[i+1].ty-6)-c[i].h);}
+    c.forEach(L=>{
+      const x=side==='l'?pad:VW-pad-L.w;
+      const drift=(1-L.o)*(side==='l'?-10:10);
+      L.el.style.transform=`translate(${(x+drift).toFixed(1)}px,${L.ty.toFixed(1)}px)`;L.el.style.opacity=L.o.toFixed(3);
+      const ly=L.ty+L.h*.5, ex=side==='l'?x+L.w+10:x-10, elb=side==='l'?ex+18:ex-18;
+      L.path.setAttribute('d',L.o>.01?`M${L.ax.toFixed(1)},${L.ay.toFixed(1)}L${elb.toFixed(1)},${ly.toFixed(1)}L${ex.toFixed(1)},${ly.toFixed(1)}`:'');
+      L.path.style.opacity=L.o;L.dot.setAttribute('cx',L.ax.toFixed(1));L.dot.setAttribute('cy',L.ay.toFixed(1));L.dot.style.opacity=L.o;
+    });
+  });
+}
+
+/* ---------- scroll choreography ---------- */
+const phaseEl=document.getElementById('phase'),pctEl=document.getElementById('pct'),barEl=document.getElementById('bar');
+let dir=1,lastE=0;
+if(window.gsap&&window.ScrollTrigger){
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.to(S,{focus:1,ease:'none',scrollTrigger:{trigger:'#interlude',start:'top 85%',end:'top top',scrub:RM?true:1.2}});
+  gsap.to(S,{back:1,ease:'none',scrollTrigger:{trigger:'#enquire',start:'top 95%',end:'top 20%',scrub:RM?true:1.2}});
+  if(RM){
+    ScrollTrigger.create({trigger:'#pin',pin:true,start:'top top',end:'+=300%',onToggle:s=>{S.e=s.isActive?1:0;}});
+  }else{
+    const tl=gsap.timeline({scrollTrigger:{trigger:'#pin',pin:true,start:'top top',end:'+=300%',scrub:1.4}});
+    tl.to(S,{e:1,duration:.44,ease:'none'},.04).to(S,{e:1,duration:.12},.48).to(S,{e:0,duration:.4,ease:'none'},.6);
+  }
+}else{ // no GSAP: map scroll directly
+  addEventListener('scroll',()=>{const r=document.getElementById('interlude').getBoundingClientRect();const pr=clamp(-r.top/(r.height-VH));S.focus=clamp(1-r.top/VH);S.e=pr<.5?clamp(pr/.45):clamp((1-pr)/.4);},{passive:true});
+}
+
+/* ---------- loop ---------- */
+const beatEl=document.getElementById('beat');
+let playing=true,raf=0,last=performance.now(),T=0.35,lastBeat=-1;
+function frame(now){
+  raf=0;
+  const dt=min(.05,(now-last)/1000);last=now;T+=dt*TIME_SCALE;
+  const b=setMechanism(T);
+  if(b!==lastBeat){lastBeat=b;beatEl.textContent=String(b).padStart(6,'0');}
+  compose();
+  if(FOC>.01)layoutLabels();else if(labelsEl.dataset.v!=='0'){LABELS.forEach(L=>{L.el.style.opacity=0;L.path.setAttribute('d','');L.dot.style.opacity=0;});labelsEl.dataset.v='0';}
+  if(FOC>.01)labelsEl.dataset.v='1';
+  if(Math.abs(S.e-lastE)>1e-4){dir=S.e>lastE?1:-1;lastE=S.e;}
+  const pctv=round(S.e*100);
+  pctEl.textContent=pctv+'%';barEl.style.width=pctv+'%';
+  phaseEl.textContent=S.e<.01?'Assembled':S.e>.99?'Exploded view':(dir>0?'Disassembly':'Reassembly');
+  renderer.render(scene,camera);
+  if(playing&&!document.hidden)raf=requestAnimationFrame(frame);
+}
+function play(){playing=true;if(!raf){last=performance.now();raf=requestAnimationFrame(frame);}}
+function pause(){playing=false;if(raf){cancelAnimationFrame(raf);raf=0;}}
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(raf){cancelAnimationFrame(raf);raf=0;}}else if(playing)play();});
+window.__demo={play,pause,get playing(){return playing;}};
+frame(performance.now());
+play();
+})();
+</script>
+</body>
+</html>

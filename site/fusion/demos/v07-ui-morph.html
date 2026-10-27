@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>One Shape Morph</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#E6E2DB}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* v07-ui-morph — 14 s = 7 bars @120 BPM (beat 0.5 s), 1080x1080 stage, one shape, never cut.
+   beat  t     event (cursor drives it)
+   0     0.0   button "Connect" (cursor approaching)          | 14    7.0   drag hits max, keeps pulling → shape stretches
+   2     1.0   click → loader (circle)                         | 14.5  7.25  release → springs back
+   4     2.0   ring closes → check                             | 15    7.5   → toggle (white track, black knob)
+   5     2.5   → dynamic island (now playing)                  | 16    8.0   click on the beat: knob slides, 2 edges on 2 springs
+   7     3.5   click island → music player                     | 17    8.5   knob → liquid tab indicator (Month)
+   8     4.0   click play → pause morph                        | 18/19 9.0/9.5 click Year, click Week (leading edge stretches)
+   9–11  4.5–5.5 press + drag progress knob (direct manip.)    | 20    10.0  tabs open into a chart that draws itself
+   12    6.0   player collapses into a volume slider           | 22    11.0  hover → tooltip follows the line
+   13    6.5   press fill end, drag right                      | 23    11.5  ⌘K → command bar, list opens
+   24–25 12.0/12.25/12.5 type "s" "h" "a" → list filters      | 26    13.0  enter → toast · 27  13.5 → button (t=14 ≡ t=0)
+   All motion: closed-form spring step responses summed per target change (periodic, so last frame = first frame). */
+(() => {
+const ID = 'v07-ui-morph', W = 1080, H = 1080, D = 14;
+const cv = document.getElementById('c'), X = cv.getContext('2d');
+let S = 1, OX = 0, OY = 0, CW = 1, CH = 1;
+const cl = (v, a = 0, b = 1) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t, k = (t, a, b) => cl((t - a) / (b - a));
+const eo3 = x => 1 - Math.pow(1 - x, 3), eio3 = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+function spring(t, w, z) { if (t <= 0) return 0; if (z >= 1) return 1 - Math.exp(-w * t) * (1 + w * t);
+  const wd = w * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w * t) * (Math.cos(wd * t) + z * w / wd * Math.sin(wd * t)); }
+// value = base + Σ Δi·[S(t−ti) + S(t−ti+D) − 1]  → a periodic pure function of t (targets must return to base)
+class Track { constructor(v0, ev, w = 17, z = .78) { this.v0 = v0; this.e = []; let p = v0; for (const [t, v, ew, ez] of ev) { this.e.push([t, v - p, ew || w, ez || z]); p = v; } }
+  at(t) { let v = this.v0; for (const [ti, d, w, z] of this.e) v += d * (spring(t - ti, w, z) + spring(t - ti + D, w, z) - 1); return v; } }
+
+const BG = '#E6E2DB', INK = [17, 17, 17], WH = [255, 255, 255], ACC = [255, 91, 46];
+const FF = 'Geist,"Helvetica Neue",Arial,sans-serif', MF = '"Geist Mono",ui-monospace,Menlo,monospace';
+const rgb = c => `rgb(${c[0] | 0},${c[1] | 0},${c[2] | 0})`, acc = rgb(ACC);
+const font = (s, w = 600) => { X.font = `${w} ${s}px ${FF}`; };
+
+// ---------- shape states: [t, w, h, r, colour, zoom] ----------
+const B0 = [168, 56, 28, INK, 2.9];
+const ST = [
+  [1.0, 56, 56, 28, INK, 3.3], [2.0, 64, 64, 32, INK, 3.1], [2.5, 212, 44, 22, INK, 2.6], [3.5, 360, 176, 32, INK, 1.75],
+  [6.0, 320, 48, 24, WH, 1.9], [7.5, 96, 56, 28, WH, 3.7], [8.0, 96, 56, 28, ACC, 3.7], [8.5, 338, 56, 28, INK, 1.9],
+  [10.0, 338, 300, 28, INK, 1.62], [11.5, 340, 52, 16, WH, 1.95], [11.72, 340, 220, 16, WH, 1.72], [12.0, 340, 180, 16, WH, 1.78],
+  [12.25, 340, 140, 16, WH, 1.84], [12.5, 340, 100, 16, WH, 1.9], [13.0, 236, 48, 24, INK, 2.45], [13.5, ...B0]
+];
+const tw = new Track(B0[0], ST.map(s => [s[0], s[1]])), th = new Track(B0[1], ST.map(s => [s[0], s[2]])), tr = new Track(B0[2], ST.map(s => [s[0], s[3]]));
+const tc = [0, 1, 2].map(i => new Track(B0[3][i], ST.map(s => [s[0], s[4][i]]), 30, 1));
+const tz = new Track(B0[4], ST.map(s => [s[0] - .04, s[5]]), 9, 1);
+// press dips on the shape itself
+const PRESS = [1.0, 3.5, 8.0];
+const press = t => PRESS.reduce((a, c) => a + .045 * (spring(t - c + .04, 30, 1) - spring(t - c - .08, 22, .8)), 0);
+
+// ---------- cursor path (UI units, shape centred at 0,0). Holds = same point twice ----------
+const KP = 40.2, KX = p => -12 + 160 * p; // progress knob
+const CUR = [
+  [0, 120, 95], [.72, 22, 10], [1.0, 22, 10], [1.6, 62, 56], [2.8, 62, 56], [3.3, 44, 8], [3.5, 44, 8], [3.9, 68, 60], [4.0, 68, 60],
+  [4.42, KP, 14], [4.5, KP, 14], [5.4, KX(.8), 14], [5.5, KX(.8), 14], [5.9, KX(.8), 20], [6.38, 16, 6], [6.5, 16, 6], [6.96, 160, 6], [7.25, 232, 6],
+  [7.4, 200, 20], [7.86, 10, 12], [8.0, 10, 12], [8.4, 14, 16], [8.86, 107, 10], [9.0, 107, 10], [9.38, -107, 10], [9.5, -107, 10],
+  [10.3, -150, 110], [10.86, -128, 62], [11.45, 112, 44], [11.95, 120, 95], [14, 120, 95]
+];
+const CLICKS = [1.0, 3.5, 4.0, 8.0, 9.0, 9.5];
+const HOLDS = [[4.5, 5.5], [6.5, 7.25]];
+function cursor(t) {
+  let i = 0; while (i < CUR.length - 2 && t >= CUR[i + 1][0]) i++;
+  const a = CUR[i], b = CUR[i + 1], e = eio3(k(t, a[0], b[0]));
+  return [lerp(a[1], b[1], e), lerp(a[2], b[2], e)];
+}
+function cursorPress(t) {
+  let p = 0; for (const c of CLICKS) p = Math.max(p, 1 - Math.abs(t - c) / .09);
+  for (const [a, b] of HOLDS) p = Math.max(p, k(t, a - .06, a) * (1 - k(t, b, b + .06)));
+  return cl(p);
+}
+// ---------- direct manipulation ----------
+function progress(t) {
+  const p0 = .32, v = .012;
+  if (t < 4.0) return p0; if (t < 4.5) return p0 + (t - 4) * v;
+  if (t < 5.5) return cl((cursor(t)[0] + 12) / 160);
+  return .8 + (t - 5.5) * v;
+}
+const rubber = e => 92 * (1 - Math.exp(-e / 92));
+function volume(t) { if (t < 6.5) return .55; if (t < 7.25) return cl((cursor(t)[0] + 160) / 320); return 1; }
+function stretch(t) {
+  if (t < 6.5) return 0;
+  if (t < 7.25) return rubber(Math.max(0, cursor(t)[0] - 160));
+  const s0 = rubber(232 - 160); return s0 * (1 - spring(t - 7.25, 15, .62));
+}
+// ---------- knob / tab indicator: two edges, two springs ----------
+const TABX = [-107.3, 0, 107.3], TW2 = 51.6;
+const FAST = [30, .8], SLOW = [13, .8], MID = [18, .8];
+const kL = new Track(-44, [[8.0, -4, ...SLOW], [8.5, TABX[1] - TW2, ...FAST], [9.0, TABX[2] - TW2, ...SLOW], [9.5, TABX[0] - TW2, ...FAST], [13.4, -44, ...MID]]);
+const kR = new Track(4, [[8.0, 44, ...FAST], [8.5, TABX[1] + TW2, ...MID], [9.0, TABX[2] + TW2, ...FAST], [9.5, TABX[0] + TW2, ...SLOW], [13.4, 4, ...MID]]);
+const kc = [0, 1, 2].map(i => new Track(INK[i], [[8.0, WH[i]], [13.4, INK[i]]], 30, 1));
+
+// ---------- helpers ----------
+function env(t, a, b) { return Math.min(eo3(k(t, a, a + .2)), 1 - k(t, b - .12, b)); }
+function layer(e, fn) { if (e <= 0.002) return; X.save(); X.globalAlpha *= e; const b = (1 - e) * 7; if (b > .3) X.filter = `blur(${b.toFixed(1)}px)`; fn(); X.restore(); }
+function rr(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, Math.max(0, Math.min(r, w / 2, h / 2))); }
+function text(s, x, y, size, col, w = 600, align = 'left') { font(size, w); X.fillStyle = col; X.textAlign = align; X.fillText(s, x, y); X.textAlign = 'left'; }
+const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+
+// play ▶ ↔ pause ❚❚ as two morphing quads
+const PLAY = [[[-6, -10], [2, -5.3], [2, 5.3], [-6, 10]], [[2, -5.3], [10, 0], [10, 0], [2, 5.3]]];
+const PAUSE = [[[-7, -9], [-2, -9], [-2, 9], [-7, 9]], [[2, -9], [7, -9], [7, 9], [2, 9]]];
+function playIcon(x, y, m, s, col) {
+  X.fillStyle = col;
+  for (let q = 0; q < 2; q++) { X.beginPath(); for (let i = 0; i < 4; i++) { const px = lerp(PLAY[q][i][0], PAUSE[q][i][0], m) * s + x, py = lerp(PLAY[q][i][1], PAUSE[q][i][1], m) * s + y; i ? X.lineTo(px, py) : X.moveTo(px, py); } X.closePath(); X.fill(); }
+}
+function skip(x, y, dir, col) { X.fillStyle = col; X.save(); X.translate(x, y); X.scale(dir, 1); X.beginPath(); X.moveTo(-5, -6); X.lineTo(3, 0); X.lineTo(-5, 6); X.fill(); X.fillRect(3.5, -6, 2, 12); X.restore(); }
+
+// ---------- state contents (drawn inside the shape clip, UI units) ----------
+function cButton(t, w, h) { text('Connect', 0, 6, 17, '#fff', 600, 'center'); }
+function cLoader(t) {
+  const close = k(t, 1.6, 1.95), rot = t * 9.5, len = lerp(.28 + .18 * Math.sin(t * 7), 1, eio3(close));
+  X.strokeStyle = '#fff'; X.lineWidth = 3; X.lineCap = 'round';
+  X.beginPath(); X.arc(0, 0, 12, rot, rot + len * Math.PI * 2 - (close >= 1 ? 0 : .001)); X.stroke();
+}
+function cCheck(t) {
+  const d = eo3(k(t, 2.02, 2.26));
+  X.save(); X.globalAlpha *= 1 - eo3(k(t, 2.0, 2.2)); X.strokeStyle = '#fff'; X.lineWidth = 3; X.beginPath(); X.arc(0, 0, 12, 0, 7); X.stroke(); X.restore();
+  const pts = [[-8, 0.5], [-2.5, 6], [9, -6]], L1 = Math.hypot(5.5, 5.5), L2 = Math.hypot(11.5, 12), tot = L1 + L2, dl = d * tot;
+  X.strokeStyle = '#fff'; X.lineWidth = 3.6; X.lineCap = 'round'; X.lineJoin = 'round'; X.beginPath(); X.moveTo(...pts[0]);
+  if (dl <= L1) X.lineTo(lerp(pts[0][0], pts[1][0], dl / L1), lerp(pts[0][1], pts[1][1], dl / L1));
+  else { X.lineTo(...pts[1]); const u = (dl - L1) / L2; X.lineTo(lerp(pts[1][0], pts[2][0], u), lerp(pts[1][1], pts[2][1], u)); }
+  if (d > 0) X.stroke();
+}
+function cover(x, y, s) { // procedural album art, B/W + accent
+  rr(x, y, s, s, s * .14); X.fillStyle = '#F2EEE8'; X.fill();
+  X.save(); X.clip();
+  X.fillStyle = acc; X.beginPath(); X.arc(x + s, y + s, s * .62, 0, 7); X.fill();
+  X.fillStyle = '#111'; X.beginPath(); X.arc(x + s * .42, y + s * .44, s * .26, 0, 7); X.fill();
+  X.fillStyle = '#F2EEE8'; X.beginPath(); X.arc(x + s * .42, y + s * .44, s * .06, 0, 7); X.fill();
+  X.restore();
+}
+function cIsland(t) {
+  cover(-96, -14, 28);
+  text('Paper Moons', -58, 5, 13, '#fff', 600);
+  X.fillStyle = acc;
+  for (let i = 0; i < 5; i++) { const hh = 5 + 11 * Math.abs(Math.sin(t * 7.3 + i * 1.3)); X.fillRect(62 + i * 6, -hh / 2, 3, hh); }
+}
+function cPlayer(t, w, h) {
+  const L = -w / 2, T = -h / 2;
+  cover(L + 32, T + 32, 112);
+  const cx = L + 168;
+  text('Paper Moons', cx, T + 56, 19, '#fff', 600);
+  text('Halden · Low Season', cx, T + 78, 13, 'rgba(255,255,255,.55)', 500);
+  const p = progress(t), bx = cx, bw = 160, by = T + 102;
+  rr(bx, by - 2, bw, 4, 2); X.fillStyle = 'rgba(255,255,255,.22)'; X.fill();
+  rr(bx, by - 2, bw * p, 4, 2); X.fillStyle = '#fff'; X.fill();
+  const held = k(t, 4.44, 4.52) * (1 - k(t, 5.5, 5.6));
+  X.fillStyle = '#fff'; X.beginPath(); X.arc(bx + bw * p, by, 5 + 3.5 * held, 0, 7); X.fill();
+  font(11, 500); X.fillStyle = 'rgba(255,255,255,.5)'; X.fillText(fmt(p * 228), bx, by + 20); X.textAlign = 'right'; X.fillText('-' + fmt((1 - p) * 228), bx + bw, by + 20); X.textAlign = 'left';
+  const cy = T + 146;
+  skip(bx + 22, cy, -1, '#fff'); skip(bx + 138, cy, 1, '#fff');
+  const m = spring(t - 4.0, 20, .85);
+  playIcon(bx + 80, cy, m, 1.05, '#fff');
+}
+function cSlider(t, w, h, ox) {
+  const v = volume(t), L = -w / 2 + ox, fw = Math.max(h, (w) * v);
+  const draw = (fg) => {
+    // speaker
+    X.fillStyle = fg; X.strokeStyle = fg; X.lineWidth = 2; X.lineCap = 'round';
+    const sx = L + 26;
+    X.beginPath(); X.moveTo(sx - 6, -4); X.lineTo(sx - 2, -4); X.lineTo(sx + 4, -9); X.lineTo(sx + 4, 9); X.lineTo(sx - 2, 4); X.lineTo(sx - 6, 4); X.closePath(); X.fill();
+    X.beginPath(); X.arc(sx + 5, 0, 6, -.8, .8); X.stroke(); X.beginPath(); X.arc(sx + 5, 0, 11, -.8, .8); X.stroke();
+    font(14, 600); X.fillStyle = fg; X.textAlign = 'right'; X.fillText(Math.round(v * 100) + '%', L + w - 22, 5); X.textAlign = 'left';
+  };
+  rr(L, -h / 2, fw, h, h / 2); X.fillStyle = '#111'; X.fill();
+  draw('#111');
+  X.save(); rr(L, -h / 2, fw, h, h / 2); X.clip(); draw('#fff'); X.restore();
+}
+const DAYS = 'MTWTFSS'.split(''), DNAME = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], DATA = [.34, .5, .42, .68, .6, .92, .76];
+function tabs(t, h, e) {
+  const y = -h / 2 + 28, lab = ['Week', 'Month', 'Year'];
+  const L = kL.at(t), R = kR.at(t);
+  const draw = (col) => { font(15, 600); X.textAlign = 'center'; X.fillStyle = col; lab.forEach((s, i) => X.fillText(s, TABX[i], y + 5)); X.textAlign = 'left'; };
+  X.save(); X.globalAlpha *= e * .6; draw('#fff'); X.restore();
+  X.save(); rr(L, y - 24, R - L, 48, 24); X.clip(); X.globalAlpha *= e; draw('#111'); X.restore();
+}
+function chartPts(h) { const T = -h / 2, x0 = -145, x1 = 145, y0 = T + 262, y1 = T + 156; return DATA.map((v, i) => [lerp(x0, x1, i / 6), lerp(y0, y1, v)]); }
+function cChart(t, w, h) {
+  const T = -h / 2, dr = eio3(k(t, 10.22, 10.95));
+  text('Plays this week', -145, T + 88, 12, 'rgba(255,255,255,.55)', 500);
+  text(Math.round(8214 * eo3(k(t, 10.2, 10.95))).toLocaleString('en-US'), -145, T + 124, 32, '#fff', 600);
+  const pts = chartPts(h);
+  font(11, 500); X.fillStyle = 'rgba(255,255,255,.45)'; X.textAlign = 'center'; DAYS.forEach((d, i) => X.fillText(d, pts[i][0], T + 286)); X.textAlign = 'left';
+  X.fillStyle = 'rgba(255,255,255,.1)'; X.fillRect(-145, T + 262, 290, 1);
+  // area + line, drawn progressively
+  const n = dr * 6, last = Math.floor(n), f = n - last;
+  const path = () => { X.beginPath(); X.moveTo(...pts[0]); for (let i = 1; i <= last; i++) X.lineTo(...pts[i]); if (last < 6) X.lineTo(lerp(pts[last][0], pts[last + 1][0], f), lerp(pts[last][1], pts[last + 1][1], f)); };
+  if (dr > 0) {
+    path(); const ex = last < 6 ? lerp(pts[last][0], pts[last + 1][0], f) : pts[6][0];
+    X.lineTo(ex, T + 262); X.lineTo(-145, T + 262); X.closePath(); X.fillStyle = 'rgba(255,255,255,.08)'; X.fill();
+    path(); X.strokeStyle = '#fff'; X.lineWidth = 2.5; X.lineJoin = 'round'; X.lineCap = 'round'; X.stroke();
+  }
+  // hover tooltip
+  const ho = k(t, 10.86, 10.98) * (1 - k(t, 11.44, 11.52));
+  if (ho > 0) {
+    const cx = cl(cursor(t)[0], -145, 145), u = (cx + 145) / 290 * 6, i0 = Math.min(5, Math.floor(u)), yy = lerp(pts[i0][1], pts[i0 + 1][1], u - i0), ni = Math.round(u);
+    X.save(); X.globalAlpha *= ho;
+    X.fillStyle = 'rgba(255,255,255,.25)'; X.fillRect(cx - .5, T + 150, 1, 112);
+    X.fillStyle = '#fff'; X.beginPath(); X.arc(cx, yy, 7, 0, 7); X.fill(); X.fillStyle = acc; X.beginPath(); X.arc(cx, yy, 4.5, 0, 7); X.fill();
+    const label = DNAME[ni] + '  ' + Math.round(DATA[ni] * 1420).toLocaleString('en-US');
+    font(13, 600); const lw = X.measureText(label).width + 22, bx = cl(cx - lw / 2, -160, 160 - lw);
+    rr(bx, yy - 44, lw, 30, 9); X.fillStyle = '#fff'; X.fill();
+    X.fillStyle = '#111'; X.fillText(label, bx + 11, yy - 24);
+    X.restore();
+  }
+}
+const ITEMS = [ // name, start index, index moves, filtered-out time
+  ['Sleep timer', 0, [], 12.25], ['Shuffle', 1, [[12.25, 0]], 12.5], ['Equalizer', 2, [], 12.0], ['Share link', 3, [[12.0, 2], [12.25, 1], [12.5, 0]], 0]
+];
+const itemIdx = ITEMS.map(([n, i0, mv]) => new Track(i0, [...mv.map(([t, v]) => [t, v, 20, .8]), ...(mv.length ? [[13.45, i0, 20, .8]] : [])]));
+const TYPED = [[12.0, 's'], [12.25, 'sh'], [12.5, 'sha']];
+function cCmd(t, w, h) {
+  const T = -h / 2, L = -w / 2;
+  let q = ''; for (const [tt, s] of TYPED) if (t >= tt) q = s;
+  // search row
+  X.strokeStyle = '#111'; X.lineWidth = 2; X.lineCap = 'round';
+  X.beginPath(); X.arc(L + 26, T + 24, 6.5, 0, 7); X.stroke(); X.beginPath(); X.moveTo(L + 31, T + 29); X.lineTo(L + 36, T + 34); X.stroke();
+  if (q) text(q, L + 48, T + 31, 17, '#111', 500); else text('Search commands', L + 48, T + 31, 17, '#9A958D', 500);
+  font(17, 500); const cw = q ? X.measureText(q).width : 0;
+  if (Math.floor(t * 3.2) % 2 === 0 || q) { X.fillStyle = acc; X.fillRect(L + 49 + cw, T + 15, 2, 21); }
+  rr(L + w - 52, T + 13, 38, 26, 7); X.fillStyle = '#EFEBE5'; X.fill(); text('⌘K', L + w - 33, T + 31, 12, '#6D6860', 600, 'center');
+  // list
+  const lo = k(t, 11.7, 11.85);
+  if (lo <= 0) return;
+  X.fillStyle = '#E9E5DF'; X.fillRect(L, T + 52, w, 1);
+  const hl = 1 - .5 * Math.max(0, 1 - Math.abs(t - 13.0) / .08);
+  rr(L + 6, T + 60, w - 12, 36, 10); X.fillStyle = `rgba(233,229,222,${lo * hl})`; X.fill();
+  ITEMS.forEach(([name, i0, mv, ot], j) => {
+    const idx = itemIdx[j].at(t);
+    const out = ot ? k(t, ot, ot + .14) : 0;
+    const e = lo * (1 - out); if (e <= 0) return;
+    const y = T + 60 + idx * 40 + 18 - out * 6;
+    layer(e, () => {
+      X.strokeStyle = '#111'; X.lineWidth = 1.8; rr(L + 20, y - 7, 14, 14, 4); X.stroke();
+      const m = name.toLowerCase().startsWith(q) ? q.length : 0;
+      font(15, 600); X.fillStyle = '#111'; X.fillText(name.slice(0, m), L + 48, y + 5);
+      const mw = X.measureText(name.slice(0, m)).width; font(15, 500); X.fillStyle = m ? '#6A655D' : '#111'; X.fillText(name.slice(m), L + 48 + mw, y + 5);
+    });
+  });
+}
+function cToast(t) {
+  X.fillStyle = acc; X.beginPath(); X.arc(-78, 0, 11, 0, 7); X.fill();
+  X.strokeStyle = '#fff'; X.lineWidth = 2.4; X.lineCap = 'round'; X.lineJoin = 'round'; X.beginPath(); X.moveTo(-83, .5); X.lineTo(-79.5, 4); X.lineTo(-73, -3.5); X.stroke();
+  text('Link copied', -58, 5.5, 15, '#fff', 600);
+}
+
+// ---------- overlays ----------
+const KEYS = [['⌘', 11.45, 0], ['K', 11.45, 0], ['S', 12.0, 1], ['H', 12.25, 1], ['A', 12.5, 1], ['↵', 13.0, 2]];
+function keycaps(t) {
+  const fade = 1 - k(t, 13.2, 13.45); if (fade <= 0 || t < 11.4) return;
+  const kw = 62, gap = 10, gg = 28; let tot = 0; KEYS.forEach((kk, i) => { tot += kw + (i ? (kk[2] !== KEYS[i - 1][2] ? gg : gap) : 0); });
+  let x = W / 2 - tot / 2;
+  KEYS.forEach((kk, i) => {
+    if (i) x += kk[2] !== KEYS[i - 1][2] ? gg : gap;
+    const a = spring(t - kk[1] + .03, 22, .8); if (a > .001) {
+      const dn = Math.max(0, 1 - Math.abs(t - kk[1] - .03) / .09);
+      X.save(); X.globalAlpha = cl(a) * fade; X.translate(x + kw / 2, 952 + dn * 3); X.scale(.85 + .15 * a, .85 + .15 * a);
+      rr(-kw / 2, -kw / 2 + 4, kw, kw, 13); X.fillStyle = '#CFCAC2'; X.fill();
+      rr(-kw / 2, -kw / 2, kw, kw - dn * 2, 13); X.fillStyle = '#fff'; X.fill();
+      font(kk[0] === '⌘' || kk[0] === '↵' ? 24 : 21, 600); X.fillStyle = '#111'; X.textAlign = 'center'; X.fillText(kk[0], 0, 8); X.textAlign = 'left';
+      X.restore();
+    }
+    x += kw;
+  });
+}
+const NAMES = [[0, 'Button'], [1.0, 'Loader'], [2.0, 'Success'], [2.5, 'Dynamic island'], [3.5, 'Player'], [4.5, 'Scrub'], [6.0, 'Volume'], [7.5, 'Toggle'], [8.5, 'Tabs'], [10.0, 'Chart'], [11.5, 'Command'], [13.0, 'Toast'], [13.5, 'Button']];
+function hud(t) {
+  let i = 0; for (let j = 0; j < NAMES.length; j++) if (t >= NAMES[j][0]) i = j;
+  const n = i === NAMES.length - 1 ? 0 : i, r = eo3(k(t, NAMES[i][0], NAMES[i][0] + .25));
+  X.font = `500 19px ${MF}`; X.fillStyle = '#8C867D';
+  X.save(); X.beginPath(); X.rect(50, 44, 520, 34); X.clip();
+  X.fillText(String(n + 1).padStart(2, '0') + '  ' + NAMES[i][1], 56, 70 + (1 - r) * 26);
+  if (r < 1 && i > 0) { const pn = i - 1; X.fillText(String(pn + 1).padStart(2, '0') + '  ' + NAMES[pn][1], 56, 70 - r * 26); }
+  X.restore();
+  X.textAlign = 'right'; X.fillText('120 BPM · 7 BARS', W - 56, 70); X.textAlign = 'left';
+  // beat grid: 28 dots, grouped by bar
+  const beat = Math.floor(t * 2 + 1e-6), x0 = W / 2 - (28 * 16 + 6 * 12) / 2;
+  for (let b = 0; b < 28; b++) {
+    const x = x0 + b * 16 + Math.floor(b / 4) * 12 + 4;
+    X.fillStyle = b === beat ? '#111' : b < beat ? '#A9A399' : '#CFCAC2';
+    X.beginPath(); X.arc(x, 1036, b === beat ? 4 : 3, 0, 7); X.fill();
+  }
+}
+function pointer(t) {
+  const [ux, uy] = cursor(t), z = tz.at(t), p = cursorPress(t);
+  const x = W / 2 + ux * z, y = H / 2 + uy * z, s = 2.3 * (1 - .14 * p);
+  X.save(); X.translate(x, y); X.scale(s, s);
+  X.beginPath(); X.moveTo(0, 0); X.lineTo(0, 17); X.lineTo(4.2, 13.1); X.lineTo(7, 19.4); X.lineTo(9.7, 18.3); X.lineTo(7, 12.1); X.lineTo(12.4, 12.1); X.closePath();
+  X.fillStyle = '#111'; X.fill(); X.strokeStyle = '#fff'; X.lineWidth = 1.4; X.lineJoin = 'round'; X.stroke();
+  X.restore();
+}
+
+// ---------- compose ----------
+function draw(t) {
+  X.fillStyle = BG; X.fillRect(0, 0, W, H);
+  const z = tz.at(t), st = stretch(t), w = tw.at(t) + st, h = th.at(t) - st * .08, r = tr.at(t), ox = st / 2;
+  const col = tc.map(c => cl(c.at(t), 0, 255)), pr = 1 - press(t);
+  X.save(); X.translate(W / 2, H / 2); X.scale(z * pr, z * pr);
+  // soft contact shadow (no glow)
+  X.save(); X.shadowColor = 'rgba(40,30,20,.16)'; X.shadowBlur = 26 * z; X.shadowOffsetY = 8 * z;
+  rr(ox - w / 2, -h / 2, w, h, r); X.fillStyle = rgb(col); X.fill(); X.restore();
+  X.save(); rr(ox - w / 2, -h / 2, w, h, r); X.clip();
+  X.textBaseline = 'alphabetic';
+  layer(Math.max(env(t, -1, 1.06), env(t, 13.62, 99)), () => cButton(t, w, h));
+  layer(env(t, 1.06, 2.02), () => cLoader(t));
+  layer(env(t, 2.0, 2.56), () => cCheck(t));
+  layer(env(t, 2.6, 3.56), () => cIsland(t));
+  layer(env(t, 3.62, 6.04), () => cPlayer(t, w, h));
+  layer(env(t, 6.1, 7.52), () => cSlider(t, w, h, ox));
+  // knob → tab indicator (a second body, same springs language)
+  const ke = env(t, 7.58, 11.52);
+  if (ke > 0) {
+    const L = kL.at(t), R = kR.at(t), y = -h / 2 + 28, kcol = kc.map(c => cl(c.at(t), 0, 255));
+    X.save(); X.globalAlpha *= ke; rr(L, y - 24, R - L, 48, 24); X.fillStyle = rgb(kcol); X.fill(); X.restore();
+  }
+  const te = env(t, 8.62, 11.52); if (te > 0) tabs(t, h, te);
+  layer(env(t, 10.12, 11.52), () => cChart(t, w, h));
+  layer(env(t, 11.58, 13.02), () => cCmd(t, w, h));
+  layer(env(t, 13.08, 13.56), () => cToast(t));
+  X.restore();
+  X.restore();
+  keycaps(t);
+  hud(t);
+  pointer(t);
+}
+function frame(t) {
+  X.setTransform(1, 0, 0, 1, 0, 0); X.fillStyle = BG; X.fillRect(0, 0, CW, CH);
+  X.setTransform(S, 0, 0, S, OX, OY); X.save(); X.beginPath(); X.rect(0, 0, W, H); X.clip(); draw(t); X.restore();
+}
+
+// ---------- runtime ----------
+function fit() { const dpr = Math.min(window.devicePixelRatio || 1, 1.5); const vw = Math.max(1, innerWidth), vh = Math.max(1, innerHeight);
+  CW = cv.width = Math.round(vw * dpr); CH = cv.height = Math.round(vh * dpr); S = Math.min(CW / W, CH / H); OX = (CW - W * S) / 2; OY = (CH - H * S) / 2; }
+let cur = 0, playing = true, t0 = performance.now(), raf = 0;
+const kick = () => { if (!raf && !document.hidden) raf = requestAnimationFrame(loop); };
+function loop(now) { raf = 0; if (!playing) return; cur = ((now - t0) / 1000) % D; frame(cur); kick(); }
+const fontsReady = Promise.race([
+  Promise.all([document.fonts.load(`600 20px Geist`, 'ConectPapr'), document.fonts.load(`500 20px Geist`, 'Halden'), document.fonts.load(`500 19px "Geist Mono"`, 'Button 01')]).catch(() => {}),
+  new Promise(r => setTimeout(r, 3000))
+]).then(() => frame(cur));
+window.DURATION = D;
+window.seek = (t) => { cur = ((+t % D) + D) % D; t0 = performance.now() - cur * 1000; return fontsReady.then(() => frame(cur)); };
+window.__demo = { play() { if (playing) return; playing = true; t0 = performance.now() - cur * 1000; kick(); }, pause() { playing = false; }, get playing() { return playing; }, get time() { return cur; } };
+addEventListener('message', e => { const d = e.data || {}; if (d.type === 'demo:play') __demo.play(); else if (d.type === 'demo:pause') __demo.pause(); else if (d.type === 'demo:seek') seek(+d.t || 0); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = 0; } else if (playing) { t0 = performance.now() - cur * 1000; kick(); } });
+addEventListener('resize', () => { fit(); frame(cur); });
+fit(); frame(0); kick();
+fontsReady.then(() => { try { parent.postMessage({ type: 'demo:ready', id: ID, duration: D }, '*'); } catch (e) {} });
+})();
+</script>
+</body>
+</html>

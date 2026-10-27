@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Room to Quarks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#0B0D10;overflow:hidden}
+#c,#hud{position:absolute;display:block}
+#hud{width:1920px;height:1080px;transform-origin:0 0;pointer-events:none;font-family:"JetBrains Mono","SFMono-Regular",Menlo,Consolas,monospace;color:#F1ECE2}
+.pn{position:absolute;background:rgba(10,12,16,.62);border:1px solid rgba(241,236,226,.14);border-radius:14px}
+#tl{left:64px;top:56px;padding:20px 28px}
+#tl .k{font-size:20px;letter-spacing:4px;color:#E9B45A}
+#tl .t{font-size:34px;font-weight:600;margin-top:6px}
+#bl{left:64px;bottom:56px;padding:24px 32px;min-width:520px}
+#lv{font-size:40px;font-weight:600;letter-spacing:2px}
+#cn{font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;font-size:30px;color:#CFC8BC;margin-top:4px}
+#sz{font-size:72px;font-weight:600;margin-top:14px;color:#E9B45A;font-variant-numeric:tabular-nums}
+#note{font-size:22px;color:#A9A397;margin-top:4px}
+#ru{right:64px;top:170px;width:210px;height:740px}
+#ru .tk{position:absolute;right:28px;height:1px;background:rgba(241,236,226,.35)}
+#ru .lb{position:absolute;right:64px;font-size:20px;color:#CFC8BC;transform:translateY(-50%)}
+#ru .dt{position:absolute;right:24px;width:10px;height:10px;border-radius:50%;background:rgba(233,180,90,.55);transform:translateY(-50%)}
+#mk{position:absolute;right:14px;width:60px;height:3px;background:#E9B45A;transform:translateY(-50%)}
+#ru .ax{position:absolute;right:28px;top:30px;bottom:30px;width:2px;background:rgba(241,236,226,.25)}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud">
+  <div id="tl" class="pn"><div class="k">ONE CONTINUOUS PUSH-IN</div><div class="t">ROOM → QUARKS</div></div>
+  <div id="bl" class="pn"><div id="lv">ROOM</div><div id="cn">房间</div><div id="sz">≈ 5 m</div><div id="note">~5 m across</div></div>
+  <div id="ru" class="pn"><div class="ax"></div><div id="mk"></div></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script>
+/* Room → quarks, 16 s, 16:9, three.js r134. Seven small scenes, one push-in:
+   each level's camera distance falls exponentially (constant zoom speed); at every hand-off the next level is
+   rendered to a render target and revealed as a circle growing from frame centre (0.7 s), so it reads as one shot.
+   0.0 room(~5 m) → 2.2 laptop(~30 cm, top case turns x-ray) → 4.4 processor die(~1 cm) → 6.6 silicon lattice(0.54 nm cell)
+   → 8.8 Si atom(~0.2 nm, nucleus enlarged) → 11.0 Si-28 nucleus(~7 fm) → 13.2 proton(~1.7 fm, uud + gluon flux tubes)
+   15.4–16.0 flat cross-fade back to the room at its first frame → seamless loop.
+   Scale readout = true view width (camera distance × fov × metres-per-unit of that level); log-interpolated across hand-offs.
+*/
+(() => {
+const DUR = 16, SEG = 2.2, OV = .35;
+const canvas = document.getElementById('c'), hud = document.getElementById('hud');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+const cl = x => x < 0 ? 0 : x > 1 ? 1 : x;
+const P = (t, a, b) => cl((t - a) / (b - a));
+const EIO = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const L = (a, b, k) => a + (b - a) * k;
+function rng(s) { return () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const FOV = 40, ASP = 16 / 9, VW = d => 2 * d * Math.tan(FOV * Math.PI / 360) * ASP;
+
+// ---------- small builders ----------
+const mat = (color, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color, roughness: .8, metalness: 0 }, o));
+function box(g, w, h, d, m, x, y, z) { const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), typeof m === 'string' ? mat(m) : m); b.position.set(x, y, z); g.add(b); return b; }
+function cyl(g, r1, r2, h, m, x, y, z, seg = 20) { const b = new THREE.Mesh(new THREE.CylinderGeometry(r1, r2, h, seg), typeof m === 'string' ? mat(m) : m); b.position.set(x, y, z); g.add(b); return b; }
+function sph(g, r, m, x, y, z, seg = 24) { const b = new THREE.Mesh(new THREE.SphereGeometry(r, seg, Math.max(8, seg * .6 | 0)), typeof m === 'string' ? mat(m) : m); b.position.set(x, y, z); g.add(b); return b; }
+function cvs(w, h, fn) { const c = document.createElement('canvas'); c.width = w; c.height = h; fn(c.getContext('2d'), w, h); const t = new THREE.CanvasTexture(c); t.anisotropy = 4; return t; }
+function lights(s, sky, ground, hi, dirCol, di, dpos) {
+  s.add(new THREE.HemisphereLight(sky, ground, hi));
+  const d = new THREE.DirectionalLight(dirCol, di); d.position.copy(dpos); s.add(d); return d;
+}
+function makeLevel(bg) { const scene = new THREE.Scene(); scene.background = new THREE.Color(bg); const cam = new THREE.PerspectiveCamera(FOV, ASP, .01, 100); return { scene, cam }; }
+function place(cam, target, dir, dist) { cam.position.copy(target).addScaledVector(dir, dist); cam.lookAt(target); cam.near = dist * .02; cam.far = dist * 80 + 30; cam.updateProjectionMatrix(); }
+const vlerp = (a, b, k) => a.clone().lerp(b, k);
+const dlerp = (a, b, k) => a.clone().lerp(b, k).normalize();
+
+// shared textures
+const screenTex = cvs(512, 320, (x, w, h) => {
+  x.fillStyle = '#16191F'; x.fillRect(0, 0, w, h);
+  x.fillStyle = '#1F242C'; x.fillRect(0, 0, 110, h); x.fillRect(0, 0, w, 26);
+  ['#E06C5A', '#E9B45A', '#6BBF8A'].forEach((c, i) => { x.fillStyle = c; x.beginPath(); x.arc(14 + i * 16, 13, 5, 0, 7); x.fill(); });
+  const R = rng(11), cols = ['#7FB4E8', '#E9B45A', '#9FD3A9', '#D98C7A', '#C9C3B8'];
+  for (let i = 0; i < 9; i++) { x.fillStyle = '#39414D'; x.fillRect(14, 44 + i * 26, 60 + R() * 30, 9); }
+  for (let i = 0; i < 17; i++) { let px = 130 + (i % 5 === 0 ? 0 : 20 + (i % 3) * 16); for (let k = 0; k < 3; k++) { const ww = 20 + R() * 90; x.fillStyle = cols[(R() * cols.length) | 0]; x.fillRect(px, 40 + i * 16, ww, 7); px += ww + 8; if (px > 470) break; } }
+  x.strokeStyle = '#E9B45A'; x.lineWidth = 3; x.beginPath(); for (let i = 0; i <= 10; i++) x.lineTo(360 + i * 13, 280 - Math.sin(i * .9) * 14 - i * 3); x.stroke();
+});
+const dotTex = cvs(64, 64, (x) => { const g = x.createRadialGradient(32, 32, 0, 32, 32, 32); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(.35, 'rgba(255,255,255,.55)'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0, 0, 64, 64); });
+
+// point cloud shader (flicker by time; deterministic)
+function pointsMat(size, opacity) {
+  return new THREE.ShaderMaterial({
+    uniforms: { time: { value: 0 }, size: { value: size }, scale: { value: 500 }, op: { value: opacity } },
+    vertexShader: 'attribute vec3 color; attribute float phase; uniform float time, size, scale; varying vec3 vC; varying float vA;' +
+      'void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); gl_Position = projectionMatrix * mv; vC = color;' +
+      'vA = 0.55 + 0.45 * sin(time * (2.0 + fract(phase * 7.0) * 3.0) + phase * 6.2831); gl_PointSize = min(size * scale / -mv.z, 48.0); }',
+    fragmentShader: 'uniform float op; varying vec3 vC; varying float vA; void main(){ float d = length(gl_PointCoord - 0.5); if (d > 0.5) discard; float a = pow(1.0 - d * 2.0, 1.6) * vA * op; gl_FragColor = vec4(vC * a, a); }',
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
+  });
+}
+function cloud(pos, cols, mat) {
+  const g = new THREE.BufferGeometry(), R = rng(pos.length);
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
+  g.setAttribute('phase', new THREE.Float32BufferAttribute(Array.from({ length: pos.length / 3 }, () => R()), 1));
+  return new THREE.Points(g, mat);
+}
+
+// ======================= LEVEL 0 : ROOM (1 unit = 1 m) =======================
+function levelRoom() {
+  const lv = makeLevel('#2A2521'), s = lv.scene; lv.m = 1;
+  lights(s, 0xFFF3E0, 0x5A4636, .8, 0xFFE2B8, .55, V(2, 3, -3));
+  const fill = new THREE.DirectionalLight(0xFFF1DE, .55); fill.position.set(-2, 2.5, 4); s.add(fill);
+  const lamp = new THREE.PointLight(0xFFC27A, .9, 3.2); lamp.position.set(-.22, 1.18, -2.25); s.add(lamp);
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(6, 6), mat('#7B5A42')); floor.rotation.x = -Math.PI / 2; floor.position.set(0, 0, 0.5); s.add(floor);
+  const ceil = new THREE.Mesh(new THREE.PlaneGeometry(6, 6), mat('#E8E2D8')); ceil.rotation.x = Math.PI / 2; ceil.position.set(0, 2.8, .5); s.add(ceil);
+  box(s, 6, 2.8, .05, '#D8CFC0', 0, 1.4, -2.5);
+  const lw = box(s, .05, 2.8, 6, '#CFC6B6', -3, 1.4, .5), rw = box(s, .05, 2.8, 6, '#D3CABB', 3, 1.4, .5);
+  box(s, 6, .1, .03, '#EFE9DE', 0, .05, -2.47);
+  // window with sky gradient
+  const skyT = cvs(128, 128, (x) => { const g = x.createLinearGradient(0, 0, 0, 128); g.addColorStop(0, '#BFD8EA'); g.addColorStop(.7, '#F4E7CF'); g.addColorStop(1, '#E8D2A8'); x.fillStyle = g; x.fillRect(0, 0, 128, 128); x.fillStyle = '#9DB39A'; for (let i = 0; i < 9; i++) { x.beginPath(); x.arc(i * 16, 118, 14 + (i % 3) * 5, 0, 7); x.fill(); } });
+  const glass = new THREE.Mesh(new THREE.PlaneGeometry(1.3, 1.1), new THREE.MeshBasicMaterial({ map: skyT })); glass.position.set(1.35, 1.6, -2.47); s.add(glass);
+  const wf = '#F2EEE6';
+  box(s, 1.42, .06, .06, wf, 1.35, 2.18, -2.46); box(s, 1.42, .06, .06, wf, 1.35, 1.02, -2.46); box(s, .06, 1.2, .06, wf, .64, 1.6, -2.46); box(s, .06, 1.2, .06, wf, 2.06, 1.6, -2.46);
+  box(s, .03, 1.1, .03, wf, 1.35, 1.6, -2.45); box(s, 1.3, .03, .03, wf, 1.35, 1.6, -2.45); box(s, 1.6, .04, .16, wf, 1.35, 1.0, -2.4);
+  // framed print
+  const art = cvs(160, 120, (x) => { x.fillStyle = '#EFE7D8'; x.fillRect(0, 0, 160, 120); x.fillStyle = '#C8553D'; x.beginPath(); x.arc(58, 60, 30, 0, 7); x.fill(); x.fillStyle = '#2F5F98'; x.fillRect(84, 26, 44, 68); x.fillStyle = '#E0AE3C'; x.fillRect(30, 96, 100, 6); });
+  box(s, .78, .58, .03, '#2B2724', -1.25, 1.65, -2.48);
+  const artM = new THREE.Mesh(new THREE.PlaneGeometry(.7, .5), new THREE.MeshBasicMaterial({ map: art })); artM.position.set(-1.25, 1.65, -2.46); s.add(artM);
+  // rug
+  const rug = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 1.7), mat('#8A4F3A')); rug.rotation.x = -Math.PI / 2; rug.position.set(.2, .004, -1.1); s.add(rug);
+  const rug2 = new THREE.Mesh(new THREE.PlaneGeometry(2.1, 1.4), mat('#A8674C')); rug2.rotation.x = -Math.PI / 2; rug2.position.set(.2, .006, -1.1); s.add(rug2);
+  // desk
+  box(s, 1.5, .04, .72, '#9A7652', .3, .74, -2.1);
+  [[-.4, -2.4], [1.0, -2.4], [-.4, -1.8], [1.0, -1.8]].forEach(([x, z]) => box(s, .04, .72, .04, '#2D2A27', x, .36, z));
+  box(s, .5, .16, .6, '#8C6A49', .72, .6, -2.1);
+  // laptop
+  const lap = new THREE.Group(); lap.position.set(.3, .76, -2.05); s.add(lap);
+  const alu = mat('#B9BCC0', { metalness: .6, roughness: .35 });
+  box(lap, .31, .012, .215, alu, 0, .006, 0); box(lap, .27, .002, .1, '#2A2C30', 0, .013, -.03); box(lap, .1, .002, .06, '#A6A9AE', 0, .013, .065);
+  const lid = new THREE.Group(); lid.position.set(0, .012, -.1075); lid.rotation.x = -.3; lap.add(lid);
+  box(lid, .31, .205, .006, alu, 0, .1025, 0);
+  const scr = new THREE.Mesh(new THREE.PlaneGeometry(.29, .18), new THREE.MeshBasicMaterial({ map: screenTex })); scr.position.set(0, .104, .0035); lid.add(scr);
+  // desk props
+  cyl(s, .04, .035, .1, '#E6E0D4', .75, .81, -1.95); box(s, .22, .02, .3, '#2F4B6E', -.15, .77, -1.95);
+  cyl(s, .08, .09, .02, '#2D2A27', -.22, .77, -2.3); cyl(s, .01, .01, .36, '#2D2A27', -.22, .95, -2.3);
+  const shade = cyl(s, .02, .08, .1, '#C8553D', -.2, 1.15, -2.25); shade.rotation.x = .4;
+  // chair
+  const ch = '#3D4A52';
+  box(s, .46, .05, .46, ch, .35, .46, -1.3); box(s, .46, .5, .04, ch, .35, .74, -1.08);
+  [[.14, -1.51], [.56, -1.51], [.14, -1.09], [.56, -1.09]].forEach(([x, z]) => box(s, .03, .46, .03, '#23272B', x, .23, z));
+  // bookshelf on the left wall
+  const sh = new THREE.Group(); sh.position.set(-2.78, 0, -1.2); s.add(sh);
+  const wood = '#6E4E36';
+  box(sh, .36, 1.9, .03, wood, 0, .95, -.5); box(sh, .36, 1.9, .03, wood, 0, .95, .5);
+  const R = rng(5), pal = ['#8C3B2E', '#2F4B6E', '#C9A24A', '#3F6B4F', '#D8CFC0', '#6A4A5A', '#B86A3C', '#1F2A30'];
+  for (let k = 0; k < 5; k++) {
+    const y = .05 + k * .45; box(sh, .36, .03, 1.0, wood, 0, y, 0);
+    if (k === 4) break;
+    let z = -.47; while (z < .44) { const w = .03 + R() * .04, h = .22 + R() * .12; if (R() < .12) { z += .06; continue; } box(sh, .24, h, w, pal[(R() * pal.length) | 0], .02, y + .015 + h / 2, z + w / 2); z += w + .004; }
+  }
+  // plant
+  cyl(s, .16, .12, .32, '#B9643C', -1.9, .16, -2.1);
+  const leaf = mat('#4E7A4A', { flatShading: true });
+  for (let i = 0; i < 9; i++) { const a = i * 2.4, r = .08 + (i % 3) * .05, m = sph(s, .13 + (i % 2) * .05, leaf, -1.9 + Math.cos(a) * r, .45 + i * .06, -2.1 + Math.sin(a) * r, 6); m.scale.set(1, .55, 1); m.rotation.set(a, a * .5, 0); }
+  const T0 = V(.3, .864, -2.188);
+  const d0 = V(-1.7, 1.8, 1.1).sub(T0), dist0 = d0.length(); d0.normalize();
+  const d1 = V(0, .2, 1).normalize();
+  lv.update = (p) => { const dist = dist0 * Math.pow(.5 / dist0, p); place(lv.cam, T0, dlerp(d0, d1, EIO(p)), dist); return dist; };
+  lv.info = ['ROOM', '房间', '~5 m across'];
+  return lv;
+}
+
+// ======================= LEVEL 1 : LAPTOP (1 unit = 10 cm) =======================
+function levelLaptop() {
+  const lv = makeLevel('#3A3129'), s = lv.scene; lv.m = .1;
+  lights(s, 0xFFF3E0, 0x4A3A2C, .85, 0xFFFFFF, .8, V(-3, 6, 4));
+  const desk = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), mat('#9A7652')); desk.rotation.x = -Math.PI / 2; s.add(desk);
+  const alu = mat('#B7BBC0', { metalness: .6, roughness: .38 });
+  box(s, 3.1, .1, 2.15, alu, 0, .05, 0);
+  // internals (revealed when the top case turns transparent)
+  box(s, 2.9, .01, 2.0, '#1B1D21', 0, .102, 0);
+  box(s, 2.3, .02, .95, '#1F5A3F', 0, .115, -.5);
+  [[-.9, .45], [-.3, .45], [.3, .45], [.9, .45]].forEach(([x, z]) => box(s, .5, .03, .7, '#3C4046', x, .12, z));
+  box(s, .34, .02, .34, '#2D3B33', 0, .135, -.42); box(s, .19, .012, .19, '#3A4048', 0, .15, -.42);
+  [[-.35, -.6], [-.35, -.3], [.35, -.6], [.35, -.3]].forEach(([x, z]) => box(s, .16, .02, .1, '#111317', x, .132, z));
+  const R = rng(9); for (let i = 0; i < 26; i++) box(s, .03 + R() * .05, .02, .02 + R() * .04, R() < .5 ? '#C9B27A' : '#2A2C30', (R() - .5) * 2.1, .13, -.5 + (R() - .5) * .85);
+  [-1.2, 1.2].forEach(x => cyl(s, .22, .22, .03, '#2A2C30', x, .125, -.55));
+  // top case + keys (fade to x-ray)
+  const topM = mat('#B7BBC0', { metalness: .6, roughness: .38, transparent: true });
+  const top = box(s, 3.08, .02, 2.12, topM, 0, .17, 0);
+  const keyM = mat('#1F2124', { transparent: true });
+  const keys = new THREE.InstancedMesh(new THREE.BoxGeometry(.19, .03, .17), keyM, 70), o = new THREE.Object3D();
+  let n = 0; for (let r = 0; r < 5; r++) for (let c = 0; c < 13; c++) { o.position.set(-1.28 + c * .213, .19, -.9 + r * .2); o.updateMatrix(); keys.setMatrixAt(n++, o.matrix); }
+  o.position.set(0, .19, .1); o.scale.set(6, 1, 1); o.updateMatrix(); keys.setMatrixAt(n++, o.matrix); keys.count = n; s.add(keys);
+  const padM = mat('#A9ADB2', { metalness: .5, roughness: .4, transparent: true }); box(s, 1.1, .006, .66, padM, 0, .182, .62);
+  // lid + screen
+  const lid = new THREE.Group(); lid.position.set(0, .18, -1.075); lid.rotation.x = -.3; s.add(lid);
+  box(lid, 3.1, 2.05, .06, alu, 0, 1.025, 0);
+  const scr = new THREE.Mesh(new THREE.PlaneGeometry(2.9, 1.8), new THREE.MeshBasicMaterial({ map: screenTex })); scr.position.set(0, 1.04, .032); lid.add(scr);
+  const Ta = V(0, .18 + 1.04 * Math.cos(.3), -1.075 - 1.04 * Math.sin(.3)), Tb = V(0, .15, -.42);
+  const da = V(0, .2, 1).normalize(), db = V(.06, 1, .32).normalize();
+  lv.update = (p) => {
+    const k = EIO(p), x = 1 - .93 * EIO(P(p, .38, .72));
+    [topM, keyM, padM].forEach(m => { m.opacity = x; m.depthWrite = x > .98; });
+    const dist = 5 * Math.pow(.45 / 5, p); place(lv.cam, vlerp(Ta, Tb, k), dlerp(da, db, k), dist); return dist;
+  };
+  lv.info = ['LAPTOP', '笔记本电脑', '~30 cm wide · top case shown as x-ray'];
+  return lv;
+}
+
+// ======================= LEVEL 2 : PROCESSOR DIE (1 unit = 7.5 mm) =======================
+function levelChip() {
+  const lv = makeLevel('#101418'), s = lv.scene; lv.m = .0075;
+  const key = lights(s, 0xDDE6F0, 0x1A2A22, .7, 0xFFFFFF, 1.0, V(3, 5, 2));
+  const pcb = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), mat('#1B4A35', { roughness: .6 })); pcb.rotation.x = -Math.PI / 2; pcb.position.y = -.06; s.add(pcb);
+  const R = rng(21); for (let i = 0; i < 40; i++) { const a = R() * 6.28, r = 2.2 + R() * 4; box(s, .1 + R() * .3, .06, .08 + R() * .2, R() < .6 ? '#15181C' : '#B39A5A', Math.cos(a) * r, -.03, Math.sin(a) * r); }
+  box(s, 3, .08, 3, mat('#2A3A30', { roughness: .55 }), 0, 0, 0);
+  const padG = new THREE.InstancedMesh(new THREE.BoxGeometry(.06, .01, .12), mat('#C9A95A', { metalness: .8, roughness: .3 }), 88), o = new THREE.Object3D();
+  let n = 0; for (let side = 0; side < 4; side++) for (let i = 0; i < 22; i++) { const u = -1.3 + i * .124; o.position.set(side < 2 ? u : (side === 2 ? -1.42 : 1.42), .045, side < 2 ? (side ? 1.42 : -1.42) : u); o.rotation.y = side < 2 ? 0 : Math.PI / 2; o.updateMatrix(); padG.setMatrixAt(n++, o.matrix); }
+  s.add(padG);
+  box(s, 1.72, .03, 1.72, mat('#1E2228', { metalness: .4, roughness: .4 }), 0, .055, 0);
+  const dieT = cvs(1024, 1024, (x, w, h) => {
+    const R = rng(33); x.fillStyle = '#242A31'; x.fillRect(0, 0, w, h);
+    x.fillStyle = '#8A7A52'; for (let i = 0; i < 48; i++) { const u = 40 + i * 19.6; x.fillRect(u, 14, 10, 22); x.fillRect(u, h - 36, 10, 22); x.fillRect(14, u, 22, 10); x.fillRect(w - 36, u, 22, 10); }
+    const B = [[60, 60, 410, 390, '#3D6670', 'core'], [490, 60, 180, 390, '#6B5A3E', 'cache'], [690, 60, 274, 570, '#3A4D63', 'gpu'], [60, 470, 410, 190, '#6B5A3E', 'cache'], [60, 680, 250, 284, '#46505D', 'io'], [330, 680, 340, 284, '#4F6A58', 'npu'], [690, 650, 274, 314, '#6B5A3E', 'cache'], [490, 470, 180, 190, '#3D6670', 'core2']];
+    B.forEach(([bx, by, bw, bh, c, k]) => {
+      x.fillStyle = c; x.fillRect(bx, by, bw, bh); x.strokeStyle = 'rgba(0,0,0,.35)'; x.lineWidth = 3; x.strokeRect(bx, by, bw, bh);
+      if (k === 'cache') { x.strokeStyle = 'rgba(230,210,160,.28)'; x.lineWidth = 1; x.beginPath(); for (let u = bx + 4; u < bx + bw; u += 5) { x.moveTo(u, by); x.lineTo(u, by + bh); } for (let v = by + 4; v < by + bh; v += 5) { x.moveTo(bx, v); x.lineTo(bx + bw, v); } x.stroke(); }
+      if (k === 'core' || k === 'core2') { const nx = k === 'core' ? 2 : 2, ny = k === 'core' ? 2 : 2, cw = (bw - 30) / nx, chh = (bh - 30) / ny; for (let i = 0; i < nx; i++) for (let j = 0; j < ny; j++) { const px = bx + 10 + i * (cw + 10), py = by + 10 + j * (chh + 10); x.fillStyle = 'rgba(160,200,205,.22)'; x.fillRect(px, py, cw, chh); x.fillStyle = 'rgba(20,30,34,.5)'; for (let q = 0; q < 6; q++) x.fillRect(px + R() * cw * .7, py + R() * chh * .7, cw * (.1 + R() * .25), chh * (.08 + R() * .2)); } }
+      if (k === 'gpu') { for (let i = 0; i < 4; i++) for (let j = 0; j < 8; j++) { x.fillStyle = (i + j) % 2 ? 'rgba(150,175,210,.22)' : 'rgba(150,175,210,.12)'; x.fillRect(bx + 8 + i * 65, by + 8 + j * 69, 58, 62); } }
+      if (k === 'npu') { x.fillStyle = 'rgba(200,230,200,.35)'; for (let u = bx + 10; u < bx + bw - 6; u += 12) for (let v = by + 10; v < by + bh - 6; v += 12) x.fillRect(u, v, 6, 6); }
+      if (k === 'io') { x.fillStyle = 'rgba(220,200,150,.25)'; for (let v = by + 8; v < by + bh; v += 14) x.fillRect(bx + 8, v, bw - 16, 6); }
+    });
+    x.strokeStyle = 'rgba(200,180,120,.18)'; x.lineWidth = 1.5; for (let i = 0; i < 90; i++) { const px = 60 + R() * 900, py = 60 + R() * 900; x.beginPath(); x.moveTo(px, py); x.lineTo(px + (R() < .5 ? (R() - .5) * 300 : 0), py + (R() < .5 ? 0 : (R() - .5) * 300)); x.stroke(); }
+  });
+  const die = new THREE.Mesh(new THREE.PlaneGeometry(1.7, 1.7), mat('#FFFFFF', { map: dieT, metalness: .45, roughness: .38 })); die.rotation.x = -Math.PI / 2; die.position.y = .0705; s.add(die);
+  const tgt = V((580 / 1024 - .5) * 1.7, .07, (255 / 1024 - .5) * 1.7);
+  const finT = cvs(512, 512, (x, w, h) => { x.fillStyle = '#1E232A'; x.fillRect(0, 0, w, h); x.fillStyle = '#7C90A5'; for (let u = 6; u < w; u += 16) x.fillRect(u, 0, 5, h); x.fillStyle = '#B58D57'; for (let v = 10; v < h; v += 42) x.fillRect(0, v, w, 12); x.fillStyle = '#D9C9A0'; for (let u = 6; u < w; u += 32) for (let v = 30; v < h; v += 42) x.fillRect(u, v, 5, 6); });
+  finT.wrapS = finT.wrapT = THREE.RepeatWrapping; finT.repeat.set(3, 3);
+  const finM = new THREE.MeshStandardMaterial({ map: finT, transparent: true, opacity: 0, metalness: .3, roughness: .5 });
+  const fin = new THREE.Mesh(new THREE.PlaneGeometry(.26, .26), finM); fin.rotation.x = -Math.PI / 2; fin.position.set(tgt.x, .0712, tgt.z); s.add(fin);
+  const da = V(.35, 1, .8).normalize(), db = V(.1, 1, .3).normalize(), T0 = V(0, 0, 0);
+  lv.update = (p, t) => {
+    finM.opacity = EIO(P(p, .55, .92));
+    key.position.set(3 * Math.cos(t * .4), 5, 2 * Math.sin(t * .4) + 2);
+    const dist = 5.2 * Math.pow(.22 / 5.2, p); place(lv.cam, vlerp(T0, tgt, EIO(p)), dlerp(da, db, EIO(p)), dist); return dist;
+  };
+  lv.info = ['PROCESSOR DIE', '处理器芯片（通用示意）', 'die ~1 cm · billions of transistors'];
+  return lv;
+}
+
+// ======================= LEVEL 3 : SILICON LATTICE (1 unit = 0.543 nm) =======================
+function levelLattice() {
+  const lv = makeLevel('#0B1220'), s = lv.scene; lv.m = 5.43e-10;
+  lights(s, 0xCFE0F5, 0x0B1220, .75, 0xFFFFFF, .9, V(3, 4, 5));
+  s.fog = new THREE.Fog('#0B1220', 2, 8);
+  const basis = [[0, 0, 0], [0, .5, .5], [.5, 0, .5], [.5, .5, 0]], pts = [], seen = new Set();
+  for (let i = 0; i <= 3; i++) for (let j = 0; j <= 3; j++) for (let k = 0; k <= 3; k++) for (const off of [0, .25]) for (const b of basis) {
+    const p = [i + b[0] + off, j + b[1] + off, k + b[2] + off]; if (p.some(v => v > 3.001)) continue;
+    const key = p.map(v => Math.round(v * 4)).join(','); if (seen.has(key)) continue; seen.add(key); pts.push(V(p[0] - 1.5, p[1] - 1.5, p[2] - 1.5));
+  }
+  const atoms = new THREE.InstancedMesh(new THREE.SphereGeometry(.085, 20, 14), mat('#A9C1D9', { roughness: .35, metalness: .2 }), pts.length), o = new THREE.Object3D();
+  pts.forEach((p, i) => { o.position.copy(p); o.updateMatrix(); atoms.setMatrixAt(i, o.matrix); }); s.add(atoms);
+  const bonds = [];
+  for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) if (Math.abs(pts[i].distanceTo(pts[j]) - .433) < .01) bonds.push([i, j]);
+  const bm = new THREE.InstancedMesh(new THREE.CylinderGeometry(.022, .022, 1, 8), mat('#6D8299', { roughness: .5 }), bonds.length), up = V(0, 1, 0);
+  bonds.forEach(([i, j], n) => { const a = pts[i], b = pts[j], d = b.clone().sub(a); o.position.copy(a).addScaledVector(d, .5); o.quaternion.setFromUnitVectors(up, d.clone().normalize()); o.scale.set(1, d.length(), 1); o.updateMatrix(); bm.setMatrixAt(n, o.matrix); o.scale.set(1, 1, 1); });
+  s.add(bm);
+  let best = pts[0]; pts.forEach(p => { if (p.length() < best.length()) best = p; });
+  const da = V(1, .75, 1.5).normalize(), db = V(.35, .45, 1).normalize(), T0 = V(0, 0, 0);
+  lv.update = (p) => { const dist = 3.1 * Math.pow(.4 / 3.1, p); s.fog.near = dist * .7; s.fog.far = dist * 3.2; place(lv.cam, vlerp(T0, best, EIO(p)), dlerp(da, db, EIO(p)), dist); return dist; };
+  lv.info = ['SILICON CRYSTAL', '硅晶格（金刚石结构）', 'unit cell 0.543 nm'];
+  return lv;
+}
+
+// ======================= LEVEL 4 : SILICON ATOM (1 unit = 0.11 nm) =======================
+function levelAtom() {
+  const lv = makeLevel('#070A12'), s = lv.scene; lv.m = 1.1e-10;
+  const R = rng(44), pos = [], col = [];
+  const gauss = () => Math.sqrt(-2 * Math.log(R() + 1e-9)) * Math.cos(6.2832 * R());
+  const push = (x, y, z, c) => { pos.push(x, y, z); col.push(...c); };
+  for (let i = 0; i < 1400; i++) { const r = .05 + Math.abs(gauss()) * .12, u = R() * 2 - 1, a = R() * 6.2832, q = Math.sqrt(1 - u * u); push(r * q * Math.cos(a), r * u, r * q * Math.sin(a), [1, .85, .7]); }
+  for (let i = 0; i < 2200; i++) { const r = -Math.log(R() * R() * R() + 1e-9) * .2, u = R() * 2 - 1, a = R() * 6.2832, q = Math.sqrt(1 - u * u); push(r * q * Math.cos(a), r * u, r * q * Math.sin(a), [.45, .75, 1]); }
+  for (let i = 0; i < 2600; i++) { // 3p lobes along x and y (cos² angular weighting)
+    let x, y, z, ax = i % 2; do { x = gauss() * .5; y = gauss() * .5; z = gauss() * .5; } while (R() > Math.pow((ax ? y : x), 2) / (x * x + y * y + z * z));
+    const k = .9 + R() * .3; push(x * k, y * k, z * k, [.55, .85, 1]);
+  }
+  const pm = pointsMat(.028, .9), pc = cloud(pos, col, pm); s.add(pc);
+  const nuc = sph(s, .028, new THREE.MeshBasicMaterial({ color: '#FFB27A' }), 0, 0, 0, 16);
+  const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: dotTex, color: '#FF9A5A', transparent: true, opacity: .8, blending: THREE.AdditiveBlending, depthWrite: false })); halo.scale.set(.16, .16, 1); s.add(halo);
+  const da = V(.3, .35, 1).normalize(), db = V(.15, .2, 1).normalize(), T0 = V(0, 0, 0);
+  lv.update = (p, t) => {
+    pm.uniforms.time.value = t; pm.uniforms.scale.value = renderer.domElement.height / 2 / Math.tan(FOV * Math.PI / 360);
+    pc.rotation.y = t * .25; pc.rotation.x = .3;
+    const dist = 2.7 * Math.pow(.1 / 2.7, p); place(lv.cam, T0, dlerp(da, db, EIO(p)), dist); return dist;
+  };
+  lv.info = ['SILICON ATOM', '硅原子（电子云）', '~0.2 nm · nucleus drawn ~1000× too big'];
+  return lv;
+}
+
+// ======================= LEVEL 5 : NUCLEUS Si-28 (1 unit = 1.68 fm) =======================
+function levelNucleus() {
+  const lv = makeLevel('#0A0A12'), s = lv.scene; lv.m = 1.68e-15;
+  lights(s, 0xFFE8D8, 0x10101A, .6, 0xFFFFFF, 1.1, V(3, 4, 5));
+  const R = rng(28), P3 = [];
+  for (let i = 0; i < 28; i++) { let v; do { v = V(R() * 2 - 1, R() * 2 - 1, R() * 2 - 1); } while (v.length() > 1); P3.push(v.multiplyScalar(1.6)); }
+  for (let it = 0; it < 120; it++) { for (let i = 0; i < 28; i++) { for (let j = i + 1; j < 28; j++) { const d = P3[j].clone().sub(P3[i]), l = d.length(); if (l < .98) { d.multiplyScalar((.98 - l) / (l + 1e-6) * .5); P3[i].sub(d); P3[j].add(d); } } P3[i].multiplyScalar(.985); } }
+  const pM = mat('#D9573B', { roughness: .45 }), nM = mat('#8C9BB0', { roughness: .45 });
+  let tgt = 0; P3.forEach((p, i) => { if (i % 2 === 0 && p.z > P3[tgt].z) tgt = i; });
+  const tM = mat('#D9573B', { roughness: .45, transparent: true });
+  const meshes = P3.map((p, i) => sph(s, .5, i === tgt ? tM : (i % 2 ? nM : pM), p.x, p.y, p.z, 28));
+  const ph = P3.map(() => [R() * 6.28, R() * 6.28, R() * 6.28]);
+  const N = P3[tgt].clone().normalize(), da = V(.25, .3, 1).normalize();
+  lv.update = (p, t) => {
+    meshes.forEach((m, i) => { const q = ph[i]; m.position.set(P3[i].x + .03 * Math.sin(t * 5 + q[0]), P3[i].y + .03 * Math.sin(t * 6 + q[1]), P3[i].z + .03 * Math.sin(t * 4 + q[2])); });
+    tM.opacity = 1 - .75 * EIO(P(p, .75, 1)); tM.depthWrite = tM.opacity > .98;
+    const tp = meshes[tgt].position, k = EIO(p);
+    const dist = 6.5 * Math.pow(1.15 / 6.5, p); place(lv.cam, vlerp(V(0, 0, 0), tp, k), dlerp(da, N, k), dist); return dist;
+  };
+  lv.info = ['NUCLEUS · Si-28', '原子核（14 质子 + 14 中子）', '~7 fm across'];
+  return lv;
+}
+
+// ======================= LEVEL 6 : PROTON (1 unit = 0.84 fm) =======================
+function levelProton() {
+  const lv = makeLevel('#0A0810'), s = lv.scene; lv.m = 8.4e-16;
+  const shellB = new THREE.Mesh(new THREE.SphereGeometry(1, 40, 28), new THREE.MeshBasicMaterial({ color: '#D9573B', transparent: true, opacity: .1, side: THREE.BackSide, depthWrite: false }));
+  const shellF = new THREE.Mesh(new THREE.SphereGeometry(1, 40, 28), new THREE.MeshBasicMaterial({ color: '#FF8A6A', transparent: true, opacity: .05, depthWrite: false }));
+  s.add(shellB, shellF);
+  const R = rng(66), pos = [], col = [], cols = [[1, .35, .3], [.35, 1, .55], [.4, .6, 1], [1, .9, .75]];
+  for (let i = 0; i < 1800; i++) { let v; do { v = [R() * 2 - 1, R() * 2 - 1, R() * 2 - 1]; } while (v[0] ** 2 + v[1] ** 2 + v[2] ** 2 > .9); pos.push(...v); col.push(...cols[(R() * 4) | 0]); }
+  const pm = pointsMat(.035, .55), sea = cloud(pos, col, pm); s.add(sea);
+  const qc = ['#FF5A4E', '#56D68A', '#5AA0FF'], qn = ['u', 'u', 'd'];
+  const quarks = qc.map((c, i) => {
+    const m = sph(s, .11, new THREE.MeshBasicMaterial({ color: c }), 0, 0, 0, 20);
+    const h = new THREE.Sprite(new THREE.SpriteMaterial({ map: dotTex, color: c, transparent: true, opacity: .7, blending: THREE.AdditiveBlending, depthWrite: false })); h.scale.set(.5, .5, 1); m.add(h);
+    const lab = new THREE.Sprite(new THREE.SpriteMaterial({ map: cvs(96, 96, (x) => { x.fillStyle = '#F1ECE2'; x.font = '600 64px "JetBrains Mono",monospace'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(qn[i], 48, 50); }), transparent: true, depthTest: false }));
+    lab.scale.set(.22, .22, 1); lab.position.set(.2, .2, 0); m.add(lab);
+    return m;
+  });
+  // gluon flux tubes (Y-junction), coiled in the vertex shader
+  const tubeG = new THREE.TubeGeometry(new THREE.LineCurve3(V(0, 0, 0), V(1, 0, 0)), 90, .018, 6, false);
+  const gm = new THREE.ShaderMaterial({
+    uniforms: { time: { value: 0 } }, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    vertexShader: 'uniform float time; varying float vS; void main(){ vec3 p = position; float s = p.x; float ph = s * 42.0 - time * 9.0; float env = 0.6 + 0.4 * sin(3.14159 * s); p.y += cos(ph) * 0.05 * env; p.z += sin(ph) * 0.05 * env; vS = s; gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0); }',
+    fragmentShader: 'varying float vS; void main(){ gl_FragColor = vec4(vec3(1.0, 0.86, 0.55) * (0.75 + 0.25 * sin(vS * 30.0)), 0.85); }'
+  });
+  const tubes = [0, 1, 2].map(() => { const m = new THREE.Mesh(tubeG, gm); s.add(m); return m; });
+  const base = [V(.42, .28, 0), V(-.4, .3, .12), V(0, -.45, -.1)], X = V(1, 0, 0);
+  lv.update = (p, t) => {
+    pm.uniforms.time.value = t; pm.uniforms.scale.value = renderer.domElement.height / 2 / Math.tan(FOV * Math.PI / 360); gm.uniforms.time.value = t;
+    const cen = V(0, 0, 0);
+    quarks.forEach((q, i) => { const b = base[i]; q.position.set(b.x + .12 * Math.sin(t * 1.7 + i * 2), b.y + .1 * Math.sin(t * 1.3 + i * 4), b.z + .12 * Math.cos(t * 1.1 + i)); cen.add(q.position); });
+    cen.multiplyScalar(1 / 3);
+    tubes.forEach((m, i) => { const d = quarks[i].position.clone().sub(cen); m.position.copy(cen); m.quaternion.setFromUnitVectors(X, d.clone().normalize()); m.scale.set(d.length(), 1, 1); });
+    sea.rotation.y = t * .15;
+    const a = .4 + p * .9, dist = 3.6 * Math.pow(2.3 / 3.6, p);
+    place(lv.cam, V(0, 0, 0), V(Math.sin(a) * .5, .25, Math.cos(a)).normalize(), dist); return dist;
+  };
+  lv.info = ['PROTON', '质子：两个上夸克 + 一个下夸克', '~1.7 fm · quarks bound by gluons'];
+  return lv;
+}
+
+const LV = [levelRoom(), levelLaptop(), levelChip(), levelLattice(), levelAtom(), levelNucleus(), levelProton()];
+const win = i => i === 0 ? [0, SEG + OV] : i === 6 ? [6 * SEG - OV, DUR] : [i * SEG - OV, (i + 1) * SEG + OV];
+function upd(i, t) { const [a, b] = win(i), lv = LV[i], d = lv.update(cl((t - a) / (b - a)), t); return VW(d) * lv.m; }
+
+// ---------- composite (next level revealed as a growing circle) ----------
+let rt = null;
+function makeRT(w, h) {
+  if (rt) rt.dispose();
+  const MS = renderer.capabilities.isWebGL2 && THREE.WebGLMultisampleRenderTarget;
+  rt = MS ? new THREE.WebGLMultisampleRenderTarget(w, h) : new THREE.WebGLRenderTarget(w, h);
+  quad.material.uniforms.tex.value = rt.texture;
+}
+const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial({
+  uniforms: { tex: { value: null }, R: { value: 0 }, uFlat: { value: 0 }, op: { value: 1 }, aspect: { value: ASP } },
+  vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
+  fragmentShader: 'uniform sampler2D tex; uniform float R, uFlat, op, aspect; varying vec2 vUv; void main(){ vec4 c = texture2D(tex, vUv); float d = length((vUv - 0.5) * vec2(aspect, 1.0)); float m = 1.0 - smoothstep(R - 0.22, R, d); m = mix(m, 1.0, uFlat); gl_FragColor = vec4(c.rgb, m * op); }',
+  transparent: true, depthTest: false, depthWrite: false
+}));
+const qScene = new THREE.Scene(); qScene.add(quad); const qCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+// ---------- HUD ----------
+const $ = id => document.getElementById(id);
+const ru = $('ru'), mk = $('mk'), RU_TOP = 60, RU_H = 620, LOG_HI = 1, LOG_LO = -16;
+const ly = lg => RU_TOP + (LOG_HI - lg) / (LOG_HI - LOG_LO) * RU_H;
+for (let e = LOG_HI; e >= LOG_LO; e--) {
+  const tk = document.createElement('div'); tk.className = 'tk'; tk.style.top = ly(e) + 'px'; tk.style.width = e % 3 === 0 ? '26px' : '12px'; ru.appendChild(tk);
+  if (e % 3 === 0) { const lb = document.createElement('div'); lb.className = 'lb'; lb.style.top = ly(e) + 'px'; lb.textContent = '10' + (e < 0 ? '⁻' : '') + String(Math.abs(e)).split('').map(c => '⁰¹²³⁴⁵⁶⁷⁸⁹'[c]).join('') + ' m'; ru.appendChild(lb); }
+}
+[5, .3, .01, 5.43e-10, 2.2e-10, 7e-15, 1.7e-15].forEach(v => { const d = document.createElement('div'); d.className = 'dt'; d.style.top = ly(Math.log10(v)) + 'px'; ru.appendChild(d); });
+function fmtLen(m) {
+  const U = [[1, 'm'], [1e-2, 'cm'], [1e-3, 'mm'], [1e-6, 'µm'], [1e-9, 'nm'], [1e-12, 'pm'], [1e-15, 'fm']];
+  let u = U[U.length - 1]; for (const x of U) if (m >= x[0] * .995) { u = x; break; }
+  const v = m / u[0]; return '≈ ' + (v >= 100 ? v.toFixed(0) : v >= 10 ? v.toFixed(1) : v.toFixed(2)) + ' ' + u[1];
+}
+let lastInfo = -1;
+function hudSet(i, meters) {
+  if (i !== lastInfo) { const f = LV[i].info; $('lv').textContent = f[0]; $('cn').textContent = f[1]; $('note').textContent = f[2]; lastInfo = i; }
+  $('sz').textContent = fmtLen(meters);
+  mk.style.top = ly(Math.log10(meters)) + 'px';
+}
+
+// ---------- frame ----------
+function frame(t) {
+  let A = 0; for (let i = 0; i < 7; i++) if (t >= win(i)[0]) A = i;
+  const loopK = P(t, 6 * SEG + 2 * 0 + (DUR - 6 * SEG - .6 - 0) + 0, DUR); // 15.4 → 16.0
+  let B = -1, f = 0, flat = 0;
+  if (t >= DUR - .6) { B = 0; f = P(t, DUR - .6, DUR); flat = 1; A = 6; }
+  else if (A > 0 && t < A * SEG + OV) { B = A; A = A - 1; f = P(t, B * SEG - OV, B * SEG + OV); }
+  renderer.setRenderTarget(null); renderer.autoClear = true;
+  const mA = upd(A, t);
+  renderer.render(LV[A].scene, LV[A].cam);
+  let meters = mA, info = A;
+  if (B >= 0) {
+    const mB = B === 0 && flat ? (LV[0].update(0, t), VW(LV[0].cam.position.distanceTo(V(.3, .864, -2.188))) * LV[0].m) : upd(B, t);
+    renderer.setRenderTarget(rt); renderer.clear(); renderer.render(LV[B].scene, LV[B].cam); renderer.setRenderTarget(null);
+    const e = EIO(f);
+    quad.material.uniforms.R.value = e * 1.35; quad.material.uniforms.uFlat.value = flat; quad.material.uniforms.op.value = flat ? e : Math.min(1, f * 2.5);
+    renderer.autoClear = false; renderer.render(qScene, qCam); renderer.autoClear = true;
+    meters = Math.pow(10, L(Math.log10(mA), Math.log10(mB), e)); if (f > .5) info = B;
+  }
+  hudSet(info, meters);
+}
+
+// ---------- runtime (contract) ----------
+let cur = 0, playing = true, t0 = performance.now(), raf = 0;
+function resize() {
+  const s = Math.min(innerWidth / 1920, innerHeight / 1080), w = 1920 * s, h = 1080 * s, l = (innerWidth - w) / 2, tp = (innerHeight - h) / 2;
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5)); renderer.setSize(w, h, false);
+  canvas.style.width = w + 'px'; canvas.style.height = h + 'px'; canvas.style.left = l + 'px'; canvas.style.top = tp + 'px';
+  hud.style.left = l + 'px'; hud.style.top = tp + 'px'; hud.style.transform = `scale(${s})`;
+  makeRT(renderer.domElement.width, renderer.domElement.height); frame(cur);
+}
+function loop(now) { if (!playing) return; cur = ((now - t0) / 1000) % DUR; frame(cur); raf = requestAnimationFrame(loop); }
+window.DURATION = DUR;
+window.seek = t => { cur = ((+t % DUR) + DUR) % DUR; t0 = performance.now() - cur * 1000; frame(cur); return document.fonts ? document.fonts.ready.then(() => frame(cur)) : undefined; };
+window.__demo = {
+  play() { if (playing) return; playing = true; t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); },
+  pause() { playing = false; cancelAnimationFrame(raf); },
+  get playing() { return playing; }, get time() { return cur; }
+};
+addEventListener('message', e => {
+  const d = e.data || {};
+  if (d.type === 'demo:play') __demo.play(); else if (d.type === 'demo:pause') __demo.pause(); else if (d.type === 'demo:seek') seek(d.t || 0);
+});
+document.addEventListener('visibilitychange', () => {
+  cancelAnimationFrame(raf);
+  if (!document.hidden && playing) { t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); }
+});
+addEventListener('resize', resize);
+resize();
+raf = requestAnimationFrame(loop);
+try { parent.postMessage({ type: 'demo:ready', id: 'v09-room-to-quarks', duration: DUR }, '*'); } catch (e) {}
+})();
+</script>
+</body>
+</html>

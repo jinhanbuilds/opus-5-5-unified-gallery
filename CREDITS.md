@@ -43,4 +43,20 @@ W01、W02、W03、W04 与 100 案例中的 001、008、015、026 共用创意段
 - **精选演示：** 22 条片库中的 HTML 演示按提示词制作，使用的虚构示例与简化之处在各条详情说明；它们不是原作者发布的视频或网页原件。
 - **背景音效：** 15 条视频型演示的音效由本项目程序生成，只在用户开启后播放。未使用原作者的音轨、外部歌曲、音效采样或配音。
 
+## 2026-10-27 新增的 100 条案例
+
+| 作者 / 项目 | 条目数 | 原作与许可记录 |
+| --- | ---: | --- |
+| [LemoLab / lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) | 15 | 代码和文档 MIT；演示影片与静帧 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)；第三方素材另循原许可 |
+| [Vincentwei1021 / mg-styles-15](https://github.com/Vincentwei1021/mg-styles-15) | 13 | 项目 MIT，第三方字体与素材另循原许可 |
+| [OpenVGLab / frontend showcases](https://github.com/OpenVGLab/awesome-opus5.5-frontend-showcases) | 15 | MIT，第三方运行库另循原许可 |
+| [Avi Levi](https://www.avilevi.co.il/en/blog/opus-5-5-motion-graphics-prompts/) | 15 | 作者未声明源码统一再分发许可；本地审阅 |
+| [swan4er / opus-100-projects](https://github.com/swan4er/opus-100-projects) | 14 | 仓库未提供统一开源许可；本地审阅 |
+| [ThreeJSEval](https://threejseval.com/models/claude-opus-5-5-high) | 14 | 平台未声明提交源码统一再分发许可；本地审阅 |
+| [Maoku / Optical Illusion Museum](https://github.com/Maoku/Opus55OpticalIllusion) | 14 | MIT，three.js 使用其原许可 |
+
+完整本地版使用原作源码，进行静态打包、资源路径、完整字体封装、播放控制和窄屏观察视角适配。Lemo 和 MG 音轨由作者原片提取；Avi 与网页作品保留原生音频逻辑。它们与此前 15 条后补音效不同。中文效果说明、用途、技法与改写模板由本图鉴编辑整理。妙搭图片来自原作运行截图，仅作缩放与 JPEG 压缩，没有用生成图片替换原作。
+
+逐条原件、提示词 / 配方、固定提交、模型归因、资源处理和未确定项见 [新增来源与主清单](docs/new-100-sources.md)及 `data/new-cases.json`。完整本地版保留全部原作源码；妙搭版按体积与源码许可提供动态演示或截图，具体配比见 [妙搭更新说明](docs/miaoda-update.md)。GitHub 同步工程代码、说明与同一公开静态版；完整本地原件继续留在本机。
+
 原作者的作品、提示词及外部内容归各自权利人所有。本仓库没有为全部内容授予统一的再使用许可。如果来源或署名需要更正，请在 Issue 中指出条目和可核对的原始链接。

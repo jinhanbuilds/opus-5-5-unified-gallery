@@ -1,0 +1,1452 @@
+{
+  "date": "2026-10-27T13:39:07.615Z",
+  "buildFingerprint": "5d351cd8c3124f11c11a4da36940d1267367c636a46e0e06987380abdd4d4050",
+  "count": 44,
+  "passed": 44,
+  "results": [
+    {
+      "id": "n029",
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "move active chef",
+        "before": {
+          "x": 416,
+          "y": 314,
+          "held": null,
+          "cell": [
+            3,
+            2
+          ]
+        },
+        "after": {
+          "x": 416,
+          "y": 425,
+          "held": null,
+          "cell": [
+            3,
+            4
+          ]
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n030",
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "wait for countdown, accelerate and steer",
+        "before": {
+          "state": "playing",
+          "diff": 1,
+          "lap": 0,
+          "place": 8,
+          "finalPlace": 0,
+          "z": 282860,
+          "v": 0,
+          "x": 0.34,
+          "raceT": 0.03,
+          "laps": [],
+          "drift": 0,
+          "dLvl": 0,
+          "boost": 0,
+          "item": 0,
+          "spin": 0,
+          "sprites": 58,
+          "clips": 0,
+          "finished": 0,
+          "N": 1429,
+          "TL": 285800,
+          "places": [
+            8,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "laps8": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "state": "playing",
+          "diff": 1,
+          "lap": 0,
+          "place": 8,
+          "finalPlace": 0,
+          "z": 285794,
+          "v": 4976,
+          "x": 1.49,
+          "raceT": 0.95,
+          "laps": [],
+          "drift": 0,
+          "dLvl": 0,
+          "boost": 0,
+          "item": 0,
+          "spin": 0,
+          "sprites": 57,
+          "clips": 0,
+          "finished": 0,
+          "N": 1429,
+          "TL": 285800,
+          "places": [
+            8,
+            3,
+            1,
+            5,
+            6,
+            7,
+            2,
+            4
+          ],
+          "laps8": [
+            0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n031",
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "wait for intro, run and jump",
+        "before": {
+          "state": "playing",
+          "level": 0,
+          "col": 3,
+          "x": 153,
+          "y": 582,
+          "power": 0,
+          "lives": 3,
+          "coins": 0,
+          "score": 0,
+          "time": 400,
+          "ents": 0,
+          "cam": 0,
+          "ground": false,
+          "cp": null,
+          "kills": 0,
+          "lc": -1
+        },
+        "after": {
+          "state": "playing",
+          "level": 0,
+          "col": 7,
+          "x": 322,
+          "y": 582,
+          "power": 0,
+          "lives": 3,
+          "coins": 0,
+          "score": 0,
+          "time": 399,
+          "ents": 1,
+          "cam": 0,
+          "ground": true,
+          "cp": null,
+          "kills": 0,
+          "lc": -1
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n032",
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "slice a naturally spawned fruit",
+        "state": {
+          "state": "playing",
+          "mode": "classic",
+          "diff": 1,
+          "score": 1,
+          "misses": 0,
+          "fruitsSliced": 1,
+          "fruitsMissed": 0,
+          "bestCombo": 1,
+          "bestStreak": 1,
+          "crits": 0,
+          "streak": 1,
+          "timeLeft": 0,
+          "ents": 0,
+          "bombs": 0,
+          "halves": 2,
+          "drops": 9,
+          "decals": 3,
+          "pw": {
+            "freeze": 0,
+            "double": 0,
+            "frenzy": 0
+          },
+          "muted": false,
+          "best": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n033",
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "select sunflower and plant on lawn",
+        "before": {
+          "state": "playing",
+          "t": 2.3,
+          "diff": 1,
+          "sun": 125,
+          "wave": 0,
+          "waves": 10,
+          "alive": 0,
+          "zAll": 0,
+          "plants": 0,
+          "peas": 0,
+          "suns": 0,
+          "fx": 0,
+          "mowers": 5,
+          "score": 0,
+          "kills": 0,
+          "sel": -1,
+          "dom": 2067,
+          "frames": 190
+        },
+        "after": {
+          "state": "playing",
+          "t": 2.3,
+          "diff": 1,
+          "sun": 75,
+          "wave": 0,
+          "waves": 10,
+          "alive": 0,
+          "zAll": 0,
+          "plants": 1,
+          "peas": 0,
+          "suns": 0,
+          "fx": 7,
+          "mowers": 5,
+          "score": 0,
+          "kills": 0,
+          "sel": -1,
+          "dom": 2067,
+          "frames": 192
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n034",
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "select level, aim and launch a bubble",
+        "state": {
+          "state": "play",
+          "shots": 0,
+          "inFlight": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n035",
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "launch ball and move paddle",
+        "state": {
+          "state": "play",
+          "mode": "game",
+          "diff": "normal",
+          "level": 1,
+          "score": 50,
+          "lives": 2,
+          "bricksLeft": 90,
+          "balls": 1,
+          "combo": 0,
+          "maxCombo": 1,
+          "eff": {
+            "expand": 0,
+            "shrink": 0,
+            "slow": 0,
+            "fast": 0,
+            "laser": 0,
+            "sticky": 0,
+            "fire": 0
+          },
+          "best": {
+            "easy": 0,
+            "normal": 0,
+            "hard": 0
+          },
+          "auto": false,
+          "audio": "running song=game"
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n036",
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "move spacecraft",
+        "before": 280,
+        "after": 479.95000000000016
+      },
+      "pass": true
+    },
+    {
+      "id": "n068",
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "seek native film to 70%",
+        "time": 75.5,
+        "duration": 108
+      },
+      "pass": true
+    },
+    {
+      "id": "n069",
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "seek native film to 70%",
+        "time": 83,
+        "duration": 119
+      },
+      "pass": true
+    },
+    {
+      "id": "n080",
+      "protocol": "file",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "pick and drag actual cloth mesh",
+        "from": [
+          0.25,
+          0.35
+        ]
+      },
+      "pass": true
+    },
+    {
+      "id": "n029",
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "move active chef",
+        "before": {
+          "x": 416,
+          "y": 314,
+          "held": null,
+          "cell": [
+            3,
+            2
+          ]
+        },
+        "after": {
+          "x": 416,
+          "y": 429,
+          "held": null,
+          "cell": [
+            3,
+            4
+          ]
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n030",
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "wait for countdown, accelerate and steer",
+        "before": {
+          "state": "playing",
+          "diff": 1,
+          "lap": 0,
+          "place": 8,
+          "finalPlace": 0,
+          "z": 282860,
+          "v": 0,
+          "x": 0.34,
+          "raceT": 0,
+          "laps": [],
+          "drift": 0,
+          "dLvl": 0,
+          "boost": 0,
+          "item": 0,
+          "spin": 0,
+          "sprites": 58,
+          "clips": 0,
+          "finished": 0,
+          "N": 1429,
+          "TL": 285800,
+          "places": [
+            8,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "laps8": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "state": "playing",
+          "diff": 1,
+          "lap": 1,
+          "place": 7,
+          "finalPlace": 0,
+          "z": 77,
+          "v": 4977,
+          "x": 1.51,
+          "raceT": 0.92,
+          "laps": [],
+          "drift": 0,
+          "dLvl": 0,
+          "boost": 0,
+          "item": 0,
+          "spin": 0,
+          "sprites": 57,
+          "clips": 0,
+          "finished": 0,
+          "N": 1429,
+          "TL": 285800,
+          "places": [
+            7,
+            2,
+            3,
+            4,
+            1,
+            5,
+            6,
+            8
+          ],
+          "laps8": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n031",
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "wait for intro, run and jump",
+        "before": {
+          "state": "playing",
+          "level": 0,
+          "col": 3,
+          "x": 153,
+          "y": 582,
+          "power": 0,
+          "lives": 3,
+          "coins": 0,
+          "score": 0,
+          "time": 400,
+          "ents": 0,
+          "cam": 0,
+          "ground": false,
+          "cp": null,
+          "kills": 0,
+          "lc": -1
+        },
+        "after": {
+          "state": "playing",
+          "level": 0,
+          "col": 7,
+          "x": 327,
+          "y": 582,
+          "power": 0,
+          "lives": 3,
+          "coins": 0,
+          "score": 0,
+          "time": 399,
+          "ents": 1,
+          "cam": 0,
+          "ground": true,
+          "cp": null,
+          "kills": 0,
+          "lc": -1
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n032",
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "slice a naturally spawned fruit",
+        "state": {
+          "state": "playing",
+          "mode": "classic",
+          "diff": 1,
+          "score": 1,
+          "misses": 0,
+          "fruitsSliced": 1,
+          "fruitsMissed": 0,
+          "bestCombo": 1,
+          "bestStreak": 1,
+          "crits": 0,
+          "streak": 1,
+          "timeLeft": 0,
+          "ents": 0,
+          "bombs": 0,
+          "halves": 2,
+          "drops": 19,
+          "decals": 2,
+          "pw": {
+            "freeze": 0,
+            "double": 0,
+            "frenzy": 0
+          },
+          "muted": false,
+          "best": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n033",
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "select sunflower and plant on lawn",
+        "before": {
+          "state": "playing",
+          "t": 2.5,
+          "diff": 1,
+          "sun": 125,
+          "wave": 0,
+          "waves": 10,
+          "alive": 0,
+          "zAll": 0,
+          "plants": 0,
+          "peas": 0,
+          "suns": 0,
+          "fx": 0,
+          "mowers": 5,
+          "score": 0,
+          "kills": 0,
+          "sel": -1,
+          "dom": 2067,
+          "frames": 202
+        },
+        "after": {
+          "state": "playing",
+          "t": 2.7,
+          "diff": 1,
+          "sun": 75,
+          "wave": 0,
+          "waves": 10,
+          "alive": 0,
+          "zAll": 0,
+          "plants": 1,
+          "peas": 0,
+          "suns": 0,
+          "fx": 7,
+          "mowers": 5,
+          "score": 0,
+          "kills": 0,
+          "sel": -1,
+          "dom": 2067,
+          "frames": 216
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n034",
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "select level, aim and launch a bubble",
+        "state": {
+          "state": "play",
+          "shots": 0,
+          "inFlight": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n035",
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "launch ball and move paddle",
+        "state": {
+          "state": "play",
+          "mode": "game",
+          "diff": "normal",
+          "level": 1,
+          "score": 50,
+          "lives": 3,
+          "bricksLeft": 90,
+          "balls": 1,
+          "combo": 1,
+          "maxCombo": 1,
+          "eff": {
+            "expand": 0,
+            "shrink": 0,
+            "slow": 0,
+            "fast": 0,
+            "laser": 0,
+            "sticky": 0,
+            "fire": 0
+          },
+          "best": {
+            "easy": 0,
+            "normal": 0,
+            "hard": 0
+          },
+          "auto": false,
+          "audio": "running song=game"
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n036",
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "move spacecraft",
+        "before": 280,
+        "after": 475.00000000000006
+      },
+      "pass": true
+    },
+    {
+      "id": "n068",
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "seek native film to 70%",
+        "time": 75.3,
+        "duration": 108
+      },
+      "pass": true
+    },
+    {
+      "id": "n069",
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "seek native film to 70%",
+        "time": 83,
+        "duration": 119
+      },
+      "pass": true
+    },
+    {
+      "id": "n080",
+      "protocol": "file",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "pick and drag actual cloth mesh",
+        "from": [
+          0.15,
+          0.5
+        ]
+      },
+      "pass": true
+    },
+    {
+      "id": "n029",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "move active chef",
+        "before": {
+          "x": 416,
+          "y": 314,
+          "held": null,
+          "cell": [
+            3,
+            2
+          ]
+        },
+        "after": {
+          "x": 416,
+          "y": 425,
+          "held": null,
+          "cell": [
+            3,
+            4
+          ]
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n030",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "wait for countdown, accelerate and steer",
+        "before": {
+          "state": "playing",
+          "diff": 1,
+          "lap": 0,
+          "place": 8,
+          "finalPlace": 0,
+          "z": 282860,
+          "v": 0,
+          "x": 0.34,
+          "raceT": 0,
+          "laps": [],
+          "drift": 0,
+          "dLvl": 0,
+          "boost": 0,
+          "item": 0,
+          "spin": 0,
+          "sprites": 58,
+          "clips": 0,
+          "finished": 0,
+          "N": 1429,
+          "TL": 285800,
+          "places": [
+            8,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "laps8": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "state": "playing",
+          "diff": 1,
+          "lap": 1,
+          "place": 8,
+          "finalPlace": 0,
+          "z": 82,
+          "v": 4979,
+          "x": 1.52,
+          "raceT": 0.93,
+          "laps": [],
+          "drift": 0,
+          "dLvl": 0,
+          "boost": 0,
+          "item": 0,
+          "spin": 0,
+          "sprites": 57,
+          "clips": 0,
+          "finished": 0,
+          "N": 1429,
+          "TL": 285800,
+          "places": [
+            8,
+            1,
+            4,
+            5,
+            6,
+            2,
+            3,
+            7
+          ],
+          "laps8": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n031",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "wait for intro, run and jump",
+        "before": {
+          "state": "playing",
+          "level": 0,
+          "col": 3,
+          "x": 153,
+          "y": 582,
+          "power": 0,
+          "lives": 3,
+          "coins": 0,
+          "score": 0,
+          "time": 400,
+          "ents": 0,
+          "cam": 0,
+          "ground": false,
+          "cp": null,
+          "kills": 0,
+          "lc": -1
+        },
+        "after": {
+          "state": "playing",
+          "level": 0,
+          "col": 7,
+          "x": 322,
+          "y": 582,
+          "power": 0,
+          "lives": 3,
+          "coins": 0,
+          "score": 0,
+          "time": 399,
+          "ents": 1,
+          "cam": 0,
+          "ground": true,
+          "cp": null,
+          "kills": 0,
+          "lc": -1
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n032",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "slice a naturally spawned fruit",
+        "state": {
+          "state": "playing",
+          "mode": "classic",
+          "diff": 1,
+          "score": 1,
+          "misses": 0,
+          "fruitsSliced": 1,
+          "fruitsMissed": 0,
+          "bestCombo": 1,
+          "bestStreak": 1,
+          "crits": 0,
+          "streak": 1,
+          "timeLeft": 0,
+          "ents": 0,
+          "bombs": 0,
+          "halves": 2,
+          "drops": 19,
+          "decals": 2,
+          "pw": {
+            "freeze": 0,
+            "double": 0,
+            "frenzy": 0
+          },
+          "muted": false,
+          "best": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n033",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "select sunflower and plant on lawn",
+        "before": {
+          "state": "playing",
+          "t": 2.3,
+          "diff": 1,
+          "sun": 125,
+          "wave": 0,
+          "waves": 10,
+          "alive": 0,
+          "zAll": 0,
+          "plants": 0,
+          "peas": 0,
+          "suns": 0,
+          "fx": 0,
+          "mowers": 5,
+          "score": 0,
+          "kills": 0,
+          "sel": -1,
+          "dom": 2067,
+          "frames": 191
+        },
+        "after": {
+          "state": "playing",
+          "t": 2.3,
+          "diff": 1,
+          "sun": 75,
+          "wave": 0,
+          "waves": 10,
+          "alive": 0,
+          "zAll": 0,
+          "plants": 1,
+          "peas": 0,
+          "suns": 0,
+          "fx": 7,
+          "mowers": 5,
+          "score": 0,
+          "kills": 0,
+          "sel": -1,
+          "dom": 2067,
+          "frames": 192
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n034",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "select level, aim and launch a bubble",
+        "state": {
+          "state": "play",
+          "shots": 0,
+          "inFlight": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n035",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "launch ball and move paddle",
+        "state": {
+          "state": "play",
+          "mode": "game",
+          "diff": "normal",
+          "level": 1,
+          "score": 50,
+          "lives": 2,
+          "bricksLeft": 90,
+          "balls": 1,
+          "combo": 0,
+          "maxCombo": 1,
+          "eff": {
+            "expand": 0,
+            "shrink": 0,
+            "slow": 0,
+            "fast": 0,
+            "laser": 0,
+            "sticky": 0,
+            "fire": 0
+          },
+          "best": {
+            "easy": 0,
+            "normal": 0,
+            "hard": 0
+          },
+          "auto": false,
+          "audio": "running song=game"
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n036",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "move spacecraft",
+        "before": 280,
+        "after": 514.96
+      },
+      "pass": true
+    },
+    {
+      "id": "n068",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "seek native film to 70%",
+        "time": 75.5,
+        "duration": 108
+      },
+      "pass": true
+    },
+    {
+      "id": "n069",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "seek native film to 70%",
+        "time": 83,
+        "duration": 119
+      },
+      "pass": true
+    },
+    {
+      "id": "n080",
+      "protocol": "http",
+      "width": 1440,
+      "errors": [],
+      "core": {
+        "action": "pick and drag actual cloth mesh",
+        "from": [
+          0.25,
+          0.35
+        ]
+      },
+      "pass": true
+    },
+    {
+      "id": "n029",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "move active chef",
+        "before": {
+          "x": 416,
+          "y": 314,
+          "held": null,
+          "cell": [
+            3,
+            2
+          ]
+        },
+        "after": {
+          "x": 416,
+          "y": 429,
+          "held": null,
+          "cell": [
+            3,
+            4
+          ]
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n030",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "wait for countdown, accelerate and steer",
+        "before": {
+          "state": "playing",
+          "diff": 1,
+          "lap": 0,
+          "place": 8,
+          "finalPlace": 0,
+          "z": 282860,
+          "v": 0,
+          "x": 0.34,
+          "raceT": 0.03,
+          "laps": [],
+          "drift": 0,
+          "dLvl": 0,
+          "boost": 0,
+          "item": 0,
+          "spin": 0,
+          "sprites": 58,
+          "clips": 0,
+          "finished": 0,
+          "N": 1429,
+          "TL": 285800,
+          "places": [
+            8,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "laps8": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "state": "playing",
+          "diff": 1,
+          "lap": 0,
+          "place": 8,
+          "finalPlace": 0,
+          "z": 285793,
+          "v": 4976,
+          "x": 1.49,
+          "raceT": 0.95,
+          "laps": [],
+          "drift": 0,
+          "dLvl": 0,
+          "boost": 0,
+          "item": 0,
+          "spin": 0,
+          "sprites": 57,
+          "clips": 0,
+          "finished": 0,
+          "N": 1429,
+          "TL": 285800,
+          "places": [
+            8,
+            2,
+            4,
+            1,
+            5,
+            6,
+            3,
+            7
+          ],
+          "laps8": [
+            0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n031",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "wait for intro, run and jump",
+        "before": {
+          "state": "playing",
+          "level": 0,
+          "col": 3,
+          "x": 153,
+          "y": 582,
+          "power": 0,
+          "lives": 3,
+          "coins": 0,
+          "score": 0,
+          "time": 400,
+          "ents": 0,
+          "cam": 0,
+          "ground": false,
+          "cp": null,
+          "kills": 0,
+          "lc": -1
+        },
+        "after": {
+          "state": "playing",
+          "level": 0,
+          "col": 7,
+          "x": 327,
+          "y": 582,
+          "power": 0,
+          "lives": 3,
+          "coins": 0,
+          "score": 0,
+          "time": 399,
+          "ents": 1,
+          "cam": 0,
+          "ground": true,
+          "cp": null,
+          "kills": 0,
+          "lc": -1
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n032",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "slice a naturally spawned fruit",
+        "state": {
+          "state": "playing",
+          "mode": "classic",
+          "diff": 1,
+          "score": 1,
+          "misses": 0,
+          "fruitsSliced": 1,
+          "fruitsMissed": 0,
+          "bestCombo": 1,
+          "bestStreak": 1,
+          "crits": 0,
+          "streak": 1,
+          "timeLeft": 0,
+          "ents": 0,
+          "bombs": 0,
+          "halves": 2,
+          "drops": 19,
+          "decals": 2,
+          "pw": {
+            "freeze": 0,
+            "double": 0,
+            "frenzy": 0
+          },
+          "muted": false,
+          "best": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n033",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "select sunflower and plant on lawn",
+        "before": {
+          "state": "playing",
+          "t": 2.3,
+          "diff": 1,
+          "sun": 125,
+          "wave": 0,
+          "waves": 10,
+          "alive": 0,
+          "zAll": 0,
+          "plants": 0,
+          "peas": 0,
+          "suns": 0,
+          "fx": 0,
+          "mowers": 5,
+          "score": 0,
+          "kills": 0,
+          "sel": -1,
+          "dom": 2067,
+          "frames": 190
+        },
+        "after": {
+          "state": "playing",
+          "t": 2.3,
+          "diff": 1,
+          "sun": 75,
+          "wave": 0,
+          "waves": 10,
+          "alive": 0,
+          "zAll": 0,
+          "plants": 1,
+          "peas": 0,
+          "suns": 0,
+          "fx": 7,
+          "mowers": 5,
+          "score": 0,
+          "kills": 0,
+          "sel": -1,
+          "dom": 2067,
+          "frames": 191
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n034",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "select level, aim and launch a bubble",
+        "state": {
+          "state": "play",
+          "shots": 0,
+          "inFlight": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n035",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "launch ball and move paddle",
+        "state": {
+          "state": "play",
+          "mode": "game",
+          "diff": "normal",
+          "level": 1,
+          "score": 50,
+          "lives": 3,
+          "bricksLeft": 90,
+          "balls": 1,
+          "combo": 1,
+          "maxCombo": 1,
+          "eff": {
+            "expand": 0,
+            "shrink": 0,
+            "slow": 0,
+            "fast": 0,
+            "laser": 0,
+            "sticky": 0,
+            "fire": 0
+          },
+          "best": {
+            "easy": 0,
+            "normal": 0,
+            "hard": 0
+          },
+          "auto": false,
+          "audio": "running song=game"
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "n036",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "move spacecraft",
+        "before": 280,
+        "after": 475
+      },
+      "pass": true
+    },
+    {
+      "id": "n068",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "seek native film to 70%",
+        "time": 75.3,
+        "duration": 108
+      },
+      "pass": true
+    },
+    {
+      "id": "n069",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "seek native film to 70%",
+        "time": 83,
+        "duration": 119
+      },
+      "pass": true
+    },
+    {
+      "id": "n080",
+      "protocol": "http",
+      "width": 390,
+      "errors": [],
+      "core": {
+        "action": "pick and drag actual cloth mesh",
+        "from": [
+          0.15,
+          0.5
+        ]
+      },
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><link rel="icon" href="data:,"><script src="../web-runtime/0b0e961a12692973bc2edc4c.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>果冻跳跳 JELLY HOP</title>
+
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#3b2335}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Noto Sans SC","Source Han Sans SC",sans-serif;color:#5a2440;
+  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:none;overscroll-behavior:none}
+#stage{position:absolute;left:0;top:0;width:1280px;height:720px;overflow:hidden;cursor:default}
+.lot{position:absolute;left:0;top:0;pointer-events:none}
+/* lottie-web gives each <svg> translate3d(0,0,0), which makes every animation its own compositor layer; paint them into their parent layer instead */
+#stage svg{transform:none!important}
+.lot svg,.bg svg{display:block}
+.tile{position:absolute;left:0;top:0;will-change:transform}
+#world{position:absolute;left:0;top:0;width:1280px;height:720px;will-change:transform}
+#world .plat,#world .fx,#world .coin{position:absolute;left:0;top:0;transform-origin:0 0;pointer-events:none}
+#jelly{position:absolute;left:0;top:0;width:220px;height:220px;transform-origin:110px 194px;pointer-events:none}
+.ftxt{position:absolute;left:0;top:0;white-space:nowrap;font-weight:900;font-size:30px;color:#fff;pointer-events:none;opacity:0;
+  text-shadow:0 3px 0 #b8577d,2px 2px 0 #b8577d,-2px 2px 0 #b8577d,2px -1px 0 #b8577d,-2px -1px 0 #b8577d}
+.ftxt.perfect{color:#fff6b8;font-size:34px;text-shadow:0 3px 0 #c9771c,2px 2px 0 #c9771c,-2px 2px 0 #c9771c,2px -1px 0 #c9771c,-2px -1px 0 #c9771c}
+.ftxt.coin{color:#ffe36e;text-shadow:0 3px 0 #b86f12,2px 2px 0 #b86f12,-2px 2px 0 #b86f12,2px -1px 0 #b86f12,-2px -1px 0 #b86f12}
+.ftxt.spring{color:#e8fbff;text-shadow:0 3px 0 #3b8fb8,2px 2px 0 #3b8fb8,-2px 2px 0 #3b8fb8,2px -1px 0 #3b8fb8,-2px -1px 0 #3b8fb8}
+.ftxt.go{animation:floatUp 1.05s ease-out forwards}
+@keyframes floatUp{0%{opacity:0;transform:translate(-50%,0) scale(.6)}15%{opacity:1;transform:translate(-50%,-18px) scale(1.12)}30%{transform:translate(-50%,-28px) scale(1)}100%{opacity:0;transform:translate(-50%,-86px) scale(1)}}
+
+/* HUD */
+#hud{position:absolute;left:0;top:0;width:1280px;height:720px;pointer-events:none;display:none}
+#hud.on{display:block}
+.hud-score{position:absolute;left:14px;top:8px;width:250px;height:110px}
+.hud-score .lbl{position:absolute;left:92px;right:26px;top:31px;text-align:center;font-size:15px;font-weight:700;color:#c25b84;letter-spacing:2px}
+.hud-score .num{position:absolute;left:84px;right:20px;top:46px;text-align:center;font-size:40px;line-height:48px;font-weight:900;color:#6b2447}
+.chip{position:absolute;left:18px;width:200px;height:60px}
+.chip .txt{position:absolute;left:50px;right:14px;top:0;height:60px;line-height:58px;font-size:21px;font-weight:900;color:#6b2447;white-space:nowrap}
+.chip .txt small{font-size:15px;font-weight:700;color:#b0587e;margin-right:6px}
+#chipBest{top:112px}
+#chipCombo{top:166px}
+#comboBox{position:absolute;left:500px;top:28px;width:280px;height:280px;pointer-events:none;display:none}
+#comboBox.on{display:block}
+#comboBox .t{position:absolute;left:0;right:0;text-align:center;font-weight:900;color:#fff;white-space:nowrap}
+#comboBox .big{top:98px;font-size:62px;line-height:66px;text-shadow:0 4px 0 #c9577f,3px 3px 0 #c9577f,-3px 3px 0 #c9577f,3px -2px 0 #c9577f,-3px -2px 0 #c9577f}
+#comboBox .small{top:168px;font-size:19px;color:#8a2c55}
+#comboBox .t{animation:none}
+#comboBox.on .t{animation:comboTxt 1.45s ease-out forwards}
+@keyframes comboTxt{0%{transform:scale(0)}12%{transform:scale(1.2)}20%{transform:scale(1)}74%{opacity:1;transform:scale(1.04)}100%{opacity:0;transform:scale(.72)}}
+
+/* top-right buttons (always above screens) */
+#topbar{position:absolute;left:0;top:0;width:1280px;height:0;pointer-events:none}
+.btn-round{position:absolute;top:10px;width:92px;height:92px;padding:0;border:0;background:none;cursor:pointer;pointer-events:auto;outline:none}
+.btn-round .bg{position:absolute;left:0;top:0;width:92px;height:92px;pointer-events:none}
+#btnPause{left:1082px;display:none}
+#btnPause.on{display:block}
+#btnSound{left:1176px}
+
+/* generic buttons */
+.btn{position:absolute;padding:0;border:0;background:none;cursor:pointer;outline:none;font:inherit;color:#fff}
+.btn .bg{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+.btn .lbl{position:absolute;left:0;right:0;top:0;bottom:4%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-weight:900;white-space:nowrap;pointer-events:none;transition:transform .07s}
+.btn.down .lbl{transform:translateY(5%)}
+.btn.pink .lbl,.btn.lav .lbl{color:#fff;text-shadow:0 2px 0 rgba(170,40,95,.55)}
+.btn.mint .lbl{color:#fff;text-shadow:0 2px 0 rgba(30,120,95,.6)}
+.btn.lemon .lbl{color:#7a4a12;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+
+/* screens */
+.screen{position:absolute;left:0;top:0;width:1280px;height:720px;display:none}
+.screen.on{display:block}
+.panel{position:absolute}
+.panel>.bg{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+
+/* title */
+#logo{position:absolute;left:260px;top:8px;width:760px;height:270px}
+#logo .bg{position:absolute;left:0;top:0;width:760px;height:270px}
+#logo h1{position:absolute;left:0;right:0;top:44px;margin:0;text-align:center;font-size:98px;line-height:112px;font-weight:900;color:#fff;letter-spacing:10px;
+  text-shadow:0 5px 0 #c93a6e,4px 4px 0 #c93a6e,-4px 4px 0 #c93a6e,4px -3px 0 #c93a6e,-4px -3px 0 #c93a6e,0 12px 18px rgba(130,30,70,.35)}
+#logo .en{position:absolute;left:0;right:0;top:210px;text-align:center;font-size:28px;line-height:34px;font-weight:900;color:#fff;letter-spacing:9px;
+  text-shadow:0 2px 0 #2f8f70}
+#menuPanel{left:160px;top:494px;width:960px;height:214px}
+#menuPanel .hint{position:absolute;left:62px;top:52px;font-size:17px;font-weight:700;color:#b0587e;letter-spacing:1px}
+.diffBtn{top:70px;width:204px;height:68px}
+.diffBtn .lbl b{font-size:26px;line-height:28px}
+.diffBtn .lbl i{font-style:normal;font-size:14px;line-height:18px;font-weight:700;opacity:.9}
+#dEasy{left:60px}#dNormal{left:268px}#dHard{left:476px}
+#btnStart{left:690px;top:48px;width:246px;height:82px}
+#btnStart .lbl{font-size:32px;letter-spacing:4px}
+#btnHelp{left:710px;top:130px;width:204px;height:68px}
+#btnHelp .lbl{font-size:23px;letter-spacing:2px}
+#menuPanel .keys{position:absolute;left:66px;top:146px;width:600px;font-size:15px;line-height:20px;font-weight:700;color:#a4668a}
+#menuPanel .keys b{color:#d24e7e}
+
+/* help */
+#helpPanel{left:50px;top:18px;width:1180px;height:680px}
+#helpPanel h2{position:absolute;left:0;right:0;top:66px;margin:0;text-align:center;font-size:38px;line-height:44px;font-weight:900;color:#d24e7e;letter-spacing:6px}
+#helpPanel h2 small{font-size:17px;letter-spacing:4px;color:#b58aa2;margin-left:12px}
+#helpPanel ul{position:absolute;left:64px;top:132px;width:392px;margin:0;padding:0;list-style:none}
+#helpPanel li{font-size:18px;line-height:26px;font-weight:700;color:#6b3553;margin:0 0 12px;padding-left:22px;position:relative}
+#helpPanel li::before{content:"✦";position:absolute;left:0;top:0;color:#ff8fb5}
+#helpPanel li b{color:#d24e7e}
+.demos{position:absolute;left:478px;top:128px;width:660px;height:450px}
+.demo{position:absolute;width:216px;height:212px}
+.demo .lot{width:216px;height:153px}
+.demo p{position:absolute;left:-4px;right:-4px;top:156px;margin:0;text-align:center;font-size:15px;line-height:20px;font-weight:700;color:#6b3553}
+.demo p b{display:block;font-size:17px;color:#d24e7e}
+#btnHelpClose{left:476px;top:584px;width:228px;height:76px}
+#btnHelpClose .lbl{font-size:26px;letter-spacing:3px}
+#helpPanel .esc{position:absolute;left:720px;top:612px;font-size:15px;color:#b58aa2;font-weight:700}
+
+/* pause */
+#pausePanel{left:380px;top:112px;width:520px;height:480px}
+#pausePanel h2,#overPanel h2{position:absolute;left:0;right:0;margin:0;text-align:center;font-weight:900;color:#d24e7e}
+#pausePanel h2{top:74px;font-size:46px;line-height:52px;letter-spacing:8px}
+#pausePanel h2 small,#overPanel h2 small{display:block;font-size:16px;line-height:22px;letter-spacing:5px;color:#b58aa2}
+#pausePanel .btn{left:125px;width:270px;height:90px}
+#pausePanel .btn .lbl{font-size:28px;letter-spacing:3px}
+#btnResume{top:162px}#btnRestart{top:250px}#btnQuit{top:338px}
+
+/* over */
+#overPanel{left:320px;top:52px;width:640px;height:600px}
+#overPanel h2{top:70px;font-size:40px;line-height:48px;letter-spacing:4px}
+#overPanel .score{position:absolute;left:0;right:0;top:152px;text-align:center}
+#overPanel .score small{display:block;font-size:17px;font-weight:700;color:#b0587e;letter-spacing:3px}
+#overPanel .score b{display:block;font-size:84px;line-height:92px;font-weight:900;color:#6b2447}
+#overPanel .stats{position:absolute;left:92px;right:92px;top:300px;display:flex;justify-content:space-between}
+#overPanel .stat{width:140px;text-align:center}
+#overPanel .stat small{display:block;font-size:16px;font-weight:700;color:#b0587e;letter-spacing:1px}
+#overPanel .stat b{display:block;font-size:34px;line-height:42px;font-weight:900;color:#6b2447}
+#overPanel .diffTag{position:absolute;left:0;right:0;top:392px;text-align:center;font-size:16px;font-weight:700;color:#a4668a}
+#overPanel .btn{top:444px;width:246px;height:82px}
+#overPanel .btn .lbl{font-size:28px;letter-spacing:3px}
+#btnRetry{left:66px}#btnBack{left:328px}
+#record{position:absolute;left:100px;top:-62px;width:440px;height:236px;display:none;pointer-events:none}
+#record.on{display:block}
+#record .bg{position:absolute;left:0;top:0;width:440px;height:236px}
+#record .rt{position:absolute;left:0;right:0;top:135px;text-align:center;font-size:32px;line-height:38px;font-weight:900;color:#fff;letter-spacing:6px;
+  text-shadow:0 3px 0 #c9577f,2px 2px 0 #c9577f,-2px 2px 0 #c9577f}
+#overPanel.rec h2{visibility:hidden}
+
+#loading{position:absolute;left:0;top:0;width:1280px;height:720px;display:flex;align-items:center;justify-content:center;flex-direction:column;
+  color:#ffd6e6;font-size:30px;font-weight:900;letter-spacing:4px}
+#loading small{font-size:16px;color:#c79ab4;margin-top:10px;letter-spacing:2px}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="far"></div>
+  <div id="mid"></div>
+  <div id="world">
+    <div id="platLayer"></div>
+    <div id="fxBack"></div>
+    <div id="jelly"></div>
+    <div id="coinLayer"></div>
+    <div id="fxFront"></div>
+    <div id="seaLayer"></div>
+    <div id="fxTop"></div>
+  </div>
+
+  <div id="hud">
+    <div class="hud-score"><div class="lot" id="hudScoreBg" style="width:250px;height:110px"></div><div class="lbl">得分</div><div class="num" id="scoreNum">0</div></div>
+    <div class="chip" id="chipBest"><div class="lot" style="width:200px;height:60px"></div><div class="txt"><small>最高</small><span id="bestNum">0</span></div></div>
+    <div class="chip" id="chipCombo"><div class="lot" style="width:200px;height:60px"></div><div class="txt"><small>连击</small><span id="comboNum">×1</span></div></div>
+    <div id="comboBox"><div class="lot" style="width:280px;height:280px"></div><div class="t big" id="comboBig">+2</div><div class="t small" id="comboSmall">完美 ×1</div></div>
+  </div>
+
+  <div class="screen" id="scrTitle">
+    <div id="logo"><div class="bg"></div><h1>果冻跳跳</h1><div class="en">JELLY HOP</div></div>
+    <div class="panel" id="menuPanel"><div class="bg"></div>
+      <div class="hint">选择难度</div>
+      <button class="btn lemon diffBtn" id="dEasy" data-lottie="btn_lemon" data-act="diff" data-diff="easy"><span class="lbl"><b>简单</b><i>最高 <span data-best="easy">0</span></i></span></button>
+      <button class="btn lemon diffBtn" id="dNormal" data-lottie="btn_lemon" data-act="diff" data-diff="normal"><span class="lbl"><b>普通</b><i>最高 <span data-best="normal">0</span></i></span></button>
+      <button class="btn lemon diffBtn" id="dHard" data-lottie="btn_lemon" data-act="diff" data-diff="hard"><span class="lbl"><b>困难</b><i>最高 <span data-best="hard">0</span></i></span></button>
+      <button class="btn pink" id="btnStart" data-lottie="btn_pink" data-act="start"><span class="lbl">开始游戏</span></button>
+      <button class="btn mint" id="btnHelp" data-lottie="btn_mint" data-act="help"><span class="lbl">玩法帮助</span></button>
+      <div class="keys">按住 <b>空格 / 鼠标 / 触屏</b> 蓄力，松开起跳 · <b>P</b> 暂停 · <b>H</b> 帮助 · <b>M</b> 静音<br>点击屏幕或按空格也能直接开始</div>
+    </div>
+  </div>
+
+  <div class="screen" id="scrHelp">
+    <div class="panel" id="helpPanel"><div class="bg"></div>
+      <h2>玩法帮助<small>HOW TO PLAY</small></h2>
+      <ul>
+        <li>按住 <b>空格 / 鼠标 / 触屏</b> 蓄力，果冻会被压扁、发颤；松开就起跳。</li>
+        <li>蓄力越久跳得越远，稳稳落到下一块甜点上得 <b>1 分</b>。</li>
+        <li>落在平台正中心算 <b>“完美”</b>：得 2 分，连续完美翻倍 2 → 4 → 8 → 16，封顶 32。</li>
+        <li>没踩稳就会掉进草莓牛奶海，本局结束。越往后平台越小、越远。</li>
+        <li><b>P</b> 暂停 · <b>H</b> 帮助 · <b>M</b> 静音</li>
+      </ul>
+      <div class="demos">
+        <div class="demo" style="left:0;top:0"><div class="lot" data-demo="help_charge"></div><p><b>蓄力起跳</b>按得越久，跳得越远</p></div>
+        <div class="demo" style="left:222px;top:0"><div class="lot" data-demo="help_perfect"></div><p><b>完美落地</b>踩中正中心，分数翻倍</p></div>
+        <div class="demo" style="left:444px;top:0"><div class="lot" data-demo="help_spring"></div><p><b>弹簧垫</b>落上后自动小跳一次 +1</p></div>
+        <div class="demo" style="left:0;top:226px"><div class="lot" data-demo="help_cookie"></div><p><b>饼干</b>会慢慢塌掉，快跳走！</p></div>
+        <div class="demo" style="left:222px;top:226px"><div class="lot" data-demo="help_tray"></div><p><b>移动托盘</b>左右滑动，看准时机</p></div>
+        <div class="demo" style="left:444px;top:226px"><div class="lot" data-demo="help_coin"></div><p><b>金币蛋糕</b>落上吃到金币 +5</p></div>
+      </div>
+      <button class="btn mint" id="btnHelpClose" data-lottie="btn_mint" data-act="closeHelp"><span class="lbl">知道了</span></button>
+      <div class="esc">H / Esc 返回</div>
+    </div>
+  </div>
+
+  <div class="screen" id="scrPause">
+    <div class="panel" id="pausePanel"><div class="bg"></div>
+      <h2>暂停<small>PAUSED</small></h2>
+      <button class="btn pink" id="btnResume" data-lottie="btn_pink" data-act="resume"><span class="lbl">继续游戏</span></button>
+      <button class="btn mint" id="btnRestart" data-lottie="btn_mint" data-act="restart"><span class="lbl">重新开始</span></button>
+      <button class="btn lav" id="btnQuit" data-lottie="btn_lav" data-act="title"><span class="lbl">返回标题</span></button>
+    </div>
+  </div>
+
+  <div class="screen" id="scrOver">
+    <div class="panel" id="overPanel"><div class="bg"></div>
+      <div id="record"><div class="bg"></div><div class="rt">新纪录！</div></div>
+      <h2>扑通！掉进牛奶海<small>GAME OVER</small></h2>
+      <div class="score"><small>本局得分</small><b id="overScore">0</b></div>
+      <div class="stats">
+        <div class="stat"><small>最高连击</small><b id="overCombo">0</b></div>
+        <div class="stat"><small>完美次数</small><b id="overPerfect">0</b></div>
+        <div class="stat"><small>最高分</small><b id="overBest">0</b></div>
+      </div>
+      <div class="diffTag" id="overDiff">难度：普通</div>
+      <button class="btn pink" id="btnRetry" data-lottie="btn_pink" data-act="restart"><span class="lbl">再来一局</span></button>
+      <button class="btn lav" id="btnBack" data-lottie="btn_lav" data-act="title"><span class="lbl">返回标题</span></button>
+    </div>
+  </div>
+
+  <div id="topbar">
+    <button class="btn-round" id="btnPause" data-lottie="btn_pause" data-act="pauseBtn" aria-label="暂停"></button>
+    <button class="btn-round" id="btnSound" data-lottie="btn_sound" data-act="sound" aria-label="静音"></button>
+  </div>
+
+  <div id="loading">加载中…<small id="loadTxt">0 / 0</small></div>
+</div>
+
+<script src="../web-runtime/48947ea6e889389999c313bb.js"></script>
+<script src="../web-runtime/981c343ccf04b47494ae94e0.js"></script>
+</body>
+</html>
+<script src="../web-runtime/3902336fecfc1e9d07f52f7a.js"></script>

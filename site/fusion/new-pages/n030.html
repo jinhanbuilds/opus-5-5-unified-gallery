@@ -1,0 +1,309 @@
+<!doctype html><html><head><link rel="icon" href="data:,"><meta charset="utf-8"></head><body><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111}body>svg{width:100%;height:100%;display:block}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+<title>&#x9633;&#x5149;&#x5361;&#x4E01;&#x8F66; &#xB7; SUNNY KART</title>
+<style>
+svg{background:#8fdcff;user-select:none;-webkit-user-select:none;outline:none}
+text{user-select:none;-webkit-user-select:none}
+.f{font-family:"Arial Rounded MT Bold","Trebuchet MS","Arial Black","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;font-weight:900}
+.cn{font-family:"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;font-weight:700}
+.ol{paint-order:stroke;stroke-linejoin:round;stroke-linecap:round}
+.btn{cursor:pointer}
+.btn:hover .bb{filter:brightness(1.08)}
+.hid{display:none}
+</style>
+<defs>
+<linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5ec8ff"/><stop offset=".72" stop-color="#b4e8ff"/><stop offset="1" stop-color="#d6f3ff"/></linearGradient>
+<linearGradient id="gSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a6f0ea"/><stop offset=".06" stop-color="#63dcdf"/><stop offset=".4" stop-color="#2fc3d4"/><stop offset="1" stop-color="#139fc4"/></linearGradient>
+<radialGradient id="gSun"><stop offset="0" stop-color="#fffbe0"/><stop offset=".25" stop-color="#fff3b0" stop-opacity=".9"/><stop offset="1" stop-color="#fff3b0" stop-opacity="0"/></radialGradient>
+<linearGradient id="gBox" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7eb6"/><stop offset=".35" stop-color="#ffd23f"/><stop offset=".65" stop-color="#4de8c2"/><stop offset="1" stop-color="#7b8cff"/></linearGradient>
+<linearGradient id="gBtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb13b"/><stop offset="1" stop-color="#ff5c8a"/></linearGradient>
+<linearGradient id="gSlot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5c8a"/><stop offset=".33" stop-color="#ffd23f"/><stop offset=".66" stop-color="#2ed9a3"/><stop offset="1" stop-color="#3bb8ff"/></linearGradient>
+<linearGradient id="gCard" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eaf8ff"/></linearGradient>
+<linearGradient id="gFlame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffbe0"/><stop offset=".4" stop-color="#ffd23f"/><stop offset=".8" stop-color="#ff7a1a" stop-opacity=".8"/><stop offset="1" stop-color="#ff3d3d" stop-opacity="0"/></linearGradient>
+<radialGradient id="gBub" cx=".38" cy=".32" r=".7"><stop offset="0" stop-color="#ffffff" stop-opacity=".85"/><stop offset=".3" stop-color="#bff4ff" stop-opacity=".25"/><stop offset=".85" stop-color="#6fd8ff" stop-opacity=".3"/><stop offset="1" stop-color="#ff9ee8" stop-opacity=".7"/></radialGradient>
+<pattern id="pChk" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#fff"/><rect width="12" height="12" fill="#2d3142"/><rect x="12" y="12" width="12" height="12" fill="#2d3142"/></pattern>
+<pattern id="pCrowd" width="18" height="22" patternUnits="userSpaceOnUse"><rect width="18" height="22" fill="#5b6c9c"/><circle cx="4.5" cy="6" r="3.4" fill="#ffd9b0"/><circle cx="13.5" cy="4.5" r="3.4" fill="#8a5a3b"/><rect x="1" y="9" width="7" height="8" rx="2" fill="#ff5c8a"/><rect x="10" y="8" width="7" height="9" rx="2" fill="#ffd23f"/><circle cx="9" cy="17" r="3" fill="#f2c79a"/><rect x="5.5" y="19" width="7" height="3" fill="#2ed9a3"/></pattern>
+<clipPath id="cpMap"><rect x="0" y="0" width="236" height="176" rx="22"/></clipPath>
+<!-- ===== roadside sprites: origin = ground contact, 1 unit = 10 world units ===== -->
+<g id="palm">
+<path d="M-9 0L9 0L10-42L-5-42Z" fill="#b57a45"/><path d="M-5-42L10-42L13-86L-1-86Z" fill="#94602f"/><path d="M-1-86L13-86L17-130L4-130Z" fill="#b57a45"/><path d="M4-130L17-130L21-172L9-172Z" fill="#94602f"/><path d="M9-172L21-172L24-212L14-212Z" fill="#b57a45"/><path d="M14-212L24-212L26-244L18-244Z" fill="#94602f"/>
+<path d="M22-246L66-274L128-222Z" fill="#3fc463"/><path d="M22-246L128-222L64-258Z" fill="#279a4a"/>
+<path d="M22-246L-24-276L-86-226Z" fill="#3fc463"/><path d="M22-246L-86-226L-22-258Z" fill="#279a4a"/>
+<path d="M22-246L58-292L112-286Z" fill="#56d774"/><path d="M22-246L112-286L62-278Z" fill="#2fae52"/>
+<path d="M22-246L-2-298L-58-300Z" fill="#56d774"/><path d="M22-246L-58-300L-8-284Z" fill="#2fae52"/>
+<path d="M22-246L56-240L78-176Z" fill="#3fc463"/><path d="M22-246L78-176L48-230Z" fill="#279a4a"/>
+<path d="M22-246L-6-238L-30-178Z" fill="#3fc463"/><path d="M22-246L-30-178L0-228Z" fill="#279a4a"/>
+<path d="M22-246L38-300L26-312Z" fill="#6be38a"/><path d="M22-246L26-312L10-298Z" fill="#48c96a"/>
+<circle cx="16" cy="-240" r="6" fill="#7a4a24"/><circle cx="27" cy="-238" r="6" fill="#8c5a2e"/><circle cx="21" cy="-231" r="5.5" fill="#6b3f1e"/>
+</g>
+<g id="umbA">
+<path d="M-34 0L22 0L30-7L-26-7Z" fill="#3bb8ff"/><path d="M-20 0L-12 0L-4-7L-12-7ZM2 0L10 0L18-7L10-7Z" fill="#fff"/>
+<rect x="-1.6" y="-78" width="3.2" height="78" fill="#f3f3f3"/>
+<path d="M0-88L-50-62L-34-66Z" fill="#ff5a5f"/><path d="M0-88L-34-66L-17-68Z" fill="#fff"/><path d="M0-88L-17-68L0-69Z" fill="#ff5a5f"/><path d="M0-88L0-69L17-68Z" fill="#fff"/><path d="M0-88L17-68L34-66Z" fill="#ff5a5f"/><path d="M0-88L34-66L50-62Z" fill="#fff"/>
+<path d="M-50-62L50-62L34-66L17-68L0-69L-17-68L-34-66Z" fill="#000" opacity=".08"/>
+</g>
+<g id="umbB">
+<path d="M-30 0L26 0L32-7L-24-7Z" fill="#ffd23f"/><path d="M-14 0L-6 0L0-7L-8-7ZM8 0L16 0L22-7L14-7Z" fill="#ff5c8a"/>
+<rect x="-1.6" y="-80" width="3.2" height="80" fill="#f3f3f3"/>
+<path d="M0-90L-50-64L-34-68Z" fill="#2ed9c3"/><path d="M0-90L-34-68L-17-70Z" fill="#ffe46b"/><path d="M0-90L-17-70L0-71Z" fill="#2ed9c3"/><path d="M0-90L0-71L17-70Z" fill="#ffe46b"/><path d="M0-90L17-70L34-68Z" fill="#2ed9c3"/><path d="M0-90L34-68L50-64Z" fill="#ffe46b"/>
+</g>
+<g id="lighthouse">
+<path d="M-110 0L-80-50L-30-66L20-58L70-70L112-30L120 0Z" fill="#9aa4b8"/><path d="M-110 0L-80-50L-40-30L-60 0Z" fill="#7d879c"/><path d="M20-58L70-70L112-30L60-34Z" fill="#b6bfd0"/>
+<path d="M-44-60L44-60L36-160L-36-160Z" fill="#fff"/><path d="M-36-160L36-160L30-260L-30-260Z" fill="#ff4f5a"/><path d="M-30-260L30-260L25-360L-25-360Z" fill="#fff"/><path d="M-25-360L25-360L21-450L-21-450Z" fill="#ff4f5a"/>
+<path d="M-44-60L0-60L0-450L-21-450Z" fill="#000" opacity=".1"/>
+<rect x="-38" y="-462" width="76" height="12" rx="3" fill="#2d3142"/><path d="M-34-462V-472M-22-462V-472M-10-462V-472M2-462V-472M14-462V-472M26-462V-472M34-462V-472" stroke="#2d3142" stroke-width="2"/>
+<rect x="-20" y="-506" width="40" height="44" fill="#ffe36b"/><path d="M-20-506H20V-462H-20ZM-7-506V-462M7-506V-462" fill="none" stroke="#2d3142" stroke-width="3"/>
+<path d="M-26-506L0-540L26-506Z" fill="#ff4f5a"/><path d="M0-540L26-506H0Z" fill="#d93a47"/><circle cy="-544" r="5" fill="#2d3142"/>
+<path d="M0-484L-240-520L-240-448ZM0-484L240-520L240-448Z" fill="#fff6b0" opacity=".28"/>
+<rect x="-12" y="-120" width="24" height="34" rx="12" fill="#3bb8ff"/><rect x="-9" y="-300" width="18" height="26" rx="9" fill="#3bb8ff"/>
+</g>
+<g id="stand">
+<path d="M-360 0V-150L-330-190H330L360-150V0Z" fill="#e9eef7"/>
+<path d="M-344-8V-146L-318-178H318L344-146V-8Z" fill="url(#pCrowd)"/>
+<path d="M-344-40H344M-344-72H344M-344-104H344M-344-136H344" stroke="#e9eef7" stroke-width="4"/>
+<rect x="-370" y="-40" width="740" height="40" fill="#3bb8ff"/>
+<text y="-11" class="f" font-size="28" fill="#fff" text-anchor="middle" letter-spacing="6">&#x9633;&#x5149;&#x676F; &#xB7; SUNNY CUP</text>
+<path d="M-352-196V-240M-120-196V-240M120-196V-240M352-196V-240" stroke="#b9c3d6" stroke-width="7"/>
+<path d="M-380-236H380L360-196H-360Z" fill="#fff"/>
+<path d="M-360-196Q-340-176-320-196Q-300-176-280-196Q-260-176-240-196Q-220-176-200-196Q-180-176-160-196Q-140-176-120-196Q-100-176-80-196Q-60-176-40-196Q-20-176 0-196Q20-176 40-196Q60-176 80-196Q100-176 120-196Q140-176 160-196Q180-176 200-196Q220-176 240-196Q260-176 280-196Q300-176 320-196Q340-176 360-196Z" fill="#ff5a5f"/>
+<path d="M-300-236V-296M-100-236V-296M100-236V-296M300-236V-296" stroke="#8a93a8" stroke-width="3"/>
+<path d="M-300-296L-262-286L-300-276ZM100-296L138-286L100-276Z" fill="#ffd23f"/><path d="M-100-296L-62-286L-100-276ZM300-296L338-286L300-276Z" fill="#2ed9a3"/>
+</g>
+<g id="gantry">
+<path d="M-252 0H-214V-262H-252ZM214 0H252V-262H214Z" fill="#fff"/>
+<path d="M-252-40H-214V-70H-252ZM-252-120H-214V-150H-252ZM-252-200H-214V-230H-252ZM214-40H252V-70H214ZM214-120H252V-150H214ZM214-200H252V-230H214Z" fill="#ff5a5f"/>
+<rect x="-262" y="-302" width="524" height="50" rx="6" fill="url(#pChk)" stroke="#2d3142" stroke-width="4"/>
+<rect x="-118" y="-316" width="236" height="78" rx="16" fill="#3bb8ff" stroke="#fff" stroke-width="6"/>
+<text y="-284" class="f" font-size="30" fill="#fff" text-anchor="middle" letter-spacing="4">&#x9633;&#x5149;&#x676F;</text>
+<text y="-253" class="f" font-size="19" fill="#fff5b0" text-anchor="middle" letter-spacing="3">START &#xB7; FINISH</text>
+<path d="M-233-300L-250-370M-233-300L-225-392M-233-300L-205-362M233-300L250-370M233-300L225-392M233-300L205-362M-233-300L-262-340M233-300L262-340" stroke="#fff" stroke-width="1.6"/>
+<ellipse cx="-250" cy="-384" rx="17" ry="20" fill="#ff5c8a"/><ellipse cx="-224" cy="-408" rx="17" ry="20" fill="#ffd23f"/><ellipse cx="-203" cy="-376" rx="17" ry="20" fill="#3bb8ff"/><ellipse cx="-264" cy="-352" rx="15" ry="18" fill="#2ed9a3"/>
+<ellipse cx="250" cy="-384" rx="17" ry="20" fill="#9b5de5"/><ellipse cx="224" cy="-408" rx="17" ry="20" fill="#ff5c8a"/><ellipse cx="203" cy="-376" rx="17" ry="20" fill="#ffd23f"/><ellipse cx="264" cy="-352" rx="15" ry="18" fill="#3bb8ff"/>
+<path d="M-256-392a5 7 0 0 1 6-6M-230-416a5 7 0 0 1 6-6M-209-384a5 7 0 0 1 6-6M256-392a5 7 0 0 1-6-6M230-416a5 7 0 0 1-6-6M209-384a5 7 0 0 1-6-6" stroke="#fff" stroke-width="3" fill="none" opacity=".8"/>
+</g>
+<g id="tower">
+<path d="M-276 0H-236L-242-640H-270ZM236 0H276L270-640H242Z" fill="#f4f7fb"/><path d="M-276 0H-256L-256-640H-270ZM236 0H256L256-640H242Z" fill="#000" opacity=".08"/>
+<rect x="-274" y="-600" width="548" height="30" fill="#f4f7fb"/><rect x="-272" y="-452" width="544" height="22" fill="#f4f7fb"/><rect x="-274" y="-576" width="548" height="6" fill="#000" opacity=".08"/>
+<path d="M-278-640H-234V-668H-278ZM234-640H278V-668H234Z" fill="#ff5a5f"/>
+<path d="M-256-620L-620 0M-256-600L-500 0M-256-580L-400 0M-256-560L-320 0M256-620L620 0M256-600L500 0M256-580L400 0M256-560L320 0" stroke="#fff" stroke-width="2.4" opacity=".95"/>
+<text y="-509" class="f" font-size="36" fill="#3bb8ff" text-anchor="middle" letter-spacing="8">&#x6D77;&#x6E7E;&#x5927;&#x6865;</text>
+</g>
+<g id="chev">
+<rect x="-30" y="-44" width="5" height="44" fill="#8a93a8"/><rect x="25" y="-44" width="5" height="44" fill="#8a93a8"/>
+<rect x="-40" y="-80" width="80" height="40" rx="6" fill="#fff" stroke="#ff4f5a" stroke-width="4"/>
+<path d="M-30-73L-16-60L-30-47H-20L-6-60L-20-73ZM-6-73L8-60L-6-47H4L18-60L4-73ZM18-73L32-60L18-47H24L34-60L24-73Z" fill="#ff4f5a"/>
+</g>
+<g id="bb0">
+<rect x="-60" y="-80" width="8" height="80" fill="#8a93a8"/><rect x="52" y="-80" width="8" height="80" fill="#8a93a8"/>
+<rect x="-86" y="-180" width="172" height="104" rx="16" fill="#ff5c8a" stroke="#fff" stroke-width="6"/>
+<circle cx="-46" cy="-128" r="28" fill="#8c5a2e"/><path d="M-70-128A24 24 0 0 0-22-128Z" fill="#fff3d6"/><path d="M-50-150L-34-176" stroke="#ffd23f" stroke-width="5"/>
+<text x="26" y="-128" class="f" font-size="27" fill="#fff" text-anchor="middle">&#x6930;&#x5B50;</text><text x="26" y="-98" class="f" font-size="16" fill="#ffe46b" text-anchor="middle" letter-spacing="2">COCO FIZZ</text>
+</g>
+<g id="bb1">
+<rect x="-60" y="-80" width="8" height="80" fill="#8a93a8"/><rect x="52" y="-80" width="8" height="80" fill="#8a93a8"/>
+<rect x="-86" y="-180" width="172" height="104" rx="16" fill="#ffd23f" stroke="#fff" stroke-width="6"/>
+<circle cx="-48" cy="-128" r="18" fill="#ff8a1f"/><path d="M-48-160V-152M-48-104V-96M-80-128H-72M-24-128H-16M-71-151L-65-145M-31-111L-25-105M-71-105L-65-111M-31-145L-25-151" stroke="#ff8a1f" stroke-width="5" stroke-linecap="round"/>
+<text x="24" y="-126" class="f" font-size="25" fill="#ff5a3c" text-anchor="middle">&#x9633;&#x5149;</text><text x="24" y="-98" class="f" font-size="15" fill="#fff" text-anchor="middle" stroke="#ff8a1f" stroke-width="4" style="paint-order:stroke">SUNNY</text>
+</g>
+<g id="bb2">
+<rect x="-60" y="-80" width="8" height="80" fill="#8a93a8"/><rect x="52" y="-80" width="8" height="80" fill="#8a93a8"/>
+<rect x="-86" y="-180" width="172" height="104" rx="16" fill="#3bb8ff" stroke="#fff" stroke-width="6"/>
+<path d="M-78-104Q-62-150-34-144Q-50-134-44-118Q-30-100-8-106Q-30-86-78-104Z" fill="#fff"/>
+<text x="30" y="-128" class="f" font-size="25" fill="#fff" text-anchor="middle">&#x51B2;&#x6D6A;</text><text x="30" y="-98" class="f" font-size="15" fill="#fff36b" text-anchor="middle" letter-spacing="2">SURF CLUB</text>
+</g>
+<g id="rock">
+<path d="M-64 0L-50-40L-12-62L30-52L60-18L66 0Z" fill="#c9b8a4"/><path d="M-64 0L-50-40L-20-20L-30 0Z" fill="#a8957f"/><path d="M-12-62L30-52L10-26L-20-20L-50-40Z" fill="#ddd0bf"/><path d="M30-52L60-18L66 0L20 0L10-26Z" fill="#b8a690"/>
+</g>
+<g id="bush">
+<path d="M-40 0L-44-20L-26-40L2-46L28-38L44-18L40 0Z" fill="#43c463"/><path d="M-44-20L-26-40L2-46L-6-24Z" fill="#62d97f"/><path d="M28-38L44-18L40 0L14 0Z" fill="#35a854"/>
+<circle cx="-22" cy="-26" r="5" fill="#ff7eb6"/><circle cx="8" cy="-34" r="5" fill="#fff36b"/><circle cx="24" cy="-18" r="5" fill="#ff7eb6"/><circle cx="-6" cy="-12" r="4.5" fill="#fff"/>
+</g>
+<g id="tires">
+<ellipse cx="0" cy="-6" rx="30" ry="9" fill="#2d3142"/><rect x="-30" y="-24" width="60" height="18" fill="#ff4f5a"/><ellipse cx="0" cy="-24" rx="30" ry="9" fill="#2d3142"/>
+<rect x="-30" y="-42" width="60" height="18" fill="#fff"/><ellipse cx="0" cy="-42" rx="30" ry="9" fill="#2d3142"/><rect x="-30" y="-58" width="60" height="16" fill="#ff4f5a"/><ellipse cx="0" cy="-58" rx="30" ry="9" fill="#40455c"/><ellipse cx="0" cy="-58" rx="14" ry="4" fill="#23263a"/>
+</g>
+<g id="hut">
+<path d="M-60 0V-96H60V0Z" fill="#fff"/><path d="M-45 0V-96H-30V0ZM-15 0V-96H0V0ZM15 0V-96H30V0ZM45 0V-96H60V0Z" fill="#ff7eb6"/>
+<path d="M-76-92L0-150L76-92Z" fill="#3bb8ff"/><path d="M0-150L76-92H0Z" fill="#2a98e0"/><rect x="-16" y="-58" width="32" height="58" rx="6" fill="#8c5a2e"/>
+<rect x="-44" y="-126" width="88" height="20" rx="6" fill="#ffd23f"/><text y="-111" class="f" font-size="14" fill="#ff5a3c" text-anchor="middle">&#x51B0;&#x6DC7;&#x6DCB;</text>
+</g>
+<g id="lamp">
+<rect x="-3" y="-210" width="6" height="210" fill="#f4f7fb"/><path d="M0-206Q0-226 26-226H40" stroke="#f4f7fb" stroke-width="6" fill="none"/><rect x="32" y="-232" width="22" height="10" rx="4" fill="#ffd23f"/>
+<rect x="-8" y="-14" width="16" height="14" fill="#d5dbe6"/>
+</g>
+<g id="buoy">
+<ellipse cx="0" cy="0" rx="18" ry="5" fill="#fff" opacity=".6"/><path d="M-14 0L-10-26H10L14 0Z" fill="#ff4f5a"/><path d="M-12-12H12L11-18H-11Z" fill="#fff"/><rect x="-1.5" y="-44" width="3" height="18" fill="#2d3142"/><path d="M1.5-44L16-38L1.5-32Z" fill="#ffd23f"/>
+</g>
+<g id="boat">
+<path d="M-60 0L60 0L50 14L-50 14Z" transform="translate(0 -14)" fill="#fff"/><path d="M-50 0H50" transform="translate(0 -8)" stroke="#3bb8ff" stroke-width="4"/>
+<path d="M-4-18L-4-130L-56-22Z" fill="#fff"/><path d="M2-18L2-120L44-24Z" fill="#ff5c8a"/><path d="M2-60L2-120L26-66Z" fill="#ffd23f"/>
+</g>
+<g id="itembox">
+<path d="M0-44L20-34V-10L0 0L-20-10V-34Z" fill="url(#gBox)" opacity=".92"/>
+<path d="M0-44L20-34L0-24L-20-34Z" fill="#fff" opacity=".45"/><path d="M0-24L20-34V-10L0 0Z" fill="#000" opacity=".1"/>
+<path d="M0-44L20-34V-10L0 0L-20-10V-34ZM0-24V0M0-24L20-34M0-24L-20-34" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/>
+<text x="-9" y="-9" class="f" font-size="16" fill="#fff" text-anchor="middle" transform="skewY(26)">?</text><text x="9" y="-18" class="f" font-size="16" fill="#fff" text-anchor="middle" transform="skewY(-26)">?</text>
+</g>
+<g id="banana">
+<ellipse cx="0" cy="-1" rx="15" ry="4" fill="#000" opacity=".18"/>
+<path d="M-2-6Q-16-4-18 2Q-8 0-2-3Z" fill="#ffd23f"/><path d="M2-6Q16-5 17 2Q8-1 2-3Z" fill="#ffc21a"/><path d="M0-7Q-5 2 2 4Q4-1 3-7Z" fill="#ffe46b"/>
+<path d="M-3-6Q0-12 2-16Q5-12 3-6Z" fill="#ffd23f"/><rect x="0" y="-19" width="3" height="4" rx="1" fill="#6b4423"/>
+</g>
+<g id="ball">
+<circle cy="-11" r="11" fill="#ff5c8a"/><path d="M-11-11A11 11 0 0 1 11-11C6-7-6-7-11-11Z" fill="#ffd23f"/><path d="M-9.5-5.5C-3-2 3-2 9.5-5.5A11 11 0 0 1-9.5-5.5Z" fill="#3bb8ff"/><circle cx="-4" cy="-15" r="3" fill="#fff" opacity=".8"/>
+</g>
+<!-- ===== item icons (HUD / help), centered on 0,0, about 64 units ===== -->
+<g id="icRocket">
+<path d="M-8 14L-22 26L-20 8ZM8 14L22 26L20 8Z" fill="#3bb8ff"/><path d="M0-30Q14-16 12 14H-12Q-14-16 0-30Z" fill="#ff4f5a"/><path d="M0-30Q14-16 12 14H0Z" fill="#d93a47"/>
+<circle cy="-6" r="6" fill="#bff4ff" stroke="#fff" stroke-width="2.5"/><path d="M-9 16H9L6 22H-6Z" fill="#8a93a8"/><path d="M-6 22Q0 40 6 22Z" fill="url(#gFlame)"/>
+</g>
+<g id="icBanana">
+<path d="M-18-10Q-14 20 18 20Q24 18 26 12Q2 12-8-16Z" fill="#ffd23f"/><path d="M-18-10Q-14 20 18 20Q4 14-2-6Z" fill="#ffc21a"/><path d="M-8-16L-12-26L-16-24L-18-10Z" fill="#8c5a2e"/><path d="M18 20L28 14L26 10Z" fill="#6b4423"/>
+</g>
+<g id="icBubble">
+<circle r="24" fill="url(#gBub)" stroke="#8fe6ff" stroke-width="3"/><path d="M-12-10A15 15 0 0 1 0-16" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="10" cy="12" r="3" fill="#fff" opacity=".8"/>
+</g>
+<g id="icBall">
+<circle r="22" fill="#ff5c8a"/><path d="M-22 0A22 22 0 0 1 22 0C12 8-12 8-22 0Z" fill="#ffd23f"/><path d="M-19 11C-6 18 6 18 19 11A22 22 0 0 1-19 11Z" fill="#3bb8ff"/><circle cx="-8" cy="-10" r="5" fill="#fff" opacity=".8"/>
+</g>
+</defs>
+<g id="world">
+<rect x="-60" y="-60" width="1400" height="420" fill="url(#gSky)"/>
+<g id="sunG" transform="translate(1010 118)"><circle r="150" fill="url(#gSun)"/><circle r="46" fill="#fff6b8"/><circle r="36" fill="#fffbe6"/></g>
+<g id="cloudL"><g id="cloudTile"></g><use href="#cloudTile" x="1600"/></g>
+<g id="gullL" fill="none" stroke="#3d5a80" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path id="gulls"/></g>
+<g id="bgFar"><g id="farTile"></g><use href="#farTile" x="1280"/></g>
+<rect id="seaR" x="-60" y="300" width="1400" height="480" fill="url(#gSea)"/>
+<path id="seaSpk" fill="#fff" opacity=".85"/>
+<g id="bgMid"><g id="midTile"></g><use href="#midTile" x="1280"/></g>
+<g id="road">
+<path id="rGrL" fill="#8fe064"/><path id="rGrD" fill="#7fd456"/>
+<path id="rSaL" fill="#ffe7a8"/><path id="rSaD" fill="#fadb90"/>
+<path id="rShal" fill="#8ff0e6" opacity=".7"/><path id="rFoam" fill="#fff"/>
+<path id="rWalk" fill="#e3e8f0"/>
+<path id="rRuR" fill="#ff4f5a"/><path id="rRuW" fill="#fff"/>
+<path id="rAsL" fill="#959cb0"/><path id="rAsD" fill="#8a91a6"/>
+<path id="rLine" fill="#fff" opacity=".75"/>
+<path id="rBoost" fill="#ff8a1f"/><path id="rBoostA" fill="#fff36b"/>
+<path id="rChkW" fill="#fff"/><path id="rChk" fill="#2d3142"/>
+<path id="rRkL" fill="#e0bb93"/><path id="rRkD" fill="#caa27c"/><path id="rRkT" fill="#8fe064"/>
+<path id="rFenR" fill="#ff4f5a"/><path id="rFenW" fill="#fff"/>
+<path id="rRail" fill="#fff"/><path id="rRailT" fill="none" stroke="#ff4f5a" stroke-width="3" stroke-linejoin="round"/>
+</g>
+<g id="objL"></g>
+<g id="plL"></g>
+<g id="nearL"></g>
+<g id="fxL">
+<path id="fxDust" fill="#fff1c9" opacity=".8"/><path id="fxSmoke" fill="#fff" opacity=".75"/><path id="fxSplash" fill="#dffaff"/>
+<path id="fxS0" fill="none" stroke="#5fd0ff" stroke-width="3" stroke-linecap="round"/><path id="fxS1" fill="none" stroke="#ffa62b" stroke-width="3" stroke-linecap="round"/><path id="fxS2" fill="none" stroke="#d27dff" stroke-width="3" stroke-linecap="round"/><path id="fxS3" fill="none" stroke="#fff3a0" stroke-width="2.4" stroke-linecap="round"/>
+<path id="fxC0" fill="#ff5c8a"/><path id="fxC1" fill="#ffd23f"/><path id="fxC2" fill="#2ed9a3"/><path id="fxC3" fill="#3bb8ff"/>
+<path id="speedL" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="0"/>
+</g>
+<g id="tagL" class="f"></g>
+<g id="popL" class="f"></g>
+</g>
+<rect id="flash" width="1280" height="720" fill="#fff" opacity="0" pointer-events="none"/>
+<g id="hud" class="f">
+<g transform="translate(22 16)">
+<rect width="116" height="116" rx="30" fill="url(#gSlot)"/><rect x="8" y="8" width="100" height="100" rx="23" fill="#fff"/><rect x="8" y="8" width="100" height="40" rx="20" fill="#f0faff"/>
+<text id="hItemQ" x="58" y="75" font-size="46" fill="#d5e3f0" text-anchor="middle">?</text>
+<g id="hItemG" transform="translate(58 58)"><use id="hItemIc" href="#icRocket"/></g>
+<rect x="18" y="120" width="80" height="26" rx="13" fill="#1d3a6e" opacity=".82"/><text x="58" y="139" font-size="15" fill="#fff" text-anchor="middle">X / J</text>
+</g>
+<g transform="translate(156 20)">
+<text x="2" y="26" font-size="24" fill="#fff" stroke="#1d3a6e" stroke-width="7" class="ol" letter-spacing="2">LAP</text>
+<text id="hLap" x="0" y="84" font-size="62" fill="#fff" stroke="#ff5c8a" stroke-width="10" class="ol">1</text>
+<text id="hLapT" x="44" y="84" font-size="34" fill="#fff" stroke="#ff5c8a" stroke-width="8" class="ol">/3</text>
+<text id="hTime" x="2" y="124" font-size="27" fill="#fff" stroke="#1d3a6e" stroke-width="7" class="ol">0:00.00</text>
+</g>
+<g id="btnPause" class="btn" transform="translate(1168 44)"><circle class="bb" r="25" fill="#fff" stroke="#3bb8ff" stroke-width="5"/><path d="M-7-9V9M7-9V9" stroke="#1d3a6e" stroke-width="6" stroke-linecap="round"/></g>
+<g id="btnMute" class="btn" transform="translate(1230 44)"><circle class="bb" r="25" fill="#fff" stroke="#ff5c8a" stroke-width="5"/><path d="M-12-5H-6L2-12V12L-6 5H-12Z" fill="#1d3a6e"/><path id="muteOn" d="M6-7Q11 0 6 7M10-11Q18 0 10 11" stroke="#1d3a6e" stroke-width="3" fill="none" stroke-linecap="round"/><path id="muteOff" d="M6-6L16 6M16-6L6 6" stroke="#ff4f5a" stroke-width="3.4" stroke-linecap="round" display="none"/></g>
+<g id="hRank" transform="translate(1102 86)"></g>
+<g transform="translate(18 528)">
+<rect width="236" height="176" rx="22" fill="#fff" opacity=".72"/><rect width="236" height="176" rx="22" fill="none" stroke="#fff" stroke-width="4"/>
+<g clip-path="url(#cpMap)"><path id="mapRoadO" fill="none" stroke="#fff" stroke-width="11" stroke-linejoin="round"/><path id="mapRoad" fill="none" stroke="#ffb13b" stroke-width="5" stroke-linejoin="round"/><path id="mapStart" stroke="#2d3142" stroke-width="4"/><g id="mapDots"></g></g>
+</g>
+<g id="hPos">
+<text id="hPosN" x="1186" y="694" font-size="138" fill="#fff" stroke="#ffb400" stroke-width="14" class="ol" text-anchor="end">1</text>
+<text id="hPosS" x="1190" y="626" font-size="44" fill="#fff" stroke="#ffb400" stroke-width="9" class="ol">st</text>
+<text id="hPosC" x="1192" y="688" font-size="24" fill="#fff" stroke="#1d3a6e" stroke-width="6" class="ol cn">&#x7B2C;1&#x540D;</text>
+</g>
+</g>
+<g id="wwG" class="f hid" pointer-events="none">
+<rect x="470" y="160" width="340" height="92" rx="46" fill="#ff4f5a" stroke="#fff" stroke-width="7"/>
+<path d="M530 226V196Q530 182 544 182H560Q574 182 574 196V206M566 200L574 212L582 200" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="680" y="222" font-size="46" fill="#fff" text-anchor="middle">&#x9006;&#x884C;&#xFF01;</text><text x="772" y="220" font-size="15" fill="#ffe0e2" text-anchor="middle">WRONG</text><text x="772" y="236" font-size="15" fill="#ffe0e2" text-anchor="middle">WAY</text>
+</g>
+<g id="cdG" class="f hid" pointer-events="none">
+<g id="cdLight">
+<rect x="637" y="-20" width="6" height="52" fill="#8a93a8"/>
+<rect x="500" y="30" width="280" height="104" rx="52" fill="#fff" stroke="#1d3a6e" stroke-width="6"/>
+<circle id="cdL0" cx="560" cy="82" r="30" fill="#e3e8f0"/><circle id="cdL1" cx="640" cy="82" r="30" fill="#e3e8f0"/><circle id="cdL2" cx="720" cy="82" r="30" fill="#e3e8f0"/>
+</g>
+<text id="cdTxt" x="640" y="350" font-size="160" fill="#fff" stroke="#ff5c8a" stroke-width="16" class="ol" text-anchor="middle">3</text>
+<g id="cdHint"><rect x="370" y="396" width="540" height="40" rx="20" fill="#1d3a6e" opacity=".72"/><text x="640" y="423" class="cn" font-size="18" fill="#fff" text-anchor="middle">&#x7B2C;&#x4E09;&#x76CF;&#x7EA2;&#x706F;&#x4EAE;&#x8D77;&#x65F6;&#x6309;&#x4F4F; &#x2191; &#x6CB9;&#x95E8; &#x2192; &#x8D77;&#x6B65;&#x52A0;&#x901F;&#xFF01;</text></g>
+</g>
+<g id="msgG" class="f" opacity="0" pointer-events="none">
+<path d="M380 186H900L876 220L900 254H380L404 220Z" fill="#ff5c8a" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<text id="msgT" x="640" y="238" font-size="42" fill="#fff" stroke="#b8235a" stroke-width="6" class="ol" text-anchor="middle">&#x6700;&#x540E;&#x4E00;&#x5708;&#xFF01;</text>
+<text id="msgS" x="640" y="286" font-size="22" fill="#fff" stroke="#1d3a6e" stroke-width="6" class="ol" text-anchor="middle">FINAL LAP</text>
+</g>
+<g id="titleC" class="f">
+<g id="tLogo" transform="translate(640 116)">
+<g id="tRays" opacity=".9"></g>
+<text id="tCnB" y="10" font-size="110" fill="#1d3a6e" stroke="#1d3a6e" stroke-width="30" class="ol cn" text-anchor="middle" letter-spacing="6" style="font-weight:900">&#x9633;&#x5149;&#x5361;&#x4E01;&#x8F66;</text>
+<text id="tCnW" y="10" font-size="110" fill="#fff" stroke="#fff" stroke-width="16" class="ol cn" text-anchor="middle" letter-spacing="6" style="font-weight:900">&#x9633;&#x5149;&#x5361;&#x4E01;&#x8F66;</text>
+<text id="tCn" y="10" font-size="110" class="cn" text-anchor="middle" letter-spacing="6" style="font-weight:900"><tspan fill="#ff4f5a">&#x9633;</tspan><tspan fill="#ff9a1f">&#x5149;</tspan><tspan fill="#2ec27e">&#x5361;</tspan><tspan fill="#2e9bff">&#x4E01;</tspan><tspan fill="#9b5de5">&#x8F66;</tspan></text>
+<g transform="rotate(-3)"><rect x="-172" y="36" width="344" height="58" rx="29" fill="#ffd23f" stroke="#1d3a6e" stroke-width="6"/>
+<text y="80" font-size="40" fill="#fff" stroke="#ff7a1a" stroke-width="8" class="ol" text-anchor="middle" letter-spacing="7">SUNNY KART</text></g>
+</g>
+<g transform="translate(640 244)"><rect x="-330" y="-22" width="660" height="42" rx="21" fill="#fff" opacity=".9"/><text y="7" class="cn" font-size="20" fill="#1d3a6e" text-anchor="middle">&#x6D77;&#x8FB9;&#x8D5B;&#x9053;&#x4E09;&#x5708;&#x5B9A;&#x80DC;&#x8D1F;&#xFF0C;&#x6F02;&#x79FB;&#x6512;&#x706B;&#x82B1;&#x3001;&#x62A2;&#x9053;&#x5177;&#xFF0C;&#x51B2;&#x4E0A;&#x9886;&#x5956;&#x53F0;&#xFF01;</text></g>
+<g transform="translate(186 292)"><rect x="-86" y="-16" width="172" height="32" rx="16" fill="#1d3a6e" opacity=".78"/><text y="6" class="cn" font-size="16" fill="#fff" text-anchor="middle">&#x9009;&#x62E9;&#x96BE;&#x5EA6; &#xB7; CC</text></g>
+<g id="dBtn0" class="btn"><rect class="bb" x="56" y="318" width="260" height="56" rx="28"/><text x="186" y="355" font-size="25" text-anchor="middle"><tspan class="cn" style="font-weight:900">&#x7B80;&#x5355;</tspan><tspan font-size="18" dx="8">50cc</tspan></text></g>
+<g id="dBtn1" class="btn"><rect class="bb" x="56" y="386" width="260" height="56" rx="28"/><text x="186" y="423" font-size="25" text-anchor="middle"><tspan class="cn" style="font-weight:900">&#x666E;&#x901A;</tspan><tspan font-size="18" dx="8">100cc</tspan></text></g>
+<g id="dBtn2" class="btn"><rect class="bb" x="56" y="454" width="260" height="56" rx="28"/><text x="186" y="491" font-size="25" text-anchor="middle"><tspan class="cn" style="font-weight:900">&#x56F0;&#x96BE;</tspan><tspan font-size="18" dx="8">150cc</tspan></text></g>
+<g id="startBtn" class="btn"><rect x="954" y="318" width="280" height="74" rx="37" fill="#1d3a6e" transform="translate(0 6)"/><rect class="bb" x="954" y="318" width="280" height="74" rx="37" fill="url(#gBtn)" stroke="#fff" stroke-width="5"/><text x="1094" y="366" font-size="31" fill="#fff" stroke="#c2185b" stroke-width="5" class="ol" text-anchor="middle"><tspan class="cn" style="font-weight:900">&#x5F00;&#x59CB;&#x6BD4;&#x8D5B;</tspan><tspan font-size="17" dx="8">ENTER</tspan></text></g>
+<g id="helpBtn" class="btn"><rect x="1004" y="410" width="180" height="58" rx="29" fill="#1d3a6e" transform="translate(0 5)"/><rect class="bb" x="1004" y="410" width="180" height="58" rx="29" fill="#fff" stroke="#3bb8ff" stroke-width="5"/><text x="1094" y="448" font-size="25" fill="#1d3a6e" text-anchor="middle"><tspan class="cn" style="font-weight:900">&#x73A9;&#x6CD5;</tspan><tspan font-size="17" dx="6">H</tspan></text></g>
+<text id="tBest" x="1094" y="502" class="cn" font-size="16" fill="#fff" stroke="#1d3a6e" stroke-width="5" text-anchor="middle" style="paint-order:stroke">-</text>
+<text id="tBest2" x="1094" y="526" class="cn" font-size="16" fill="#fff" stroke="#1d3a6e" stroke-width="5" text-anchor="middle" style="paint-order:stroke">-</text>
+<g transform="translate(640 690)"><rect x="-560" y="-20" width="1120" height="38" rx="19" fill="#1d3a6e" opacity=".75"/><text y="6" class="cn" font-size="16" fill="#fff" text-anchor="middle">&#x2191;/W &#x6CB9;&#x95E8; &#xB7; &#x2193;/S &#x5239;&#x8F66;&#x5012;&#x8F66; &#xB7; &#x2190;&#x2192;/A D &#x8F6C;&#x5411; &#xB7; &#x8F6C;&#x5411;&#x65F6;&#x6309;&#x4F4F; Shift/&#x7A7A;&#x683C; &#x6F02;&#x79FB; &#xB7; X/J &#x9053;&#x5177; &#xB7; P &#x6682;&#x505C; &#xB7; H &#x73A9;&#x6CD5; &#xB7; M &#x9759;&#x97F3;</text></g>
+</g>
+<g id="helpC" class="f hid">
+<rect x="0" y="0" width="1280" height="720" fill="#1d3a6e" opacity=".35"/>
+<rect x="130" y="54" width="1020" height="620" rx="36" fill="#1d3a6e" transform="translate(0 8)"/>
+<rect x="130" y="54" width="1020" height="620" rx="36" fill="url(#gCard)" stroke="#fff" stroke-width="6"/>
+<rect x="470" y="30" width="340" height="60" rx="30" fill="#ffd23f" stroke="#1d3a6e" stroke-width="5"/>
+<text x="640" y="71" font-size="30" fill="#1d3a6e" text-anchor="middle"><tspan class="cn" style="font-weight:900">&#x73A9;&#x6CD5;&#x8BF4;&#x660E;</tspan><tspan font-size="18" dx="8">HOW TO PLAY</tspan></text>
+<g id="helpRows"></g>
+<g id="helpClose" class="btn"><rect class="bb" x="530" y="604" width="220" height="52" rx="26" fill="url(#gBtn)" stroke="#fff" stroke-width="4"/><text x="640" y="638" font-size="22" fill="#fff" text-anchor="middle"><tspan class="cn" style="font-weight:900">&#x77E5;&#x9053;&#x4E86;</tspan><tspan font-size="16" dx="6">H / ESC</tspan></text></g>
+</g>
+<g id="pauseC" class="f hid">
+<rect x="0" y="0" width="1280" height="720" fill="#1d3a6e" opacity=".4"/>
+<rect x="420" y="170" width="440" height="390" rx="36" fill="#1d3a6e" transform="translate(0 8)"/>
+<rect x="420" y="170" width="440" height="390" rx="36" fill="url(#gCard)" stroke="#fff" stroke-width="6"/>
+<text x="640" y="252" font-size="60" fill="#fff" stroke="#3bb8ff" stroke-width="12" class="ol cn" text-anchor="middle" style="font-weight:900">&#x6682;&#x505C;</text>
+<text x="640" y="282" font-size="18" fill="#8a93a8" text-anchor="middle" letter-spacing="6">PAUSED</text>
+<text id="pInfo" x="640" y="316" class="cn" font-size="18" fill="#1d3a6e" text-anchor="middle">-</text>
+<g id="resumeBtn" class="btn"><rect class="bb" x="490" y="340" width="300" height="54" rx="27" fill="url(#gBtn)" stroke="#fff" stroke-width="4"/><text x="640" y="375" font-size="24" fill="#fff" text-anchor="middle"><tspan class="cn" style="font-weight:900">&#x7EE7;&#x7EED;&#x6BD4;&#x8D5B;</tspan><tspan font-size="16" dx="6">P</tspan></text></g>
+<g id="restartBtn" class="btn"><rect class="bb" x="490" y="404" width="300" height="54" rx="27" fill="#fff" stroke="#2ed9a3" stroke-width="4"/><text x="640" y="439" font-size="24" fill="#1d3a6e" text-anchor="middle"><tspan class="cn" style="font-weight:900">&#x91CD;&#x65B0;&#x5F00;&#x59CB;</tspan><tspan font-size="16" dx="6">R</tspan></text></g>
+<g id="quitBtn" class="btn"><rect class="bb" x="490" y="468" width="300" height="54" rx="27" fill="#fff" stroke="#3bb8ff" stroke-width="4"/><text x="640" y="503" font-size="24" fill="#1d3a6e" text-anchor="middle"><tspan class="cn" style="font-weight:900">&#x8FD4;&#x56DE;&#x6807;&#x9898;</tspan><tspan font-size="16" dx="6">ESC</tspan></text></g>
+</g>
+<g id="overC" class="f hid">
+<rect x="0" y="0" width="1280" height="720" fill="#1d3a6e" opacity=".3"/>
+<rect x="100" y="44" width="1080" height="640" rx="40" fill="#1d3a6e" transform="translate(0 8)"/>
+<rect x="100" y="44" width="1080" height="640" rx="40" fill="url(#gCard)" stroke="#fff" stroke-width="6"/>
+<rect x="480" y="22" width="320" height="58" rx="29" fill="#ffd23f" stroke="#1d3a6e" stroke-width="5"/>
+<text x="640" y="62" font-size="28" fill="#1d3a6e" text-anchor="middle"><tspan class="cn" style="font-weight:900">&#x6BD4;&#x8D5B;&#x7ED3;&#x679C;</tspan><tspan font-size="18" dx="8">RESULTS</tspan></text>
+<g id="oPodium" transform="translate(360 330)"></g>
+<text id="oPlace" x="360" y="140" font-size="64" fill="#fff" stroke="#ffb400" stroke-width="12" class="ol cn" text-anchor="middle" style="font-weight:900">&#x7B2C;1&#x540D;</text>
+<text id="oMsg" x="360" y="174" class="cn" font-size="20" fill="#1d3a6e" text-anchor="middle">&#x51A0;&#x519B;&#xFF01;&#x9633;&#x5149;&#x676F;&#x5F52;&#x4F60;&#x5566;&#xFF01;</text>
+<g id="oLaps"></g>
+<g id="oNew" transform="translate(522 452) rotate(8)"><rect x="-62" y="-22" width="124" height="44" rx="22" fill="#ff5c8a" stroke="#fff" stroke-width="4"/><text y="8" font-size="21" fill="#fff" text-anchor="middle">NEW BEST!</text></g>
+<g id="oTable"></g>
+<g id="retryBtn" class="btn"><rect class="bb" x="390" y="600" width="280" height="58" rx="29" fill="url(#gBtn)" stroke="#fff" stroke-width="4"/><text x="530" y="638" font-size="25" fill="#fff" text-anchor="middle"><tspan class="cn" style="font-weight:900">&#x518D;&#x6765;&#x4E00;&#x5C40;</tspan><tspan font-size="16" dx="6">ENTER</tspan></text></g>
+<g id="backBtn" class="btn"><rect class="bb" x="690" y="600" width="220" height="58" rx="29" fill="#fff" stroke="#3bb8ff" stroke-width="4"/><text x="800" y="638" font-size="25" fill="#1d3a6e" text-anchor="middle"><tspan class="cn" style="font-weight:900">&#x8FD4;&#x56DE;&#x6807;&#x9898;</tspan><tspan font-size="16" dx="6">ESC</tspan></text></g>
+</g>
+<g id="poolG" display="none"></g>
+
+</svg>
+<script src="../web-runtime/c42a5a8509dee9cdd28b30ea.js"></script><script src="../web-runtime/3902336fecfc1e9d07f52f7a.js"></script></body></html>

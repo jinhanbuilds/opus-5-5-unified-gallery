@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>什么是 Transformer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#0F1216;overflow:hidden}
+canvas{position:absolute;display:block}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* 时间线（20 s，1920×1080 逻辑舞台）
+   0.0– 3.2  ① 分词：整句 → 8 个词元盒 + 词表编号；右侧出现待预测的「？」
+   3.2– 6.4  ② 嵌入：每个词元长出 8 格向量；叠加位置编码 p0…p7；「它」的数值
+   6.4–10.0  ③ Q/K/V：每列向量分裂成 q、k、v 三列；图例
+  10.0–14.0  ④ 注意力：「它」的 q 与每个 k 点积 → 分数 → softmax 权重；
+               词元上方画弧线，粗细 = 权重；「太」被因果遮罩
+  14.0–17.0  ⑤ 公式 softmax(QKᵀ/√d_k)V 从 q/k/v 列飞入拼装 + 注释
+  17.0–20.0  ⑥ 预测：最后位置 → N 层 → 词表概率条 →「累」飞入句尾
+  19.2–20.0  交叉淡入到 t=0 画面，无缝循环
+*/
+(() => {
+const W = 1920, H = 1080, DUR = 20;
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const C = { bg:'#0F1216', ink:'#ECE6D8', dim:'#8B919A', faint:'#394049', panel:'#161B22',
+            Q:'#F2A541', K:'#46BFB0', V:'#E8705F', neg:'#5E7088' };
+const F = {
+  sans: '"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif',
+  mono: '"JetBrains Mono","SFMono-Regular",Menlo,Consolas,monospace',
+  math: '"Noto Serif","Times New Roman",Georgia,serif'
+};
+const TOK = ['小猫','没有','过','马路','，','因为','它','太'];
+const PRED = '累';
+const IDS = [20391, 8812, 3057, 16604, 101, 9921, 1432, 4470];
+const WTS = [.46,.05,.04,.17,.02,.08,.18];          // softmax 权重（和 = 1）
+const SCO = [3.22,1.00,0.78,2.23,0.09,1.47,2.29];    // q·k/√d，softmax 后即为 WTS
+const QI = 6, TY = 375, BOXH = 84;
+const SX = i => 200 + i * 190;
+const STEPS = ['分词','嵌入','Q·K·V','注意力','公式','预测'];
+const BOUNDS = [0, 3.2, 6.4, 10, 14, 17, 20];
+const CAP = [
+  ['分词：句子被切成一个个「词元」token', '每个词元对应词表里的一个编号（这里的编号是示意）'],
+  ['嵌入：每个词元变成一串数字——向量', '意思相近的词，向量也相近；再叠加位置编码，模型才知道词序'],
+  ['每个向量再变出三份：Q、K、V', 'q = x·W_Q　k = x·W_K　v = x·W_V —— 三个矩阵都是训练学出来的'],
+  ['注意力：「它」拿自己的 q 和每个 k 做点积', '分数除以 √d，再用 softmax 变成权重（总和 100%）；GPT 类模型看不到后面的词'],
+  ['把整个过程写成一行数学', '输出 = 各词 v 的加权和；真实模型有几十个「注意力头」同时并行计算'],
+  ['预测：用最后一个位置的向量，给词表里每个词打分', '选出「累」接到句尾，再预测下一个——大模型就是这样一个词一个词地写']
+];
+const CAP4B = ['「它」最关注「小猫」（46%）——它读懂了「它」指谁', '分数除以 √d，再用 softmax 变成权重（总和 100%）；GPT 类模型看不到后面的词'];
+const BARS = [['累', .58], ['困', .17], ['害怕', .09], ['饿', .06]];
+const MISC = '什么是一个词元如何看见整句话输入：遮住未来分数权重层变成和为缩放防止过大加求各位置示意编号查询键值我在找有特征能提供其他';
+
+// ---------- 固定种子随机 ----------
+function rng(s) { return () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const R = rng(20260926);
+const vec = () => Array.from({ length: 8 }, () => +(R() * 2 - 1).toFixed(2));
+const EMB = TOK.map(vec), QV = TOK.map(vec), KV = TOK.map(vec), VV = TOK.map(vec);
+EMB[QI][0] = 0.21; EMB[QI][1] = -1.0; EMB[QI][2] = 0.88;
+
+// ---------- 工具 ----------
+const cl = x => x < 0 ? 0 : x > 1 ? 1 : x;
+const P = (t, a, b) => cl((t - a) / (b - a));
+const E = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const EO = x => 1 - Math.pow(1 - x, 3);
+const L = (a, b, k) => a + (b - a) * k;
+let MA = 1;                                   // 主透明度（用于循环交叉淡入）
+const al = a => { ctx.globalAlpha = Math.max(0, Math.min(1, MA * a)); };
+function rr(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+function txt(s, x, y, font, col, a = 1, align = 'left', base = 'alphabetic') {
+  if (a <= 0.001) return; al(a); ctx.font = font; ctx.fillStyle = col; ctx.textAlign = align; ctx.textBaseline = base; ctx.fillText(s, x, y);
+}
+const mw = (s, font) => { ctx.font = font; return ctx.measureText(s).width; };
+function cellCol(v, col) { return v >= 0 ? col : C.neg; }
+
+// ---------- 背景点阵 ----------
+let grid = null;
+function gridPat() {
+  const g = document.createElement('canvas'); g.width = g.height = 40;
+  const x = g.getContext('2d'); x.fillStyle = 'rgba(236,230,216,0.07)'; x.fillRect(19, 19, 2, 2);
+  return ctx.createPattern(g, 'repeat');
+}
+
+// ---------- 场景 ----------
+function header(t) {
+  txt('什么是 Transformer', 120, 108, `700 40px ${F.sans}`, C.ink);
+  txt('一个词元如何「看见」整句话', 120, 148, `400 24px ${F.sans}`, C.dim);
+  // 步骤条（右对齐）
+  let step = 0; for (let k = 0; k < 6; k++) if (t >= BOUNDS[k]) step = k;
+  const items = STEPS.map((s, k) => ({ n: '0' + (k + 1), s, w: mw('0' + (k + 1), `600 20px ${F.mono}`) + 8 + mw(s, `500 22px ${F.sans}`) }));
+  let x = 1800; const pos = [];
+  for (let k = 5; k >= 0; k--) { x -= items[k].w; pos[k] = x; x -= 34; }
+  for (let k = 0; k < 6; k++) {
+    const on = k === step, a = on ? 1 : k < step ? .55 : .3;
+    txt(items[k].n, pos[k], 106, `600 20px ${F.mono}`, on ? C.Q : C.dim, a);
+    txt(items[k].s, pos[k] + mw(items[k].n, `600 20px ${F.mono}`) + 8, 106, `500 22px ${F.sans}`, C.ink, a);
+  }
+  const x0 = pos[0];
+  al(1); ctx.fillStyle = C.faint; ctx.fillRect(x0, 124, 1800 - x0, 2);
+  ctx.fillStyle = C.Q; ctx.fillRect(x0, 124, (1800 - x0) * (t / DUR), 2);
+}
+
+function tokens(t) {
+  const fJ = `500 64px ${F.sans}`;
+  const wj = TOK.map(s => mw(s, fJ)), tot = wj.reduce((a, b) => a + b, 0);
+  let acc = 960 - tot / 2;
+  const intro = 1 - P(t, .8, 1.4);
+  txt('输入一句话：', 960 - tot / 2, 452, `400 26px ${F.sans}`, C.dim, intro);
+  for (let j = 0; j < TOK.length; j++) {
+    const jc = acc + wj[j] / 2; acc += wj[j];
+    const sp = E(P(t, .8 + j * .07, 1.6 + j * .07));
+    const x = L(jc, SX(j), sp), y = L(520, TY, sp), fs = L(64, 50, sp);
+    const bw = Math.max(110, mw(TOK[j], `500 50px ${F.sans}`) + 48);
+    // 遮罩状态（④）
+    const masked = j === 7 ? P(t, 10.1, 10.5) * (1 - P(t, 14, 14.4)) : 0;
+    if (sp > 0) {
+      al(sp); ctx.fillStyle = C.panel; rr(x - bw / 2, y - BOXH / 2, bw, BOXH, 12); ctx.fill();
+      ctx.lineWidth = 2; ctx.strokeStyle = j === QI && t > 6.4 && t < 17 ? C.Q : 'rgba(236,230,216,0.55)'; ctx.stroke();
+    }
+    txt(TOK[j], x, y + 2, `500 ${fs}px ${F.sans}`, C.ink, 1 - masked * .6, 'center', 'middle');
+    if (masked > 0) {
+      al(masked * .8); ctx.save(); rr(x - bw / 2, y - BOXH / 2, bw, BOXH, 12); ctx.clip();
+      ctx.strokeStyle = C.dim; ctx.lineWidth = 2;
+      for (let k = -8; k < 12; k++) { ctx.beginPath(); ctx.moveTo(x - bw / 2 + k * 16, y + BOXH / 2); ctx.lineTo(x - bw / 2 + k * 16 + BOXH, y - BOXH / 2); ctx.stroke(); }
+      ctx.restore();
+    }
+    // 词表编号
+    const ida = P(t, 1.8 + j * .05, 2.3 + j * .05) * (1 - P(t, 3.2, 3.6));
+    txt('#' + IDS[j], SX(j), 452, `400 22px ${F.mono}`, C.dim, ida, 'center');
+  }
+  // 待预测槽位
+  const qa = P(t, 2.0, 2.6);
+  const got = EO(P(t, 18.4, 19.1));
+  if (qa > 0) {
+    const x = SX(8), y = TY, bw = 110;
+    al(qa * (1 - got)); ctx.setLineDash([8, 8]); ctx.lineWidth = 2; ctx.strokeStyle = C.dim;
+    rr(x - bw / 2, y - BOXH / 2, bw, BOXH, 12); ctx.stroke(); ctx.setLineDash([]);
+    txt('?', x, y + 2, `600 44px ${F.mono}`, C.dim, qa * (1 - got), 'center', 'middle');
+    if (got > 0) {
+      al(got); ctx.fillStyle = 'rgba(242,165,65,0.14)'; rr(x - bw / 2, y - BOXH / 2, bw, BOXH, 12); ctx.fill();
+      ctx.strokeStyle = C.Q; ctx.lineWidth = 3; ctx.stroke();
+    }
+  }
+}
+
+function vectors(t) {
+  const out = 1 - P(t, 14, 14.4);
+  if (t < 3.3 || out <= 0) return;
+  const pe = P(t, 5.0, 5.8);
+  for (let j = 0; j < TOK.length; j++) {
+    const g = E(P(t, 3.3 + j * .08, 4.0 + j * .08));
+    const sp = E(P(t, 6.5 + j * .06, 7.3 + j * .06));
+    // 嵌入列
+    if (sp < 1) {
+      for (let c = 0; c < 8; c++) {
+        const a = cl(g * 8 - c) * (1 - sp);
+        if (a <= 0) continue;
+        const v = L(EMB[j][c], Math.max(-1, Math.min(1, EMB[j][c] + .35 * Math.sin(j * .9 + c * 1.3))), pe);
+        al(a * (0.18 + .82 * Math.abs(v))); ctx.fillStyle = cellCol(v, C.ink);
+        rr(SX(j) - 11, 452 + c * 26, 22, 22, 4); ctx.fill();
+      }
+    }
+    // q / k / v 三列
+    if (sp > 0) {
+      const dimO = P(t, 10, 10.5);
+      const sets = [[QV, C.Q, -30], [KV, C.K, 0], [VV, C.V, 30]];
+      for (let s = 0; s < 3; s++) {
+        const [M, col, dx] = sets[s];
+        let a = sp * out;
+        if (s === 0 && j !== QI) a *= 1 - .8 * dimO;
+        if (s === 2) a *= 1 - .75 * dimO;
+        if (s === 1 && j === 7) a *= 1 - .8 * dimO;
+        const x = SX(j) + dx * sp;
+        for (let c = 0; c < 8; c++) {
+          const v = M[j][c];
+          al(a * (0.22 + .78 * Math.abs(v))); ctx.fillStyle = cellCol(v, col);
+          rr(x - 9, 452 + c * 22, 18, 18, 3); ctx.fill();
+        }
+        if (j === QI && s === 0 && dimO > 0) {
+          al(dimO * out); ctx.strokeStyle = C.Q; ctx.lineWidth = 2; rr(x - 14, 446, 28, 186, 6); ctx.stroke();
+        }
+      }
+      if (j === QI) {
+        const la = sp * (1 - P(t, 10, 10.4));
+        ['q', 'k', 'v'].forEach((s, k) => txt(s, SX(j) + (k - 1) * 30, 660, `600 22px ${F.mono}`, [C.Q, C.K, C.V][k], la, 'center'));
+      }
+    }
+    // 位置编码
+    const pa = P(t, 4.8 + j * .04, 5.2 + j * .04) * (1 - P(t, 6.4, 6.8));
+    txt('+p' + j, SX(j), 690, `400 20px ${F.mono}`, C.Q, pa * .9, 'center');
+  }
+  // 「它」的数值
+  const va = P(t, 4.1, 4.5) * (1 - P(t, 6.4, 6.8));
+  const e = EMB[QI];
+  txt(`「它」= [${e[0].toFixed(2)}, ${e[1].toFixed(2)}, ${e[2].toFixed(2)}, …]`, SX(QI), 742, `400 22px ${F.mono}`, C.ink, va, 'center');
+  // Q/K/V 图例
+  const lg = P(t, 7.4, 7.9) * (1 - P(t, 10, 10.4));
+  if (lg > 0) {
+    const items = [['Q', '查询：我在找什么', C.Q], ['K', '键：我有什么特征', C.K], ['V', '值：我能提供什么', C.V]];
+    const ws = items.map(i => 34 + mw(i[1], `500 26px ${F.sans}`));
+    let x = 960 - (ws.reduce((a, b) => a + b, 0) + 60 * 2) / 2;
+    items.forEach((it, k) => {
+      al(lg); ctx.fillStyle = it[2]; rr(x, 716, 24, 24, 4); ctx.fill();
+      txt(it[0], x + 12, 729, `600 18px ${F.mono}`, C.bg, lg, 'center', 'middle');
+      txt(it[1], x + 34, 738, `500 26px ${F.sans}`, C.ink, lg);
+      x += ws[k] + 60;
+    });
+  }
+}
+
+function attention(t) {
+  if (t < 10 || t > 17.5) return;
+  const out = 1 - P(t, 14, 14.4);
+  const arcA = t < 14 ? 1 : L(1, .3, P(t, 14, 14.4)) * (1 - P(t, 17, 17.4));
+  // 打分：一个小点从 q(它) 依次跑到每个 k
+  for (let i = 0; i <= QI; i++) {
+    const a0 = 10.3 + i * .14;
+    const sA = P(t, a0 + .1, a0 + .3) * (1 - P(t, 11.5, 11.9)) * out;
+    const wA = P(t, 11.6, 12.0) * out;
+    txt(SCO[i].toFixed(2), SX(i), 668, `600 24px ${F.mono}`, C.K, sA, 'center');
+    txt(Math.round(WTS[i] * 100) + '%', SX(i), 668, `600 26px ${F.mono}`, C.Q, wA, 'center');
+    const tr = P(t, a0, a0 + .14);
+    if (tr > 0 && tr < 1) {
+      const x = L(SX(QI) - 30, SX(i), E(tr)), y = 640 - Math.sin(tr * Math.PI) * 30;
+      al(1); ctx.fillStyle = C.Q; ctx.beginPath(); ctx.arc(x, y, 6, 0, 7); ctx.fill();
+    }
+  }
+  txt('遮住', SX(7), 668, `500 22px ${F.sans}`, C.dim, P(t, 10.2, 10.6) * out, 'center');
+  txt('← 分数 q·k / √d', 1640, 668, `500 22px ${F.sans}`, C.K, P(t, 10.4, 10.8) * (1 - P(t, 11.5, 11.9)) * out);
+  txt('← softmax 权重', 1640, 668, `500 22px ${F.sans}`, C.Q, P(t, 11.6, 12.0) * out);
+  // 弧线：粗细 = 权重
+  const top = TY - BOXH / 2 - 4;
+  for (let i = 0; i <= QI; i++) {
+    const d = P(t, 11.7 + (QI - i) * .07, 12.5 + (QI - i) * .07);
+    if (d <= 0) continue;
+    const lw = 3 + WTS[i] * 48;
+    al(arcA * (.35 + WTS[i] * 1.4)); ctx.strokeStyle = C.Q; ctx.lineWidth = lw; ctx.lineCap = 'round';
+    ctx.beginPath();
+    if (i === QI) {
+      ctx.arc(SX(QI), top - 34, 30, Math.PI * .5 + .6, Math.PI * .5 + .6 + (Math.PI * 2 - 1.2) * E(d));
+    } else {
+      const x0 = SX(QI), x1 = SX(i), span = x0 - x1, h = 40 + span * .09, N = 40, n = Math.ceil(N * E(d));
+      for (let k = 0; k <= n; k++) {
+        const s = k / N, x = L(x0, x1, s), y = top - 4 * s * (1 - s) * h;
+        k ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+    }
+    ctx.stroke(); ctx.lineCap = 'butt';
+    if (i !== QI && d > .9) {
+      const span = SX(QI) - SX(i), h = 40 + span * .09;
+      const la = P(t, 12.3, 12.7) * arcA * (i === 0 ? 1 : 0);
+      txt(Math.round(WTS[i] * 100) + '%', (SX(QI) + SX(i)) / 2, top - h - lw / 2 - 12, `600 26px ${F.mono}`, C.Q, la, 'center');
+    }
+  }
+}
+
+function formula(t) {
+  if (t < 14.2 || t > 17.5) return;
+  const fo = 1 - P(t, 17, 17.4);
+  const fS = `400 70px ${F.math}`, fI = `italic 400 76px ${F.math}`, fSup = `italic 400 44px ${F.math}`, fA = `400 54px ${F.math}`, fP = `300 150px ${F.math}`;
+  const wA = mw('Attention(Q, K, V) = ', fA), wS = mw('softmax', fS), wQ = mw('Q', fI), wK = mw('K', fI), wT = mw('T', fSup);
+  const wd = mw('d', fI), wk = mw('k', fSup), wP = mw('(', fP) * .8, wV = mw('V', fI);
+  const numW = wQ + wK + wT + 4, denW = 34 + wd + wk, fracW = Math.max(numW, denW) + 30;
+  const total = wA + wS + 10 + wP + fracW + wP + 12 + wV;
+  let x = 960 - total / 2;
+  const base = 622, xA = x; x += wA;
+  const xS = x; x += wS + 10;
+  const xLP = x; x += wP;
+  const xF = x, fc = xF + fracW / 2; x += fracW;
+  const xRP = x; x += wP + 12;
+  const xV = x;
+  const k = i => E(P(t, 14.3 + i * .16, 15.1 + i * .16));
+  // 各部件
+  const kA = k(5), kS = k(3), kQ = k(0), kK = k(1), kV = k(2), kD = k(4);
+  txt('Attention(Q, K, V) =', xA, base, fA, C.dim, kA * fo);
+  txt('softmax', L(xS - 60, xS, kS), base, fS, C.ink, kS * fo);
+  txt('(', xLP, base + 38, fP, C.dim, kS * fo);
+  txt(')', xRP, base + 38, fP, C.dim, kS * fo);
+  const nx = fc - numW / 2, ny = base - 52;
+  txt('Q', L(SX(QI) - 30, nx, kQ), L(540, ny, kQ), fI, C.Q, kQ * fo);
+  txt('K', L(SX(3), nx + wQ, kK), L(540, ny, kK), fI, C.K, kK * fo);
+  txt('T', nx + wQ + wK + 4, ny - 34, fSup, C.K, kK * fo);
+  al(kD * fo); ctx.fillStyle = C.ink; ctx.fillRect(fc - (fracW - 20) / 2 * kD, base - 24, (fracW - 20) * kD, 3);
+  // 分母 √d_k
+  const dx = fc - denW / 2, dy = base + 60;
+  al(kD * fo); ctx.strokeStyle = C.ink; ctx.lineWidth = 3; ctx.beginPath();
+  ctx.moveTo(dx, dy - 20); ctx.lineTo(dx + 8, dy - 24); ctx.lineTo(dx + 18, dy + 6); ctx.lineTo(dx + 30, dy - 56); ctx.lineTo(dx + denW + 4, dy - 56); ctx.stroke();
+  txt('d', dx + 34, dy, fI, C.ink, kD * fo);
+  txt('k', dx + 34 + wd, dy + 14, fSup, C.ink, kD * fo);
+  txt('V', L(SX(3) + 30, xV, kV), L(540, base, kV), fI, C.V, kV * fo);
+  // 注释
+  const an = (i, s, cx, y0, y1, ty, col) => {
+    const a = P(t, 15.3 + i * .18, 15.7 + i * .18) * fo;
+    if (a <= 0) return;
+    al(a * .7); ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(cx, y0); ctx.lineTo(cx, y1); ctx.stroke();
+    txt(s, cx, ty, `500 28px ${F.sans}`, col, a, 'center');
+  };
+  an(0, '每对词元的相似度（点积）', fc, ny - 70, ny - 92, ny - 104, C.K);
+  an(1, '转成权重，和为 1', xS + wS / 2, base + 22, base + 80, base + 116, C.ink);
+  an(2, '缩放：防止分数过大', fc, dy + 18, dy + 118, dy + 154, C.ink);
+  an(3, '按权重加总各词的 v', xV + wV / 2, base + 22, base + 80, base + 116, C.V);
+}
+
+function predict(t) {
+  if (t < 17.2) return;
+  const a1 = P(t, 17.3, 17.7);
+  const x = SX(7);
+  // 虚线箭头 + 层堆叠
+  al(a1); ctx.setLineDash([6, 8]); ctx.strokeStyle = C.dim; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(x, TY + BOXH / 2 + 8); ctx.lineTo(x, 470); ctx.stroke(); ctx.setLineDash([]);
+  for (let k = 3; k >= 0; k--) {
+    const a = P(t, 17.4 + (3 - k) * .08, 17.7 + (3 - k) * .08);
+    al(a); ctx.fillStyle = C.panel; rr(x - 140 + k * 8, 480 + k * 10, 280, 58, 10); ctx.fill();
+    ctx.strokeStyle = k === 0 ? C.ink : C.faint; ctx.lineWidth = 2; ctx.stroke();
+  }
+  txt('Transformer 层 × N', x, 510, `500 24px ${F.sans}`, C.ink, P(t, 17.7, 18), 'center', 'middle');
+  // 箭头指向概率条
+  const a2 = P(t, 17.8, 18.1);
+  al(a2); ctx.strokeStyle = C.dim; ctx.lineWidth = 2; ctx.setLineDash([6, 8]);
+  ctx.beginPath(); ctx.moveTo(x, 578); ctx.lineTo(x, 610); ctx.stroke(); ctx.setLineDash([]);
+  txt('下一个词的概率（示意）', 1230, 604, `500 24px ${F.sans}`, C.dim, a2, 'right');
+  BARS.forEach(([w, p], i) => {
+    const y = 628 + i * 52, g = EO(P(t, 17.9 + i * .08, 18.5 + i * .08));
+    const fly = i === 0 ? EO(P(t, 18.4, 19.1)) : 0;
+    txt(w, 1290, y + 18, `500 32px ${F.sans}`, C.ink, g * (i === 0 ? 1 - fly * .6 : 1), 'right', 'middle');
+    al(g); ctx.fillStyle = i === 0 ? C.Q : C.faint; rr(1310, y, Math.max(2, p * 600 * g), 36, 6); ctx.fill();
+    txt(Math.round(p * 100) + '%', 1324 + p * 600 * g, y + 19, `600 24px ${F.mono}`, i === 0 ? C.Q : C.dim, g, 'left', 'middle');
+    if (fly > 0) {
+      const fx = L(1270, SX(8), fly), fy = L(y + 18, TY + 2, fly) - Math.sin(fly * Math.PI) * 60;
+      txt(PRED, fx, fy, `500 ${L(32, 50, fly)}px ${F.sans}`, C.ink, 1, 'center', 'middle');
+    }
+  });
+  txt('然后把「累」接上，再预测下一个……', 120, 700, `500 32px ${F.sans}`, C.ink, P(t, 18.9, 19.2));
+}
+
+function caption(t) {
+  al(1); ctx.fillStyle = C.faint; ctx.fillRect(120, 862, 1680, 1);
+  for (let k = 0; k < 6; k++) {
+    const a0 = BOUNDS[k], a1 = BOUNDS[k + 1];
+    const a = (k === 0 ? 1 : P(t, a0 - .05, a0 + .35)) * (k === 5 ? 1 : 1 - P(t, a1 - .3, a1));
+    if (a <= 0) continue;
+    const dy = (1 - (k === 0 ? 1 : EO(P(t, a0 - .05, a0 + .35)))) * 14;
+    txt('0' + (k + 1), 120, 958, `600 72px ${F.mono}`, C.Q, a);
+    let main = CAP[k][0], sub = CAP[k][1];
+    if (k === 3) {
+      const sw = P(t, 12.3, 12.7);
+      txt(main, 250, 922 + dy, `700 44px ${F.sans}`, C.ink, a * (1 - sw));
+      txt(CAP4B[0], 250, 922 + dy, `700 44px ${F.sans}`, C.ink, a * sw);
+    } else txt(main, 250, 922 + dy, `700 44px ${F.sans}`, C.ink, a);
+    txt(sub, 250, 976 + dy, `400 28px ${F.sans}`, C.dim, a);
+  }
+}
+
+function scene(t, alpha) {
+  MA = alpha;
+  header(t); tokens(t); vectors(t); attention(t); formula(t); predict(t); caption(t);
+}
+
+function draw(t) {
+  al(1); MA = 1; ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+  if (!grid) grid = gridPat();
+  ctx.globalAlpha = 1; ctx.fillStyle = grid; ctx.fillRect(0, 0, W, H);
+  const x = P(t, 19.2, 20);
+  if (x > 0) { scene(t, 1 - E(x)); scene(0, E(x)); } else scene(t, 1);
+  ctx.globalAlpha = 1;
+}
+
+// ---------- 运行时（合同接口） ----------
+let K = 1, cur = 0, playing = true, t0 = performance.now(), raf = 0;
+function render(t) { ctx.setTransform(K, 0, 0, K, 0, 0); draw(t); }
+function resize() {
+  const d = Math.min(devicePixelRatio || 1, 1.5), s = Math.min(innerWidth / W, innerHeight / H);
+  cv.style.width = W * s + 'px'; cv.style.height = H * s + 'px';
+  cv.style.left = (innerWidth - W * s) / 2 + 'px'; cv.style.top = (innerHeight - H * s) / 2 + 'px';
+  cv.width = Math.round(W * s * d); cv.height = Math.round(H * s * d); K = s * d; grid = null; render(cur);
+}
+const ALL = JSON.stringify([TOK, PRED, STEPS, CAP, CAP4B, BARS, MISC]);
+const fontsReady = Promise.race([
+  Promise.all([700, 500, 400].map(w => document.fonts.load(`${w} 40px "Noto Sans SC"`, ALL))
+    .concat([document.fonts.load(`600 40px "JetBrains Mono"`, '0123456789#%'), document.fonts.load(`400 40px "JetBrains Mono"`, 'q·k/√d'),
+             document.fonts.load(`italic 400 40px "Noto Serif"`, 'QKVTdk'), document.fonts.load(`400 40px "Noto Serif"`, 'Attention softmax()=')])),
+  new Promise(r => setTimeout(r, 4000))
+]).catch(() => {});
+function loop(now) { if (!playing) return; cur = ((now - t0) / 1000) % DUR; render(cur); raf = requestAnimationFrame(loop); }
+window.DURATION = DUR;
+window.seek = t => { cur = ((+t % DUR) + DUR) % DUR; t0 = performance.now() - cur * 1000; render(cur); return fontsReady.then(() => render(cur)); };
+window.__demo = {
+  play() { if (playing) return; playing = true; t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); },
+  pause() { playing = false; cancelAnimationFrame(raf); },
+  get playing() { return playing; }, get time() { return cur; }
+};
+addEventListener('message', e => {
+  const d = e.data || {};
+  if (d.type === 'demo:play') __demo.play(); else if (d.type === 'demo:pause') __demo.pause(); else if (d.type === 'demo:seek') seek(d.t || 0);
+});
+document.addEventListener('visibilitychange', () => {
+  cancelAnimationFrame(raf);
+  if (!document.hidden && playing) { t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); }
+});
+addEventListener('resize', resize);
+resize();
+fontsReady.then(() => render(cur));
+raf = requestAnimationFrame(loop);
+try { parent.postMessage({ type: 'demo:ready', id: 'v05-transformer', duration: DUR }, '*'); } catch (e) {}
+})();
+</script>
+</body>
+</html>

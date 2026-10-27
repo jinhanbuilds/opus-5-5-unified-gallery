@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Why Is the Sky Blue?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#E9DFC6;overflow:hidden}
+canvas{position:absolute;display:block}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* Timeline (20 s, 1920×1080 logical stage, one draw(t) function)
+   0.0– 3.4  Title plate: WHY IS THE SKY BLUE? + engraved circular vignette (halftone sky, sun, hills)
+   3.4– 7.6  FIG. 1  prism splits sunlight; short blue wave vs long red wave (450 / 700 nm)
+   7.6–12.0  FIG. 2  air molecule scatters blue strongly, red weakly; bar chart (700/λ)^4; scattering ∝ 1/λ⁴
+  12.0–15.6  FIG. 3  scattered blue reaches the eye from every direction; sidebar: why not violet
+  15.6–19.4  FIG. 4  noon vs sunset path length through the air → red sunset; REMEMBER box
+  19.4–20.0  page wipe back to the title plate (identical to t = 0) → seamless loop
+   Page changes: vertical ink-rule wipe from right to left, 0.55 s.
+*/
+(() => {
+const W = 1920, H = 1080, DUR = 20;
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const C = { paper:'#E9DFC6', paper2:'#DDD0B1', ink:'#26272A', blue:'#2F5F98', red:'#C0432F', yel:'#E0AE3C',
+            sV:'#5B4A8B', sB:'#2F5F98', sC:'#3F8A8C', sG:'#5C8A4E', sY:'#E0AE3C', sO:'#D9772E', sR:'#C0432F' };
+const FH = '"Oswald","Arial Narrow","Helvetica Neue",Arial,sans-serif';
+const FB = '"Old Standard TT","Century Schoolbook","Georgia",serif';
+const PAGES = [0, 3.4, 7.6, 12.0, 15.6, 20];
+const WIPE = 0.55;
+
+// ---------- seeded PRNG ----------
+function rng(s) { return () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+// ---------- helpers ----------
+const cl = x => x < 0 ? 0 : x > 1 ? 1 : x;
+const P = (t, a, b) => cl((t - a) / (b - a));
+const E = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const EO = x => 1 - Math.pow(1 - x, 3);
+const L = (a, b, k) => a + (b - a) * k;
+function T(s, x, y, font, col, a = 1, align = 'left', ls = 0) {
+  if (a <= 0.001) return;
+  ctx.globalAlpha = a; ctx.font = font; ctx.fillStyle = col; ctx.textAlign = align; ctx.textBaseline = 'alphabetic';
+  ctx.letterSpacing = ls + 'px'; ctx.fillText(s, x, y); ctx.letterSpacing = '0px'; ctx.globalAlpha = 1;
+}
+const wrapCache = new Map();
+function wrap(s, font, maxW) {
+  const key = s + font + maxW; if (wrapCache.has(key)) return wrapCache.get(key);
+  ctx.font = font; const words = s.split(' '), out = []; let line = '';
+  for (const w of words) { const test = line ? line + ' ' + w : w; if (ctx.measureText(test).width > maxW && line) { out.push(line); line = w; } else line = test; }
+  if (line) out.push(line); wrapCache.set(key, out); return out;
+}
+function line(x0, y0, x1, y1, col, lw, a = 1, dash) {
+  ctx.globalAlpha = a; ctx.strokeStyle = col; ctx.lineWidth = lw; if (dash) ctx.setLineDash(dash);
+  ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+}
+function arrow(x0, y0, x1, y1, col, lw, k = 1, a = 1, dash) {
+  if (k <= 0) return;
+  const x = L(x0, x1, k), y = L(y0, y1, k), ang = Math.atan2(y - y0, x - x0);
+  line(x0, y0, x, y, col, lw, a, dash);
+  ctx.globalAlpha = a; ctx.fillStyle = col; ctx.beginPath();
+  ctx.moveTo(x, y); ctx.lineTo(x - 16 * Math.cos(ang - .38), y - 16 * Math.sin(ang - .38)); ctx.lineTo(x - 16 * Math.cos(ang + .38), y - 16 * Math.sin(ang + .38)); ctx.fill(); ctx.globalAlpha = 1;
+}
+// halftone dots on a rotated screen; dens(x,y) in 0..1; off = misregistration
+function halftone(x0, y0, w, h, step, ang, col, dens, a = 1, off = 0) {
+  const ca = Math.cos(ang), sa = Math.sin(ang), cx = x0 + w / 2, cy = y0 + h / 2, R = Math.hypot(w, h) / 2;
+  ctx.globalAlpha = a; ctx.fillStyle = col; ctx.beginPath();
+  for (let v = -R; v <= R; v += step) for (let u = -R; u <= R; u += step) {
+    const x = cx + u * ca - v * sa, y = cy + u * sa + v * ca;
+    if (x < x0 || x > x0 + w || y < y0 || y > y0 + h) continue;
+    const d = dens(x, y); if (d <= .03) continue;
+    const r = step * .6 * Math.sqrt(Math.min(1, d));
+    ctx.moveTo(x + off + r, y + off); ctx.arc(x + off, y + off, r, 0, 6.2832);
+  }
+  ctx.fill(); ctx.globalAlpha = 1;
+}
+// engraved hatching inside the current path
+function hatch(pathFn, ang, gap, lw, col, a = 1, bbox = [0, 0, W, H]) {
+  ctx.save(); pathFn(); ctx.clip();
+  const [x0, y0, x1, y1] = bbox, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, R = Math.hypot(x1 - x0, y1 - y0) / 2;
+  const ca = Math.cos(ang), sa = Math.sin(ang);
+  ctx.globalAlpha = a; ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.beginPath();
+  for (let v = -R; v <= R; v += gap) { ctx.moveTo(cx - R * ca - v * sa, cy - R * sa + v * ca); ctx.lineTo(cx + R * ca - v * sa, cy + R * sa + v * ca); }
+  ctx.stroke(); ctx.restore(); ctx.globalAlpha = 1;
+}
+function wave(x0, x1, y, amp, per, ph, col, lw, a = 1, k = 1) {
+  const xe = L(x0, x1, k); if (xe <= x0) return;
+  ctx.globalAlpha = a; ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.beginPath();
+  for (let x = x0; x <= xe; x += 3) { const yy = y - amp * Math.sin((x - x0) / per * 6.2832 - ph); x === x0 ? ctx.moveTo(x, yy) : ctx.lineTo(x, yy); }
+  ctx.stroke(); ctx.globalAlpha = 1;
+}
+function sun(x, y, r, rot, a = 1) {
+  ctx.globalAlpha = a;
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 2.2; ctx.beginPath();
+  for (let i = 0; i < 24; i++) { const an = rot + i * Math.PI / 12, r1 = r * 1.22, r2 = r * (i % 2 ? 1.5 : 1.75); ctx.moveTo(x + Math.cos(an) * r1, y + Math.sin(an) * r1); ctx.lineTo(x + Math.cos(an) * r2, y + Math.sin(an) * r2); }
+  ctx.stroke();
+  ctx.fillStyle = C.yel; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+  hatch(() => { ctx.beginPath(); ctx.arc(x + r * .25, y + r * .25, r * .9, 0, 7); ctx.arc(x, y, r, 0, 7, true); }, .8, 6, 1.2, C.ink, .0);
+  ctx.globalAlpha = a; ctx.strokeStyle = C.ink; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.stroke();
+  ctx.globalAlpha = 1;
+}
+function person(x, y, s = 1, a = 1) { // engraved figure standing at (x,y) feet, looking up-left
+  ctx.globalAlpha = a; ctx.fillStyle = C.ink; ctx.strokeStyle = C.ink; ctx.lineWidth = 4 * s; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.arc(x - 3 * s, y - 62 * s, 9 * s, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x, y - 52 * s); ctx.lineTo(x + 2 * s, y - 24 * s);
+  ctx.moveTo(x + 2 * s, y - 24 * s); ctx.lineTo(x - 6 * s, y); ctx.moveTo(x + 2 * s, y - 24 * s); ctx.lineTo(x + 9 * s, y);
+  ctx.moveTo(x, y - 46 * s); ctx.lineTo(x - 16 * s, y - 64 * s); ctx.moveTo(x, y - 46 * s); ctx.lineTo(x + 10 * s, y - 32 * s); ctx.stroke();
+  ctx.lineCap = 'butt'; ctx.globalAlpha = 1;
+}
+function hills(x0, x1, yb, y1, y2, a = 1) {
+  const back = () => { ctx.beginPath(); ctx.moveTo(x0, yb); ctx.lineTo(x0, y1 + 20); ctx.bezierCurveTo(x0 + (x1 - x0) * .3, y1 - 40, x0 + (x1 - x0) * .55, y1 + 30, x1, y1 - 10); ctx.lineTo(x1, yb); ctx.closePath(); };
+  const front = () => { ctx.beginPath(); ctx.moveTo(x0, yb); ctx.lineTo(x0, y2); ctx.bezierCurveTo(x0 + (x1 - x0) * .4, y2 + 30, x0 + (x1 - x0) * .7, y2 - 40, x1, y2 + 10); ctx.lineTo(x1, yb); ctx.closePath(); };
+  ctx.globalAlpha = a; ctx.fillStyle = C.paper; back(); ctx.fill();
+  hatch(back, -.25, 9, 1.4, C.ink, .55 * a, [x0, y1 - 60, x1, yb]);
+  ctx.globalAlpha = a; ctx.fillStyle = C.paper; front(); ctx.fill();
+  hatch(front, .2, 6, 1.6, C.ink, .8 * a, [x0, y2 - 60, x1, yb]);
+  ctx.globalAlpha = a; ctx.strokeStyle = C.ink; ctx.lineWidth = 2.5; back(); ctx.stroke(); front(); ctx.stroke(); ctx.globalAlpha = 1;
+}
+
+// ---------- paper grain (pre-rendered once, seeded) ----------
+let grain = null;
+function makeGrain() {
+  const g = document.createElement('canvas'); g.width = 960; g.height = 540;
+  const x = g.getContext('2d'), R = rng(1953);
+  for (let i = 0; i < 7000; i++) { x.fillStyle = `rgba(60,45,20,${.04 + R() * .12})`; const s = R() < .9 ? 1 : 2; x.fillRect(R() * 960, R() * 540, s, s); }
+  x.strokeStyle = 'rgba(255,250,235,0.35)'; x.lineWidth = .6;
+  for (let i = 0; i < 260; i++) { const px = R() * 960, py = R() * 540, an = R() * 6.28, l = 4 + R() * 10; x.beginPath(); x.moveTo(px, py); x.quadraticCurveTo(px + Math.cos(an) * l, py + Math.sin(an) * l * .3, px + Math.cos(an + .4) * l * 1.6, py + Math.sin(an + .4) * l); x.stroke(); }
+  const v = x.createRadialGradient(480, 270, 200, 480, 270, 620); v.addColorStop(0, 'rgba(120,90,40,0)'); v.addColorStop(1, 'rgba(120,90,40,0.22)');
+  x.fillStyle = v; x.fillRect(0, 0, 960, 540);
+  return g;
+}
+
+// ---------- page furniture ----------
+const PX = 110, PY = 160, PW = 950, PH = 740;
+function runningHead(num, a = 1) {
+  T('GENERAL SCIENCE', 110, 106, `700 22px ${FB}`, C.ink, a, 'left', 4);
+  T('UNIT 7 · THE AIR AROUND US', 960, 106, `italic 400 24px ${FB}`, C.ink, a, 'center');
+  T(num, 1810, 106, `700 22px ${FB}`, C.ink, a, 'right', 4);
+  line(110, 124, 1810, 124, C.ink, 1.5, a);
+}
+function panel(a = 1) {
+  ctx.globalAlpha = a; ctx.strokeStyle = C.ink; ctx.lineWidth = 2.5; ctx.strokeRect(PX, PY, PW, PH);
+  ctx.lineWidth = .8; ctx.strokeRect(PX + 8, PY + 8, PW - 16, PH - 16); ctx.globalAlpha = 1;
+}
+function column(fig, head, body, lt, extra) {
+  const x = 1130, wd = 670;
+  T(fig, x, 212, `700 26px ${FB}`, C.red, 1, 'left', 5);
+  const hl = wrap(head.toUpperCase(), `700 64px ${FH}`, wd);
+  hl.forEach((s, i) => T(s, x, 290 + i * 72, `700 64px ${FH}`, C.ink));
+  const yb = 290 + (hl.length - 1) * 72 + 34;
+  line(x, yb, x + 120, yb, C.ink, 3);
+  const bl = wrap(body, `400 34px ${FB}`, wd);
+  bl.forEach((s, i) => { const a = P(lt, .15 + i * .12, .45 + i * .12); T(s, x, yb + 64 + i * 48 + (1 - a) * 8, `400 34px ${FB}`, C.ink, a); });
+  if (extra) extra(x, yb + 64 + bl.length * 48 + 10, wd);
+}
+function figCaption(s, a = 1) { T(s, PX, 950, `italic 400 28px ${FB}`, C.ink, a); }
+function box(x, y, w, h, title, lines, a, col = C.ink) {
+  if (a <= 0) return;
+  ctx.globalAlpha = a; ctx.strokeStyle = col; ctx.lineWidth = 2.5; ctx.strokeRect(x, y, w, h); ctx.lineWidth = .8; ctx.strokeRect(x + 6, y + 6, w - 12, h - 12);
+  ctx.fillStyle = col; ctx.fillRect(x, y, w, 46); ctx.globalAlpha = 1;
+  T(title, x + 22, y + 33, `700 26px ${FH}`, C.paper, a, 'left', 3);
+  lines.forEach((s, i) => T(s, x + 22, y + 92 + i * 42, `400 30px ${FB}`, C.ink, a));
+}
+
+// ---------- pages ----------
+function page0(lt) {
+  runningHead('PLATE VII');
+  T('CHAPTER SEVEN', 146, 300, `700 26px ${FB}`, C.red, 1, 'left', 8);
+  line(146, 322, 520, 322, C.ink, 2);
+  T('WHY IS', 140, 470, `700 150px ${FH}`, C.ink);
+  T('THE SKY', 140, 640, `700 150px ${FH}`, C.ink);
+  T('BLUE?', 150, 858, `700 210px ${FH}`, C.yel);
+  T('BLUE?', 140, 848, `700 210px ${FH}`, C.blue);
+  T('A Lesson in the Scattering of Light', 146, 930, `italic 400 40px ${FB}`, C.ink);
+  // circular engraved vignette
+  const cx = 1370, cy = 560, r = 330;
+  ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, r, 0, 7); ctx.clip();
+  halftone(cx - r, cy - r, 2 * r, 2 * r, 15, .26, C.blue, (x, y) => .18 + .8 * cl((cy + r * .5 - y) / (r * 1.5)), 1, 1.5);
+  sun(cx - 110, cy - 120, 50, lt * .12);
+  // drifting cloud (paper-white, engraved underside)
+  const cxl = cx + 60 + lt * 10, cyl = cy - 30;
+  ctx.fillStyle = C.paper; ctx.beginPath();
+  [[0, 0, 44], [48, -14, 52], [100, 4, 40], [-40, 10, 30]].forEach(([dx, dy, rr]) => { ctx.moveTo(cxl + dx + rr, cyl + dy); ctx.arc(cxl + dx, cyl + dy, rr, 0, 7); }); ctx.fill();
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(cxl - 70, cyl + 34); ctx.lineTo(cxl + 140, cyl + 34); ctx.stroke();
+  // birds
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 2.5;
+  [[cx + 40, cy - 190], [cx + 90, cy - 160], [cx + 10, cy - 150]].forEach(([bx, by], i) => {
+    const x = bx + lt * 14, y = by + Math.sin(lt * 2 + i) * 4, f = 7 + Math.sin(lt * 7 + i * 2) * 3;
+    ctx.beginPath(); ctx.moveTo(x - 14, y - f * .6); ctx.quadraticCurveTo(x - 6, y - f, x, y); ctx.quadraticCurveTo(x + 6, y - f, x + 14, y - f * .6); ctx.stroke();
+  });
+  hills(cx - r, cx + r, cy + r, cy + 130, cy + 200);
+  // tree
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 5; line(cx + 170, cy + 210, cx + 170, cy + 140, C.ink, 5);
+  ctx.fillStyle = C.paper; ctx.beginPath(); ctx.arc(cx + 170, cy + 110, 44, 0, 7); ctx.fill();
+  hatch(() => { ctx.beginPath(); ctx.arc(cx + 170, cy + 110, 44, 0, 7); }, .9, 6, 1.5, C.ink, .8);
+  ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(cx + 170, cy + 110, 44, 0, 7); ctx.stroke();
+  person(cx - 40, cy + 215, 1.1);
+  ctx.restore();
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(cx, cy, r, 0, 7); ctx.stroke();
+  ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(cx, cy, r + 14, 0, 7); ctx.stroke();
+  T('PLATE VII.  A CLEAR DAY', cx, cy + r + 62, `700 22px ${FB}`, C.ink, 1, 'center', 5);
+}
+
+function page1(lt) {
+  runningHead('147'); panel();
+  T('FIG. 1', PX + 30, PY + 50, `700 26px ${FH}`, C.ink, 1, 'left', 3);
+  sun(250, 340, 52, lt * .12);
+  // prism
+  const A = [570, 250], B = [440, 500], Cc = [700, 500];
+  const inX = 505, inY = 375, outX = 635, outY = 375;
+  const kb = EO(P(lt, .2, .9));
+  if (kb > 0) {
+    const ex = L(300, inX, kb), ey = L(350, inY, kb);
+    line(300, 350, ex, ey, C.ink, 18); line(300, 350, ex, ey, C.paper, 12);
+  }
+  ctx.fillStyle = C.paper; ctx.beginPath(); ctx.moveTo(...A); ctx.lineTo(...B); ctx.lineTo(...Cc); ctx.closePath(); ctx.fill();
+  hatch(() => { ctx.beginPath(); ctx.moveTo(...A); ctx.lineTo(...Cc); ctx.lineTo(610, 500); ctx.closePath(); }, 1.1, 7, 1.3, C.ink, .7);
+  if (kb >= 1) line(inX, inY, outX, outY, C.ink, 1.5, .5, [6, 6]);
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(...A); ctx.lineTo(...B); ctx.lineTo(...Cc); ctx.closePath(); ctx.stroke();
+  // fan: red least bent (top), violet most bent (bottom)
+  const bands = [C.sR, C.sO, C.sY, C.sG, C.sC, C.sB, C.sV];
+  const kf = E(P(lt, .8, 1.8));
+  if (kf > 0) {
+    const xr = L(outX, 1030, kf);
+    bands.forEach((col, i) => {
+      const y0 = L(outY - 6 + i * 1.7, 360 + i * 36, kf), y1 = L(outY - 6 + (i + 1) * 1.7, 360 + (i + 1) * 36, kf);
+      ctx.fillStyle = col; ctx.globalAlpha = .92; ctx.beginPath();
+      ctx.moveTo(outX, outY - 6 + i * 1.7); ctx.lineTo(xr, y0); ctx.lineTo(xr, y1); ctx.lineTo(outX, outY - 6 + (i + 1) * 1.7); ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+    T('RED  ·  700 nm', 1030, 346, `700 20px ${FB}`, C.ink, P(lt, 1.6, 1.9), 'right', 3);
+    T('VIOLET  ·  400 nm', 1030, 640, `700 20px ${FB}`, C.ink, P(lt, 1.6, 1.9), 'right', 3);
+  }
+  T('WHITE SUNLIGHT', 250, 470, `700 20px ${FB}`, C.ink, P(lt, .5, .8), 'center', 3);
+  // two waves
+  line(PX + 40, 672, PX + PW - 40, 672, C.ink, 1, .5, [3, 6]);
+  const kw = E(P(lt, 1.8, 2.7)), ph = lt * 4;
+  const perB = 64, perR = 64 * 700 / 450;
+  T('BLUE', 150, 740, `700 38px ${FH}`, C.blue, P(lt, 1.8, 2.1));
+  T('short wave', 150, 772, `italic 400 24px ${FB}`, C.ink, P(lt, 1.8, 2.1));
+  T('RED', 150, 850, `700 38px ${FH}`, C.red, P(lt, 1.9, 2.2));
+  T('long wave', 150, 882, `italic 400 24px ${FB}`, C.ink, P(lt, 1.9, 2.2));
+  wave(340, 1010, 735, 26, perB, ph, C.blue, 4, 1, kw);
+  wave(340, 1010, 845, 26, perR, ph * perB / perR, C.red, 4, 1, kw);
+  const kl = P(lt, 2.6, 3.0);
+  if (kl > 0) {
+    const bx = 340 + perB * ((ph / 6.2832) % 1 + .25);
+    line(bx, 700, bx + perB, 700, C.ink, 1.5, kl); line(bx, 692, bx, 708, C.ink, 1.5, kl); line(bx + perB, 692, bx + perB, 708, C.ink, 1.5, kl);
+    T('λ ≈ 450 nm', bx + perB + 14, 706, `italic 400 24px ${FB}`, C.ink, kl);
+    const rx = 340 + perR * (((ph * perB / perR) / 6.2832) % 1 + .25);
+    line(rx, 810, rx + perR, 810, C.ink, 1.5, kl); line(rx, 802, rx, 818, C.ink, 1.5, kl); line(rx + perR, 802, rx + perR, 818, C.ink, 1.5, kl);
+    T('λ ≈ 700 nm', rx + perR + 14, 816, `italic 400 24px ${FB}`, C.ink, kl);
+  }
+  figCaption('Fig. 1.  A glass prism spreads white sunlight into all of its colors.');
+  column('FIG. 1', 'Sunlight Is a Mixture of Colors',
+    'White light from the sun is really every color of the rainbow travelling together. Each color is a wave: blue waves are short, red waves are long.', lt);
+}
+
+const LAMS = [400, 450, 500, 550, 600, 650, 700], LCOL = [C.sV, C.sB, C.sC, C.sG, C.sY, C.sO, C.sR];
+function page2(lt) {
+  runningHead('148'); panel();
+  T('FIG. 2', PX + 30, PY + 50, `700 26px ${FH}`, C.ink, 1, 'left', 3);
+  const mx = 560, my = 380, ph = lt * 5;
+  const kin = E(P(lt, .1, .8));
+  T('INCOMING SUNLIGHT', 150, 300, `700 20px ${FB}`, C.ink, P(lt, .2, .5), 'left', 3);
+  wave(150, mx - 34, my - 30, 20, 50, ph, C.blue, 4, 1, kin);
+  wave(150, mx - 34, my + 30, 20, 78, ph * 50 / 78, C.red, 4, 1, kin);
+  // red continues almost undisturbed; blue continues weakened
+  const kc = P(lt, .7, 1.1);
+  if (kc > 0) {
+    ctx.save(); ctx.beginPath(); ctx.rect(mx + 34, 0, 480, H); ctx.clip();
+    wave(150, 1030, my + 30, 20, 78, ph * 50 / 78, C.red, 4, kc);
+    wave(150, 1030, my - 30, 9, 50, ph, C.blue, 3, kc * .45);
+    ctx.restore();
+  }
+  // scattered wavelets: strong blue rings, faint red ring
+  const kr = P(lt, .8, 1.2);
+  if (kr > 0) {
+    ctx.save(); ctx.beginPath(); ctx.rect(PX + 10, PY + 10, PW - 20, 420); ctx.clip();
+    for (let k = 0; k < 6; k++) {
+      const r = ((lt * 110 + k * 50) % 300) + 40, a = kr * (1 - r / 340);
+      ctx.globalAlpha = a; ctx.strokeStyle = C.blue; ctx.lineWidth = 3.5; ctx.setLineDash([14, 9]);
+      ctx.beginPath(); ctx.arc(mx, my, r, 0, 7); ctx.stroke();
+    }
+    const r2 = ((lt * 110) % 300) + 40;
+    ctx.globalAlpha = kr * .25 * (1 - r2 / 340); ctx.strokeStyle = C.red; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(mx, my, r2 + 25, 0, 7); ctx.stroke();
+    ctx.setLineDash([]); ctx.globalAlpha = 1; ctx.restore();
+  }
+  // molecule (two atoms), engraved
+  [[mx - 13, my], [mx + 13, my]].forEach(([x, y]) => {
+    ctx.fillStyle = C.paper; ctx.beginPath(); ctx.arc(x, y, 22, 0, 7); ctx.fill();
+    hatch(() => { ctx.beginPath(); ctx.arc(x, y, 22, 0, 7); }, .8, 4.5, 1.2, C.ink, .9);
+    ctx.strokeStyle = C.ink; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(x, y, 22, 0, 7); ctx.stroke();
+  });
+  T('AIR MOLECULE', mx, my + 70, `700 20px ${FB}`, C.ink, 1, 'center', 3);
+  T('(enlarged enormously)', mx, my + 96, `italic 400 20px ${FB}`, C.ink, 1, 'center');
+  T('blue: scattered strongly', 740, 238, `italic 400 26px ${FB}`, C.blue, P(lt, 1.2, 1.5));
+  T('red: passes nearly straight on', 680, 472, `italic 400 26px ${FB}`, C.red, P(lt, 1.2, 1.5));
+  // bar chart (700/λ)^4
+  line(PX + 40, 580, PX + PW - 40, 580, C.ink, 1, .5, [3, 6]);
+  T('RELATIVE AMOUNT OF SCATTERING', 190, 628, `700 20px ${FB}`, C.ink, P(lt, 1.3, 1.6), 'left', 3);
+  const base = 862, x0 = 210, bw = 78, gap = 42, hMax = 190;
+  line(x0 - 20, base, x0 + 7 * (bw + gap) - gap + 20, base, C.ink, 2.5, P(lt, 1.3, 1.6));
+  LAMS.forEach((l, i) => {
+    const v = Math.pow(700 / l, 4), g = E(P(lt, 1.5 + i * .08, 2.3 + i * .08)), h = v / 9.38 * hMax * g, x = x0 + i * (bw + gap);
+    if (g <= 0) return;
+    ctx.fillStyle = LCOL[i]; ctx.globalAlpha = .9; ctx.fillRect(x, base - h, bw, h); ctx.globalAlpha = 1;
+    hatch(() => { ctx.beginPath(); ctx.rect(x, base - h, bw, h); }, -.8, 7, 1, C.ink, .35);
+    ctx.strokeStyle = C.ink; ctx.lineWidth = 2; ctx.strokeRect(x, base - h, bw, h);
+    T(l + (i === 6 ? ' nm' : ''), x + bw / 2, base + 30, `400 22px ${FB}`, C.ink, g, 'center');
+    T((v >= 9.9 ? v.toFixed(0) : v.toFixed(1)).replace('.0', '') + '×', x + bw / 2, base - h - 10, `700 22px ${FB}`, C.ink, P(lt, 2.2 + i * .08, 2.5 + i * .08), 'center');
+  });
+  figCaption('Fig. 2.  A molecule of air scatters blue light strongly and red light only weakly.');
+  column('FIG. 2', 'Air Scatters the Short Waves',
+    'The molecules of the air are thousands of times smaller than a wave of light. They scatter short waves far more strongly than long ones.', lt,
+    (x, y, wd) => {
+      const a = P(lt, 1.9, 2.3);
+      ctx.globalAlpha = a; ctx.strokeStyle = C.ink; ctx.lineWidth = 2.5; ctx.strokeRect(x, y, wd, 150); ctx.lineWidth = .8; ctx.strokeRect(x + 7, y + 7, wd - 14, 136); ctx.globalAlpha = 1;
+      T('scattering  ∝', x + 40, y + 96, `italic 400 54px ${FB}`, C.ink, a);
+      ctx.font = `italic 400 54px ${FB}`; const w1 = ctx.measureText('scattering  ∝').width;
+      const fx = x + 40 + w1 + 40;
+      T('1', fx + 45, y + 66, `400 46px ${FB}`, C.ink, a, 'center');
+      line(fx, y + 80, fx + 90, y + 80, C.ink, 2.5, a);
+      T('λ', fx + 36, y + 128, `italic 400 46px ${FB}`, C.ink, a, 'center'); T('4', fx + 62, y + 106, `400 28px ${FB}`, C.ink, a, 'center');
+      const b = P(lt, 2.6, 3.0);
+      wrap('(700 ÷ 450)⁴ ≈ 6: blue light is scattered about six times as much as red.', `italic 400 32px ${FB}`, wd)
+        .forEach((s, i) => T(s, x, y + 204 + i * 44, `italic 400 32px ${FB}`, C.blue, b));
+    });
+}
+
+function page3(lt) {
+  runningHead('149'); panel();
+  const sx = 300, sy = 320, ex = 560, ey = 700;
+  ctx.save(); ctx.beginPath(); ctx.rect(PX + 10, PY + 10, PW - 20, PH - 20); ctx.clip();
+  const ks = P(lt, .5, 2.4);
+  halftone(PX + 10, PY + 10, PW - 20, 620, 15, .26, C.blue, (x, y) => (.1 + .42 * ks) * (.4 + .6 * cl((780 - y) / 560)), 1, 1.5);
+  // sun ray across the sky
+  const kr = EO(P(lt, .1, .7)), rx = L(sx, 1070, kr), ry = L(sy, 560, kr);
+  line(sx, sy, rx, ry, C.ink, 16); line(sx, sy, rx, ry, C.paper, 11);
+  sun(sx, sy, 48, lt * .12);
+  hills(PX + 10, PX + PW - 10, PY + PH - 10, 760, 800);
+  person(ex + 6, 790, 1.15);
+  ctx.restore();
+  ctx.fillStyle = C.paper; ctx.fillRect(PX + 18, PY + 18, 104, 44); ctx.strokeStyle = C.ink; ctx.lineWidth = 1; ctx.strokeRect(PX + 18, PY + 18, 104, 44);
+  T('FIG. 3', PX + 30, PY + 50, `700 26px ${FH}`, C.ink, 1, 'left', 3);
+  // scattering points and arrows to the eye
+  const pts = [[.3, 0], [.46, 0], [.62, 0], [.8, 0], [0, [300, 520]], [0, [880, 270]], [0, [980, 640]], [0, [420, 330]]];
+  pts.forEach((p, i) => {
+    let x, y;
+    if (p[0]) { x = L(sx, 1070, p[0]); y = L(sy, 560, p[0]); } else [x, y] = p[1];
+    const k = E(P(lt, .7 + i * .16, 1.3 + i * .16));
+    if (k <= 0) return;
+    const dx = ex - x, dy = ey - y, d = Math.hypot(dx, dy);
+    arrow(x + dx / d * 16, y + dy / d * 16, ex - dx / d * 30, ey - dy / d * 30, C.paper, 10, k, .9);
+    ctx.fillStyle = C.paper; ctx.beginPath(); ctx.arc(x, y, 11, 0, 7); ctx.fill();
+    ctx.fillStyle = C.ink; ctx.beginPath(); ctx.arc(x, y, 7, 0, 7); ctx.fill();
+    arrow(x + dx / d * 16, y + dy / d * 16, ex - dx / d * 30, ey - dy / d * 30, C.blue, 4, k, 1, [12, 8]);
+  });
+  const ea = P(lt, 1.6, 2); ctx.globalAlpha = ea; ctx.fillStyle = C.paper; ctx.fillRect(ex + 26, 694, 96, 36); ctx.globalAlpha = 1;
+  T('the eye', ex + 34, 720, `italic 400 26px ${FB}`, C.ink, ea);
+  figCaption('Fig. 3.  Blue light scattered by the air reaches the eye from all over the sky.');
+  column('FIG. 3', 'Blue From Every Direction',
+    'Scattered blue light comes toward you from every part of the air around you, so wherever you look, the sky glows blue.', lt,
+    (x, y, wd) => {
+      const a = P(lt, 1.6, 2.0);
+      box(x, y + 10, wd, 236, 'WHY NOT VIOLET?', wrap('Violet scatters even more than blue, but sunlight carries less violet, and our eyes are much less sensitive to it.', `400 30px ${FB}`, wd - 44), a, C.ink);
+    });
+}
+
+function page4(lt) {
+  runningHead('150'); panel();
+  const ox = 585, oy = 752, ecy = 1902, er = 1150, ar = er + 120;
+  ctx.save(); ctx.beginPath(); ctx.rect(PX + 10, PY + 10, PW - 20, PH - 20); ctx.clip();
+  // atmosphere shell (halftone) and earth (engraved)
+  const shell = () => { ctx.beginPath(); ctx.arc(ox, ecy, ar, 0, 7); ctx.arc(ox, ecy, er, 0, 7, true); };
+  ctx.save(); shell(); ctx.clip();
+  halftone(PX, 560, PW, 360, 13, .26, C.blue, (x, y) => .55 - .35 * cl((Math.hypot(x - ox, y - ecy) - er) / 120), 1, 1.2);
+  ctx.restore();
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 1.2; ctx.setLineDash([5, 6]); ctx.beginPath(); ctx.arc(ox, ecy, ar, 0, 7); ctx.stroke(); ctx.setLineDash([]);
+  const earth = () => { ctx.beginPath(); ctx.arc(ox, ecy, er, 0, 7); };
+  ctx.fillStyle = C.paper; earth(); ctx.fill();
+  ctx.save(); earth(); ctx.clip(); ctx.strokeStyle = C.ink; ctx.lineWidth = 1.3; ctx.globalAlpha = .65; ctx.beginPath();
+  for (let r = er - 10; r > er - 200; r -= 9) { ctx.moveTo(ox + r, ecy); ctx.arc(ox, ecy, r, 0, 7); }
+  ctx.stroke(); ctx.globalAlpha = 1; ctx.restore();
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 3; earth(); ctx.stroke();
+  // noon: short vertical path
+  const kn = EO(P(lt, .1, .7));
+  sun(ox, 232, 36, lt * .12);
+  line(ox, 282, ox, L(282, oy - 70, kn), C.ink, 14); line(ox, 282, ox, L(282, oy - 70, kn), C.paper, 9);
+  // sunset: long grazing path, reddening as blue is removed
+  const s0 = [150, 668], s1 = [ox - 28, oy - 40];
+  sun(s0[0], s0[1], 34, lt * .12);
+  const kl = E(P(lt, .7, 1.8)), N = 40;
+  for (let i = 0; i < N * kl; i++) {
+    const a = i / N, b = Math.min((i + 1) / N, kl);
+    const xa = L(s0[0] + 40, s1[0], a), ya = L(s0[1] + 8, s1[1], a), xb = L(s0[0] + 40, s1[0], b), yb = L(s0[1] + 8, s1[1], b);
+    const col = a < .35 ? C.paper : a < .7 ? C.yel : C.red;
+    line(xa, ya, xb, yb, C.ink, 14); line(xa - 1, ya, xb + 1, yb, col, 9);
+  }
+  // blue scattered out along the long path
+  for (let i = 0; i < 6; i++) {
+    const a = .12 + i * .13, x = L(s0[0] + 40, s1[0], a), y = L(s0[1] + 8, s1[1], a);
+    const k = E(P(lt, 1.0 + i * .14, 1.5 + i * .14)), up = i % 2 ? -1 : 1;
+    arrow(x, y - up * 12, x + 22, y - up * 70, C.blue, 3.5, k);
+  }
+  person(ox + 4, oy + 2, .9);
+  ctx.restore();
+  T('FIG. 4', PX + 30, PY + 50, `700 26px ${FH}`, C.ink, 1, 'left', 3);
+  T('NOON — a short path through the air', ox + 30, 470, `italic 400 26px ${FB}`, C.ink, P(lt, .5, .8));
+  T('SUNSET — a long path; the blue is', 170, 560, `italic 400 26px ${FB}`, C.red, P(lt, 1.6, 1.9));
+  T('scattered away before it reaches you', 170, 592, `italic 400 26px ${FB}`, C.red, P(lt, 1.6, 1.9));
+  T('ATMOSPHERE (thickness exaggerated)', 1000, 860, `700 18px ${FB}`, C.ink, P(lt, .4, .7), 'right', 3);
+  figCaption('Fig. 4.  The long, low path of sunset light removes most of the blue.');
+  column('FIG. 4', 'Why Sunsets Are Red',
+    'Near the horizon, sunlight crosses nearly forty times more air. Most of the blue is scattered out along the way; the reds and oranges remain.', lt,
+    (x, y, wd) => {
+      const a = P(lt, 1.9, 2.3);
+      box(x, y + 10, wd, 136, 'REMEMBER', wrap('The shorter the wave, the more it is scattered.', `400 30px ${FB}`, wd - 44), a, C.red);
+    });
+}
+
+const PAGEFN = [page0, page1, page2, page3, page4];
+function drawPage(i, lt) { PAGEFN[i](Math.max(0, lt)); }
+
+function draw(t) {
+  ctx.globalAlpha = 1; ctx.fillStyle = C.paper; ctx.fillRect(0, 0, W, H);
+  // which page, and is a wipe in progress?
+  let cur = 0; for (let i = 0; i < 5; i++) if (t >= PAGES[i]) cur = i;
+  const next = cur + 1, nb = PAGES[next];
+  const wk = P(t, nb - WIPE, nb);
+  if (wk > 0) {
+    const edge = L(1880, 40, E(wk));
+    const ni = next === 5 ? 0 : next, nlt = next === 5 ? 0 : t - nb;
+    ctx.save(); ctx.beginPath(); ctx.rect(0, 0, edge, H); ctx.clip(); drawPage(cur, t - PAGES[cur]); ctx.restore();
+    ctx.save(); ctx.beginPath(); ctx.rect(edge, 0, W - edge, H); ctx.clip();
+    ctx.fillStyle = C.paper; ctx.fillRect(edge, 0, W - edge, H); drawPage(ni, nlt); ctx.restore();
+    const g = ctx.createLinearGradient(edge, 0, edge + 40, 0); g.addColorStop(0, 'rgba(60,40,10,0.25)'); g.addColorStop(1, 'rgba(60,40,10,0)');
+    ctx.fillStyle = g; ctx.fillRect(edge, 0, 40, H);
+    line(edge, 0, edge, H, C.ink, 2.5);
+  } else drawPage(cur, t - PAGES[cur]);
+  // page borders + grain
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 3; ctx.strokeRect(40, 40, W - 80, H - 80); ctx.lineWidth = 1; ctx.strokeRect(52, 52, W - 104, H - 104);
+  if (!grain) grain = makeGrain();
+  ctx.globalAlpha = .9; ctx.drawImage(grain, 0, 0, W, H); ctx.globalAlpha = 1;
+}
+
+// ---------- runtime (contract) ----------
+let K = 1, cur = 0, playing = true, t0 = performance.now(), raf = 0;
+function render(t) { ctx.setTransform(K, 0, 0, K, 0, 0); draw(t); }
+function resize() {
+  const d = Math.min(devicePixelRatio || 1, 1.5), s = Math.min(innerWidth / W, innerHeight / H);
+  cv.style.width = W * s + 'px'; cv.style.height = H * s + 'px';
+  cv.style.left = (innerWidth - W * s) / 2 + 'px'; cv.style.top = (innerHeight - H * s) / 2 + 'px';
+  cv.width = Math.round(W * s * d); cv.height = Math.round(H * s * d); K = s * d; render(cur);
+}
+const fontsReady = Promise.race([
+  Promise.all(['700 40px "Oswald"', '400 40px "Old Standard TT"', '700 40px "Old Standard TT"', 'italic 400 40px "Old Standard TT"'].map(f => document.fonts.load(f, 'ABCλ∝÷≈⁴·—'))),
+  new Promise(r => setTimeout(r, 4000))
+]).then(() => wrapCache.clear()).catch(() => {});
+function loop(now) { if (!playing) return; cur = ((now - t0) / 1000) % DUR; render(cur); raf = requestAnimationFrame(loop); }
+window.DURATION = DUR;
+window.seek = t => { cur = ((+t % DUR) + DUR) % DUR; t0 = performance.now() - cur * 1000; render(cur); return fontsReady.then(() => render(cur)); };
+window.__demo = {
+  play() { if (playing) return; playing = true; t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); },
+  pause() { playing = false; cancelAnimationFrame(raf); },
+  get playing() { return playing; }, get time() { return cur; }
+};
+addEventListener('message', e => {
+  const d = e.data || {};
+  if (d.type === 'demo:play') __demo.play(); else if (d.type === 'demo:pause') __demo.pause(); else if (d.type === 'demo:seek') seek(d.t || 0);
+});
+document.addEventListener('visibilitychange', () => {
+  cancelAnimationFrame(raf);
+  if (!document.hidden && playing) { t0 = performance.now() - cur * 1000; raf = requestAnimationFrame(loop); }
+});
+addEventListener('resize', resize);
+resize();
+fontsReady.then(() => render(cur));
+raf = requestAnimationFrame(loop);
+try { parent.postMessage({ type: 'demo:ready', id: 'v06-sky-blue', duration: DUR }, '*'); } catch (e) {}
+})();
+</script>
+</body>
+</html>

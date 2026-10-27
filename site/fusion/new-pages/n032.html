@@ -1,0 +1,587 @@
+<!doctype html><html><head><link rel="icon" href="data:,"><meta charset="utf-8"></head><body><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111}body>svg{width:100%;height:100%;display:block}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+<title>水果刀客 · FRUIT SLASH</title>
+<style>
+svg{background:#1a0f08;user-select:none;-webkit-user-select:none;touch-action:none;-webkit-tap-highlight-color:transparent}
+text{pointer-events:none}
+.br{font-family:"STKaiti","KaiTi","Kaiti SC","KaiTi_GB2312","BiauKai","Noto Serif CJK SC","Songti SC","Noto Sans CJK SC",serif}
+.ui{font-family:"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif}
+.nm{font-family:Georgia,"Palatino Linotype","Book Antiqua","DejaVu Serif",serif;font-weight:700}
+.btn{cursor:pointer}
+.btn .hl{opacity:0}
+.btn:hover .hl,.btn.foc .hl{opacity:1}
+.btn:hover .face{stroke:#ffd98a}
+.swiping,.swiping *{cursor:none}
+.sway{animation:sway 5.2s ease-in-out infinite alternate}
+.sway2{animation:sway 4.4s ease-in-out -2.1s infinite alternate}
+@keyframes sway{from{transform:rotate(-2.6deg)}to{transform:rotate(2.6deg)}}
+.spin{animation:spin 28s linear infinite}
+.spin2{animation:spin 34s linear -9s infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.stroke{paint-order:stroke;stroke-linejoin:round}
+</style>
+<defs>
+<linearGradient id="gPlank0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2e190c"/><stop offset=".1" stop-color="#553220"/><stop offset=".55" stop-color="#633b23"/><stop offset=".92" stop-color="#4c2c18"/><stop offset="1" stop-color="#2a160a"/></linearGradient>
+<linearGradient id="gPlank1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#321a0c"/><stop offset=".1" stop-color="#5c3420"/><stop offset=".5" stop-color="#6b3f25"/><stop offset=".92" stop-color="#522e19"/><stop offset="1" stop-color="#2c170a"/></linearGradient>
+<linearGradient id="gPlank2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a170b"/><stop offset=".1" stop-color="#4e2e1b"/><stop offset=".5" stop-color="#5b3720"/><stop offset=".92" stop-color="#472915"/><stop offset="1" stop-color="#26140a"/></linearGradient>
+<radialGradient id="gKnot"><stop offset="0" stop-color="#120803"/><stop offset=".6" stop-color="#2e180b"/><stop offset="1" stop-color="#4a2a16"/></radialGradient>
+<radialGradient id="gVig" cx=".5" cy=".46" r=".74"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".6" stop-color="#000" stop-opacity=".08"/><stop offset="1" stop-color="#0a0400" stop-opacity=".74"/></radialGradient>
+<radialGradient id="gWarm"><stop offset="0" stop-color="#ffb04a" stop-opacity=".3"/><stop offset="1" stop-color="#ffb04a" stop-opacity="0"/></radialGradient>
+<radialGradient id="gLantern" cx=".42" cy=".4" r=".64"><stop offset="0" stop-color="#ffe6a8"/><stop offset=".35" stop-color="#ff8a3a"/><stop offset=".75" stop-color="#c8281a"/><stop offset="1" stop-color="#781008"/></radialGradient>
+<radialGradient id="gLanternGlow"><stop offset="0" stop-color="#ffb347" stop-opacity=".5"/><stop offset=".5" stop-color="#ff8a2a" stop-opacity=".15"/><stop offset="1" stop-color="#ff8a2a" stop-opacity="0"/></radialGradient>
+<linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe7a0"/><stop offset=".5" stop-color="#d49a3a"/><stop offset="1" stop-color="#7a4e12"/></linearGradient>
+<radialGradient id="gPaper" cx=".5" cy=".42" r=".78"><stop offset="0" stop-color="#fbf2dc"/><stop offset=".7" stop-color="#f0e1bf"/><stop offset="1" stop-color="#d6be8c"/></radialGradient>
+<linearGradient id="gLacquer" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0482c"/><stop offset="1" stop-color="#9a1c10"/></linearGradient>
+<linearGradient id="gWoodBtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#94653d"/><stop offset="1" stop-color="#553420"/></linearGradient>
+<linearGradient id="gRoller" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a4a26"/><stop offset=".45" stop-color="#3e2210"/><stop offset="1" stop-color="#1c0e05"/></linearGradient>
+<radialGradient id="gShadow"><stop offset="0" stop-color="#000" stop-opacity=".42"/><stop offset=".6" stop-color="#000" stop-opacity=".17"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+<radialGradient id="gShade" cx=".4" cy=".36" r=".68"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".42"/></radialGradient>
+<radialGradient id="gWm" cx=".38" cy=".32" r=".78"><stop offset="0" stop-color="#8fe060"/><stop offset=".45" stop-color="#3f9a34"/><stop offset="1" stop-color="#1a5a1e"/></radialGradient>
+<radialGradient id="gWmFlesh" cx=".45" cy=".42" r=".6"><stop offset="0" stop-color="#ff9088"/><stop offset=".55" stop-color="#f03c42"/><stop offset="1" stop-color="#c81d2a"/></radialGradient>
+<radialGradient id="gOrange" cx=".38" cy=".32" r=".75"><stop offset="0" stop-color="#ffd584"/><stop offset=".5" stop-color="#ff9c24"/><stop offset="1" stop-color="#cf5f0a"/></radialGradient>
+<radialGradient id="gOrangeFlesh" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="33"><stop offset="0" stop-color="#ffe6a0"/><stop offset=".6" stop-color="#ffb540"/><stop offset="1" stop-color="#ff8e1a"/></radialGradient>
+<radialGradient id="gApple" cx=".36" cy=".3" r=".78"><stop offset="0" stop-color="#ff9476"/><stop offset=".5" stop-color="#e3302c"/><stop offset="1" stop-color="#8e1016"/></radialGradient>
+<radialGradient id="gAppleFlesh" r=".56"><stop offset="0" stop-color="#fffdf2"/><stop offset=".7" stop-color="#fbefc9"/><stop offset="1" stop-color="#efd99a"/></radialGradient>
+<linearGradient id="gLeaf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a4e464"/><stop offset="1" stop-color="#3a8a24"/></linearGradient>
+<radialGradient id="gPine" cx=".38" cy=".34" r=".78"><stop offset="0" stop-color="#ffe47e"/><stop offset=".5" stop-color="#eba326"/><stop offset="1" stop-color="#8d4f0c"/></radialGradient>
+<radialGradient id="gPineFlesh" r=".56"><stop offset="0" stop-color="#fff9b8"/><stop offset=".6" stop-color="#ffe05a"/><stop offset="1" stop-color="#f5b526"/></radialGradient>
+<linearGradient id="gPineLeaf" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#2c7428"/><stop offset="1" stop-color="#9ad85e"/></linearGradient>
+<linearGradient id="gBanana" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6ae"/><stop offset=".5" stop-color="#ffd626"/><stop offset="1" stop-color="#cf9606"/></linearGradient>
+<linearGradient id="gBananaFlesh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf0"/><stop offset="1" stop-color="#fff0b8"/></linearGradient>
+<radialGradient id="gStraw" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="#ff8a90"/><stop offset=".5" stop-color="#e3243c"/><stop offset="1" stop-color="#8f0c1e"/></radialGradient>
+<radialGradient id="gStrawFlesh" r=".56"><stop offset="0" stop-color="#fff2f0"/><stop offset=".55" stop-color="#ff9aa6"/><stop offset="1" stop-color="#e0344c"/></radialGradient>
+<radialGradient id="gKiwi" cx=".4" cy=".36" r=".75"><stop offset="0" stop-color="#c9a070"/><stop offset=".55" stop-color="#8d5f36"/><stop offset="1" stop-color="#4a2d14"/></radialGradient>
+<radialGradient id="gKiwiFlesh" r=".56"><stop offset="0" stop-color="#eefcb0"/><stop offset=".55" stop-color="#9ed84c"/><stop offset="1" stop-color="#5a9e1f"/></radialGradient>
+<radialGradient id="gCoco" cx=".38" cy=".34" r=".76"><stop offset="0" stop-color="#aa7c4e"/><stop offset=".5" stop-color="#6b4325"/><stop offset="1" stop-color="#2e1a0a"/></radialGradient>
+<radialGradient id="gCocoMeat" r=".56"><stop offset="0" stop-color="#fffefa"/><stop offset=".8" stop-color="#f6f0e2"/><stop offset="1" stop-color="#e3d8bf"/></radialGradient>
+<radialGradient id="gCocoWater" cx=".42" cy=".4"><stop offset="0" stop-color="#fdfeff"/><stop offset="1" stop-color="#cfe2ea"/></radialGradient>
+<radialGradient id="gPeach" cx=".38" cy=".34" r=".76"><stop offset="0" stop-color="#ffeabc"/><stop offset=".55" stop-color="#ffb574"/><stop offset="1" stop-color="#e87e56"/></radialGradient>
+<radialGradient id="gBlush"><stop offset="0" stop-color="#e84054" stop-opacity=".72"/><stop offset="1" stop-color="#e84054" stop-opacity="0"/></radialGradient>
+<radialGradient id="gPeachFlesh" r=".56"><stop offset="0" stop-color="#ffeaa8"/><stop offset=".6" stop-color="#ffc35c"/><stop offset="1" stop-color="#f5943c"/></radialGradient>
+<radialGradient id="gPit" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#c47444"/><stop offset="1" stop-color="#6a2e12"/></radialGradient>
+<radialGradient id="gLemon" cx=".38" cy=".32" r=".75"><stop offset="0" stop-color="#fffcc6"/><stop offset=".5" stop-color="#ffe23a"/><stop offset="1" stop-color="#c89e00"/></radialGradient>
+<radialGradient id="gLemonFlesh" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="32"><stop offset="0" stop-color="#fffdd2"/><stop offset=".6" stop-color="#fff176"/><stop offset="1" stop-color="#ffe03a"/></radialGradient>
+<radialGradient id="gBomb" cx=".36" cy=".3" r=".76"><stop offset="0" stop-color="#76768a"/><stop offset=".5" stop-color="#26262f"/><stop offset="1" stop-color="#050507"/></radialGradient>
+<linearGradient id="gMetal" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#55555f"/><stop offset=".35" stop-color="#eeeef4"/><stop offset="1" stop-color="#6a6a78"/></linearGradient>
+<radialGradient id="gSparkGlow"><stop offset="0" stop-color="#fff3b0" stop-opacity=".95"/><stop offset=".4" stop-color="#ffa53a" stop-opacity=".5"/><stop offset="1" stop-color="#ff7a1a" stop-opacity="0"/></radialGradient>
+<radialGradient id="gAuraRed"><stop offset=".45" stop-color="#ff3a1a" stop-opacity=".5"/><stop offset=".7" stop-color="#ff3a1a" stop-opacity=".2"/><stop offset="1" stop-color="#ff3a1a" stop-opacity="0"/></radialGradient>
+<radialGradient id="gAuraIce"><stop offset=".3" stop-color="#8fe6ff" stop-opacity=".7"/><stop offset="1" stop-color="#8fe6ff" stop-opacity="0"/></radialGradient>
+<radialGradient id="gAuraGold"><stop offset=".3" stop-color="#ffd84a" stop-opacity=".7"/><stop offset="1" stop-color="#ffd84a" stop-opacity="0"/></radialGradient>
+<radialGradient id="gAuraFire"><stop offset=".3" stop-color="#ff6a2a" stop-opacity=".75"/><stop offset="1" stop-color="#ff6a2a" stop-opacity="0"/></radialGradient>
+<linearGradient id="gBanFreeze" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#effcff"/><stop offset=".5" stop-color="#7fd4ff"/><stop offset="1" stop-color="#2a86c8"/></linearGradient>
+<linearGradient id="gBanDouble" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c0"/><stop offset=".5" stop-color="#ffcc33"/><stop offset="1" stop-color="#c07e00"/></linearGradient>
+<linearGradient id="gBanFrenzy" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd8b0"/><stop offset=".5" stop-color="#ff6034"/><stop offset="1" stop-color="#b01e0a"/></linearGradient>
+<radialGradient id="gFrost" r=".75"><stop offset=".55" stop-color="#bff0ff" stop-opacity="0"/><stop offset="1" stop-color="#bff0ff" stop-opacity=".6"/></radialGradient>
+<radialGradient id="gGoldEdge" r=".75"><stop offset=".55" stop-color="#ffd23f" stop-opacity="0"/><stop offset="1" stop-color="#ffd23f" stop-opacity=".4"/></radialGradient>
+<radialGradient id="gFireEdge" r=".75"><stop offset=".5" stop-color="#ff5a1a" stop-opacity="0"/><stop offset="1" stop-color="#ff5a1a" stop-opacity=".45"/></radialGradient>
+<radialGradient id="gDanger" r=".75"><stop offset=".6" stop-color="#ff2a1a" stop-opacity="0"/><stop offset="1" stop-color="#ff2a1a" stop-opacity=".4"/></radialGradient>
+<radialGradient id="gRay"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#fff3b0" stop-opacity=".9"/><stop offset=".7" stop-color="#ffb347" stop-opacity=".35"/><stop offset="1" stop-color="#ffb347" stop-opacity="0"/></radialGradient>
+<radialGradient id="gEmber"><stop offset="0" stop-color="#fff2a8"/><stop offset=".4" stop-color="#ff7a1a" stop-opacity=".8"/><stop offset="1" stop-color="#ff5a0a" stop-opacity="0"/></radialGradient>
+<linearGradient id="gIncense" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b07a48"/><stop offset="1" stop-color="#5a3518"/></linearGradient>
+<radialGradient id="gDim" r=".8"><stop offset="0" stop-color="#0d0703" stop-opacity=".45"/><stop offset="1" stop-color="#0d0703" stop-opacity=".8"/></radialGradient>
+<pattern id="pDimple" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(20)"><circle cx="1.5" cy="1.5" r=".9" fill="#7a3000" opacity=".55"/><circle cx="4.5" cy="4.2" r=".7" fill="#fff" opacity=".5"/></pattern>
+<pattern id="pPine" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0H12M0 0V12" stroke="#6a3806" stroke-width="1.5" opacity=".6"/><circle cx="6" cy="6" r="1.7" fill="#5a3004" opacity=".6"/><circle cx="4.8" cy="4.8" r="1.2" fill="#fff2a0" opacity=".45"/></pattern>
+<pattern id="pFuzz" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M1 1l1.4 1M3.6 3l-1 1.4" stroke="#2e1a0a" stroke-width=".8"/><path d="M3 .6l1 .8" stroke="#e0c090" stroke-width=".7" opacity=".7"/></pattern>
+<clipPath id="cTop" clipPathUnits="userSpaceOnUse"><rect x="-200" y="-200" width="400" height="200"/></clipPath>
+<clipPath id="cBot" clipPathUnits="userSpaceOnUse"><rect x="-200" y="0" width="400" height="200"/></clipPath>
+<filter id="fInk" x="-4%" y="-10%" width="108%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".045 .09" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/></filter>
+<path id="appleShape" d="M0 -24C9 -38 38 -40 40 -12C42 14 27 38 11 38C6 38 3 35 0 35C-3 35 -6 38 -11 38C-27 38 -42 14 -40 -12C-38 -40 -9 -38 0 -24Z"/>
+<path id="bananaShape" d="M-50 -17C-44 29 40 35 50 -19C40 -7 -36 -9 -50 -17Z"/>
+<path id="bananaInner" d="M-45 -14C-39 24 36 30 45 -16C35 -5 -33 -7 -45 -14Z"/>
+<path id="strawShape" d="M0 36C-17 28 -32 8 -30 -10C-28 -24 -14 -28 0 -24C14 -28 28 -24 30 -10C32 8 17 28 0 36Z"/>
+<path id="peachShape" d="M0 -30C12 -40 40 -34 40 -2C40 24 22 40 0 40C-22 40 -40 24 -40 -2C-40 -34 -12 -40 0 -30Z"/>
+<path id="lemonShape" d="M-43 0C-41 -6 -37 -9 -34 -13C-27 -33 27 -33 34 -13C37 -9 41 -6 43 0C41 6 37 9 34 13C27 33 -27 33 -34 13C-37 9 -41 6 -43 0Z"/>
+<path id="hiSpot" d="M-6 -3C-6 -7 6 -7 6 -3C6 1 -6 1 -6 -3Z"/>
+<g id="peg"><circle r="5" fill="#1b0d05"/><circle r="3.4" fill="#5e3a1f"/><circle cx="-1" cy="-1" r="1.3" fill="#b07c4a" opacity=".55"/></g>
+
+<g id="f-watermelon">
+<ellipse rx="62" ry="56" fill="url(#gWm)"/>
+<use href="#wmStripes" fill="#154b19" opacity=".8"/>
+<ellipse rx="62" ry="56" fill="url(#gShade)"/>
+<ellipse cx="-24" cy="-27" rx="21" ry="11" transform="rotate(-32 -24 -27)" fill="#fff" opacity=".26"/>
+<ellipse cx="-30" cy="-32" rx="6" ry="3.4" transform="rotate(-32 -30 -32)" fill="#fff" opacity=".75"/>
+<path d="M-2 -55q3 -6 8 -7" fill="none" stroke="#6a5420" stroke-width="3" stroke-linecap="round"/>
+</g>
+<g id="x-watermelon">
+<ellipse rx="62" ry="56" fill="#1d6322"/>
+<ellipse rx="58.5" ry="52.5" fill="#a7dc72"/>
+<ellipse rx="55.5" ry="49.5" fill="#f3f6d6"/>
+<ellipse rx="51" ry="45" fill="url(#gWmFlesh)"/>
+<use href="#wmSeeds" fill="#1c120b"/>
+<ellipse cx="-16" cy="-18" rx="24" ry="12" transform="rotate(-24 -16 -18)" fill="#fff" opacity=".16"/>
+</g>
+
+<g id="f-orange">
+<circle r="40" fill="url(#gOrange)"/>
+<circle r="40" fill="url(#pDimple)" opacity=".4"/>
+<circle r="40" fill="url(#gShade)"/>
+<ellipse cx="-14" cy="-17" rx="13" ry="7" transform="rotate(-35 -14 -17)" fill="#fff" opacity=".35"/>
+<circle cx="-18" cy="-21" r="3" fill="#fff" opacity=".7"/>
+<path d="M0 -42l3 4 5 -1 -3 4 3 4 -5 -1 -3 4 -3 -4 -5 1 3 -4 -3 -4 5 1z" fill="#5d7f22"/>
+<circle cy="-38" r="2" fill="#4a3a14"/>
+</g>
+<g id="x-orange">
+<circle r="40" fill="#f0870e"/>
+<circle r="37" fill="#fff0cf"/>
+<circle r="33.5" fill="#f9c46b"/>
+<use href="#wedges8" fill="url(#gOrangeFlesh)"/>
+<use href="#wedgeLines8" stroke="#fff6dc"/>
+<circle r="4.5" fill="#fff4de"/>
+<ellipse cx="-12" cy="-14" rx="16" ry="8" transform="rotate(-30 -12 -14)" fill="#fff" opacity=".2"/>
+</g>
+
+<g id="f-apple">
+<path d="M0 -24C1 -32 3 -39 7 -45" fill="none" stroke="#5b3a1c" stroke-width="3.5" stroke-linecap="round"/>
+<use href="#appleShape" fill="url(#gApple)"/>
+<path d="M-22 -20C-30 0 -26 20 -14 30M20 -24C30 -6 30 14 20 28" fill="none" stroke="#ffc09a" stroke-width="2" opacity=".2"/>
+<use href="#appleShape" fill="url(#gShade)"/>
+<ellipse cx="-19" cy="-12" rx="7" ry="13" transform="rotate(18 -19 -12)" fill="#fff" opacity=".3"/>
+<ellipse cx="-21" cy="-19" rx="2.6" ry="4.5" transform="rotate(18 -21 -19)" fill="#fff" opacity=".75"/>
+<path d="M6 -40C14 -53 29 -52 33 -45C25 -38 14 -36 6 -40Z" fill="url(#gLeaf)"/>
+<path d="M7 -40C16 -44 24 -45 31 -45" fill="none" stroke="#2c6a1c" stroke-width="1.2"/>
+</g>
+<g id="x-apple">
+<use href="#appleShape" fill="#c21f27"/>
+<use href="#appleShape" transform="translate(0 1.5) scale(.9)" fill="url(#gAppleFlesh)"/>
+<path d="M0 -21V-9" stroke="#caa865" stroke-width="1.4"/>
+<use href="#appleCore" fill="#f3dfa0" stroke="#d2b46a" stroke-width="1.2"/>
+<use href="#appleSeeds" fill="#4a2a12"/>
+<ellipse cx="-14" cy="-12" rx="12" ry="7" transform="rotate(-25 -14 -12)" fill="#fff" opacity=".3"/>
+</g>
+
+<g id="f-pineapple">
+<use href="#pineLeafB" fill="#2e6e25"/>
+<use href="#pineLeafF" fill="url(#gPineLeaf)"/>
+<ellipse rx="34" ry="44" fill="url(#gPine)"/>
+<ellipse rx="34" ry="44" fill="url(#pPine)"/>
+<ellipse rx="34" ry="44" fill="url(#gShade)"/>
+<ellipse cx="-12" cy="-16" rx="8" ry="15" transform="rotate(15 -12 -16)" fill="#fff" opacity=".22"/>
+</g>
+<g id="x-pineapple">
+<ellipse rx="34" ry="44" fill="#a4690f"/>
+<ellipse rx="30.5" ry="40.5" fill="url(#gPineFlesh)"/>
+<use href="#pineFib" fill="none" stroke="#f0b425" stroke-width="1.4" opacity=".6"/>
+<use href="#pineEyes" fill="#8a5a12"/>
+<ellipse rx="8.5" ry="11.5" fill="#fff4bd" stroke="#f0c448" stroke-width="1.5"/>
+<ellipse cx="-10" cy="-16" rx="9" ry="14" transform="rotate(15 -10 -16)" fill="#fff" opacity=".2"/>
+</g>
+
+<g id="f-banana">
+<path d="M-49 -15L-58 -24L-54 -28L-46 -19Z" fill="#6b4a1a"/>
+<use href="#bananaShape" fill="url(#gBanana)"/>
+<path d="M-49 -16C-42 13 38 16 49 -18" fill="none" stroke="#c9950a" stroke-width="1.5" opacity=".55"/>
+<path d="M-38 -8C-22 6 20 6 36 -8" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".35"/>
+<circle cx="50" cy="-19" r="3" fill="#3b2a12"/>
+<circle cx="-12" cy="12" r="1.4" fill="#7a5a12" opacity=".5"/><circle cx="14" cy="15" r="1.1" fill="#7a5a12" opacity=".5"/>
+</g>
+<g id="x-banana">
+<use href="#bananaShape" fill="#e5b50f"/>
+<use href="#bananaInner" fill="url(#gBananaFlesh)"/>
+<path d="M-38 -6C-26 8 24 10 38 -6" fill="none" stroke="#8a6a2a" stroke-width="2" stroke-dasharray="1.5 5" stroke-linecap="round" opacity=".6"/>
+</g>
+<g id="f-freeze">
+<use href="#bananaShape" fill="url(#gBanFreeze)"/>
+<path d="M-49 -16C-42 13 38 16 49 -18" fill="none" stroke="#1f6fae" stroke-width="1.5" opacity=".6"/>
+<path d="M-24 4h8M-20 0v8M-23 1l6 6M-17 1l-6 6M6 8h8M10 4v8M7 5l6 6M13 5l-6 6M26 -2h7M29.5 -5.5v7" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M-38 -8C-22 6 20 6 36 -8" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".45"/>
+</g>
+<g id="x-freeze"><use href="#bananaShape" fill="#3aa8e8"/><use href="#bananaInner" fill="#e6fbff"/></g>
+<g id="f-double">
+<use href="#bananaShape" fill="url(#gBanDouble)"/>
+<path d="M-49 -16C-42 13 38 16 49 -18" fill="none" stroke="#a86a00" stroke-width="1.5" opacity=".6"/>
+<text class="nm" x="0" y="14" font-size="17" text-anchor="middle" fill="#7a3e00">×2</text>
+<path d="M-38 -8C-22 6 20 6 36 -8" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".45"/>
+</g>
+<g id="x-double"><use href="#bananaShape" fill="#e0a200"/><use href="#bananaInner" fill="#fff5c8"/></g>
+<g id="f-frenzy">
+<use href="#bananaShape" fill="url(#gBanFrenzy)"/>
+<path d="M-30 12C-34 4 -26 0 -28 -6C-22 0 -20 6 -24 12ZM-4 16C-8 8 0 4 -2 -2C4 4 6 10 2 16ZM22 12C18 4 26 0 24 -6C30 0 32 6 28 12Z" fill="#ffe36a" opacity=".9"/>
+<path d="M-38 -8C-22 6 20 6 36 -8" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".4"/>
+</g>
+<g id="x-frenzy"><use href="#bananaShape" fill="#d8341a"/><use href="#bananaInner" fill="#ffe0c8"/></g>
+
+<g id="f-strawberry">
+<use href="#strawShape" fill="url(#gStraw)"/>
+<use href="#strawSeeds" fill="#ffe27c"/>
+<use href="#strawShape" fill="url(#gShade)"/>
+<ellipse cx="-12" cy="-8" rx="6" ry="10" transform="rotate(20 -12 -8)" fill="#fff" opacity=".28"/>
+<use href="#strawCalyx" fill="url(#gLeaf)"/>
+<path d="M0 -27C0 -33 2 -37 5 -40" stroke="#3f7a22" stroke-width="3" stroke-linecap="round" fill="none"/>
+</g>
+<g id="x-strawberry">
+<use href="#strawShape" fill="#d0122b"/>
+<use href="#strawShape" transform="translate(0 1) scale(.86)" fill="url(#gStrawFlesh)"/>
+<use href="#strawStreak" fill="none" stroke="#ffc6cc" stroke-width="1.6" opacity=".7"/>
+<path d="M0 22C-8 12 -10 -2 0 -14C10 -2 8 12 0 22Z" fill="#fff4f0" opacity=".9"/>
+<ellipse cx="-10" cy="-10" rx="9" ry="5" transform="rotate(-25 -10 -10)" fill="#fff" opacity=".25"/>
+</g>
+
+<g id="f-kiwi">
+<ellipse rx="36" ry="30" fill="url(#gKiwi)"/>
+<ellipse rx="36" ry="30" fill="url(#pFuzz)" opacity=".55"/>
+<ellipse rx="36" ry="30" fill="url(#gShade)"/>
+<ellipse cx="-12" cy="-12" rx="12" ry="7" transform="rotate(-20 -12 -12)" fill="#fff" opacity=".15"/>
+<circle cx="35" r="2.5" fill="#3a2410"/>
+</g>
+<g id="x-kiwi">
+<ellipse rx="36" ry="30" fill="#6b4524"/>
+<ellipse rx="33.5" ry="27.5" fill="url(#gKiwiFlesh)"/>
+<use href="#kiwiRays" fill="none" stroke="#f0ffc8" stroke-width="1.3" opacity=".5"/>
+<use href="#kiwiSeeds" fill="#15100a"/>
+<ellipse rx="9.5" ry="7.5" fill="#fbffe6"/>
+<ellipse cx="-12" cy="-10" rx="10" ry="5" transform="rotate(-20 -12 -10)" fill="#fff" opacity=".22"/>
+</g>
+
+<g id="f-coconut">
+<circle r="42" fill="url(#gCoco)"/>
+<use href="#cocoFib"/>
+<use href="#cocoFibD"/>
+<circle r="42" fill="url(#gShade)"/>
+<g fill="#1e1006"><ellipse cx="-8" cy="-31" rx="3.6" ry="4.4"/><ellipse cx="8" cy="-31" rx="3.6" ry="4.4"/><ellipse cy="-22" rx="3.6" ry="4.4"/></g>
+<ellipse cx="-16" cy="-16" rx="11" ry="6" transform="rotate(-35 -16 -16)" fill="#fff" opacity=".14"/>
+</g>
+<g id="x-coconut">
+<circle r="42" fill="#4a2c14"/>
+<circle r="38.5" fill="#7a4c26"/>
+<circle r="37" fill="url(#gCocoMeat)"/>
+<circle r="25" fill="url(#gCocoWater)"/>
+<ellipse cx="-8" cy="-9" rx="10" ry="5" transform="rotate(-30 -8 -9)" fill="#fff" opacity=".6"/>
+</g>
+
+<g id="f-peach">
+<path d="M0 -30L1 -38" stroke="#5a3a1a" stroke-width="3" stroke-linecap="round"/>
+<use href="#peachShape" fill="url(#gPeach)"/>
+<ellipse cx="14" cy="6" rx="24" ry="28" fill="url(#gBlush)"/>
+<path d="M0 -30C-9 -12 -9 16 -2 39" fill="none" stroke="#c4483c" stroke-width="2" opacity=".45"/>
+<use href="#peachShape" fill="url(#gShade)"/>
+<ellipse cx="-16" cy="-12" rx="12" ry="16" fill="#fff" opacity=".13"/>
+<ellipse cx="-18" cy="-16" rx="4" ry="6" fill="#fff" opacity=".35"/>
+<path d="M1 -36C-8 -50 -24 -49 -29 -43C-21 -36 -9 -34 1 -36Z" fill="url(#gLeaf)"/>
+<path d="M0 -36C-9 -41 -18 -43 -27 -43" stroke="#2c6a1c" stroke-width="1.1" fill="none"/>
+</g>
+<g id="x-peach">
+<use href="#peachShape" fill="#e35a4c"/>
+<use href="#peachShape" transform="translate(0 1) scale(.9)" fill="url(#gPeachFlesh)"/>
+<ellipse cy="3" rx="16" ry="20" fill="none" stroke="#e0583a" stroke-width="6" opacity=".35"/>
+<path d="M0 -15C11 -9 12 14 0 22C-12 14 -11 -9 0 -15Z" fill="url(#gPit)"/>
+<path d="M-4 -8C-1 -4 -5 2 -2 7M3 -6C6 0 2 6 5 12M-5 10C-2 13 1 13 3 17" fill="none" stroke="#4a1e08" stroke-width="1.2" opacity=".55"/>
+<ellipse cx="-14" cy="-14" rx="11" ry="6" transform="rotate(-25 -14 -14)" fill="#fff" opacity=".22"/>
+</g>
+
+<g id="f-lemon">
+<use href="#lemonShape" fill="url(#gLemon)"/>
+<use href="#lemonShape" fill="url(#pDimple)" opacity=".28"/>
+<use href="#lemonShape" fill="url(#gShade)"/>
+<ellipse cx="-12" cy="-13" rx="14" ry="6" transform="rotate(-15 -12 -13)" fill="#fff" opacity=".35"/>
+<ellipse cx="-16" cy="-15" rx="4" ry="2" fill="#fff" opacity=".7"/>
+<circle cx="42" r="2" fill="#8a7a10"/>
+</g>
+<g id="x-lemon">
+<use href="#lemonShape" fill="#efc81a"/>
+<ellipse rx="33" ry="22.5" fill="#fffbe8"/>
+<ellipse rx="30" ry="20" fill="#fff08c"/>
+<use href="#wedges8" transform="scale(.9 .6)" fill="url(#gLemonFlesh)"/>
+<use href="#wedgeLines8" transform="scale(.9 .6)" stroke="#fffdf0"/>
+<ellipse rx="3.5" ry="2.5" fill="#fffef4"/>
+<ellipse cx="-12" cy="-8" rx="12" ry="5" transform="rotate(-12 -12 -8)" fill="#fff" opacity=".22"/>
+</g>
+
+<g id="f-bomb">
+<path d="M0 -42C2 -54 14 -56 18 -64" fill="none" stroke="#caa66a" stroke-width="4.5" stroke-linecap="round"/>
+<path d="M0 -42C2 -54 14 -56 18 -64" fill="none" stroke="#6e4e26" stroke-width="4.5" stroke-dasharray="2 3"/>
+<circle r="34" fill="url(#gBomb)"/>
+<path d="M-11 -29H11L9 -39H-9Z" fill="url(#gMetal)"/>
+<rect x="-10.5" y="-43" width="21" height="5" rx="2.5" fill="#a6a6b4"/>
+<path d="M-10 -9L10 11M10 -9L-10 11" stroke="#ff4a2a" stroke-width="5.5" stroke-linecap="round" opacity=".9"/>
+<path d="M-10 -9L10 11M10 -9L-10 11" stroke="#ffd0b0" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+<ellipse cx="-12" cy="-15" rx="10" ry="5.5" transform="rotate(-38 -12 -15)" fill="#fff" opacity=".32"/>
+<circle cx="-16" cy="-18" r="2.4" fill="#fff" opacity=".8"/>
+</g>
+<g id="spark">
+<circle r="14" fill="url(#gSparkGlow)"/>
+<path d="M0 -12L2.5 -2.5L12 0L2.5 2.5L0 12L-2.5 2.5L-12 0L-2.5 -2.5Z" fill="#fff7c8"/>
+<path d="M0 -6L1.5 -1.5L6 0L1.5 1.5L0 6L-1.5 1.5L-6 0L-1.5 -1.5Z" fill="#ff9a2a" transform="rotate(45)"/>
+</g>
+<path id="star4" d="M0 -1L.22 -.22L1 0L.22 .22L0 1L-.22 .22L-1 0L-.22 -.22Z"/>
+<path id="star8" d="M0 -1L.16 -.39L.71 -.71L.39 -.16L1 0L.39 .16L.71 .71L.16 .39L0 1L-.16 .39L-.71 .71L-.39 .16L-1 0L-.39 -.16L-.71 -.71L-.16 -.39Z"/>
+<rect id="cutLine" x="-1" y="-1.6" width="2" height="3.2" rx="1.6"/>
+
+<g id="lanternBody">
+<path d="M0 -20V40" stroke="#1e1208" stroke-width="2.5"/>
+<rect x="-17" y="36" width="34" height="11" rx="2.5" fill="url(#gGold)"/>
+<ellipse cy="102" rx="54" ry="58" fill="url(#gLantern)"/>
+<g fill="none" stroke="#861c10" stroke-width="1.6" opacity=".5"><ellipse cy="102" rx="40" ry="57"/><ellipse cy="102" rx="24" ry="58"/><path d="M0 44V160"/></g>
+<ellipse cx="-20" cy="80" rx="10" ry="22" fill="#fff" opacity=".16"/>
+<rect x="-17" y="156" width="34" height="11" rx="2.5" fill="url(#gGold)"/>
+<path d="M-3 167H3L3 176H-3Z" fill="#d49a3a"/>
+<path d="M-7 176H7L9 214H-9Z" fill="#c62a1c"/>
+<path d="M-5 180V212M0 180V214M5 180V212" stroke="#8a140a" stroke-width="1"/>
+</g>
+<g id="seal">
+<path d="M-31 -34L29 -33L33 -3L31 33L-30 34L-33 2Z" fill="#b8241c"/>
+<path d="M-26 -28H26V28H-26Z" fill="none" stroke="#f6e3c8" stroke-width="2.4" opacity=".9"/>
+<text class="br" x="0" y="-3" font-size="23" text-anchor="middle" fill="#f8e8d0" font-weight="700">刀</text>
+<text class="br" x="0" y="22" font-size="23" text-anchor="middle" fill="#f8e8d0" font-weight="700">客</text>
+<circle cx="-20" cy="18" r="1.6" fill="#f2dcc0" opacity=".7"/><circle cx="21" cy="-22" r="1.2" fill="#f2dcc0" opacity=".6"/><circle cx="12" cy="26" r="1" fill="#b8241c"/>
+</g>
+<g id="glintStar">
+<circle r="16" fill="url(#gSparkGlow)" opacity=".8"/>
+<use href="#star4" transform="scale(15)" fill="#fffdf4"/>
+<use href="#star4" transform="rotate(45) scale(7)" fill="#ffd98a"/>
+</g>
+<g id="icoSound"><path d="M-9 -4H-4L3 -10V10L-4 4H-9Z" fill="currentColor"/><path d="M6 -6Q10 0 6 6M9 -10Q16 0 9 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>
+<g id="icoMute"><path d="M-9 -4H-4L3 -10V10L-4 4H-9Z" fill="currentColor"/><path d="M7 -5L15 5M15 -5L7 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></g>
+<g id="icoPause"><rect x="-7" y="-9" width="5" height="18" rx="1.5" fill="currentColor"/><rect x="2" y="-9" width="5" height="18" rx="1.5" fill="currentColor"/></g>
+<g id="xMark"><use href="#missX" fill="none" stroke="#f3dfb4" stroke-width="2" opacity=".45"/></g>
+<path id="wmStripes" d="M-24.5 -51L-32.5 -44.6L-42.6 -38.2L-43.8 -31.9L-51.7 -25.5L-50 -19.1L-56.4 -12.7L-52.8 -6.4L-57.9 0L-52.8 6.4L-56.4 12.8L-50 19.1L-51.7 25.5L-43.8 31.9L-42.6 38.3L-32.5 44.6L-24.5 51L-18.4 51L-25.6 44.6L-33.3 38.3L-35.2 31.9L-40.8 25.5L-40.4 19.1L-44.7 12.8L-42.7 6.4L-45.9 0L-42.7 -6.4L-44.7 -12.7L-40.4 -19.1L-40.8 -25.5L-35.2 -31.9L-33.3 -38.2L-25.6 -44.6L-18.4 -51ZM-15 -51L-18.6 -44.6L-25.7 -38.2L-24.9 -31.9L-31.1 -25.5L-28.3 -19.1L-33.9 -12.7L-29.8 -6.4L-34.8 0L-29.8 6.4L-33.9 12.8L-28.3 19.1L-31.1 25.5L-24.9 31.9L-25.7 38.3L-18.6 44.6L-15 51L-8.2 51L-10.8 44.6L-15.3 38.3L-15 31.9L-18.9 25.5L-17.3 19.1L-20.8 12.8L-18.4 6.4L-21.4 0L-18.4 -6.4L-20.8 -12.7L-17.3 -19.1L-18.9 -25.5L-15 -31.9L-15.3 -38.2L-10.8 -44.6L-8.2 -51ZM-4.6 -51L-3.3 -44.6L-7.2 -38.2L-4 -31.9L-8.5 -25.5L-4.4 -19.1L-9.2 -12.7L-4.6 -6.4L-9.4 0L-4.6 6.4L-9.2 12.8L-4.4 19.1L-8.5 25.5L-4 31.9L-7.2 38.3L-3.3 44.6L-4.6 51L3 51L5.6 44.6L4.4 38.3L7.2 31.9L5.1 25.5L8 19.1L5.4 12.8L8.4 6.4L5.6 0L8.4 -6.4L5.4 -12.7L8 -19.1L5.1 -25.5L7.2 -31.9L4.4 -38.2L5.6 -44.6L3 -51ZM6.6 -51L13.1 -44.6L12.5 -38.2L18.2 -31.9L15.5 -25.5L21 -19.1L17.1 -12.7L22.2 -6.4L17.6 0L22.2 6.4L17.1 12.8L21 19.1L15.5 25.5L18.2 31.9L12.5 38.3L13.1 44.6L6.6 51L13.4 51L20.9 44.6L22.9 38.3L28 31.9L27.7 25.5L31.9 19.1L30.2 12.8L33.6 6.4L31 0L33.6 -6.4L30.2 -12.7L31.9 -19.1L27.7 -25.5L28 -31.9L22.9 -38.2L20.9 -44.6L13.4 -51ZM16.8 -51L27.9 -44.6L30.5 -38.2L38.4 -31.9L37.3 -25.5L44 -19.1L40.9 -12.7L46.6 -6.4L42.1 0L46.6 6.4L40.9 12.8L44 19.1L37.3 25.5L38.4 31.9L30.5 38.3L27.9 44.6L16.8 51L22.9 51L34.8 44.6L39.8 38.3L47 31.9L48.3 25.5L53.6 19.1L52.7 12.8L56.6 6.4L54.1 0L56.6 -6.4L52.7 -12.7L53.6 -19.1L48.3 -25.5L47 -31.9L39.8 -38.2L34.8 -44.6L22.9 -51Z"/>
+<path id="wedges8" d="M-1.7 -4.7L-10.9 -29.6A31.5 31.5 0 0 1 10.9 -29.6L1.7 -4.7ZM2.1 -4.5L13.2 -28.6A31.5 31.5 0 0 1 28.6 -13.2L4.5 -2.1ZM4.7 -1.7L29.6 -10.9A31.5 31.5 0 0 1 29.6 10.9L4.7 1.7ZM4.5 2.1L28.6 13.2A31.5 31.5 0 0 1 13.2 28.6L2.1 4.5ZM1.7 4.7L10.9 29.6A31.5 31.5 0 0 1 -10.9 29.6L-1.7 4.7ZM-2.1 4.5L-13.2 28.6A31.5 31.5 0 0 1 -28.6 13.2L-4.5 2.1ZM-4.7 1.7L-29.6 10.9A31.5 31.5 0 0 1 -29.6 -10.9L-4.7 -1.7ZM-4.5 -2.1L-28.6 -13.2A31.5 31.5 0 0 1 -13.2 -28.6L-2.1 -4.5Z"/><path id="wedgeLines8" d="M0 -10L0 -27M-2.6 -12.7L-6.4 -24.2M2.6 -12.7L6.4 -24.2M-1.8 -17.9L-3.8 -28.8M1.8 -17.9L3.8 -28.8M7.1 -7.1L19.1 -19.1M7.2 -10.8L12.5 -21.6M10.8 -7.2L21.6 -12.5M11.4 -13.9L17.7 -23M13.9 -11.4L23 -17.7M10 0L27 0M12.7 -2.6L24.2 -6.4M12.7 2.6L24.2 6.4M17.9 -1.8L28.8 -3.8M17.9 1.8L28.8 3.8M7.1 7.1L19.1 19.1M10.8 7.2L21.6 12.5M7.2 10.8L12.5 21.6M13.9 11.4L23 17.7M11.4 13.9L17.7 23M0 10L0 27M2.6 12.7L6.4 24.2M-2.6 12.7L-6.4 24.2M1.8 17.9L3.8 28.8M-1.8 17.9L-3.8 28.8M-7.1 7.1L-19.1 19.1M-7.2 10.8L-12.5 21.6M-10.8 7.2L-21.6 12.5M-11.4 13.9L-17.7 23M-13.9 11.4L-23 17.7M-10 0L-27 0M-12.7 2.6L-24.2 6.4M-12.7 -2.6L-24.2 -6.4M-17.9 1.8L-28.8 3.8M-17.9 -1.8L-28.8 -3.8M-7.1 -7.1L-19.1 -19.1M-10.8 -7.2L-21.6 -12.5M-7.2 -10.8L-12.5 -21.6M-13.9 -11.4L-23 -17.7M-11.4 -13.9L-17.7 -23" fill="none" stroke-width="1.3" stroke-linecap="round" opacity=".38"/><path id="wmSeeds" d="M25.9 4.5C30.9 2.4 37.4 3.7 36.9 6.7C36.3 9.6 29.7 8.3 25.9 4.5ZM19.8 14.8C25.1 15.5 30.2 20 28.2 22.2C26.2 24.5 21.2 20 19.8 14.8ZM8.4 21.2C12.7 24.5 14.8 30.9 12 31.9C9.1 32.8 7 26.4 8.4 21.2ZM-5.2 22C-3.2 26.9 -4.5 33.5 -7.5 32.9C-10.4 32.3 -9.1 25.7 -5.2 22ZM-17.5 16.8C-18.2 22.1 -22.6 27.2 -24.9 25.2C-27.1 23.2 -22.7 18.2 -17.5 16.8ZM-25 7.1C-28.3 11.4 -34.7 13.5 -35.6 10.7C-36.6 7.8 -30.2 5.7 -25 7.1ZM-25.9 -4.5C-30.9 -2.4 -37.4 -3.7 -36.9 -6.7C-36.3 -9.6 -29.7 -8.3 -25.9 -4.5ZM-19.8 -14.8C-25.1 -15.5 -30.2 -20 -28.2 -22.2C-26.2 -24.5 -21.2 -20 -19.8 -14.8ZM-8.4 -21.2C-12.7 -24.5 -14.8 -30.9 -12 -31.9C-9.1 -32.8 -7 -26.4 -8.4 -21.2ZM5.2 -22C3.2 -26.9 4.5 -33.5 7.5 -32.9C10.4 -32.3 9.1 -25.7 5.2 -22ZM17.5 -16.8C18.2 -22.1 22.6 -27.2 24.9 -25.2C27.1 -23.2 22.7 -18.2 17.5 -16.8ZM25 -7.1C28.3 -11.4 34.7 -13.5 35.6 -10.7C36.6 -7.8 30.2 -5.7 25 -7.1ZM8.4 4.1C13.1 4.1 17.8 7.3 16.3 9.5C14.9 11.6 10.1 8.4 8.4 4.1ZM0.7 7.2C3.6 10.8 4 16.6 1.4 16.8C-1.1 16.9 -1.6 11.2 0.7 7.2ZM-7.5 4.9C-8.5 9.4 -12.8 13.3 -14.5 11.4C-16.3 9.5 -12.1 5.6 -7.5 4.9ZM-10.1 -1.1C-14.3 0.9 -20 0 -19.6 -2.5C-19.2 -5.1 -13.5 -4.2 -10.1 -1.1ZM-5.1 -6.2C-9.3 -8.3 -12.1 -13.3 -9.9 -14.6C-7.6 -15.9 -4.7 -10.9 -5.1 -6.2ZM3.7 -6.7C2.7 -11.2 4.8 -16.6 7.3 -15.6C9.7 -14.7 7.6 -9.3 3.7 -6.7ZM9.8 -2.1C12.7 -5.7 18.2 -7.4 18.9 -4.9C19.7 -2.4 14.2 -0.8 9.8 -2.1Z"/><path id="kiwiSeeds" d="M11.6 0C13.9 -1.3 17.4 -1.3 17.4 0C17.4 1.3 13.9 1.3 11.6 0ZM11.1 2.5C13.7 2 17.1 3 16.7 4.2C16.3 5.5 13 4.5 11.1 2.5ZM9.8 4.8C12.5 5.1 15.3 7.1 14.6 8.2C13.8 9.2 11 7.2 9.8 4.8ZM7.7 6.8C10.1 7.8 12.3 10.5 11.3 11.3C10.3 12.1 8.1 9.4 7.7 6.8ZM5.2 8.1C7.1 10 8.1 13.3 6.8 13.7C5.6 14.1 4.6 10.7 5.2 8.1ZM1.7 9C3.3 11.1 3.7 14.6 2.4 14.8C1.1 14.9 0.7 11.5 1.7 9ZM-2.1 9C-0.8 11.3 -0.7 14.7 -2 14.8C-3.3 14.8 -3.4 11.3 -2.1 9ZM-4.8 8.3C-4.6 10.9 -6.1 14.1 -7.3 13.5C-8.4 13 -7 9.8 -4.8 8.3ZM-7.5 7C-8.2 9.5 -10.5 12.1 -11.5 11.2C-12.4 10.3 -10 7.8 -7.5 7ZM-9.8 4.9C-11 7.2 -13.9 9.2 -14.6 8.1C-15.3 7 -12.4 5.1 -9.8 4.9ZM-11.1 2.5C-13 4.5 -16.3 5.5 -16.7 4.2C-17.1 3 -13.7 2 -11.1 2.5ZM-11.6 0.4C-14.1 1.4 -17.6 0.9 -17.4 -0.4C-17.2 -1.7 -13.7 -1.2 -11.6 0.4ZM-11.1 -2.7C-13.7 -2 -17 -2.8 -16.7 -4.1C-16.4 -5.4 -13 -4.5 -11.1 -2.7ZM-9.9 -4.8C-12.5 -5.1 -15.3 -7.2 -14.5 -8.2C-13.7 -9.3 -11 -7.2 -9.9 -4.8ZM-7.8 -6.7C-10.2 -7.8 -12.3 -10.6 -11.2 -11.4C-10.2 -12.2 -8.1 -9.4 -7.8 -6.7ZM-4.5 -8.5C-6.8 -9.7 -8.7 -12.7 -7.6 -13.4C-6.5 -14.1 -4.6 -11.1 -4.5 -8.5ZM-1.3 -9.1C-3.2 -11 -4.1 -14.3 -2.8 -14.7C-1.6 -15 -0.7 -11.7 -1.3 -9.1ZM1.9 -9C0.7 -11.4 0.9 -14.8 2.2 -14.8C3.5 -14.7 3.3 -11.2 1.9 -9ZM4.9 -8.2C4.6 -10.9 5.9 -14.1 7.1 -13.6C8.3 -13.1 7 -9.9 4.9 -8.2ZM7.7 -6.8C8.1 -9.4 10.3 -12.2 11.3 -11.4C12.3 -10.5 10.2 -7.8 7.7 -6.8ZM9.7 -5C11 -7.3 14 -9.1 14.7 -8C15.4 -6.9 12.4 -5.1 9.7 -5ZM11.3 -2.2C12.8 -4.3 16 -5.8 16.5 -4.6C17.1 -3.4 13.9 -2 11.3 -2.2Z"/><path id="kiwiRays" d="M10.9 0.9L30.8 2.5M9.9 3.9L27.9 10.9M7.7 6.4L21.6 17.9M4.5 8.2L12.7 22.8M0.8 9L2.3 24.9M-3 8.7L-8.4 24.1M-6.4 7.3L-18.1 20.3M-9.1 5.1L-25.6 14.1M-10.7 2.2L-30 6.2M-10.9 -0.9L-30.8 -2.5M-9.9 -3.9L-27.9 -10.9M-7.7 -6.4L-21.6 -17.9M-4.5 -8.2L-12.7 -22.8M-0.8 -9L-2.3 -24.9M3 -8.7L8.4 -24.1M6.4 -7.3L18.1 -20.3M9.1 -5.1L25.6 -14.1M10.7 -2.2L30 -6.2"/><path id="pineEyes" d="M29.7 4C27.2 5.5 23.9 5.2 24.1 3.4C24.3 1.6 27.6 2 29.7 4ZM25.4 20.8C22.6 21.1 19.7 19.4 20.6 17.8C21.6 16.3 24.5 18.1 25.4 20.8ZM16.2 33.4C13.4 32.5 11.6 29.7 13.1 28.7C14.6 27.8 16.5 30.6 16.2 33.4ZM3.7 39.5C1.6 37.5 1.2 34.2 3 33.9C4.8 33.7 5.2 37 3.7 39.5ZM-9.5 37.7C-10.5 35 -9.4 31.8 -7.7 32.4C-6 33 -7.1 36.2 -9.5 37.7ZM-20.8 28.5C-20.5 25.6 -18.2 23.2 -16.9 24.5C-15.6 25.7 -18 28.1 -20.8 28.5ZM-28 13.6C-26.5 11.1 -23.4 10 -22.7 11.7C-22.1 13.4 -25.3 14.5 -28 13.6ZM-29.7 -4C-27.2 -5.5 -23.9 -5.2 -24.1 -3.4C-24.3 -1.6 -27.6 -2 -29.7 -4ZM-25.4 -20.8C-22.6 -21.1 -19.7 -19.4 -20.6 -17.8C-21.6 -16.3 -24.5 -18.1 -25.4 -20.8ZM-16.2 -33.4C-13.4 -32.5 -11.6 -29.7 -13.1 -28.7C-14.6 -27.8 -16.5 -30.6 -16.2 -33.4ZM-3.7 -39.5C-1.6 -37.5 -1.2 -34.2 -3 -33.9C-4.8 -33.7 -5.2 -37 -3.7 -39.5ZM9.5 -37.7C10.5 -35 9.4 -31.8 7.7 -32.4C6 -33 7.1 -36.2 9.5 -37.7ZM20.8 -28.5C20.5 -25.6 18.2 -23.2 16.9 -24.5C15.6 -25.7 18 -28.1 20.8 -28.5ZM28 -13.6C26.5 -11.1 23.4 -10 22.7 -11.7C22.1 -13.4 25.3 -14.5 28 -13.6Z"/><path id="pineFib" d="M9 0L27 0M8.3 4.6L24.9 13.8M6.4 8.5L19.1 25.5M3.4 11.1L10.3 33.3M0 12L0 36M-3.4 11.1L-10.3 33.3M-6.4 8.5L-19.1 25.5M-8.3 4.6L-24.9 13.8M-9 0L-27 0M-8.3 -4.6L-24.9 -13.8M-6.4 -8.5L-19.1 -25.5M-3.4 -11.1L-10.3 -33.3M0 -12L0 -36M3.4 -11.1L10.3 -33.3M6.4 -8.5L19.1 -25.5M8.3 -4.6L24.9 -13.8"/><path id="strawSeeds" d="M-15.3 -9.7C-17.1 -11.2 -17.9 -13.9 -16.7 -14.3C-15.5 -14.7 -14.6 -11.9 -15.3 -9.7ZM-3.8 -13.6C-5.3 -15.4 -5.5 -18.3 -4.2 -18.4C-2.9 -18.5 -2.7 -15.6 -3.8 -13.6ZM8.6 -11.6C7.6 -13.7 8.1 -16.6 9.4 -16.4C10.7 -16.2 10.2 -13.3 8.6 -11.6ZM19.1 -5.8C18.6 -8.1 19.7 -10.7 20.9 -10.2C22.1 -9.7 21 -7.1 19.1 -5.8ZM-20.8 2.1C-22.9 1 -24.3 -1.5 -23.2 -2.1C-22 -2.7 -20.6 -0.2 -20.8 2.1ZM-9.5 -0.7C-11.2 -2.2 -11.8 -5 -10.5 -5.3C-9.3 -5.6 -8.6 -2.8 -9.5 -0.7ZM2.8 -2.6C1.7 -4.6 1.9 -7.5 3.2 -7.4C4.5 -7.3 4.3 -4.4 2.8 -2.6ZM14.1 4.2C13.6 2 14.7 -0.7 15.9 -0.2C17.1 0.2 16 2.9 14.1 4.2ZM-13.9 14.1C-15.9 13 -17.3 10.5 -16.1 9.9C-15 9.3 -13.6 11.8 -13.9 14.1ZM-2.8 11.4C-4.2 9.6 -4.5 6.7 -3.2 6.6C-1.9 6.5 -1.7 9.4 -2.8 11.4ZM9.2 15.3C8.6 13 9.6 10.3 10.8 10.7C12.1 11.2 11.1 13.9 9.2 15.3ZM-5.2 24.3C-7.1 22.9 -8 20.1 -6.8 19.7C-5.5 19.3 -4.6 22 -5.2 24.3ZM4.3 26.3C3.6 24.1 4.5 21.3 5.7 21.7C7 22.1 6.1 24.8 4.3 26.3ZM21.1 -15.8C20.6 -18 21.6 -20.7 22.9 -20.2C24.1 -19.8 23 -17.1 21.1 -15.8ZM-23 -11.8C-25 -13 -26.2 -15.7 -25 -16.2C-23.8 -16.7 -22.6 -14.1 -23 -11.8Z"/><path id="strawStreak" d="M5.7 5.1Q15.4 5 21 9.1M3.3 9.1Q9.6 14.1 11.9 22.2M-0.8 10.1Q0.2 16.7 -2.8 25.8M-4.4 7.9Q-8.3 11.4 -16.1 18.3M-6 3.4Q-12 0.8 -22 3.2M-4.8 -1.4Q-9.2 -10.2 -17.5 -12.5M-1.3 -4Q-1.1 -16.4 -4.9 -21.4M2.7 -3.4Q8.4 -14.9 10.1 -19.3M5.5 0.2Q14.9 -6.5 20.3 -7.3"/><path id="strawCalyx" d="M-16.4 -25.2C-9.3 -26.8 -0.1 -24.2 -1 -20.9C-1.9 -17.7 -11.1 -20.2 -16.4 -25.2ZM-12 -30.5C-5 -28.4 1.7 -21.5 -0.7 -19.2C-3.1 -16.8 -9.9 -23.6 -12 -30.5ZM-4.4 -33.6C0.6 -28.3 3 -19 -0.3 -18.1C-3.5 -17.3 -6 -26.5 -4.4 -33.6ZM4.4 -33.6C6 -26.5 3.5 -17.3 0.3 -18.1C-3 -19 -0.6 -28.3 4.4 -33.6ZM12 -30.5C9.9 -23.6 3.1 -16.8 0.7 -19.2C-1.7 -21.5 5 -28.4 12 -30.5ZM16.4 -25.2C11.1 -20.2 1.9 -17.7 1 -20.9C0.1 -24.2 9.3 -26.8 16.4 -25.2Z"/><path id="appleCore" d="M0 -9C1 -9 1 -2.4 2.9 -1S11.1 -1.6 11.4 -0.7S5.5 2.3 4.8 4.5S7.8 12.1 7.1 12.7S2.4 8 0 8S-6.3 13.3 -7.1 12.7S-4 6.8 -4.8 4.5S-11.7 0.2 -11.4 -0.7S-4.8 0.3 -2.9 -1S-1 -9 0 -9Z"/><path id="appleSeeds" d="M0 -0.2C-2 -3.2 -2 -7.8 0 -7.8C2 -7.8 2 -3.2 0 -0.2ZM3 2C5.3 -0.8 9.7 -2.2 10.3 -0.3C10.9 1.6 6.6 3 3 2ZM1.9 5.6C5.3 6.9 8 10.6 6.3 11.7C4.7 12.9 2 9.2 1.9 5.6ZM-1.9 5.6C-2 9.2 -4.7 12.9 -6.3 11.7C-8 10.6 -5.3 6.9 -1.9 5.6ZM-3 2C-6.6 3 -10.9 1.6 -10.3 -0.3C-9.7 -2.2 -5.3 -0.8 -3 2Z"/><path id="cocoFib" d="M-8.3 18.4Q-13.6 22.5 -23.8 17M-2.3 7.5Q-12.8 6.4 -24.4 3.8M22.9 12Q16.3 20.4 14.2 28.8M-0.6 -6.3Q8.3 -9.4 18.4 -15.2M-20.8 11.5Q-26.1 7.8 -28.4 -2.8M3.8 6Q-9.1 9.7 -14.5 16M-13.1 -7.9Q-13.8 -11.2 -4.8 -22M-4.6 13.9Q-9.1 14.2 -18.4 13.7M-16.1 -11.4Q-14.6 -18.2 -5 -28.1M-17.5 -24.2Q-14.3 -31.4 -3.9 -41.4" fill="none" stroke="#d8aa72" stroke-width="1.3" opacity=".4"/><path id="cocoFibD" d="M-15.6 -10.8Q-6 -14.2 -2.4 -22.9M4.3 -6.4Q11.5 -2.6 21 10.8M15.1 -1.5Q12.6 9.8 19.2 16.5M-20.4 19.8Q-29 14.8 -35.8 1.4M-6.7 -0.6Q-1.3 -5.8 -3.7 -20.2M12.7 -2.3Q18.8 11.2 19.8 21.6" fill="none" stroke="#1a0d04" stroke-width="1.4" opacity=".4"/><path id="pineLeafB" d="M-14 -36Q-26.2 -51 -30 -66Q-11.8 -51 -2 -36ZM2 -36Q12.3 -52 31 -68Q26.7 -52 14 -36ZM-6 -36Q-5.7 -66 3 -96Q8.7 -66 6 -36Z"/><path id="pineLeafF" d="M-11.5 -36Q-19.3 -60 -18 -84Q-3.7 -60 1.5 -36ZM-1.5 -36Q3.2 -61 17 -86Q18.8 -61 11.5 -36ZM-7 -36Q-26 -45 -38 -54Q-14 -45 3 -36ZM-3 -36Q14 -45.5 38 -55Q26 -45.5 7 -36ZM-7 -36Q-10.4 -56 -4 -76Q6.4 -56 7 -36Z"/><path id="rays" d="M0 0L105.6 -18.3L107.1 3.7ZM0 0L121.6 39L113.7 58.1ZM0 0L80 73.9L68.1 85ZM0 0L50.4 101L33.9 107.6ZM0 0L8.3 145.9L-23 144.3ZM0 0L-23.2 113.6L-47.9 105.6ZM0 0L-84.5 101.4L-103.2 82.3ZM0 0L-101 64.3L-111.3 44.2ZM0 0L-137.3 17.5L-138.4 -2.7ZM0 0L-146.1 -33.5L-136.4 -62ZM0 0L-107 -90.5L-83.3 -112.6ZM0 0L-35.7 -85.9L-21.9 -90.4ZM0 0L-8.6 -113.4L12.1 -113.1ZM0 0L29.7 -88.2L42.2 -82.9ZM0 0L67.5 -82L81.2 -68.5ZM0 0L103.7 -49.3L110.7 -30.6Z"/>
+<path id="splat0" d="M36.6 0C37 2.8 30.8 5.5 29.6 8.7S30.7 16.1 29.6 19S25.9 25.4 23 26.5S14.7 23.4 11.8 25.9S8.7 41.1 6 41.7S-0.8 31.2 -4.3 29.6S-12.1 33.3 -14.7 32.2S-17.9 25.4 -19.8 22.8S-23.5 18.7 -25.7 16.5S-32.1 12.3 -32.6 9.6S-29.2 2.9 -28.2 0S-26.6 -4.9 -26.2 -7.7S-27.1 -14.4 -25.7 -16.5S-18.8 -16.7 -17.3 -20S-18.7 -34.7 -16.5 -36.1S-7.5 -29.7 -4.1 -28.3S1.4 -28.1 3.9 -27.4S8.3 -24.6 10.9 -23.8S15.4 -22.7 19.6 -22.6S34.4 -25.4 35.7 -23S27.3 -11.9 27.5 -8.1S36.3 -2.8 36.6 0ZM-33.2 -43.7a4.6 4.6 0 1 0 9.2 0a4.6 4.6 0 1 0 -9.2 0ZM16.5 53.1a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0 -7 0ZM5.3 -63.4a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0ZM-1.3 -41.9a3 3 0 1 0 6 0a3 3 0 1 0 -6 0ZM-40.4 23.1a2.4 2.4 0 1 0 4.7 0a2.4 2.4 0 1 0 -4.7 0ZM-10.3 -52.4a2.3 2.3 0 1 0 4.5 0a2.3 2.3 0 1 0 -4.5 0ZM-7.7 39.1a4.1 4.1 0 1 0 8.2 0a4.1 4.1 0 1 0 -8.2 0ZM23.8 -33.1a5.5 5.5 0 1 0 10.9 0a5.5 5.5 0 1 0 -10.9 0ZM-21.3 8.9Q-29.4 17.7 -37.5 26.5Q-26.5 21.8 -15.5 17.1ZM-47.5 31.6a2.8 2.8 0 1 0 5.5 0a2.8 2.8 0 1 0 -5.5 0ZM22.6 -5.4Q34.7 -15 46.9 -24.7Q32 -20.1 17.2 -15.6ZM51.1 -28.6a3.2 3.2 0 1 0 6.3 0a3.2 3.2 0 1 0 -6.3 0ZM21.8 -6.3Q30.4 -11.8 38.9 -17.3Q29.1 -14.7 19.3 -12ZM44.9 -20.8a1.7 1.7 0 1 0 3.4 0a1.7 1.7 0 1 0 -3.4 0ZM-10.5 20.4Q-13 37.3 -15.5 54.2Q-8.7 38.5 -1.8 22.9ZM-20.4 62.6a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0Z"/>
+<path id="splat1" d="M40.4 0C40.2 2.8 29.8 5.3 27.4 8S26.9 13.8 26 16.7S24.5 23.8 22.4 25.8S16.1 27 13.2 29S8.4 36.9 5.4 37.5S-2 35.1 -4.7 33S-8.3 25.8 -11.2 24.5S-19.8 26.8 -21.8 25.2S-20.5 17.3 -23.3 15S-37.6 13.9 -38.9 11.4S-33.5 3.2 -31.4 0S-26.8 -4.7 -26.1 -7.7S-28.3 -15 -27.1 -17.4S-20.9 -18.9 -19.2 -22.2S-19.3 -35 -16.9 -37.1S-8.4 -36.1 -4.9 -34.2S1.1 -27.7 3.8 -26.1S8.8 -25.5 11.2 -24.6S14.9 -21.8 18.1 -20.9S28.3 -21.4 30.1 -19.4S27.2 -11.7 28.9 -8.5S40.7 -2.8 40.4 0ZM40.4 -3.3a3.5 3.5 0 1 0 7.1 0a3.5 3.5 0 1 0 -7.1 0ZM-26.5 32.1a3.7 3.7 0 1 0 7.5 0a3.7 3.7 0 1 0 -7.5 0ZM27.3 22.3a5.4 5.4 0 1 0 10.7 0a5.4 5.4 0 1 0 -10.7 0ZM7.4 -35.8a5.4 5.4 0 1 0 10.9 0a5.4 5.4 0 1 0 -10.9 0ZM53.1 27.8a3.8 3.8 0 1 0 7.5 0a3.8 3.8 0 1 0 -7.5 0ZM17 52.3a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM5.8 -60.8a4.9 4.9 0 1 0 9.7 0a4.9 4.9 0 1 0 -9.7 0ZM-61.1 21.1a2.1 2.1 0 1 0 4.1 0a2.1 2.1 0 1 0 -4.1 0ZM-19.2 -61.8a4.9 4.9 0 1 0 9.8 0a4.9 4.9 0 1 0 -9.8 0ZM-34.5 -40a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0ZM15.2 -17Q20.9 -29.9 26.6 -42.8Q17.5 -32 8.5 -21.2ZM28.9 -50.1a2.2 2.2 0 1 0 4.3 0a2.2 2.2 0 1 0 -4.3 0ZM22 -6.2Q32.8 -13.7 43.6 -21.3Q31.1 -17.4 18.5 -13.5ZM46 -23.5a2.2 2.2 0 1 0 4.5 0a2.2 2.2 0 1 0 -4.5 0ZM22.8 -2.6Q33.4 -8.2 44 -13.7Q32.1 -12.3 20.2 -10.8ZM49.5 -16.2a2.4 2.4 0 1 0 4.7 0a2.4 2.4 0 1 0 -4.7 0ZM18.3 -13.8Q28.3 -28.1 38.2 -42.3Q25.1 -31 11.9 -19.6ZM39.8 -46.7a2.4 2.4 0 1 0 4.7 0a2.4 2.4 0 1 0 -4.7 0Z"/>
+<path id="splat2" d="M37.9 0C37.2 3.1 31.6 6.1 29 8.5S23.5 11.6 22.3 14.3S23.3 22.8 21.7 25S15.4 25.9 12.6 27.7S7.9 35.8 5.2 35.9S-1 29.3 -4 28S-10.6 29.5 -12.9 28.3S-16.5 23.2 -18.1 20.9S-18.8 15.9 -22.4 14.4S-37.9 14.1 -39.8 11.7S-34.6 3.6 -33.4 0S-34.4 -7 -32.9 -9.6S-26.3 -13.2 -24.3 -15.6S-22.7 -21.4 -21.2 -24.5S-18.4 -33.2 -15.6 -34.2S-7.8 -30.7 -4.4 -30.5S1.9 -33.8 4.8 -33.4S10.8 -30.5 12.9 -28.2S13.2 -20.5 17 -19.6S32.6 -24.3 35.3 -22.7S33 -13.6 33.4 -9.8S38.7 -3.1 37.9 0ZM-52 27.1a2.4 2.4 0 1 0 4.7 0a2.4 2.4 0 1 0 -4.7 0ZM-40.1 41.9a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0 -3.6 0ZM45.4 2.6a5 5 0 1 0 10 0a5 5 0 1 0 -10 0ZM-49.2 -33.5a4.7 4.7 0 1 0 9.4 0a4.7 4.7 0 1 0 -9.4 0ZM-47.9 -26.8a2.1 2.1 0 1 0 4.1 0a2.1 2.1 0 1 0 -4.1 0ZM-40.9 37.3a4.9 4.9 0 1 0 9.8 0a4.9 4.9 0 1 0 -9.8 0ZM-46.4 26.1a3.6 3.6 0 1 0 7.3 0a3.6 3.6 0 1 0 -7.3 0ZM-57.5 -25a5 5 0 1 0 9.9 0a5 5 0 1 0 -9.9 0ZM-28.8 -40.9a4.3 4.3 0 1 0 8.7 0a4.3 4.3 0 1 0 -8.7 0ZM-21.1 -47.6a5.4 5.4 0 1 0 10.8 0a5.4 5.4 0 1 0 -10.8 0ZM0.4 -23.2Q-6 -37.2 -12.4 -51.2Q-11.7 -35.9 -11 -20.5ZM-17.5 -59a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0ZM19.5 12.2Q29.3 13.4 39.1 14.6Q30.9 9.1 22.7 3.5ZM44.4 17.5a2.5 2.5 0 1 0 5.1 0a2.5 2.5 0 1 0 -5.1 0ZM-15.8 16.5Q-22 29 -28.1 41.6Q-18.8 31.2 -9.4 20.8ZM-34.1 47.3a2.1 2.1 0 1 0 4.3 0a2.1 2.1 0 1 0 -4.3 0ZM-20 -11.1Q-34.1 -13.7 -48.2 -16.2Q-35.4 -9.7 -22.7 -3.2ZM-58.1 -18.8a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z"/>
+<path id="splat3" d="M42.8 0C42.3 2.8 30.2 5.5 26.8 7.9S23.8 12.2 22.4 14.4S20 18.9 18.4 21.2S14.9 25.3 12.7 27.9S8.1 36 5.3 36.6S-1.4 32.6 -4.5 31.4S-10.6 30.6 -13.5 29.5S-19.9 27.3 -21.7 25.1S-21.1 17.9 -24.7 15.9S-42.1 15.3 -43.1 12.7S-32.8 3.7 -30.9 0S-32.6 -6.6 -31.6 -9.3S-27 -13.8 -25.1 -16.1S-21 -18.9 -20 -23.1S-21.4 -39.4 -18.9 -41.3S-8.9 -36.7 -5 -34.8S1.5 -31.4 4.3 -30S9.2 -27.3 12.1 -26.5S18.5 -26.2 21.8 -25.2S30.7 -23.3 32 -20.5S27.8 -12.1 29.6 -8.7S43.2 -2.8 42.8 0ZM-40.4 10.5a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0ZM-58.2 -14.3a2.2 2.2 0 1 0 4.3 0a2.2 2.2 0 1 0 -4.3 0ZM13.9 -45.4a3 3 0 1 0 6 0a3 3 0 1 0 -6 0ZM-42 -11.5a4.1 4.1 0 1 0 8.2 0a4.1 4.1 0 1 0 -8.2 0ZM-11.6 51.7a2.3 2.3 0 1 0 4.7 0a2.3 2.3 0 1 0 -4.7 0ZM52.4 -17.5a5.2 5.2 0 1 0 10.4 0a5.2 5.2 0 1 0 -10.4 0ZM-29.4 34.7a4.2 4.2 0 1 0 8.5 0a4.2 4.2 0 1 0 -8.5 0ZM-44.4 0.4a4.6 4.6 0 1 0 9.3 0a4.6 4.6 0 1 0 -9.3 0ZM22.3 6.3Q35.7 3.8 49.2 1.3Q35.9 -1.9 22.6 -5.1ZM53.8 1.5a3.1 3.1 0 1 0 6.3 0a3.1 3.1 0 1 0 -6.3 0ZM-19.9 -11.2Q-37.3 -15.4 -54.8 -19.6Q-38.6 -11.8 -22.5 -4ZM-64.5 -22.4a2.1 2.1 0 1 0 4.3 0a2.1 2.1 0 1 0 -4.3 0ZM-18.4 13.9Q-25 25.6 -31.5 37.3Q-21.1 28.9 -10.6 20.5ZM-37.6 41.2a2.8 2.8 0 1 0 5.6 0a2.8 2.8 0 1 0 -5.6 0ZM-3.9 22.8Q-0.3 36.1 3.3 49.5Q5.1 35.8 6.8 22.1ZM0.9 57.9a2.9 2.9 0 1 0 5.9 0a2.9 2.9 0 1 0 -5.9 0Z"/>
+<path id="enso" d="M33.3 -53.4L38.1 -49L42.5 -44.7L46.8 -40.4L49.9 -35.2L54 -30.7L56.6 -25.2L58.7 -19.6L60.5 -13.8L61.4 -7.8L61.8 -1.8L61.8 4.3L60.8 10.2L59.8 16.2L58.4 22.2L55.2 27.5L52.6 33L48.5 37.6L44.3 42L39.9 46.1L35.5 50.4L30.5 54L25 56.9L19.3 59.2L13.1 59.8L7.2 61.4L1 62.2L-5.2 62.9L-11.3 61.6L-17.4 60.4L-23.4 58.7L-29.2 56.4L-34.7 53.5L-40.4 50.7L-45.6 46.9L-50 42.2L-54.3 37.5L-57.8 32L-60.4 25.8L-70.8 30.9L-67.6 37.5L-63.7 44.1L-58.9 50.1L-53.6 55.6L-47.9 60.7L-41.3 64.5L-34.9 68.6L-27.7 71.1L-20.5 73.1L-13.3 75.6L-5.8 76.5L1.7 75.8L9.1 75.8L16.6 74.8L23.6 72.2L30.5 69.6L37.6 66.9L43.7 62.6L49.7 58.1L55.9 53.7L61.3 48.3L65.7 42L69.3 35.2L72.7 28.3L75.3 21L78.1 13.7L79.6 6L80.1 -1.9L79 -9.8L78.5 -17.8L75.5 -25.2L73.1 -32.8L69.9 -40.1L65.5 -46.8L60.7 -53.3L54.1 -57.8L47.1 -61.5L41 -65.5ZM-51.2 53.2L-56.4 47.9L-60.8 42L-64.6 35.8L-67.8 29.2L-70.3 22.4L-72 15.3L-72.8 8.1L-73.4 0.9L-72.9 -6.3L-71.6 -13.4L-69.7 -20.3L-67.1 -27L-64 -33.4L-60 -39.3L-55.8 -45L-51.1 -50.3L-51.8 -50.9L-56.7 -45.7L-61.2 -40.1L-65 -34L-68.6 -27.7L-71.5 -21L-73.4 -13.8L-75.3 -6.7L-75.6 0.8L-75.6 8.3L-74.6 15.8L-73.2 23.2L-70.3 30.3L-67.2 37.2L-63.3 43.7L-58.5 49.7L-53.5 55.3ZM-49.2 51L-54 45.7L-58.7 40.6L-62.4 34.5L-65.3 28.2L-67.8 21.6L-69.6 14.8L-70.7 7.9L-70.6 0.9L-70.4 -6.1L-68.9 -12.8L-67.5 -19.6L-65 -26.1L-61.8 -32.2L-58 -37.9L-54.2 -43.6L-49.5 -48.6L-44.6 -53.4L-39.1 -57.5L-39.5 -58L-45.1 -54L-50.5 -49.6L-55.1 -44.4L-59.8 -39.1L-63.2 -33L-66.5 -26.8L-69.1 -20.2L-71.3 -13.4L-72.8 -6.4L-73.3 0.9L-72.8 8.1L-72.1 15.3L-70.3 22.4L-68.1 29.3L-65 36L-61 42.2L-56.5 48L-51.4 53.1ZM-47.1 48.7L-52.1 44.1L-56.3 38.9L-59.6 33L-62.5 27L-65 20.8L-67.1 14.3L-68 7.7L-68.3 0.9L-67.8 -5.8L-66.7 -12.4L-65.1 -18.9L-62.8 -25.1L-59.8 -31.1L-56.6 -36.9L-52.4 -42.1L-48.1 -47.2L-43.1 -51.5L-38 -55.8L-32.4 -59.4L-32.7 -60L-38.5 -56.6L-43.9 -52.5L-49 -48.1L-53.7 -43.2L-57.6 -37.6L-61.4 -32L-64.5 -25.9L-67 -19.5L-68.9 -12.8L-70.4 -6L-70.8 0.9L-70.6 7.9L-69.3 14.8L-67.7 21.6L-65.2 28.1L-62.4 34.6L-58.6 40.5L-54.3 46L-49.3 50.9ZM-45.3 46.7L-49.8 42.1L-54 37.2L-57.4 31.8L-60 25.9L-62.7 20L-64.2 13.8L-65.3 7.4L-65.5 1L-65.7 -5.5L-64.8 -11.9L-62.8 -18.1L-61.2 -24.4L-58.5 -30.4L-59.1 -30.7L-61.9 -24.7L-64.5 -18.6L-66.3 -12.2L-67.6 -5.7L-68.1 1L-67.7 7.7L-66.9 14.3L-65.1 20.8L-62.8 27.1L-59.7 33L-56.4 39L-52.1 44.1L-47.3 48.7ZM30.6 -59.4a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0 -13 0Z"/>
+<path id="slashRed" d="M-316.2 78.6L-304.3 77.9L-291.8 81.4L-279.5 82.7L-267.2 82.7L-255.3 80L-242.8 80.5L-230.6 78.2L-218.6 75.1L-206.2 73.5L-193.9 71.5L-181.3 70.9L-169.1 66.9L-156.6 64.6L-144.1 61.9L-131.7 58.5L-119.1 56.2L-106.5 52.9L-93.6 51.4L-81 47.5L-68.6 42.7L-55.7 40.3L-42.4 38.9L-29.8 34.4L-16.7 31.9L-3.7 28.4L9.3 24.6L22.1 20.1L15.7 -8.7L1.9 -8.6L-10.9 -4.7L-24.2 -3.2L-37.3 -1L-50.6 -0.4L-63.4 2.4L-76.2 4.6L-88.9 7.3L-101.7 9.1L-114.2 12.1L-127 12.9L-139.6 15L-152.4 15.3L-165.1 15.7L-177.5 17.3L-189.2 22.2L-201.6 23.5L-213.9 24.8L-226 26.3L-237.8 30.1L-250.2 29.2L-261.7 33.5L-274 32.8L-285.5 36.9L-296.9 41.3L-308.4 44.9L-319.5 51.6ZM-35.7 6.7L-22.7 4.3L-9.6 1.9L3.6 -0.7L17 -2.4L30.2 -5.2L43.4 -8.7L56.9 -10.9L70.2 -14.5L83.8 -16.8L97.2 -20.3L111 -22.7L124.5 -26.5L138.4 -28.7L152 -32.6L166 -35.2L179.7 -39.3L193.6 -42.6L207.7 -45.6L221.6 -49.8L235.9 -52.4L249.9 -56.6L264.2 -60.1L278.7 -63.1L278.4 -64L264.1 -60.7L249.7 -57.6L235.5 -54.1L221.3 -51.1L207.1 -48.3L193.3 -44.1L179.1 -42L165.1 -39L151.3 -35.9L137.6 -32.5L123.8 -29.7L110 -27.4L96.4 -24.2L82.7 -22L69.1 -19.8L55.6 -17.3L42.3 -14.5L28.9 -12L15.7 -9.1L2.3 -7.7L-10.7 -4.3L-24 -3.1L-36.9 -0.1ZM-34.2 13.7L-21.2 10.9L-8.2 8.1L5.1 6L18.3 3.2L31.4 -0.3L44.7 -3.1L57.9 -6.8L71.5 -9.1L84.9 -12.4L98.3 -15.9L111.9 -18.9L125.3 -23.1L139 -26.7L138.8 -27.6L124.8 -25.3L111.2 -22L97.6 -19.3L83.9 -16.9L70.3 -14.6L56.9 -11.7L43.4 -9.3L30.1 -6.5L16.9 -3.4L3.6 -1.6L-9.5 1.4L-22.5 4.3L-35.6 6.5ZM-32.7 20.4L-19.7 17.8L-6.7 14.6L6.4 11.6L19.6 8.6L32.7 5.3L46.1 2.5L59.4 -0.7L72.7 -4.1L86.1 -7.4L99.4 -11.6L112.9 -15.3L126.5 -18.8L140.3 -21.6L153.9 -25.5L167.7 -28.8L181.2 -33.7L195.3 -36.6L208.9 -41.4L222.9 -45.2L237 -48.7L251.1 -52.7L265 -57.3L264.9 -57.7L250.8 -53.7L236.5 -50.5L222.6 -46.2L208.5 -43L194.7 -38.7L180.8 -35.3L166.9 -32L153.1 -28.5L139.3 -25.3L125.5 -22.6L112 -19L98.3 -16.1L84.8 -13L71.3 -10.1L58 -6.6L44.6 -3.7L31.3 -0.8L18 1.7L5 5.4L-8.3 7.2L-21.3 10.3L-34.2 13.3ZM-31.1 27.7L-18.3 24L-5.4 20.5L7.7 17.3L21 14.8L34.1 11.2L47.3 7.5L60.6 4.3L73.7 -0.1L87.1 -3.4L100.5 -7.5L114 -11L127.2 -15.9L126.9 -17L113.1 -14.1L99.6 -10.8L86 -7.7L72.6 -4.5L59.1 -1.7L45.8 1.4L32.7 5.2L19.4 8.1L6.2 11.1L-6.8 14.2L-20 16.9L-33.1 19.2ZM-29.7 34.1L-16.8 30.8L-4 26.5L9.2 23.6L22.1 19.6L35.4 16.6L48.4 12.2L61.9 9.3L74.9 4.9L88.3 1.2L101.7 -2.7L115.2 -6.3L128.7 -10.3L142.2 -14.4L155.7 -18.7L169.2 -23.3L182.7 -28.1L196.4 -32.4L196 -33.9L182.1 -29.9L168.6 -25.2L155 -21.2L141.1 -18.1L127.5 -14.3L114.1 -10.2L100.6 -6.5L86.9 -3.8L73.7 0.2L60.4 3.9L47 6.9L33.7 10.2L20.7 14.1L7.5 16.9L-5.6 20L-18.5 23.7L-31.7 26.1ZM-327 64a13 13 0 1 0 26 0a13 13 0 1 0 -26 0ZM-304.1 39.3a1.4 1.4 0 1 0 2.7 0a1.4 1.4 0 1 0 -2.7 0ZM-256.8 42.7a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0 -3.6 0ZM-360.9 64.8a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0 -7 0ZM-360.1 65a1.9 1.9 0 1 0 3.7 0a1.9 1.9 0 1 0 -3.7 0ZM-267.6 63.6a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0ZM-262.7 38.4a3.8 3.8 0 1 0 7.6 0a3.8 3.8 0 1 0 -7.6 0ZM-365.7 48.2a2.4 2.4 0 1 0 4.9 0a2.4 2.4 0 1 0 -4.9 0ZM-354.4 99.4a2.6 2.6 0 1 0 5.1 0a2.6 2.6 0 1 0 -5.1 0ZM-261 71a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0ZM-28 50.4a1.6 1.6 0 1 0 3.1 0a1.6 1.6 0 1 0 -3.1 0ZM76.1 -41.6a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0 -3.6 0ZM-42.9 -17a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0ZM142.8 -64.3a1 1 0 1 0 2 0a1 1 0 1 0 -2 0ZM-207.8 77.8a2.3 2.3 0 1 0 4.5 0a2.3 2.3 0 1 0 -4.5 0ZM-55.6 49.8a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0Z"/>
+<path id="band" d="M-120.4 11L-112.9 15.9L-105.2 17.5L-97.3 16L-89.7 18.7L-81.9 19.5L-74.1 18.9L-66.2 16.3L-58.4 16.4L-50.7 17L-42.9 19.9L-35.1 17.1L-27.3 19.7L-19.5 19.6L-11.7 17.4L-3.9 17.8L3.9 17.3L11.7 19.5L19.5 16L27.3 18L35 15.5L42.8 15.5L50.6 16.1L58.5 18L66.2 14.7L65.4 -12.4L57.7 -10L50 -12.6L42.3 -10.9L34.6 -11.2L26.9 -12.7L19.2 -11.1L11.5 -10.1L3.9 -11.1L-3.8 -12.8L-11.5 -12.7L-19.2 -13.4L-26.9 -13.6L-34.6 -11.1L-42.2 -13.7L-49.9 -13.2L-57.6 -14.1L-65.3 -15.1L-73 -14L-80.7 -15.3L-88.4 -15.8L-96.2 -15L-103.9 -16.2L-111.6 -16.7L-119.6 -10.2ZM50.1 -5.1L57.8 -6L65.5 -5.9L73.3 -6L81 -7.2L88.7 -8.2L88.6 -10.4L80.9 -10.1L73.2 -11.7L65.5 -11.5L57.8 -11.5L50 -10.9ZM50.3 0.6L58 0L65.7 -0.7L73.5 -0.1L81.2 -1.5L88.9 -2.3L88.8 -4.8L81.1 -6L73.3 -5.6L65.6 -6.2L57.9 -6.1L50.1 -6.3ZM50.4 6L58.1 5.4L65.9 5.4L73.6 4.4L81.4 3.4L89.1 3.7L96.8 2.4L96.7 0.3L89 -0.1L81.2 -1.3L73.5 -1.2L65.7 -1.4L58 -0.4L50.2 -1.1ZM50.5 10.7L58.3 10.8L66.1 10.7L73.8 9.2L81.6 9.6L89.3 8.8L97 8L104.7 6.2L104.7 4.8L96.9 4.9L89.1 4.5L81.4 4.2L73.6 3.7L65.9 4.9L58.1 4.4L50.3 4.4ZM50.7 15.6L58.4 15L66.2 15.7L74 15L81.7 13.5L89.4 12.7L89.3 9.7L81.5 9.2L73.7 8.8L66 9.8L58.2 10.4L50.4 9.7Z"/>
+<path id="missX" d="M-19.3 -17L-18.5 -14L-16.8 -11.7L-15.6 -9L-13.5 -7.1L-11.8 -4.9L-9.7 -3L-7.7 -1L-5.8 0.9L-3.6 2.5L-1.9 4.7L0.1 6.5L2.8 7.5L4.1 9.9L6.3 11.3L8.3 13L10.6 14.2L12.2 16.2L14.3 17.6L16.3 19.1L19.4 15.6L18 13.5L16.2 11.8L14.3 10.2L13.1 7.8L11 6.5L9.7 4.2L7.5 2.7L5.9 0.7L4.5 -1.5L3 -3.7L1 -5.5L-0.7 -7.5L-2.4 -9.6L-3.9 -11.9L-5.7 -14L-7.4 -16.2L-9.7 -17.9L-11.9 -19.7L-14.6 -21.1ZM14.9 -19.7L12.1 -18.5L9.4 -17.2L7.5 -15.1L6.4 -12.6L4.7 -10.5L2.6 -8.8L1.4 -6.4L-0.5 -4.6L-1.6 -2.1L-3.6 -0.5L-4.9 1.7L-6.9 3.2L-7.8 5.8L-10.1 7L-11.1 9.4L-13.1 10.8L-14.5 12.9L-16.3 14.4L-17.6 16.5L-14.4 19.8L-12.6 18.3L-10.7 16.7L-8.6 15.4L-6.6 13.9L-4.6 12.4L-3 10.5L-1.1 8.7L1 7.2L2.6 5.2L4.8 3.6L6.8 1.9L8.2 -0.5L10.7 -1.9L12.5 -4L14.3 -6L16.2 -8L17.3 -10.7L18.1 -13.6L19.5 -15.9Z"/>
+<path id="paperBanner" d="M318 33L331 36L344 36L357 32L370 34L383 33L396 34L409 34L422 31L435 33L448 37L461 34L474 34L487 33L500 32L513 35L526 36L539 37L552 32L565 36L578 34L591 37L604 36L617 37L630 35L643 32L656 31L669 32L682 36L695 35L708 35L721 32L734 32L747 34L760 32L773 36L786 33L799 36L812 36L825 32L838 33L851 33L864 36L877 31L890 32L903 33L916 35L929 34L942 36L955 32L964 34L960 47L961 60L961 73L961 86L961 99L960 112L961 125L963 138L964 151L963 164L965 177L965 190L964 203L960 216L964 229L960 242L963 255L962 268L962 274L949 273L936 271L923 269L910 272L897 271L884 271L871 271L858 272L845 271L832 270L819 274L806 274L793 271L780 270L767 270L754 270L741 272L728 273L715 271L702 272L689 271L676 270L663 270L650 273L637 271L624 271L611 275L598 269L585 270L572 274L559 272L546 270L533 274L520 275L507 270L494 271L481 275L468 273L455 274L442 272L429 270L416 273L403 271L390 270L377 273L364 273L351 270L338 269L325 270L316 272L315 259L315 246L317 233L315 220L321 207L318 194L316 181L317 168L316 155L318 142L318 129L319 116L321 103L318 90L317 77L317 64L319 51L319 38Z"/>
+<path id="paperHelp" d="M124 46L140 42L156 47L172 45L188 43L204 43L220 44L236 45L252 42L268 46L284 45L300 44L316 46L332 44L348 41L364 43L380 46L396 44L412 41L428 45L444 45L460 45L476 41L492 45L508 45L524 41L540 45L556 42L572 46L588 42L604 43L620 46L636 43L652 46L668 47L684 45L700 43L716 43L732 47L748 43L764 45L780 44L796 44L812 46L828 43L844 47L860 45L876 43L892 45L908 45L924 46L940 46L956 46L972 46L988 45L1004 46L1020 43L1036 41L1052 42L1068 46L1084 44L1100 44L1116 45L1132 46L1148 42L1159 44L1157 60L1158 76L1159 92L1156 108L1155 124L1157 140L1158 156L1156 172L1158 188L1155 204L1154 220L1158 236L1155 252L1158 268L1155 284L1154 300L1155 316L1154 332L1158 348L1157 364L1156 380L1158 396L1158 412L1155 428L1158 444L1156 460L1156 476L1158 492L1154 508L1155 524L1156 540L1156 556L1157 572L1155 588L1153 604L1153 620L1158 636L1156 652L1158 668L1156 676L1140 678L1124 674L1108 679L1092 677L1076 677L1060 674L1044 676L1028 676L1012 675L996 674L980 679L964 677L948 677L932 675L916 674L900 678L884 678L868 676L852 677L836 675L820 676L804 679L788 673L772 674L756 678L740 676L724 673L708 678L692 677L676 677L660 673L644 675L628 678L612 676L596 673L580 679L564 674L548 674L532 674L516 679L500 678L484 679L468 673L452 674L436 676L420 675L404 673L388 677L372 676L356 674L340 674L324 678L308 677L292 674L276 679L260 673L244 677L228 674L212 678L196 677L180 678L164 675L148 673L132 674L122 676L126 660L122 644L125 628L127 612L127 596L121 580L122 564L122 548L123 532L123 516L127 500L126 484L126 468L127 452L123 436L123 420L124 404L121 388L122 372L127 356L122 340L125 324L127 308L122 292L123 276L123 260L123 244L123 228L122 212L121 196L127 180L124 164L124 148L123 132L124 116L123 100L122 84L126 68L122 52Z"/>
+<path id="paperPause" d="M440 148L453 151L466 152L479 149L492 153L505 147L518 151L531 148L544 151L557 150L570 151L583 149L596 148L609 150L622 150L635 147L648 152L661 152L674 150L687 152L700 148L713 152L726 153L739 148L752 152L765 151L778 149L791 149L804 152L817 148L830 152L838 150L841 163L837 176L839 189L839 202L842 215L837 228L839 241L840 254L842 267L840 280L841 293L838 306L839 319L840 332L839 345L843 358L841 371L839 384L838 397L838 410L839 423L839 436L840 449L838 462L837 475L837 488L842 501L839 514L842 527L841 540L842 553L838 566L840 569L827 570L814 567L801 570L788 570L775 572L762 569L749 570L736 570L723 570L710 569L697 572L684 569L671 568L658 570L645 570L632 572L619 573L606 567L593 570L580 572L567 570L554 573L541 573L528 570L515 568L502 569L489 571L476 570L463 569L450 572L441 570L442 557L438 544L442 531L438 518L442 505L438 492L437 479L440 466L439 453L441 440L442 427L442 414L441 401L443 388L441 375L442 362L443 349L442 336L439 323L439 310L441 297L438 284L440 271L441 258L440 245L438 232L443 219L442 206L443 193L441 180L442 167L441 154Z"/>
+<path id="paperRes" d="M404 94L417 93L430 90L443 90L456 91L469 94L482 90L495 93L508 90L521 90L534 93L547 91L560 92L573 91L586 93L599 94L612 93L625 94L638 92L651 92L664 95L677 93L690 92L703 94L716 94L729 92L742 94L755 94L768 90L781 93L794 89L807 93L820 92L833 92L846 94L859 92L872 91L876 92L875 105L876 118L874 131L876 144L874 157L874 170L873 183L878 196L877 209L878 222L874 235L877 248L874 261L875 274L875 287L876 300L877 313L877 326L877 339L874 352L875 365L873 378L878 391L873 404L875 417L875 430L879 443L877 456L877 469L876 482L875 495L878 508L878 521L874 534L873 547L874 560L874 573L874 586L874 599L875 612L875 625L876 633L863 633L850 629L837 630L824 631L811 631L798 633L785 633L772 633L759 634L746 632L733 632L720 632L707 635L694 630L681 635L668 629L655 633L642 633L629 631L616 630L603 629L590 635L577 630L564 634L551 630L538 631L525 632L512 629L499 630L486 631L473 632L460 633L447 635L434 633L421 634L408 634L402 632L402 619L405 606L401 593L404 580L403 567L402 554L403 541L406 528L402 515L404 502L405 489L407 476L404 463L403 450L405 437L404 424L402 411L406 398L402 385L404 372L403 359L405 346L406 333L404 320L403 307L406 294L402 281L403 268L402 255L405 242L403 229L404 216L405 203L402 190L406 177L406 164L403 151L407 138L403 125L406 112L402 99Z"/>
+<path id="fibBanner" d="M877.3 84.6q20.9 -2.4 40.4 10.4M389.1 242.3q19.4 -2.2 36 14.8M769.5 148.2q9.8 -0.4 18.9 4.9M466 73.6q22.1 3.1 40.6 -17.5M373.2 234.7q21.4 3.9 41.7 -9.7M385.5 185.8q9.9 3.7 18.9 6M347.3 166.7q11.3 -0.3 21.7 -6.5M757.9 46.7q8.7 -1.4 17.4 -0.8M373.6 158.3q8.7 3.1 15.4 -8.2M665.5 93.5q8 -0.4 15.1 -5.2M653.4 133q20.8 -3.3 40 11.6M851.8 44.2q19.2 0.3 36.3 -12.6M592.4 261.8q10.3 -2.2 20.2 3.8M694.7 83.6q20.6 2.9 39.5 11.8M558.6 122q22.5 3.6 44.3 -8M436.2 218.2q8.3 0.6 16.6 -2M354.6 210.4q14 0.3 27.9 1.6M453.4 206.8q16 0.4 31.1 -7.2M523.9 127.8q18.5 -2.7 35.1 11.6M695.5 240.2q18.9 2.5 37.3 6.3M572.3 94.2q19.4 3.1 34.1 -18.5M493.2 138.3q11 2.3 21.4 -4.7M335.5 105.7q15.6 -2.5 30.3 -7.5M820.5 79.9q9.3 -0.7 18 -4.6M684.1 242q18.6 -3.3 34.8 -13M432.9 204.9q15.4 2.6 30 -6.9" fill="none" stroke="#b89c6a" stroke-width=".8" opacity=".35"/>
+<path id="fibRes" d="M502 182.1q11.3 -3.4 21.1 -8.4M554 533.4q21.6 -1.4 40.9 13.9M654.3 214.2q8.3 -3 16.3 2.8M616.8 353.7q18.6 -0.6 36.9 5.2M487.6 421.6q10.4 -3.9 20.7 2.7M500.7 202.7q19.5 3.6 36.4 14.1M558.2 179.9q16 -0.9 28.3 -14.8M536.3 603.5q7 2 13.6 3.5M698.2 601q17 3 33.7 4.9M563.3 598.6q17.8 1.8 34.7 8.2M688.8 527.5q17.5 1 34.8 3.1M736.3 232.6q20.5 -1.4 37 -17.8M805.5 274.6q21.6 -2.8 38 20.4M499.1 298.4q8.9 1.6 16.4 -6.7M811.9 561.4q8.1 1.2 14.8 6.5M731.4 302.5q18 2 33.6 -13M830.7 146.4q11.2 -1.9 20.7 8.4M484.2 425.8q13.2 0.4 26.2 -2.6M769.6 254.3q17.4 1.3 34.6 3.9M752.8 432.1q19.7 -3.9 38.7 -6.8M826.5 175.1q18.2 -3.9 34.7 -10.9M766.9 578.4q13.2 -1.2 24.4 -9.8M513.2 469.1q8.8 1.1 16.5 -5.8M456.3 394.1q22.6 3 42.7 14.5M583.8 199.6q13.5 -2.9 26.8 2.6M556.9 254.9q21.5 2.5 43 -2.1M421.6 564.6q9.6 1.8 18 6.6M771.8 435.1q22.3 1.9 44.6 -2.2M785 174.3q14 -3.8 25.7 -11.1M560.6 192q12.2 -2.8 24.4 0" fill="none" stroke="#b89c6a" stroke-width=".8" opacity=".35"/>
+</defs>
+<g id="scene">
+<g id="bg">
+<g id="board"><rect x="-40" y="-40" width="1360" height="150" fill="url(#gPlank0)"/><path d="M-40-34c19 0 77-3 115-4s77 0 115 0s77 2 115 2s77 0 115 0s77 1 115 2s77 3 115 3s77-2 115-3s77-2 115-2s77 0 115 0s77-1 115-2s77 0 115 1s96 3 115 4M-40 27c19 0 77-1 115 0s77 2 115 2s77-2 115-3s77 0 115 0s77-1 115-1s77-1 115-1s77 3 115 3s77 0 115 0s77 1 115 1s77 0 115-1s77-2 115-2s96 1 115 1M-40 89c19 0 77 1 115 1s77 1 115 0s77 0 115 0s77-1 115-2s77 0 115-1s77 1 115 1s77 0 115 0s77 0 115 0s77 0 115 0s77 0 115 0s77 1 115 2s96 0 115 1" fill="none" stroke="#1f0f06" stroke-width="2.2" opacity=".34"/><path d="M-40-18c19 0 77 0 115 0s77 0 115 0s77-2 115-2s77-2 115-2s77 2 115 3s77 1 115 1s77-1 115-1s77 1 115 1s77 1 115 1s77-2 115-3s77-1 115-1s96 1 115 1M-40-1c19 0 77 0 115 0s77-1 115-2s77 0 115 0s77 0 115 0s77 0 115 0s77-1 115-1s77 1 115 1s77 1 115 1s77 1 115 1s77-1 115-1s77 0 115 0s96 0 115 1M-40 16c19 0 77 1 115 1s77-2 115-2s77 0 115 0s77 0 115 0s77-1 115-1s77 1 115 2s77 1 115 1s77-1 115-1s77-1 115-1s77 0 115 0s77-1 115-1s96 1 115 1M-40 42c19 0 77 0 115 0s77-1 115-1s77 3 115 3s77 1 115 1s77 0 115 0s77-1 115-2s77-2 115-2s77 1 115 1s77 0 115 1s77 3 115 3s77-2 115-2s96 0 115 0M-40 55c19 0 77 0 115 0s77 0 115 0s77-1 115-1s77-1 115-1s77 1 115 1s77 1 115 1s77 0 115 0s77 0 115 0s77 0 115 0s77 0 115 0s77 1 115 1s96-1 115-1M-40 74c19 0 77-1 115-1s77 1 115 1s77-1 115-1s77-1 115-1s77 2 115 2s77 1 115 1s77-1 115-1s77 1 115 1s77 1 115 1s77-2 115-2s77-1 115-1s96 1 115 1M-40 102c19 0 77 0 115-1s77 1 115 1s77-1 115-1s77-1 115-1s77 0 115 1s77 1 115 1s77 1 115 1s77-1 115-1s77 0 115 0s77 0 115 0s77-1 115-1s96-1 115-1" fill="none" stroke="#26130a" stroke-width="1" opacity=".28"/><path d="M-40-16c19 0 77 0 115 0s77 1 115 0s77-2 115-2s77-1 115-1s77 1 115 2s77 1 115 1s77-1 115 0s77 0 115 1s77 0 115 0s77-2 115-3s77-1 115-1s96 1 115 2M-40 29c19 0 77 0 115 0s77 2 115 2s77-2 115-3s77 0 115 0s77 0 115-1s77-1 115-1s77 3 115 3s77 0 115 0s77 1 115 1s77 0 115 0s77-3 115-3s96 1 115 1M-40 76c19 0 77 0 115 0s77 0 115 0s77-1 115-1s77-1 115 0s77 1 115 1s77 1 115 1s77 0 115 0s77 0 115 1s77 0 115 0s77-1 115-2s77-1 115-1s96 1 115 1" fill="none" stroke="#c48a55" stroke-width="1.3" opacity=".13"/><rect x="-40" y="108" width="1360" height="4" fill="#110803"/><rect x="-40" y="112" width="1360" height="1.6" fill="#a8773f" opacity=".2"/><rect x="-40" y="110" width="1360" height="120" fill="url(#gPlank1)"/><path d="M-40 116c19 0 77 0 115 0s77 3 115 3s77-2 115-3s77 1 115 1s77-3 115-3s77 1 115 1s77 1 115 1s77 0 115 1s77 2 115 2s77-3 115-3s77 1 115 0s96-2 115-2M-40 162c19 0 77 0 115 0s77 0 115 0s77 1 115 1s77 0 115 0s77 0 115 0s77 0 115 0s77-1 115-1s77 0 115 0s77 1 115 1s77 0 115 0s77 0 115-1s96 0 115 0M-40 213c19-1 77-2 115-2s77 2 115 3s77-2 115-1s77 3 115 3s77 0 115 0s77-2 115-2s77 1 115 1s77-4 115-4s77 1 115 2s77 0 115 0s77 1 115 2s96 2 115 2" fill="none" stroke="#1f0f06" stroke-width="2.2" opacity=".34"/><path d="M-40 129c19 0 77-1 115-1s77 1 115 2s77 3 115 3s77 1 115 1s77-1 115-2s77-2 115-2s77 0 115 0s77 0 115 0s77-1 115-1s77-1 115-1s77 2 115 3s96 3 115 3M-40 138c19-1 77-2 115-2s77 3 115 3s77 1 115 1s77-1 115 0s77 2 115 2s77-1 115-2s77-2 115-2s77 1 115 1s77-2 115-2s77-1 115 0s77 2 115 3s96 0 115 0M-40 153c19 0 77 0 115 0s77-1 115 0s77 2 115 2s77 0 115 0s77-1 115-1s77 1 115 1s77-1 115-1s77-2 115-2s77 1 115 1s77 1 115 1s77 0 115 0s96 1 115 1M-40 172c19 0 77 0 115-1s77 0 115 0s77 3 115 3s77 0 115 0s77 0 115 0s77 2 115 1s77-5 115-6s77 1 115 2s77 1 115 1s77-1 115-1s77 2 115 3s96 0 115 0M-40 190c19 0 77 0 115 0s77-2 115-1s77 2 115 3s77-1 115 0s77 1 115 1s77-1 115-1s77 2 115 2s77-1 115-2s77-3 115-3s77 2 115 2s77 2 115 2s96-1 115-1M-40 205c19 0 77 0 115 0s77-1 115-2s77 0 115 0s77 0 115 0s77-1 115-2s77-1 115 0s77 3 115 4s77 0 115 0s77-1 115-1s77 0 115 0s77 1 115 1s96-2 115-2M-40 226c19 0 77 1 115 1s77 1 115 1s77-2 115-3s77-2 115-2s77 1 115 1s77 0 115 0s77-1 115 0s77 1 115 2s77 3 115 3s77-1 115-1s77-2 115-2s96 0 115 0" fill="none" stroke="#26130a" stroke-width="1" opacity=".28"/><path d="M-40 131c19 0 77-1 115-1s77 1 115 2s77 3 115 4s77 1 115 0s77-1 115-2s77-2 115-2s77 0 115 0s77 0 115 0s77-1 115-1s77-1 115 0s77 1 115 2s96 3 115 3M-40 164c19 0 77 0 115 0s77 0 115 1s77 0 115 0s77 0 115 0s77 1 115 0s77 0 115 0s77-1 115-1s77 0 115 0s77 1 115 1s77 0 115 0s77 0 115 0s96-1 115-1M-40 207c19 0 77 0 115 0s77-1 115-1s77-1 115-1s77 1 115 0s77-1 115-1s77-2 115-1s77 4 115 4s77 0 115 0s77-1 115-1s77 0 115 0s77 1 115 1s96-2 115-2" fill="none" stroke="#c48a55" stroke-width="1.3" opacity=".13"/><g transform="translate(811 186)"><ellipse rx="25.1" ry="11.7" fill="none" stroke="#1c0d05" stroke-width="1.2" opacity=".3"/><ellipse rx="14.8" ry="6.5" fill="url(#gKnot)"/><ellipse rx="7.4" ry="2.9" fill="none" stroke="#120803" stroke-width="1" opacity=".55"/></g><rect x="-40" y="228" width="1360" height="4" fill="#110803"/><rect x="-40" y="232" width="1360" height="1.6" fill="#a8773f" opacity=".2"/><rect x="-40" y="230" width="1360" height="122" fill="url(#gPlank2)"/><path d="M-40 238c19 0 77 0 115-1s77 0 115 0s77 0 115 0s77 0 115-1s77-1 115-2s77 0 115 0s77 2 115 2s77 1 115 1s77 0 115 0s77 0 115 0s77 1 115 1s96-1 115-1M-40 285c19 0 77-2 115-2s77-1 115-1s77 2 115 2s77 1 115 1s77 0 115 0s77 0 115 0s77 2 115 3s77 0 115 0s77-1 115-2s77-2 115-3s77 0 115 0s96 1 115 1M-40 333c19 0 77 1 115 0s77-1 115 0s77 1 115 1s77 1 115 1s77 0 115 0s77 0 115 0s77-2 115-2s77 0 115 0s77-1 115 0s77 2 115 2s77-1 115-1s96 1 115 1" fill="none" stroke="#1f0f06" stroke-width="2.2" opacity=".34"/><path d="M-40 249c19 0 77 0 115 1s77 0 115 0s77-1 115-1s77 0 115 0s77-1 115-1s77 0 115 0s77 0 115-1s77 0 115 1s77 0 115 0s77 0 115 0s77 0 115 0s96 0 115 0M-40 265c19 0 77 0 115-1s77 0 115 0s77 0 115 0s77 0 115 1s77 0 115 0s77-1 115-1s77-2 115-2s77-2 115-2s77-1 115-1s77 0 115 1s77 1 115 1s96 1 115 2M-40 272c19 0 77 1 115 1s77 1 115 1s77 1 115 1s77-1 115-1s77 1 115 1s77 1 115 1s77-1 115-1s77-2 115-2s77 0 115 0s77 1 115 1s77-1 115-1s96 0 115 0M-40 298c19 0 77 0 115 0s77 1 115 1s77 0 115 0s77 0 115 0s77 0 115 0s77 1 115 1s77 0 115 0s77-1 115-1s77-1 115-1s77 0 115 0s77 1 115 0s96 0 115 0M-40 311c19-1 77-2 115-2s77 0 115 0s77-1 115-1s77-1 115-1s77 2 115 2s77 0 115 1s77 0 115 0s77 0 115 0s77-2 115-2s77 0 115 0s77 1 115 1s96 0 115 0M-40 324c19 0 77-2 115-2s77 0 115 0s77 2 115 2s77-1 115 0s77 1 115 1s77-1 115-2s77-1 115-1s77 1 115 1s77-1 115-1s77 3 115 3s77 0 115 0s96-1 115-1M-40 345c19 0 77 0 115 0s77 3 115 3s77-1 115-1s77-1 115-1s77 1 115 0s77-1 115-2s77 0 115 0s77 2 115 2s77 0 115 0s77 0 115 1s77 1 115 1s96-2 115-2" fill="none" stroke="#26130a" stroke-width="1" opacity=".28"/><path d="M-40 251c19 0 77 1 115 1s77 0 115 0s77 0 115-1s77 0 115 0s77 0 115-1s77 0 115 0s77 0 115 0s77 0 115 0s77 0 115 0s77 0 115 0s77 0 115 0s96 0 115 0M-40 287c19 0 77-2 115-2s77-1 115 0s77 1 115 1s77 1 115 1s77 0 115 0s77 0 115 1s77 1 115 2s77 1 115 0s77-1 115-2s77-2 115-2s77-1 115 0s96 0 115 0M-40 326c19 0 77-2 115-2s77 0 115 0s77 2 115 2s77 0 115 0s77 2 115 2s77-2 115-2s77-1 115-1s77 0 115 0s77-1 115-1s77 3 115 3s77 0 115 0s96-1 115-1" fill="none" stroke="#c48a55" stroke-width="1.3" opacity=".13"/><rect x="809" y="230" width="3" height="122" fill="#130903"/><rect x="812" y="230" width="1.2" height="122" fill="#a0703f" opacity=".22"/><use href="#peg" x="794" y="267"/><use href="#peg" x="828" y="267"/><use href="#peg" x="794" y="315"/><use href="#peg" x="828" y="315"/><rect x="-40" y="350" width="1360" height="4" fill="#110803"/><rect x="-40" y="354" width="1360" height="1.6" fill="#a8773f" opacity=".2"/><rect x="-40" y="352" width="1360" height="120" fill="url(#gPlank0)"/><path d="M-40 356c19 0 77 0 115 0s77 0 115 0s77 2 115 2s77-1 115-1s77-3 115-4s77 1 115 1s77 1 115 1s77-1 115 0s77 1 115 2s77 2 115 1s77-1 115-2s96-1 115-1M-40 407c19-1 77-1 115-1s77 0 115 0s77 1 115 1s77 1 115 2s77 0 115 0s77 0 115 0s77-1 115 0s77-1 115 0s77 6 115 7s77-5 115-6s77-1 115-1s96-2 115-2M-40 455c19 0 77 2 115 2s77 3 115 3s77-2 115-3s77-2 115-2s77 1 115 1s77-2 115-2s77 0 115 1s77 4 115 5s77-1 115-1s77-2 115-3s77 1 115 1s96-2 115-3" fill="none" stroke="#1f0f06" stroke-width="2.2" opacity=".34"/><path d="M-40 364c19 1 77 3 115 3s77-1 115 0s77 3 115 3s77-1 115-2s77 0 115-1s77-1 115-1s77-1 115-1s77 3 115 3s77-1 115 0s77 2 115 2s77-3 115-3s96 0 115 0M-40 379c19 0 77-1 115-1s77 0 115 1s77 0 115 0s77 0 115 0s77-1 115-1s77 1 115 2s77 2 115 3s77 1 115 1s77-1 115-2s77-1 115-1s77-1 115-1s96 1 115 1M-40 396c19-1 77-2 115-2s77-1 115-1s77 3 115 3s77 0 115 0s77 0 115 1s77 1 115 1s77-3 115-3s77-1 115-1s77-3 115-3s77 2 115 3s77 1 115 2s96 2 115 2M-40 421c19 0 77 0 115-1s77-1 115-2s77 1 115 0s77-2 115-2s77-1 115 0s77 4 115 4s77 1 115 0s77-2 115-1s77 4 115 4s77-5 115-7s77-1 115 0s96 3 115 4M-40 428c19 1 77 2 115 2s77 1 115 1s77 0 115 0s77 1 115 0s77-2 115-2s77 0 115 0s77 0 115 0s77 0 115 1s77 3 115 3s77-2 115-2s77 0 115-1s96-1 115-1M-40 440c19 0 77-1 115-1s77 1 115 1s77 1 115 2s77 0 115 0s77 1 115 0s77-2 115-3s77 1 115 1s77-1 115-1s77 2 115 3s77 0 115 0s77 0 115 0s96-1 115-1M-40 465c19 0 77-1 115-1s77-1 115-1s77 0 115 0s77-1 115 0s77 1 115 1s77 0 115 0s77 0 115 0s77 0 115 0s77-1 115-1s77 0 115 0s77 0 115 0s96 1 115 1" fill="none" stroke="#26130a" stroke-width="1" opacity=".28"/><path d="M-40 367c19 0 77 2 115 2s77 0 115 0s77 3 115 3s77-1 115-1s77-1 115-1s77-1 115-2s77-1 115-1s77 3 115 3s77 0 115 0s77 3 115 3s77-3 115-4s96 0 115 0M-40 409c19 0 77-1 115-1s77 0 115 0s77 1 115 1s77 2 115 2s77 0 115 0s77 0 115 0s77 0 115 0s77-1 115 0s77 7 115 7s77-4 115-6s77-1 115-1s96-1 115-2M-40 443c19-1 77-2 115-2s77 1 115 2s77 0 115 1s77 0 115 0s77 1 115 0s77-2 115-3s77 1 115 1s77-1 115-1s77 2 115 3s77 0 115 0s77 0 115 0s96-1 115-1" fill="none" stroke="#c48a55" stroke-width="1.3" opacity=".13"/><g transform="translate(1032 408)"><ellipse rx="22.6" ry="11.2" fill="none" stroke="#1c0d05" stroke-width="1.2" opacity=".3"/><ellipse rx="13.3" ry="6.2" fill="url(#gKnot)"/><ellipse rx="6.6" ry="2.8" fill="none" stroke="#120803" stroke-width="1" opacity=".55"/></g><rect x="832" y="352" width="3" height="120" fill="#130903"/><rect x="835" y="352" width="1.2" height="120" fill="#a0703f" opacity=".22"/><use href="#peg" x="817" y="388"/><use href="#peg" x="851" y="388"/><use href="#peg" x="817" y="436"/><use href="#peg" x="851" y="436"/><rect x="-40" y="470" width="1360" height="4" fill="#110803"/><rect x="-40" y="474" width="1360" height="1.6" fill="#a8773f" opacity=".2"/><rect x="-40" y="472" width="1360" height="126" fill="url(#gPlank1)"/><path d="M-40 477c19 1 77 1 115 2s77 1 115 2s77 1 115 1s77 0 115-1s77-1 115-1s77-2 115-2s77-1 115-2s77 0 115 1s77 0 115 0s77 0 115 0s77 0 115-1s96 0 115-1M-40 530c19 0 77 0 115 0s77 1 115 1s77 0 115 0s77 0 115 0s77-1 115-1s77-1 115-1s77 0 115 0s77 1 115 0s77 0 115 0s77-1 115-1s77 0 115 0s96 0 115 1M-40 580c19 0 77 0 115 1s77 1 115 1s77-1 115-1s77-1 115-1s77 0 115 0s77 0 115 0s77-1 115-1s77 0 115 1s77 1 115 1s77 0 115 0s77 0 115 0s96 0 115 0" fill="none" stroke="#1f0f06" stroke-width="2.2" opacity=".34"/><path d="M-40 493c19 0 77 0 115 0s77 0 115 0s77 0 115 0s77 0 115-1s77-1 115-1s77 0 115 0s77 1 115 1s77 0 115 0s77 0 115 0s77 1 115 1s77 1 115 1s96-1 115-2M-40 504c19 0 77 1 115 1s77-1 115-1s77-1 115-2s77 1 115 1s77 0 115 0s77 1 115 1s77 1 115 1s77-1 115-1s77 0 115 0s77-1 115-1s77-1 115-1s96 2 115 2M-40 512c19 0 77 1 115 1s77 1 115 1s77 0 115 0s77 0 115 0s77 0 115 0s77-1 115-2s77 0 115 0s77 1 115 1s77 1 115 1s77-1 115 0s77 0 115 0s96 0 115 0M-40 539c19 0 77 0 115 0s77 0 115 0s77 0 115 0s77 0 115 0s77 0 115-1s77 0 115 0s77 0 115 0s77 1 115 1s77 2 115 2s77 1 115 1s77 0 115 0s96-1 115-1M-40 553c19 0 77 0 115 1s77 0 115 0s77 0 115 0s77-1 115-2s77-1 115-2s77-1 115-1s77 0 115 1s77 1 115 1s77 1 115 1s77 0 115 0s77-1 115-1s96 1 115 1M-40 563c19 0 77 0 115 0s77 2 115 2s77-1 115-1s77 0 115 0s77 0 115-1s77 0 115 0s77 1 115 1s77 0 115 0s77 0 115 0s77 0 115 0s77-1 115-1s96 0 115 0M-40 594c19 0 77 0 115 0s77 0 115 0s77-1 115-1s77 0 115 0s77 0 115 1s77 0 115 0s77 0 115 0s77 0 115 0s77 0 115 0s77 0 115 0s77 0 115-1s96 0 115 0" fill="none" stroke="#26130a" stroke-width="1" opacity=".28"/><path d="M-40 495c19 0 77 0 115 0s77 0 115 0s77 1 115 0s77 0 115-1s77-1 115-1s77 0 115 0s77 1 115 1s77 0 115 0s77 0 115 0s77 1 115 1s77 1 115 1s96-1 115-1M-40 532c19 0 77 0 115 0s77 1 115 1s77 1 115 1s77-1 115-1s77-1 115-1s77-1 115-1s77 0 115 0s77 1 115 1s77-1 115-1s77-1 115-1s77 0 115 0s96 1 115 1M-40 566c19 0 77-1 115 0s77 1 115 1s77-1 115-1s77 0 115 0s77 0 115 0s77-1 115-1s77 1 115 1s77 0 115 0s77 0 115 0s77 1 115 0s77-1 115-1s96 0 115 1" fill="none" stroke="#c48a55" stroke-width="1.3" opacity=".13"/><rect x="336" y="472" width="3" height="126" fill="#130903"/><rect x="339" y="472" width="1.2" height="126" fill="#a0703f" opacity=".22"/><use href="#peg" x="321" y="510"/><use href="#peg" x="355" y="510"/><use href="#peg" x="321" y="560"/><use href="#peg" x="355" y="560"/><rect x="-40" y="596" width="1360" height="4" fill="#110803"/><rect x="-40" y="600" width="1360" height="1.6" fill="#a8773f" opacity=".2"/><rect x="-40" y="598" width="1360" height="162" fill="url(#gPlank2)"/><path d="M-40 606c19 0 77-1 115 0s77 1 115 1s77 0 115 0s77 3 115 3s77-1 115-1s77-1 115-1s77 0 115-1s77-2 115-2s77 2 115 3s77 0 115 0s77 1 115 2s96 0 115 0M-40 671c19 0 77 2 115 2s77 1 115 0s77-2 115-2s77 0 115 0s77 0 115 0s77-2 115-2s77 0 115 1s77 2 115 2s77-1 115-1s77 1 115 1s77 1 115 1s96-1 115-2M-40 735c19 0 77-1 115-1s77-1 115-1s77 0 115 0s77-1 115-2s77-1 115-1s77 3 115 3s77 2 115 2s77-1 115-1s77-1 115-1s77 1 115 0s77-1 115-1s96-2 115-2" fill="none" stroke="#1f0f06" stroke-width="2.2" opacity=".34"/><path d="M-40 623c19 0 77-1 115-2s77 0 115 0s77 0 115 0s77-1 115-1s77-1 115 0s77 2 115 2s77 1 115 1s77-1 115-1s77 0 115 0s77 0 115-1s77-1 115-1s96-1 115-1M-40 637c19 0 77-1 115 0s77 1 115 2s77 1 115 1s77 0 115 0s77-1 115 0s77 1 115 1s77 1 115 0s77-1 115-2s77-2 115-2s77 0 115 0s77 1 115 1s96 1 115 1M-40 654c19-1 77-1 115-1s77 1 115 1s77 2 115 2s77 1 115 1s77-1 115-1s77-1 115-1s77 0 115 0s77 0 115 0s77 0 115-1s77-1 115-1s77 0 115 0s96 1 115 1M-40 689c19 1 77 1 115 1s77-2 115-3s77 1 115 1s77-1 115-1s77 0 115 0s77 2 115 3s77-1 115-1s77 2 115 1s77-5 115-5s77 1 115 2s77 1 115 1s96-1 115-1M-40 704c19 0 77 0 115 0s77 1 115 1s77-1 115-1s77 0 115-1s77 0 115 0s77 0 115 1s77 1 115 1s77 1 115 2s77 4 115 4s77-4 115-5s77-1 115-1s96 0 115 0M-40 724c19 0 77 1 115 0s77-1 115-2s77 1 115 1s77-3 115-3s77 1 115 2s77 1 115 2s77-1 115-1s77 2 115 1s77-1 115-2s77-1 115-1s77 1 115 1s96 0 115 0M-40 752c19 0 77 0 115 0s77 1 115 2s77 1 115 1s77-1 115-1s77-1 115-2s77 0 115 0s77 1 115 0s77 0 115 0s77-1 115 0s77 1 115 1s77 1 115 1s96 0 115 0" fill="none" stroke="#26130a" stroke-width="1" opacity=".28"/><path d="M-40 625c19 0 77-1 115-2s77 0 115 0s77 0 115 0s77-1 115-1s77 0 115 0s77 2 115 2s77 1 115 1s77-1 115-1s77 0 115 0s77 0 115 0s77-2 115-2s96 0 115-1M-40 673c19 0 77 2 115 3s77 0 115-1s77-1 115-2s77 0 115 0s77 0 115 0s77-2 115-2s77 0 115 1s77 2 115 3s77-1 115-1s77 0 115 0s77 1 115 1s96-1 115-1M-40 726c19 0 77 1 115 1s77-2 115-2s77 0 115 0s77-2 115-2s77 0 115 1s77 2 115 2s77-1 115-1s77 2 115 2s77-2 115-3s77-1 115-1s77 1 115 1s96 0 115 0" fill="none" stroke="#c48a55" stroke-width="1.3" opacity=".13"/><g transform="translate(963 696)"><ellipse rx="19.4" ry="11.5" fill="none" stroke="#1c0d05" stroke-width="1.2" opacity=".3"/><ellipse rx="11.4" ry="6.4" fill="url(#gKnot)"/><ellipse rx="5.7" ry="2.9" fill="none" stroke="#120803" stroke-width="1" opacity=".55"/></g><rect x="463" y="598" width="3" height="162" fill="#130903"/><rect x="466" y="598" width="1.2" height="162" fill="#a0703f" opacity=".22"/><use href="#peg" x="448" y="647"/><use href="#peg" x="482" y="647"/><use href="#peg" x="448" y="711"/><use href="#peg" x="482" y="711"/><use href="#splat1" fill="#6e1410" opacity=".2" transform="translate(170 560) rotate(290) scale(1.3)"/><use href="#splat2" fill="#7a3a08" opacity=".2" transform="translate(1110 610) rotate(248) scale(1.1)"/><use href="#splat0" fill="#5a1410" opacity=".2" transform="translate(930 380) rotate(294) scale(0.9)"/><use href="#splat0" fill="#6a4a08" opacity=".2" transform="translate(300 330) rotate(38) scale(0.8)"/><use href="#splat1" fill="#5e120e" opacity=".2" transform="translate(640 660) rotate(242) scale(1.5)"/><use href="#splat1" fill="#4e2a08" opacity=".2" transform="translate(1180 330) rotate(23) scale(0.7)"/></g>
+<rect x="-40" y="-40" width="1360" height="800" fill="url(#gVig)"/>
+<ellipse cx="640" cy="700" rx="520" ry="150" fill="url(#gWarm)" opacity=".5"/>
+<g id="lanL" transform="translate(96 -24)"><circle cy="144" r="200" fill="url(#gLanternGlow)"/><g class="sway"><use href="#lanternBody"/><text class="br" y="118" font-size="46" text-anchor="middle" fill="#4a0d06" opacity=".85" font-weight="700">切</text></g></g>
+<g id="lanR" transform="translate(1184 -24)"><circle cy="144" r="200" fill="url(#gLanternGlow)"/><g class="sway2"><use href="#lanternBody"/><text class="br" y="118" font-size="46" text-anchor="middle" fill="#4a0d06" opacity=".85" font-weight="700">果</text></g></g>
+</g>
+<g id="decalsL"/>
+<g id="shadowsL"/>
+<g id="halvesL"/>
+<g id="entsL"/>
+<g id="dropsL"/>
+<g id="fxL"/>
+<g id="ghostL"/>
+</g>
+<g id="overlays">
+<rect id="ovFrost" x="0" y="0" width="1280" height="720" fill="url(#gFrost)" display="none"/>
+<rect id="ovGold" x="0" y="0" width="1280" height="720" fill="url(#gGoldEdge)" display="none"/>
+<rect id="ovFire" x="0" y="0" width="1280" height="720" fill="url(#gFireEdge)" display="none"/>
+<rect id="ovDanger" x="0" y="0" width="1280" height="720" fill="url(#gDanger)" display="none"/>
+<rect id="ovFlash" x="-40" y="-40" width="1360" height="800" fill="#fff8e8" display="none"/>
+</g>
+<g id="hud" display="none">
+<g id="scoreG" transform="translate(40 26)">
+<g transform="translate(30 30) scale(.5)"><g clip-path="url(#cBot)"><use href="#x-watermelon"/></g></g>
+<text id="scoreT" class="nm stroke" x="70" y="52" font-size="54" fill="#ffe6ac" stroke="#2a1508" stroke-width="7">0</text>
+</g>
+<text id="bestT" class="ui stroke" x="110" y="104" font-size="17" fill="#e9cf98" stroke="#1e0f06" stroke-width="4">最高 0</text>
+<text id="streakT" class="br stroke" x="44" y="144" font-size="23" fill="#ffd36a" stroke="#1e0f06" stroke-width="5" display="none">连斩 ×0</text>
+<text id="modeT" class="br stroke" x="640" y="38" font-size="22" text-anchor="middle" fill="#f3dfb4" stroke="#1e0f06" stroke-width="5" opacity=".85">经典 · 普通</text>
+<g id="livesG">
+<g transform="translate(1098 56) scale(.8)"><use href="#xMark"/><use id="lx0" href="#missX" fill="#e8321e" stroke="#2a0a04" stroke-width="1.5" display="none"/></g>
+<g transform="translate(1148 56) scale(.96)"><use href="#xMark"/><use id="lx1" href="#missX" fill="#e8321e" stroke="#2a0a04" stroke-width="1.5" display="none"/></g>
+<g transform="translate(1206 56) scale(1.14)"><use href="#xMark"/><use id="lx2" href="#missX" fill="#e8321e" stroke="#2a0a04" stroke-width="1.5" display="none"/></g>
+</g>
+<g id="timerG" display="none">
+<text id="timeT" class="nm stroke" x="1238" y="66" font-size="46" text-anchor="end" fill="#ffe6ac" stroke="#2a1508" stroke-width="7">1:00</text>
+<g transform="translate(0 94)">
+<rect x="1004" y="-3" width="234" height="6" rx="3" fill="#120904" opacity=".55"/>
+<rect id="incense" x="1004" y="-2" width="234" height="4" rx="2" fill="url(#gIncense)"/>
+<g id="emberG" transform="translate(1238 0)"><circle r="8" fill="url(#gEmber)"/><path id="smoke" d="M0 -4C-6 -12 5 -18 0 -27C-5 -35 4 -41 0 -49" fill="none" stroke="#efe2cc" stroke-width="2" stroke-linecap="round" opacity=".32"/></g>
+<path d="M990 -10H1006L1004 10H992Z" fill="url(#gGold)"/><rect x="986" y="-12" width="24" height="4" rx="2" fill="#7a4e12"/>
+</g>
+</g>
+<g id="powerG">
+<g id="pw0" display="none"><rect x="0" y="-15" width="150" height="30" rx="15" fill="#0c1a22" opacity=".78" stroke="#8fe6ff" stroke-width="1.5"/><use href="#f-freeze" transform="translate(22 2) scale(.26)"/><text class="br" x="42" y="7" font-size="18" fill="#c8f2ff">冰冻</text><rect x="88" y="-3" width="50" height="6" rx="3" fill="#20404e"/><rect id="pwb0" x="88" y="-3" width="50" height="6" rx="3" fill="#8fe6ff"/></g>
+<g id="pw1" display="none"><rect x="0" y="-15" width="150" height="30" rx="15" fill="#241a04" opacity=".78" stroke="#ffd84a" stroke-width="1.5"/><use href="#f-double" transform="translate(22 2) scale(.26)"/><text class="br" x="42" y="7" font-size="18" fill="#fff0b0">双倍</text><rect x="88" y="-3" width="50" height="6" rx="3" fill="#4a3a10"/><rect id="pwb1" x="88" y="-3" width="50" height="6" rx="3" fill="#ffd84a"/></g>
+<g id="pw2" display="none"><rect x="0" y="-15" width="150" height="30" rx="15" fill="#2a0e04" opacity=".78" stroke="#ff7a3a" stroke-width="1.5"/><use href="#f-frenzy" transform="translate(22 2) scale(.26)"/><text class="br" x="42" y="7" font-size="18" fill="#ffd6b8">狂热</text><rect x="88" y="-3" width="50" height="6" rx="3" fill="#4e1e0a"/><rect id="pwb2" x="88" y="-3" width="50" height="6" rx="3" fill="#ff7a3a"/></g>
+</g>
+<g id="btnPause" class="btn" data-btn="pause" transform="translate(1182 684)"><circle class="hl" r="24" fill="none" stroke="#ffd36a" stroke-width="3"/><circle class="face" r="20" fill="url(#gWoodBtn)" stroke="#2a1508" stroke-width="2"/><use href="#icoPause" color="#f6e2b8"/></g>
+</g>
+<g id="popupsL"/>
+<g id="bigG" display="none" transform="translate(640 330)">
+<use id="bigBand" href="#band" transform="scale(1.7 2.3)" fill="#140a05" opacity=".6"/>
+<text id="bigT" class="br stroke" y="36" font-size="104" text-anchor="middle" fill="#fff1d6" stroke="#1a0d05" stroke-width="10" font-weight="700">预备</text>
+</g>
+<g id="scrTitle">
+<g transform="rotate(-1.2 640 152)">
+<use href="#paperBanner" fill="#000" opacity=".22" transform="translate(14 18)"/>
+<use href="#paperBanner" fill="#000" opacity=".35" transform="translate(6 9)"/>
+<use href="#paperBanner" fill="url(#gPaper)"/>
+<use href="#fibBanner"/>
+<circle cx="338" cy="52" r="5.5" fill="#2a1a0e"/><circle cx="336.5" cy="50.5" r="1.8" fill="#a07850"/>
+<circle cx="942" cy="52" r="5.5" fill="#2a1a0e"/><circle cx="940.5" cy="50.5" r="1.8" fill="#a07850"/>
+<use href="#slashRed" transform="translate(646 150) scale(.93)" fill="#c62a1e" opacity=".9"/>
+<g filter="url(#fInk)">
+<text class="br" x="646" y="184" font-size="124" text-anchor="middle" fill="#17100a" letter-spacing="10" font-weight="700">水果刀客</text>
+</g>
+<text class="nm" x="647" y="242" font-size="30" text-anchor="middle" fill="#8a1c12" letter-spacing="14">FRUIT SLASH</text>
+<g transform="translate(902 222) rotate(6)"><use href="#seal"/></g>
+<text class="br" font-size="19" fill="#6a543c"><tspan x="358" y="86">一</tspan><tspan x="358" y="110">刀</tspan><tspan x="358" y="134">两</tspan><tspan x="358" y="158">断</tspan></text>
+</g>
+<text class="br stroke" x="640" y="306" font-size="25" text-anchor="middle" fill="#ffecc8" stroke="#1a0d05" stroke-width="5">挥动鼠标化作刀光，一刀切开满天水果——千万别碰炸弹！</text>
+<g id="rings">
+<g id="ring0" class="btn" data-btn="mode" data-v="0" transform="translate(400 418)">
+<circle r="80" fill="#000" fill-opacity="0"/>
+<circle class="rglow" r="70" fill="none" stroke="#ffc94a" stroke-width="20" opacity="0"/>
+<g class="spin"><use class="renso" href="#enso" fill="#f0dcb0"/></g>
+<g class="rfruit"><use href="#f-watermelon" transform="scale(.94)"/></g>
+</g>
+<g id="ring1" class="btn" data-btn="mode" data-v="1" transform="translate(640 418)">
+<circle r="80" fill="#000" fill-opacity="0"/>
+<circle class="rglow" r="70" fill="none" stroke="#ffc94a" stroke-width="20" opacity="0"/>
+<g class="spin2"><use class="renso" href="#enso" fill="#f0dcb0"/></g>
+<g class="rfruit"><use href="#f-pineapple" transform="translate(0 14) scale(.96)"/></g>
+</g>
+<g id="ring2" class="btn" data-btn="mode" data-v="2" transform="translate(880 418)">
+<circle r="80" fill="#000" fill-opacity="0"/>
+<circle class="rglow" r="70" fill="none" stroke="#ffc94a" stroke-width="20" opacity="0"/>
+<g class="spin"><use class="renso" href="#enso" fill="#f0dcb0" transform="rotate(140)"/></g>
+<g class="rfruit"><use href="#f-peach" transform="translate(0 3) scale(1.14)"/></g>
+</g>
+</g>
+<g id="ringLbl">
+<g id="lbl0"><text class="br stroke rl" x="400" y="530" font-size="34" text-anchor="middle" fill="#f3dfb4" stroke="#1a0d05" stroke-width="5">经典</text><text class="ui stroke" x="400" y="556" font-size="15" text-anchor="middle" fill="#e2c898" stroke="#1a0d05" stroke-width="3.5">3 条命 · 碰到炸弹即结束</text><text id="best0" class="ui stroke" x="400" y="579" font-size="14" text-anchor="middle" fill="#ffc94a" stroke="#1a0d05" stroke-width="3.5">最高 0</text></g>
+<g id="lbl1"><text class="br stroke rl" x="640" y="530" font-size="34" text-anchor="middle" fill="#f3dfb4" stroke="#1a0d05" stroke-width="5">街机 60秒</text><text class="ui stroke" x="640" y="556" font-size="15" text-anchor="middle" fill="#e2c898" stroke="#1a0d05" stroke-width="3.5">特殊香蕉 · 炸弹扣 10 分</text><text id="best1" class="ui stroke" x="640" y="579" font-size="14" text-anchor="middle" fill="#ffc94a" stroke="#1a0d05" stroke-width="3.5">最高 0</text></g>
+<g id="lbl2"><text class="br stroke rl" x="880" y="530" font-size="34" text-anchor="middle" fill="#f3dfb4" stroke="#1a0d05" stroke-width="5">禅意 90秒</text><text class="ui stroke" x="880" y="556" font-size="15" text-anchor="middle" fill="#e2c898" stroke="#1a0d05" stroke-width="3.5">没有炸弹 · 静心切果</text><text id="best2" class="ui stroke" x="880" y="579" font-size="14" text-anchor="middle" fill="#ffc94a" stroke="#1a0d05" stroke-width="3.5">最高 0</text></g>
+</g>
+<g id="btnHelp" class="btn" data-btn="help" transform="translate(178 636)">
+<rect class="hl" x="-80" y="-28" width="160" height="56" rx="12" fill="none" stroke="#ffd36a" stroke-width="3"/>
+<rect class="face" x="-75" y="-23" width="150" height="46" rx="9" fill="url(#gWoodBtn)" stroke="#2a1508" stroke-width="2"/>
+<rect x="-70" y="-19" width="140" height="16" rx="7" fill="#fff" opacity=".1"/>
+<text class="br" x="-12" y="8" font-size="24" text-anchor="middle" fill="#fbe8c4">帮助</text>
+<rect x="30" y="-11" width="26" height="22" rx="4" fill="#2a1508" opacity=".55"/><text class="nm" x="43" y="6" font-size="14" text-anchor="middle" fill="#fbe8c4">H</text>
+</g>
+<text class="br stroke" x="466" y="644" font-size="23" text-anchor="middle" fill="#f3dfb4" stroke="#1a0d05" stroke-width="5">难度</text>
+<g id="diffs">
+<g id="diff0" class="btn" data-btn="diff" data-v="0" transform="translate(552 636)"><rect class="hl" x="-45" y="-27" width="90" height="54" rx="11" fill="none" stroke="#ffd36a" stroke-width="3"/><rect class="face" x="-40" y="-22" width="80" height="44" rx="8" fill="url(#gWoodBtn)" stroke="#2a1508" stroke-width="2"/><text class="br" y="8" font-size="23" text-anchor="middle" fill="#fbe8c4">简单</text></g>
+<g id="diff1" class="btn" data-btn="diff" data-v="1" transform="translate(644 636)"><rect class="hl" x="-45" y="-27" width="90" height="54" rx="11" fill="none" stroke="#ffd36a" stroke-width="3"/><rect class="face" x="-40" y="-22" width="80" height="44" rx="8" fill="url(#gWoodBtn)" stroke="#2a1508" stroke-width="2"/><text class="br" y="8" font-size="23" text-anchor="middle" fill="#fbe8c4">普通</text></g>
+<g id="diff2" class="btn" data-btn="diff" data-v="2" transform="translate(736 636)"><rect class="hl" x="-45" y="-27" width="90" height="54" rx="11" fill="none" stroke="#ffd36a" stroke-width="3"/><rect class="face" x="-40" y="-22" width="80" height="44" rx="8" fill="url(#gWoodBtn)" stroke="#2a1508" stroke-width="2"/><text class="br" y="8" font-size="23" text-anchor="middle" fill="#fbe8c4">困难</text></g>
+</g>
+<g id="btnStart" class="btn" data-btn="start" transform="translate(1086 636)">
+<rect class="hl" x="-100" y="-31" width="200" height="62" rx="14" fill="none" stroke="#ffd36a" stroke-width="3"/>
+<rect class="face" x="-95" y="-26" width="190" height="52" rx="10" fill="url(#gLacquer)" stroke="#3a0e06" stroke-width="2"/>
+<rect x="-90" y="-22" width="180" height="18" rx="8" fill="#fff" opacity=".14"/>
+<text class="br" x="-22" y="10" font-size="30" text-anchor="middle" fill="#fff2d8" letter-spacing="6">开始</text>
+<rect x="30" y="-11" width="52" height="22" rx="4" fill="#3a0e06" opacity=".5"/><text class="nm" x="56" y="5" font-size="13" text-anchor="middle" fill="#ffe6c8">Enter</text>
+</g>
+<text class="ui stroke" x="640" y="698" font-size="15" text-anchor="middle" fill="#e8d2a6" stroke="#140a04" stroke-width="3.5">按住鼠标或手指快速划过水果 · 切开圆环中的水果即可开局 · ←→ 模式 ↑↓ 难度 · Enter 开始 · H 帮助 · M 静音</text>
+</g>
+<g id="scrHelp" display="none">
+<rect x="-40" y="-40" width="1360" height="800" fill="url(#gDim)"/>
+<use href="#paperHelp" fill="#000" opacity=".4" transform="translate(8 10)"/>
+<use href="#paperHelp" fill="url(#gPaper)"/>
+<use href="#band" transform="translate(640 100) scale(1.25 1.5)" fill="#1b120c" opacity=".92"/>
+<text class="br" x="640" y="114" font-size="40" text-anchor="middle" fill="#fbecd0" letter-spacing="10" font-weight="700">刀客心法</text>
+<text class="nm" x="640" y="150" font-size="15" text-anchor="middle" fill="#8a1c12" letter-spacing="8">HOW TO PLAY</text>
+<g id="btnCloseHelp" class="btn" data-btn="closeHelp" transform="translate(1112 88)"><circle class="hl" r="25" fill="none" stroke="#b8241c" stroke-width="3"/><circle class="face" r="20" fill="url(#gLacquer)" stroke="#3a0e06" stroke-width="2"/><path d="M-7 -7L7 7M7 -7L-7 7" stroke="#fff2d8" stroke-width="3" stroke-linecap="round"/></g>
+<g stroke="#b89c6a" stroke-width="1" opacity=".5"><path d="M470 176V600M810 176V600M170 388H1110"/></g>
+<g transform="translate(300 222)">
+<path d="M-118 46L112 -38L113 -32Z" fill="#ffb347" opacity=".35" transform="translate(0 -2) scale(1 1.8)"/>
+<path d="M-118 46L112 -38L113 -32Z" fill="#6a4a2a"/>
+<g transform="rotate(-20)"><g transform="translate(-2 -16)"><g clip-path="url(#cTop)"><use href="#f-orange"/></g><g transform="scale(1 .4)"><use href="#x-orange"/></g></g><g transform="translate(4 18)"><g clip-path="url(#cBot)"><use href="#f-orange"/></g><g transform="scale(1 .4)"><use href="#x-orange"/></g></g></g>
+<circle cx="-62" cy="34" r="3" fill="#ff9a1f"/><circle cx="58" cy="-40" r="4" fill="#ff9a1f"/><circle cx="68" cy="-18" r="2.5" fill="#ffc766"/><circle cx="-50" cy="8" r="2" fill="#ffc766"/>
+</g>
+<text class="br" x="300" y="314" font-size="28" text-anchor="middle" fill="#1b120c">划 · 切</text>
+<text class="ui" x="300" y="342" font-size="15" text-anchor="middle" fill="#4a3624">按住鼠标（或手指）快速划过水果</text>
+<text class="ui" x="300" y="364" font-size="15" text-anchor="middle" fill="#4a3624">动作太慢可切不开哦</text>
+<g transform="translate(640 226)">
+<use href="#f-strawberry" transform="translate(-78 12) scale(.8)"/>
+<use href="#f-kiwi" transform="translate(0 -2) scale(.8)"/>
+<use href="#f-lemon" transform="translate(80 6) scale(.72)"/>
+<path d="M-132 40L130 -26L131 -21Z" fill="#6a4a2a"/>
+<text class="br stroke" x="0" y="-48" font-size="26" text-anchor="middle" fill="#ffc43a" stroke="#3a1a08" stroke-width="5">三连击 +3</text>
+</g>
+<text class="br" x="640" y="314" font-size="28" text-anchor="middle" fill="#1b120c">连 · 击</text>
+<text class="ui" x="640" y="342" font-size="15" text-anchor="middle" fill="#4a3624">一刀切开 3 个以上水果得连击奖励</text>
+<text class="ui" x="640" y="364" font-size="15" text-anchor="middle" fill="#4a3624">正中快切有机会暴击 +10</text>
+<g transform="translate(980 236)">
+<circle r="60" fill="url(#gAuraRed)"/>
+<use href="#f-bomb"/>
+<use href="#spark" transform="translate(18 -64)"/>
+</g>
+<text class="br" x="980" y="314" font-size="28" text-anchor="middle" fill="#1b120c">炸 · 弹</text>
+<text class="ui" x="980" y="342" font-size="15" text-anchor="middle" fill="#4a3624">千万别碰黑色炸弹！</text>
+<text class="ui" x="980" y="364" font-size="15" text-anchor="middle" fill="#4a3624">经典模式直接结束，街机扣 10 分</text>
+<g transform="translate(300 458)">
+<path d="M-120 44H40" stroke="#6a4a2a" stroke-width="3" stroke-dasharray="10 6"/>
+<path d="M-62 -58V-30M-48 -64V-40M-34 -58V-30" stroke="#8a6a4a" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+<use href="#f-apple" transform="translate(-48 18) rotate(20) scale(.8)"/>
+<use href="#missX" transform="translate(-48 60) scale(.7)" fill="#d8321e"/>
+<use href="#missX" transform="translate(66 -10) scale(.62)" fill="#d8321e"/>
+<use href="#missX" transform="translate(98 -10) scale(.62)" fill="none" stroke="#8a6a4a" stroke-width="2"/>
+<use href="#missX" transform="translate(130 -10) scale(.62)" fill="none" stroke="#8a6a4a" stroke-width="2"/>
+</g>
+<text class="br" x="300" y="552" font-size="28" text-anchor="middle" fill="#1b120c">失 · 误</text>
+<text class="ui" x="300" y="580" font-size="15" text-anchor="middle" fill="#4a3624">经典模式：漏掉 3 个水果</text>
+<text class="ui" x="300" y="602" font-size="15" text-anchor="middle" fill="#4a3624">游戏就结束了</text>
+<g transform="translate(640 452)">
+<circle cx="-96" r="38" fill="url(#gAuraIce)"/><use href="#f-freeze" transform="translate(-96 0) rotate(-20) scale(.66)"/>
+<circle r="38" fill="url(#gAuraGold)"/><use href="#f-double" transform="rotate(-20) scale(.66)"/>
+<circle cx="96" r="38" fill="url(#gAuraFire)"/><use href="#f-frenzy" transform="translate(96 0) rotate(-20) scale(.66)"/>
+<text class="br" x="-96" y="58" font-size="19" text-anchor="middle" fill="#1f6fae">冰冻</text>
+<text class="br" x="0" y="58" font-size="19" text-anchor="middle" fill="#a86a00">双倍</text>
+<text class="br" x="96" y="58" font-size="19" text-anchor="middle" fill="#c8341a">狂热</text>
+</g>
+<text class="br" x="640" y="552" font-size="28" text-anchor="middle" fill="#1b120c">特殊香蕉</text>
+<text class="ui" x="640" y="580" font-size="15" text-anchor="middle" fill="#4a3624">仅在街机模式出现，切开即生效</text>
+<text class="ui" x="640" y="602" font-size="15" text-anchor="middle" fill="#4a3624">冰冻减速 · 双倍得分 · 狂热果潮</text>
+<g transform="translate(980 448)" class="ui">
+<g transform="translate(-112 -30)"><rect x="-18" y="-17" width="36" height="34" rx="6" fill="#3a2616"/><rect x="-18" y="-19" width="36" height="32" rx="6" fill="#f7ecd4" stroke="#3a2616" stroke-width="2"/><text class="nm" y="3" font-size="16" text-anchor="middle" fill="#3a2616">P</text><text x="28" y="4" font-size="16" fill="#3a2616">暂停</text></g>
+<g transform="translate(14 -30)"><rect x="-18" y="-17" width="36" height="34" rx="6" fill="#3a2616"/><rect x="-18" y="-19" width="36" height="32" rx="6" fill="#f7ecd4" stroke="#3a2616" stroke-width="2"/><text class="nm" y="3" font-size="16" text-anchor="middle" fill="#3a2616">M</text><text x="28" y="4" font-size="16" fill="#3a2616">静音</text></g>
+<g transform="translate(-112 18)"><rect x="-18" y="-17" width="36" height="34" rx="6" fill="#3a2616"/><rect x="-18" y="-19" width="36" height="32" rx="6" fill="#f7ecd4" stroke="#3a2616" stroke-width="2"/><text class="nm" y="3" font-size="16" text-anchor="middle" fill="#3a2616">H</text><text x="28" y="4" font-size="16" fill="#3a2616">帮助</text></g>
+<g transform="translate(14 18)"><rect x="-24" y="-17" width="48" height="34" rx="6" fill="#3a2616"/><rect x="-24" y="-19" width="48" height="32" rx="6" fill="#f7ecd4" stroke="#3a2616" stroke-width="2"/><text class="nm" y="3" font-size="14" text-anchor="middle" fill="#3a2616">Esc</text><text x="34" y="4" font-size="16" fill="#3a2616">返回</text></g>
+</g>
+<text class="br" x="980" y="552" font-size="28" text-anchor="middle" fill="#1b120c">模式 · 按键</text>
+<text class="ui" x="980" y="580" font-size="15" text-anchor="middle" fill="#4a3624">经典 3 条命 · 街机 60 秒 · 禅意 90 秒</text>
+<text class="ui" x="980" y="602" font-size="15" text-anchor="middle" fill="#4a3624">禅意模式没有炸弹，尽情切吧</text>
+<text class="ui" x="640" y="652" font-size="15" text-anchor="middle" fill="#7a5a3a">按 H / Esc / Enter 关闭</text>
+</g>
+<g id="scrPause" display="none">
+<rect x="-40" y="-40" width="1360" height="800" fill="url(#gDim)"/>
+<use href="#paperPause" fill="#000" opacity=".4" transform="translate(8 10)"/>
+<use href="#paperPause" fill="url(#gPaper)"/>
+<use href="#band" transform="translate(640 226) scale(.95 1.7)" fill="#c62a1e" opacity=".9"/>
+<text class="br" x="648" y="246" font-size="56" text-anchor="middle" fill="#fff4e0" letter-spacing="16" font-weight="700">暂停</text>
+<text class="nm" x="644" y="286" font-size="14" text-anchor="middle" fill="#7a5a3a" letter-spacing="8">PAUSED</text>
+<g id="pb0" class="btn" data-btn="resume" transform="translate(640 330)"><rect class="hl" x="-130" y="-27" width="260" height="54" rx="12" fill="none" stroke="#b8241c" stroke-width="3"/><rect class="face" x="-125" y="-22" width="250" height="44" rx="9" fill="url(#gLacquer)" stroke="#3a0e06" stroke-width="2"/><text class="br" y="8" font-size="23" text-anchor="middle" fill="#fff2d8">继续游戏 · P</text></g>
+<g id="pb1" class="btn" data-btn="restart" transform="translate(640 386)"><rect class="hl" x="-130" y="-27" width="260" height="54" rx="12" fill="none" stroke="#b8241c" stroke-width="3"/><rect class="face" x="-125" y="-22" width="250" height="44" rx="9" fill="url(#gWoodBtn)" stroke="#2a1508" stroke-width="2"/><text class="br" y="8" font-size="23" text-anchor="middle" fill="#fbe8c4">重新开始 · R</text></g>
+<g id="pb2" class="btn" data-btn="help" transform="translate(640 442)"><rect class="hl" x="-130" y="-27" width="260" height="54" rx="12" fill="none" stroke="#b8241c" stroke-width="3"/><rect class="face" x="-125" y="-22" width="250" height="44" rx="9" fill="url(#gWoodBtn)" stroke="#2a1508" stroke-width="2"/><text class="br" y="8" font-size="23" text-anchor="middle" fill="#fbe8c4">操作说明 · H</text></g>
+<g id="pb3" class="btn" data-btn="title" transform="translate(640 498)"><rect class="hl" x="-130" y="-27" width="260" height="54" rx="12" fill="none" stroke="#b8241c" stroke-width="3"/><rect class="face" x="-125" y="-22" width="250" height="44" rx="9" fill="url(#gWoodBtn)" stroke="#2a1508" stroke-width="2"/><text class="br" y="8" font-size="23" text-anchor="middle" fill="#fbe8c4">返回标题 · Esc</text></g>
+<text class="ui" x="640" y="550" font-size="14" text-anchor="middle" fill="#7a5a3a">↑↓ 选择 · Enter 确认</text>
+</g>
+<g id="scrRes" display="none">
+<rect x="-40" y="-40" width="1360" height="800" fill="url(#gDim)" opacity=".75"/>
+<use href="#paperRes" fill="#000" opacity=".4" transform="translate(8 10)"/>
+<use href="#paperRes" fill="url(#gPaper)"/>
+<use href="#fibRes"/>
+<rect x="384" y="74" width="512" height="24" rx="12" fill="url(#gRoller)"/><rect x="370" y="71" width="18" height="30" rx="5" fill="url(#gGold)"/><rect x="892" y="71" width="18" height="30" rx="5" fill="url(#gGold)"/>
+<rect x="384" y="626" width="512" height="24" rx="12" fill="url(#gRoller)"/><rect x="370" y="623" width="18" height="30" rx="5" fill="url(#gGold)"/><rect x="892" y="623" width="18" height="30" rx="5" fill="url(#gGold)"/>
+<text id="resHead" class="br" x="640" y="158" font-size="48" text-anchor="middle" fill="#b8241c" font-weight="700">时间到！</text>
+<text id="resSub" class="ui" x="640" y="190" font-size="17" text-anchor="middle" fill="#7a5a3a">街机 · 普通</text>
+<text class="ui" x="644" y="226" font-size="15" text-anchor="middle" fill="#8a6a4a" letter-spacing="8">得分</text>
+<text id="resScore" class="nm" x="640" y="310" font-size="90" text-anchor="middle" fill="#1b120c">0</text>
+<use href="#band" transform="translate(640 340) scale(1.45 .16)" fill="#3a2a1a" opacity=".55"/>
+<g class="ui" font-size="15" fill="#8a6a4a" text-anchor="middle"><text x="530" y="378">切开水果</text><text x="750" y="378">最佳连击</text><text x="530" y="452">最长连斩</text><text x="750" y="452">命中率</text></g>
+<g class="nm" font-size="32" fill="#1b120c" text-anchor="middle"><text id="st0" x="530" y="414">0</text><text id="st1" x="750" y="414">0</text><text id="st2" x="530" y="488">0</text><text id="st3" x="750" y="488">0%</text></g>
+<text id="resBest" class="br" x="640" y="534" font-size="21" text-anchor="middle" fill="#5a3a22">本模式最高 0</text>
+<g id="rb0" class="btn" data-btn="retry" transform="translate(529 584)"><rect class="hl" x="-110" y="-29" width="220" height="58" rx="13" fill="none" stroke="#b8241c" stroke-width="3"/><rect class="face" x="-105" y="-24" width="210" height="48" rx="10" fill="url(#gLacquer)" stroke="#3a0e06" stroke-width="2"/><g transform="translate(-76 -5) scale(.38)"><g clip-path="url(#cBot)"><use href="#x-watermelon"/></g></g><text class="br" x="2" y="8" font-size="23" text-anchor="middle" fill="#fff2d8">再来一局</text><text class="nm" x="80" y="5" font-size="11" text-anchor="middle" fill="#ffd8c0">Enter</text></g>
+<g id="rb1" class="btn" data-btn="title" transform="translate(751 584)"><rect class="hl" x="-110" y="-29" width="220" height="58" rx="13" fill="none" stroke="#b8241c" stroke-width="3"/><rect class="face" x="-105" y="-24" width="210" height="48" rx="10" fill="url(#gWoodBtn)" stroke="#2a1508" stroke-width="2"/><use href="#f-coconut" transform="translate(-76 0) scale(.36)"/><text class="br" x="2" y="8" font-size="23" text-anchor="middle" fill="#fbe8c4">返回标题</text><text class="nm" x="82" y="5" font-size="11" text-anchor="middle" fill="#f0d8b0">Esc</text></g>
+<g id="newBest" display="none" transform="translate(792 246) rotate(14)"><g id="nbInner">
+<path d="M-62 -34L60 -36L64 34L-60 36Z" fill="#b8241c" opacity=".92"/>
+<path d="M-54 -27H54V27H-54Z" fill="none" stroke="#fbe6cc" stroke-width="2.4"/>
+<text class="br" y="4" font-size="30" text-anchor="middle" fill="#fdf0dc" font-weight="700" letter-spacing="4">新纪录</text>
+<text class="nm" y="21" font-size="11" text-anchor="middle" fill="#fdf0dc" letter-spacing="4">NEW BEST</text>
+</g></g>
+</g>
+<g id="menuFxL"/>
+<g id="btnMute" class="btn" data-btn="mute" transform="translate(1236 684)"><circle class="hl" r="24" fill="none" stroke="#ffd36a" stroke-width="3"/><circle class="face" r="20" fill="url(#gWoodBtn)" stroke="#2a1508" stroke-width="2"/><use id="muteIco" href="#icoSound" color="#f6e2b8"/></g>
+<g id="bladeL"/>
+<g id="glint" display="none"><use href="#glintStar"/></g>
+
+</svg>
+<script src="../web-runtime/0187890d427a66c04ec53fbe.js"></script><script src="../web-runtime/3902336fecfc1e9d07f52f7a.js"></script></body></html>

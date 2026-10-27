@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Last Keepers — Life at the Edge of the Light</title>
+<meta name="description" content="A fictional long-read from the fictional Tidewater Quarterly about lighthouse keepers: a lit dusk hero, a dusk-to-night watch, and a Fresnel lens that assembles as you scroll.">
+<style>
+:root{
+  --paper:#f6f1e7;--ink:#14213d;--red:#c0392b;--fog:#8a929c;--rule:#cfc8b8;--grain:none;
+  --body:"Iowan Old Style","Palatino Linotype",Palatino,"P052","URW Palladio L","Book Antiqua",Georgia,serif;
+  --didone:Didot,"Bodoni 72","Bodoni MT","C059","Century Schoolbook L","New Century Schoolbook",Georgia,serif;
+  --mast:40px;--measure:62ch;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;background:var(--paper)}
+body{font-family:var(--body);color:var(--ink);background:var(--grain),var(--paper);font-size:clamp(17px,1.05vw + 11px,20px);line-height:1.62;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.sc{font-variant:small-caps;letter-spacing:.09em;text-transform:lowercase}
+
+/* ---------- masthead + beam progress ---------- */
+.mast{position:fixed;top:0;left:0;right:0;height:var(--mast);z-index:20;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(12px,3vw,28px);color:var(--paper);transition:background-color .6s}
+.mast.solid{background:var(--ink);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+.mbrand{position:relative;z-index:2;display:flex;align-items:center;gap:10px;text-decoration:none;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+.mbrand svg{width:14px;height:24px;flex:none}
+.mchap{position:relative;z-index:2;font-style:italic;font-size:13px;opacity:.85;white-space:nowrap}
+.bar{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.pbeam{position:absolute;left:calc(clamp(12px,3vw,28px) + 7px);right:0;top:0;bottom:0;transform-origin:0 50%;transform:scaleX(0);
+  clip-path:polygon(0 42%,100% 6%,100% 94%,0 58%);background:linear-gradient(90deg,rgba(255,228,160,.55),rgba(255,228,160,.22) 70%,rgba(255,228,160,.06))}
+.ptip{position:absolute;top:50%;left:0;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,240,200,.95),rgba(255,210,130,0));opacity:0}
+.pline{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--red);transform-origin:0 50%;transform:scaleX(0)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:100vh;height:100svh;min-height:280px;overflow:hidden;background:#1d2748;color:var(--paper)}
+.scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.wash{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(60% 60% at var(--lx,80%) var(--ly,30%),rgba(255,232,180,.5),rgba(255,232,180,0) 70%)}
+.tblock{position:absolute;left:clamp(18px,6vw,96px);top:30%;z-index:2}
+.kicker{font-size:clamp(10px,.8vw + 4px,13px);letter-spacing:.24em;text-transform:uppercase;opacity:.8;margin-bottom:.6em}
+.hwrap{position:relative}
+.h1{font-family:var(--didone);font-weight:400;font-size:clamp(34px,8vw,132px);line-height:.98;letter-spacing:-.01em;white-space:nowrap}
+.hero h1.h1{color:rgba(246,241,231,.8);text-shadow:0 2px 30px rgba(10,16,40,.35)}
+.lit{position:absolute;left:0;top:0;right:0;bottom:0;pointer-events:none;clip-path:polygon(0 0,0 0,0 0)}
+.lit.core{color:#fff6d8;text-shadow:0 0 .18em rgba(255,221,150,.95),0 0 .5em rgba(255,190,110,.55)}
+.lit.pen{color:#ffe2a6;opacity:.6}
+.dek{font-style:italic;font-size:clamp(15px,1.9vw,30px);margin-top:.35em;opacity:.95}
+.byl{font-size:clamp(11px,.7vw + 6px,15px);margin-top:.9em;opacity:.8}
+.begin{display:inline-flex;align-items:center;gap:.6em;margin-top:1.4em;font-size:14px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;padding:.7em 1.1em;border:1px solid rgba(246,241,231,.45);transition:background .4s,color .4s}
+.begin:hover{background:var(--paper);color:var(--ink)}
+.begin i{display:inline-block;width:1px;height:14px;background:currentColor;position:relative}
+.begin i::after{content:"";position:absolute;left:-3px;bottom:0;width:6px;height:6px;border-right:1px solid;border-bottom:1px solid;transform:rotate(45deg)}
+.hero .w{display:inline}
+.edge{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:clamp(14px,3.6vw,54px);z-index:3;display:block}
+@media (max-width:700px) and (orientation:portrait){.hero .w{display:block}.h1{font-size:clamp(40px,13vw,90px)}}
+@media (max-height:420px){.byl,.begin{display:none}.kicker{margin-bottom:.3em}}
+
+/* ---------- article ---------- */
+.col{width:min(var(--measure),100% - 40px);margin:0 auto;position:relative}
+.stand{padding:clamp(48px,9vh,96px) 0 20px}
+.stand p.lede{font-size:1.32em;line-height:1.42;font-style:italic}
+.stand .meta{margin-top:1.3em;font-size:.82em;color:#4a5570;display:flex;flex-wrap:wrap;gap:.3em 1.2em;border-top:1px solid var(--rule);padding-top:.8em}
+.chap{padding:clamp(40px,8vh,80px) 0 10px}
+.chap-h{text-align:center;margin-bottom:1.6em}
+.chap-h .num{display:block;font-family:var(--didone);font-style:italic;color:var(--red);font-size:1.5em;line-height:1}
+.chap-h h2{font-family:var(--didone);font-weight:400;font-size:clamp(28px,3.4vw,46px);letter-spacing:.02em;line-height:1.1}
+.chap-h .orn{display:block;margin:.5em auto 0;width:120px;height:10px}
+.chap p+p{text-indent:1.4em}
+.col p{margin:0 0 .2em;hyphens:auto}
+.drop::first-letter{float:left;font-family:var(--didone);font-size:4.3em;line-height:.82;padding:.16em .16em .08em;margin:.08em .16em 0 0;color:var(--ink);
+  border:1px solid var(--ink);box-shadow:inset 0 0 0 3px var(--paper),inset 0 0 0 4px var(--ink);background:linear-gradient(135deg,var(--red) 0 12%,transparent 12.5%),repeating-conic-gradient(from 200deg at 100% 100%,rgba(20,33,61,.07) 0 3deg,transparent 3deg 9deg)}
+.runin{font-variant:small-caps;letter-spacing:.07em}
+.fn{font-size:.62em;vertical-align:super;line-height:0;color:var(--red);padding:0 .15em;font-weight:700;border-radius:3px}
+.fn:hover{background:rgba(192,57,43,.12)}
+.mnote{font-size:.78em;line-height:1.45;color:#4a5570;font-style:italic;border-left:2px solid var(--red);padding-left:.8em;margin:1em 0}
+@media (min-width:1180px){.mnote{position:absolute;left:calc(100% + 44px);width:210px;margin:0;top:.3em}}
+.pq{margin:1.6em 0;padding:1.1em 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);position:relative;text-align:center}
+.pq p{font-family:var(--didone);font-style:italic;font-size:clamp(24px,2.6vw,36px);line-height:1.22;text-indent:0}
+.pq::before{content:"\201C";position:absolute;left:-.1em;top:.05em;font-family:var(--didone);font-size:4em;line-height:1;color:var(--red)}
+.pq::after{content:"";position:absolute;left:50%;top:-5px;width:9px;height:9px;background:var(--paper);border:1px solid var(--ink);transform:translateX(-50%) rotate(45deg)}
+@media (min-width:980px){.pq{margin-left:-14%;margin-right:-14%;padding-left:6%;padding-right:6%}.pq::before{left:.2em}}
+.rv{opacity:0;transform:translateY(24px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- watch: dusk to night ---------- */
+.watch{position:relative;height:280vh;margin-top:40px}
+.wstage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;color:var(--paper);background:#101a33}
+.wstage svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.wtext{position:absolute;inset:calc(var(--mast) + 4vh) clamp(18px,6vw,90px) 7vh;display:grid;grid-template-columns:1fr minmax(260px,380px);align-items:end;gap:24px}
+.clockbox .lbl{font-size:12px;letter-spacing:.22em;text-transform:uppercase;opacity:.75}
+.clock{font-family:var(--didone);font-size:clamp(56px,11vw,168px);line-height:.9;font-variant-numeric:lining-nums tabular-nums;letter-spacing:-.02em}
+.log{list-style:none;padding:18px 20px;background:rgba(8,14,32,.42);border:1px solid rgba(246,241,231,.18);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font-size:14.5px;line-height:1.45}
+.log h3{font-weight:400;font-size:12px;letter-spacing:.22em;text-transform:uppercase;opacity:.7;margin-bottom:10px}
+.log li{display:grid;grid-template-columns:3.4em 1fr;gap:10px;padding:5px 0;border-top:1px solid rgba(246,241,231,.1);opacity:.14;transform:translateX(8px);transition:opacity .6s,transform .6s}
+.log li.on{opacity:1;transform:none}
+.log time{font-variant-numeric:tabular-nums;color:#ffd79a}
+@media (max-width:760px){.wtext{grid-template-columns:1fr;align-content:end}.log{font-size:13px;padding:12px 14px}.log li{padding:3px 0}}
+@media (max-height:520px){.log li:nth-child(n+4){display:none}.clock{font-size:clamp(40px,9vw,90px)}}
+
+/* ---------- lens plate ---------- */
+.lenssec{position:relative;height:250vh}
+.lstage{position:sticky;top:var(--mast);height:calc(100vh - var(--mast));display:grid;place-items:center;padding:12px 16px}
+.plate{width:min(640px,100%);max-height:100%;display:flex;flex-direction:column;border:1px solid var(--ink);box-shadow:inset 0 0 0 4px var(--paper),inset 0 0 0 5px var(--ink);padding:14px 18px 12px;background:rgba(255,253,247,.5)}
+.plate-h{display:flex;justify-content:space-between;font-size:12px;letter-spacing:.16em;text-transform:uppercase;border-bottom:1px solid var(--rule);padding-bottom:6px;gap:12px}
+.plate-h b{color:var(--red);font-weight:400}
+.plate svg{width:100%;flex:1;min-height:0;max-height:calc(100vh - var(--mast) - 150px);display:block;margin:8px 0 4px}
+.plate figcaption{font-size:13.5px;line-height:1.4;font-style:italic;color:#3d4863}
+.plate figcaption b{font-style:normal;font-variant:small-caps;letter-spacing:.06em;color:var(--ink)}
+@media (max-height:480px){.plate figcaption{display:none}}
+
+/* ---------- endnotes, colophon, popover ---------- */
+.notes{padding:40px 0 70px;font-size:.84em}
+.notes h2{font-weight:400;font-size:13px;letter-spacing:.22em;text-transform:uppercase;border-top:1px solid var(--ink);padding-top:12px;margin-bottom:12px}
+.notes ol{padding-left:1.4em;display:grid;gap:.5em}
+.notes li::marker{color:var(--red)}
+.notes a{color:var(--red)}
+.fiction{margin-top:24px;font-style:italic;color:#4a5570}
+.colo{background:var(--ink);color:var(--paper);padding:60px 20px 70px;text-align:center}
+.colo .brand{font-family:var(--didone);font-size:clamp(26px,3vw,40px)}
+.colo p{opacity:.72;font-size:.85em;margin:.8em auto 1.6em;max-width:48ch}
+.colo button{border:1px solid rgba(246,241,231,.5);padding:.7em 1.3em;font-size:13px;letter-spacing:.16em;text-transform:uppercase}
+.colo button:hover{background:var(--paper);color:var(--ink)}
+.pop{position:absolute;z-index:30;width:min(300px,calc(100vw - 24px));background:var(--ink);color:var(--paper);padding:14px 38px 14px 16px;font-size:14.5px;line-height:1.45;box-shadow:0 18px 40px -12px rgba(20,33,61,.55)}
+.pop::before{content:"";position:absolute;top:-6px;left:var(--ax,24px);width:12px;height:12px;background:var(--ink);transform:rotate(45deg)}
+.pop .x{position:absolute;top:6px;right:8px;width:26px;height:26px;font-size:18px;line-height:1;color:var(--paper)}
+.pop b{color:#ffcf8a;font-weight:400;margin-right:.3em}
+@media (max-width:600px){.pop{position:fixed;left:0!important;right:0;top:auto!important;bottom:0;width:auto;padding:18px 44px 26px 20px}.pop::before{display:none}}
+@media (prefers-reduced-motion:reduce){.rv{transform:none;transition:opacity .6s}.drift,.smoke,.glint,.gull{animation:none!important}}
+html.paused *,html.paused *::before,html.paused *::after{animation-play-state:paused!important}
+.drift{animation:drift 160s linear infinite alternate}
+@keyframes drift{to{transform:translateX(160px)}}
+.smoke{animation:smoke 7s linear infinite;opacity:0}
+@keyframes smoke{0%{transform:translate(0,0) scale(.4);opacity:0}15%{opacity:.5}100%{transform:translate(40px,-90px) scale(1.8);opacity:0}}
+.glint{animation:glint 2.6s ease-in-out infinite}
+@keyframes glint{0%,100%{opacity:.15}50%{opacity:.85}}
+.gull{animation:gull 36s linear infinite}
+@keyframes gull{from{transform:translate(0,0)}to{transform:translate(-520px,-60px)}}
+</style>
+</head>
+<body>
+<header class="mast" id="mast">
+  <div class="bar" aria-hidden="true"><div class="pbeam" id="pbeam"></div><div class="ptip" id="ptip"></div><div class="pline" id="pline"></div></div>
+  <a class="mbrand" href="#top" aria-label="The Tidewater Quarterly, back to top">
+    <svg viewBox="0 0 14 24" aria-hidden="true"><path d="M5 5h4l1.6 17H3.4z" fill="#f6f1e7"/><path d="M4.4 11h5.2l.3 3H4.1zM3.8 17h6.4l.3 3H3.5z" fill="#c0392b"/><rect x="4.5" y="2.4" width="5" height="2.6" fill="#ffd98f"/><path d="M4 2.4 7 0l3 2.4z" fill="#f6f1e7"/></svg>
+    <span>The Tidewater Quarterly</span>
+  </a>
+  <span class="mchap" id="mchap" aria-live="polite">Prologue</span>
+</header>
+
+<main>
+<section class="hero" id="top" data-ch="Prologue" aria-labelledby="h1">
+  <svg class="scene" id="scene" viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" gradientUnits="userSpaceOnUse" x1="0" y1="-900" x2="0" y2="560">
+        <stop offset="0" stop-color="#0f1733"/><stop offset=".45" stop-color="#27325c"/><stop offset=".7" stop-color="#5d4e78"/><stop offset=".86" stop-color="#b8707a"/><stop offset=".96" stop-color="#eea577"/><stop offset="1" stop-color="#f7c58c"/>
+      </linearGradient>
+      <linearGradient id="sea" gradientUnits="userSpaceOnUse" x1="0" y1="560" x2="0" y2="1100">
+        <stop offset="0" stop-color="#7b6484"/><stop offset=".12" stop-color="#4b4b6e"/><stop offset=".45" stop-color="#26304f"/><stop offset="1" stop-color="#121a33"/>
+      </linearGradient>
+      <radialGradient id="sun" gradientUnits="userSpaceOnUse" cx="430" cy="556" r="620">
+        <stop offset="0" stop-color="#ffd9a0" stop-opacity=".75"/><stop offset=".25" stop-color="#f6a57a" stop-opacity=".3"/><stop offset="1" stop-color="#f6a57a" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="halo"><stop offset="0" stop-color="#fff4cf"/><stop offset=".25" stop-color="#ffd98f" stop-opacity=".55"/><stop offset="1" stop-color="#ffd98f" stop-opacity="0"/></radialGradient>
+      <linearGradient id="bL" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#fff1c4" stop-opacity=".95"/><stop offset=".6" stop-color="#ffe2a0" stop-opacity=".35"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></linearGradient>
+      <linearGradient id="bR" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff1c4" stop-opacity=".95"/><stop offset=".6" stop-color="#ffe2a0" stop-opacity=".35"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></linearGradient>
+      <linearGradient id="shade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#0b1026" stop-opacity=".55"/></linearGradient>
+      <linearGradient id="rock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b2c42"/><stop offset="1" stop-color="#11142a"/></linearGradient>
+    </defs>
+    <rect x="-1400" y="-1900" width="4600" height="2470" fill="url(#sky)"/>
+    <g id="hstars" fill="#fff"></g>
+    <rect x="-1400" y="-200" width="4600" height="780" fill="url(#sun)"/>
+    <g class="drift" opacity=".75">
+      <path d="M-200 430c160-14 380-10 560 4-150 14-380 12-560-4z" fill="#d88c86"/>
+      <path d="M260 470c140-10 330-8 500 5-140 9-340 8-500-5z" fill="#e39c85" opacity=".8"/>
+      <path d="M640 170c200-18 470-14 720 6-200 16-500 14-720-6z" fill="#3b3f69" opacity=".8"/>
+      <path d="M-100 250c180-12 400-10 600 4-190 12-420 10-600-4z" fill="#34396a" opacity=".7"/>
+    </g>
+    <circle cx="430" cy="560" r="36" fill="#ffd9a0"/>
+    <path d="M-1400 560 L-600 548 -300 540 -80 546 140 552 300 560z" fill="#3a3355" opacity=".9"/>
+    <rect x="-1400" y="559" width="4600" height="1500" fill="url(#sea)"/>
+    <g id="glitter" fill="#ffe0a8"></g>
+    <g class="drift" style="animation-duration:220s"><path d="M760 556h34l-3 4h-28zM772 550h9v6h-9zM775 544h3v6h-3z" fill="#1f2340"/></g>
+    <g id="waves" fill="none" stroke-linecap="round"></g>
+    <!-- rocks -->
+    <path d="M1040 700 L1070 640 1120 622 1160 612 1200 606 1260 606 1310 614 1360 628 1410 650 1450 690 1480 740 1480 1900 1040 1900z" fill="url(#rock)"/>
+    <path d="M1070 640 1120 622 1160 612 1200 606" fill="none" stroke="#e79a78" stroke-width="2.2" opacity=".75"/>
+    <path d="M1110 700v-60M1150 690v-68M1195 700v-80M1250 706v-90M1300 712v-86M1350 720v-80M1400 740v-70" stroke="#0a0d1f" stroke-width="2" opacity=".5"/>
+    <path d="M980 740c30-20 70-26 110-14 20 10 10 30-10 40H970z" fill="#191b31"/>
+    <!-- cottage -->
+    <g><rect x="1282" y="586" width="80" height="26" fill="#d9cfc0"/><path d="M1274 588 1322 562 1370 588z" fill="#8a3b33"/><rect x="1342" y="556" width="9" height="20" fill="#6d3029"/>
+      <rect x="1294" y="594" width="10" height="10" fill="#ffd98f"/><rect x="1316" y="594" width="10" height="10" fill="#ffd98f"/><rect x="1340" y="596" width="12" height="16" fill="#3a2c2a"/>
+      <rect x="1282" y="586" width="80" height="26" fill="url(#shade)"/>
+      <g fill="#c9c3ce"><circle class="smoke" cx="1346" cy="552" r="7"/><circle class="smoke" cx="1346" cy="552" r="7" style="animation-delay:-2.3s"/><circle class="smoke" cx="1346" cy="552" r="7" style="animation-delay:-4.6s"/></g>
+    </g>
+    <!-- lighthouse -->
+    <g id="tower"></g>
+    <circle id="lglow" cx="1220" cy="263" r="90" fill="url(#halo)" opacity=".7"/>
+    <polygon id="b1s" fill="url(#bL)" opacity="0"/><polygon id="b1" fill="url(#bL)" opacity="0"/>
+    <polygon id="b2s" fill="url(#bR)" opacity="0"/><polygon id="b2" fill="url(#bR)" opacity="0"/>
+    <circle id="flare" cx="1220" cy="263" r="260" fill="url(#halo)" opacity="0"/>
+    <g fill="none" stroke="#1d2240" stroke-width="2.4" stroke-linecap="round">
+      <path class="gull" d="M900 360q10-8 20 0q10-8 20 0"/><path class="gull" style="animation-delay:-12s" d="M980 330q7-6 14 0q7-6 14 0"/><path class="gull" style="animation-delay:-24s" d="M1060 400q8-7 16 0q8-7 16 0"/>
+    </g>
+  </svg>
+  <div class="wash" id="wash" aria-hidden="true"></div>
+  <div class="tblock" id="tblock">
+    <p class="kicker">No. 14 · Autumn · The long read</p>
+    <div class="hwrap" id="hwrap">
+      <h1 class="h1" id="h1"><span class="w">The Last</span> <span class="w">Keepers</span></h1>
+      <div class="h1 lit pen" id="litPen" aria-hidden="true"><span class="w">The Last</span> <span class="w">Keepers</span></div>
+      <div class="h1 lit core" id="litCore" aria-hidden="true"><span class="w">The Last</span> <span class="w">Keepers</span></div>
+    </div>
+    <p class="dek">Life at the Edge of the Light</p>
+    <p class="byl sc">Words by Maren Hollis · a work of fiction</p>
+    <a class="begin" href="#standfirst">Begin reading <i aria-hidden="true"></i></a>
+  </div>
+  <svg class="edge" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 34C200 8 420 56 720 30S1180 6 1440 32V60H0z" fill="#f6f1e7"/></svg>
+</section>
+
+<article>
+<div class="col stand" id="standfirst">
+  <p class="lede rv">On the last lit headlands, the work was never the light itself. It was the waiting — for weather, for ships, for morning.</p>
+  <p class="meta sc rv"><span>Words by Maren Hollis</span><span>Plates by the Quarterly studio</span><span>Six-minute read</span></p>
+</div>
+
+<section class="col chap" data-ch="I · The Lamp" aria-labelledby="c1">
+  <header class="chap-h rv"><span class="num">i</span><h2 id="c1">The Lamp</h2><svg class="orn" viewBox="0 0 120 10" aria-hidden="true"><path d="M0 5h50M70 5h50" stroke="#14213d" stroke-width=".8"/><path d="M60 1l4 4-4 4-4-4z" fill="#c0392b"/></svg></header>
+  <div style="position:relative">
+    <aside class="mnote rv">Salt, oil, brass and glass: the four materials of the keeper's day.</aside>
+    <p class="drop rv">Every evening began with the same small ceremony. The keeper climbed the stair with a can of oil in one hand and a folded cloth in the other, and the tower answered each footfall with a note a little higher than the last.<button class="fn" type="button" data-fn="1" aria-label="Footnote 1" id="r1">1</button> At the top the lens waited under its linen hood like a sleeping animal made of glass.</p>
+  </div>
+  <p class="rv">He polished the prisms in slow circles, never with a bare hand. <span class="runin">Salt found its way</span> into everything — the hinges, the clock, the pages of the log — but it was not allowed onto the glass.</p>
+  <blockquote class="pq rv"><p>The light was not his. He only kept it from going out.</p></blockquote>
+  <p class="rv">When the sun touched the water he lit the wick, wound the weight and stepped back. The lens began to turn, and the headland became a sentence the sea could read.<button class="fn" type="button" data-fn="2" aria-label="Footnote 2" id="r2">2</button></p>
+</section>
+
+<section class="col chap" data-ch="II · The Watch" aria-labelledby="c2">
+  <header class="chap-h rv"><span class="num">ii</span><h2 id="c2">The Watch</h2><svg class="orn" viewBox="0 0 120 10" aria-hidden="true"><path d="M0 5h50M70 5h50" stroke="#14213d" stroke-width=".8"/><path d="M60 1l4 4-4 4-4-4z" fill="#c0392b"/></svg></header>
+  <p class="rv">Night was measured in small tasks. Trim the wick at ten. Wind the clockwork at midnight. Write the weather in a hand steady enough for strangers to trust.</p>
+</section>
+
+<section class="watch" id="watch" data-ch="II · The Watch" aria-label="The watch, from dusk to dawn">
+  <div class="wstage">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop id="ws0" offset="0" stop-color="#2a3a66"/><stop id="ws1" offset=".62" stop-color="#8e6a8a"/><stop id="ws2" offset="1" stop-color="#f0a872"/></linearGradient>
+        <radialGradient id="mh"><stop offset="0" stop-color="#fff8e4" stop-opacity=".55"/><stop offset="1" stop-color="#fff8e4" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="1600" height="642" fill="url(#wg)"/>
+      <g id="wstars" fill="#fff" opacity="0"></g>
+      <g id="moon"><circle r="110" fill="url(#mh)"/><circle r="30" fill="#f4ecd6"/><circle cx="-8" cy="-6" r="5" fill="#e2d8bd"/><circle cx="9" cy="8" r="3.5" fill="#e2d8bd"/></g>
+      <rect id="wsea" y="640" width="1600" height="260" fill="#3a3f5c"/>
+      <g id="mglit" fill="#fff4d6" opacity="0"></g>
+      <g id="far"><path d="M628 640l3-22h6l3 22z" fill="#0a1024"/><circle id="farl" cx="634" cy="616" r="16" fill="url(#halo)" opacity="0"/></g>
+      <path d="M0 900V760c120-30 220-24 330-6s150 10 200 30l40 116z" fill="#0b1024" opacity=".92"/>
+      <path d="M1600 900V700l-60 10-30 40-90 20-60 60-80 70z" fill="#0b1024"/>
+    </svg>
+    <div class="wtext">
+      <div class="clockbox"><p class="lbl">Keeper's clock</p><div class="clock" id="clock" aria-hidden="true">19:40</div></div>
+      <ol class="log" id="log" aria-label="Watch log">
+        <li data-at="0"><time>19:40</time><span>Lamp lit. Wind south-west, light. Sea slight.</span></li>
+        <li data-at=".2"><time>22:00</time><span>Wick trimmed. One steamer northbound, lights clear.</span></li>
+        <li data-at=".42"><time>00:10</time><span>Clockwork wound. Fog on the far headland.</span></li>
+        <li data-at=".66"><time>02:30</time><span>Moon behind cloud. All well.</span></li>
+        <li data-at=".9"><time>04:40</time><span>First grey in the east. Lamp put out.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="col chap" style="padding-top:60px" data-ch="II · The Watch">
+  <p class="rv">By the small hours the dark had weight. He did not feel alone, exactly. Somewhere past the horizon another keeper was climbing another stair, and between them their two lights stitched the coast together.</p>
+</section>
+
+<section class="col chap" data-ch="III · The Lens" aria-labelledby="c3">
+  <header class="chap-h rv"><span class="num">iii</span><h2 id="c3">The Lens</h2><svg class="orn" viewBox="0 0 120 10" aria-hidden="true"><path d="M0 5h50M70 5h50" stroke="#14213d" stroke-width=".8"/><path d="M60 1l4 4-4 4-4-4z" fill="#c0392b"/></svg></header>
+  <div style="position:relative">
+    <aside class="mnote rv">The largest lenses stand taller than the person who cleans them.</aside>
+    <p class="rv">The lens is mostly air. Rings of glass, each prism angled a little differently, catch light that would otherwise leak into the sky and fold it into one level beam.<button class="fn" type="button" data-fn="3" aria-label="Footnote 3" id="r3">3</button> Up close it looks less like a tool than a cathedral window someone has taught to turn.</p>
+  </div>
+</section>
+
+<section class="lenssec" id="lens" data-ch="III · The Lens" aria-label="Plate: anatomy of a lens">
+  <div class="lstage">
+    <figure class="plate">
+      <div class="plate-h"><b>Plate III</b><span>The lens, in section</span></div>
+      <svg id="lsvg" viewBox="0 0 600 700" role="img" aria-label="A Fresnel lens: stacked glass prisms above and below a central bullseye, bending lamp light into a level beam">
+        <defs>
+          <pattern id="hatch" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#efe9dc"/><path d="M0 2h4" stroke="#14213d" stroke-width=".5" opacity=".38"/></pattern>
+          <pattern id="xhatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#e3d6b8"/><path d="M0 2.5h5M2.5 0v5" stroke="#14213d" stroke-width=".5" opacity=".45"/></pattern>
+          <radialGradient id="flame" cx=".5" cy=".7" r=".6"><stop offset="0" stop-color="#fff2c6"/><stop offset=".5" stop-color="#f2a33a"/><stop offset="1" stop-color="#c0392b"/></radialGradient>
+          <linearGradient id="lvl" x1="0" x2="1"><stop offset="0" stop-color="#ffd98f" stop-opacity=".55"/><stop offset="1" stop-color="#ffd98f" stop-opacity="0"/></linearGradient>
+          <linearGradient id="lvl2" x1="1" x2="0"><stop offset="0" stop-color="#ffd98f" stop-opacity=".55"/><stop offset="1" stop-color="#ffd98f" stop-opacity="0"/></linearGradient>
+        </defs>
+        <g id="levelwash" opacity="0"><rect x="452" y="206" width="148" height="340" fill="url(#lvl)"/><rect x="0" y="206" width="148" height="340" fill="url(#lvl2)"/></g>
+        <g id="lparts"></g>
+        <g id="rays" fill="none" stroke="#c0392b" stroke-width="1.3"></g>
+        <g id="callouts" opacity="0" font-family="Iowan Old Style,Palatino,Georgia,serif" font-size="13" text-anchor="middle"></g>
+      </svg>
+      <figcaption><b>A</b> upper prisms · <b>B</b> bullseye · <b>C</b> central belt · <b>D</b> lamp · <b>E</b> lower prisms. The prisms above and below bend stray light back toward the horizon; the belt focuses the rest into a single level beam.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="col chap" data-ch="Coda" aria-label="Coda">
+  <p class="rv drop">The lights are automatic now. They turn without anyone climbing the stair. But on clear evenings, from the right headland, the beam still arrives on time — and somewhere inside it is the patience of everyone who kept it.</p>
+</section>
+
+<section class="col notes" data-ch="Notes" aria-labelledby="nh">
+  <h2 id="nh">Notes</h2>
+  <ol>
+    <li id="n1">The stair in this imagined tower is cast iron, and every tread rings when struck. <a href="#r1" aria-label="Back to reference 1">↩</a></li>
+    <li id="n2">Each real lighthouse keeps its own pattern of flashes, so a sailor can tell one headland from the next. <a href="#r2" aria-label="Back to reference 2">↩</a></li>
+    <li id="n3">Lenses built from concentric rings of prisms were introduced in the 1820s by the French physicist Augustin Fresnel, replacing far heavier solid lenses. <a href="#r3" aria-label="Back to reference 3">↩</a></li>
+  </ol>
+  <p class="fiction">The keeper, his tower and his log are imagined. The Tidewater Quarterly is a fictional magazine; this demo abridges the feature to about four hundred words.</p>
+</section>
+</article>
+</main>
+<footer class="colo">
+  <div class="brand">The Tidewater Quarterly</div>
+  <p>Set in book serif and Didone capitals, printed on nothing but light. A fictional publication.</p>
+  <button type="button" id="toTop">Return to the light</button>
+</footer>
+<div class="pop" id="pop" role="dialog" aria-label="Footnote" hidden><p id="popText"></p><button type="button" class="x" id="popX" aria-label="Close footnote">×</button></div>
+
+<script>
+(function(){
+'use strict';
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,root=document.documentElement,NS='http://www.w3.org/2000/svg';
+function $(id){return document.getElementById(id);}
+function el(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+var seed=11;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;}
+function clamp(v,a,b){return v<a?a:v>b?b:v;}
+function mix(a,b,t){return a+(b-a)*t;}
+function hex(h){return [parseInt(h.substr(1,2),16),parseInt(h.substr(3,2),16),parseInt(h.substr(5,2),16)];}
+function mixc(a,b,t){a=hex(a);b=hex(b);return 'rgb('+Math.round(mix(a[0],b[0],t))+','+Math.round(mix(a[1],b[1],t))+','+Math.round(mix(a[2],b[2],t))+')';}
+function smooth(a,b,v){var t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t);}
+
+/* paper grain */
+try{var gc=document.createElement('canvas');gc.width=gc.height=140;var gx=gc.getContext('2d'),im=gx.createImageData(140,140);
+  for(var i=0;i<im.data.length;i+=4){im.data[i]=20;im.data[i+1]=33;im.data[i+2]=61;im.data[i+3]=rnd()<.5?Math.round(rnd()*16):0;}
+  gx.putImageData(im,0,0);root.style.setProperty('--grain','url('+gc.toDataURL()+')');}catch(e){}
+
+/* ---------- build hero scene ---------- */
+var LX=1220,LY=263;
+(function(){
+  var t=$('tower');
+  // tower bands
+  var top=300,bot=640,wt=26,wb=44,bands=8;
+  function hw(y){return mix(wt,wb,(y-top)/(bot-top));}
+  for(var b=0;b<bands;b++){var y1=top+(bot-top)*b/bands,y2=top+(bot-top)*(b+1)/bands;
+    el('path',{d:'M'+(LX-hw(y1))+' '+y1+'L'+(LX+hw(y1))+' '+y1+'L'+(LX+hw(y2))+' '+y2+'L'+(LX-hw(y2))+' '+y2+'Z',fill:b%2?'#b8352b':'#efe6d6'},t);}
+  el('path',{d:'M'+(LX-wt)+' '+top+'L'+(LX+wt)+' '+top+'L'+(LX+wb)+' '+bot+'L'+(LX-wb)+' '+bot+'Z',fill:'url(#shade)'},t);
+  el('rect',{x:LX-7,y:bot-34,width:14,height:34,rx:7,fill:'#3a2c2a'},t);
+  [380,470].forEach(function(y){el('rect',{x:LX-4,y:y,width:8,height:13,fill:'#2b2f4d'},t);});
+  el('rect',{x:LX-38,y:top-8,width:76,height:8,fill:'#1d2240'},t);
+  for(var r=0;r<9;r++)el('line',{x1:LX-34+r*8.5,y1:top-8,x2:LX-34+r*8.5,y2:top-22,stroke:'#1d2240','stroke-width':1.6},t);
+  el('line',{x1:LX-36,y1:top-22,x2:LX+36,y2:top-22,stroke:'#1d2240','stroke-width':2},t);
+  el('rect',{x:LX-20,y:246,width:40,height:32,fill:'#ffe3a0',id:'glass'},t);
+  for(var a=0;a<4;a++)el('line',{x1:LX-20+a*13.3,y1:246,x2:LX-20+a*13.3,y2:278,stroke:'#1d2240','stroke-width':1.4},t);
+  el('path',{d:'M'+(LX-25)+' 247Q'+LX+' 214 '+(LX+25)+' 247z',fill:'#1d2240'},t);
+  el('path',{d:'M'+LX+' 222v-12',stroke:'#1d2240','stroke-width':2.4},t);
+  el('circle',{cx:LX,cy:208,r:3,fill:'#1d2240'},t);
+  // stars
+  var hs=$('hstars');for(var s=0;s<70;s++)el('circle',{cx:(rnd()*3000-800).toFixed(0),cy:(-900+rnd()*1100).toFixed(0),r:(.6+rnd()*1.4).toFixed(2),opacity:(.2+rnd()*.6).toFixed(2)},hs);
+  // sun glitter
+  var gl=$('glitter');for(var g=0;g<16;g++){var yy=566+g*g*1.3+rnd()*6,w=10+g*3+rnd()*18;
+    el('rect',{x:(430-w/2+(rnd()-.5)*(30+g*9)).toFixed(1),y:yy.toFixed(1),width:w.toFixed(1),height:(1+g*.12).toFixed(2),class:'glint',style:'animation-delay:'+(-rnd()*2.6).toFixed(2)+'s'},gl);}
+})();
+
+var scene=$('scene'),hero=$('top'),tblock=$('tblock'),hwrap=$('hwrap'),litC=$('litCore'),litP=$('litPen'),wash=$('wash');
+var b1=$('b1'),b1s=$('b1s'),b2=$('b2'),b2s=$('b2s'),lglow=$('lglow'),flare=$('flare'),glass=$('glass');
+var V={x0:0,y0:0,vw:1600,vh:900,k:1},HX=0,HY=0,mastH=40;
+var waveG=$('waves'),waves=[];
+for(var i=0;i<10;i++)waves.push({el:el('path',{stroke:'rgba(255,236,214,'+(.1+i*.035).toFixed(3)+')','stroke-width':(.9+i*.28).toFixed(2),'stroke-dasharray':(30+i*14)+' '+(18+i*9)},waveG),y:566+9*Math.pow(i,1.55),a:1.2+i*1.15,l:70+i*30,s:.5+i*.07,st:10+i*4});
+
+function frameScene(){
+  var W=hero.clientWidth,H=hero.clientHeight,A=W/H,fx,fy,vw;
+  if(A>=1.15){fx=.8;fy=.3;vw=900*A;}else{fx=.82;fy=.42;vw=1150;}
+  var vh=vw/A;V.vw=vw;V.vh=vh;V.x0=LX-fx*vw;V.y0=LY-fy*vh;V.k=W/vw;
+  scene.setAttribute('viewBox',V.x0.toFixed(1)+' '+V.y0.toFixed(1)+' '+vw.toFixed(1)+' '+vh.toFixed(1));
+  var lx=(LX-V.x0)*V.k,ly=(LY-V.y0)*V.k;
+  tblock.style.maxWidth=Math.max(180,lx-tblock.offsetLeft-28)+'px';
+  var hc=hwrap.offsetTop+hwrap.offsetHeight*.52;
+  var top=Math.max(mastH+6,ly-hc);
+  tblock.style.top=top+'px';
+  HX=tblock.offsetLeft+hwrap.offsetLeft;HY=top+hwrap.offsetTop;
+  wash.style.setProperty('--lx',lx+'px');wash.style.setProperty('--ly',ly+'px');
+}
+function sx(X){return (X-V.x0)*V.k-HX;}
+function sy(Y){return (Y-V.y0)*V.k-HY;}
+function poly(d,dir,sp,w0){var tx=LX+dir*d;return [[LX,LY-w0],[tx,LY-sp],[tx,LY+sp],[LX,LY+w0]];}
+function ptsStr(p){return p.map(function(q){return q[0].toFixed(1)+','+q[1].toFixed(1);}).join(' ');}
+function clipStr(p){return 'polygon('+p.map(function(q){return sx(q[0]).toFixed(1)+'px '+sy(q[1]).toFixed(1)+'px';}).join(',')+')';}
+var PERIOD=12;
+function beam(t){
+  var th=t/PERIOD*Math.PI*2,s=Math.sin(th),c=Math.cos(th),Lmax=V.vw*.98;
+  function setB(core,soft,ss,cc){
+    var dir=ss<0?-1:1,d=Math.abs(ss)*Lmax,f=(cc+1)/2,br=.28+.72*f;
+    core.setAttribute('fill',dir<0?'url(#bL)':'url(#bR)');soft.setAttribute('fill',dir<0?'url(#bL)':'url(#bR)');
+    core.setAttribute('points',ptsStr(poly(d,dir,12+d*.075,5)));soft.setAttribute('points',ptsStr(poly(d,dir,26+d*.16,9)));
+    core.setAttribute('opacity',(br*.85).toFixed(3));soft.setAttribute('opacity',(br*.32).toFixed(3));
+    return {dir:dir,d:d,br:br};
+  }
+  var A=setB(b1,b1s,s,c),B=setB(b2,b2s,-s,-c),L=A.dir<0?A:B;
+  litC.style.clipPath=clipStr(poly(L.d,-1,12+L.d*.075,5));
+  litP.style.clipPath=clipStr(poly(L.d,-1,26+L.d*.16,9));
+  litC.style.opacity=L.br.toFixed(3);litP.style.opacity=(L.br*.6).toFixed(3);
+  var fl=Math.pow(Math.max(0,c),14)+Math.pow(Math.max(0,-c),14);
+  flare.setAttribute('opacity',(fl*.95).toFixed(3));flare.setAttribute('r',(160+fl*160).toFixed(1));
+  lglow.setAttribute('opacity',(.55+fl*.45).toFixed(3));
+  wash.style.opacity=(fl*.7).toFixed(3);
+}
+function sea(t){
+  var xa=V.x0-40,xb=V.x0+V.vw+40,yb=V.y0+V.vh+20;
+  for(var i=0;i<waves.length;i++){var w=waves[i];if(w.y>yb){w.el.setAttribute('d','');continue;}
+    var d='',k=2*Math.PI/w.l,tt=t*w.s;
+    for(var x=xa;x<=xb;x+=w.st){var y=w.y+w.a*Math.sin(x*k+tt*3)+w.a*.4*Math.sin(x*k*2.7-tt*4.1);d+=(d?'L':'M')+x.toFixed(0)+' '+y.toFixed(1);}
+    w.el.setAttribute('d',d);w.el.setAttribute('stroke-dashoffset',(-t*(8+i*3)).toFixed(1));}
+}
+
+/* ---------- watch scene ---------- */
+(function(){var ws=$('wstars');for(var s=0;s<90;s++)el('circle',{cx:(rnd()*1600).toFixed(0),cy:(rnd()*520).toFixed(0),r:(.5+rnd()*1.5).toFixed(2),opacity:(.3+rnd()*.7).toFixed(2)},ws);
+  var mg=$('mglit');for(var g=0;g<14;g++){var w=8+g*4;el('rect',{x:(-w/2+(rnd()-.5)*g*8).toFixed(1),y:(650+g*g*1.1).toFixed(1),width:w,height:1.4,class:'glint',style:'animation-delay:'+(-rnd()*2.6).toFixed(2)+'s'},mg);}})();
+var watchS=$('watch'),ws0=$('ws0'),ws1=$('ws1'),ws2=$('ws2'),wsea=$('wsea'),wstars=$('wstars'),moon=$('moon'),mglit=$('mglit'),farl=$('farl'),clock=$('clock'),logItems=[].slice.call(document.querySelectorAll('#log li'));
+function watch(p,t){
+  ws0.setAttribute('stop-color',mixc('#2a3a66','#040917',smooth(0,.6,p)));
+  ws1.setAttribute('stop-color',mixc('#8e6a8a','#0b1633',smooth(0,.7,p)));
+  ws2.setAttribute('stop-color',mixc('#f0a872','#1c2c52',smooth(.05,.75,p)));
+  wsea.setAttribute('fill',mixc('#4a4766','#050b19',smooth(0,.7,p)));
+  wstars.setAttribute('opacity',smooth(.2,.65,p).toFixed(3));
+  var mp=smooth(.25,1,p),mx=mix(980,870,mp),my=mix(690,170,mp);
+  moon.setAttribute('transform','translate('+mx.toFixed(1)+' '+my.toFixed(1)+')');
+  mglit.setAttribute('transform','translate('+mx.toFixed(1)+' 0)');mglit.setAttribute('opacity',(smooth(.35,.7,p)*.8).toFixed(3));
+  var fp=(Math.sin(t*1.3)>.72?1:.08)*smooth(.1,.4,p);farl.setAttribute('opacity',fp.toFixed(2));
+  var mins=19*60+40+Math.round(p*540/10)*10;mins%=1440;var hh=Math.floor(mins/60),mm=mins%60;
+  var txt=(hh<10?'0':'')+hh+':'+(mm<10?'0':'')+mm;if(clock.textContent!==txt)clock.textContent=txt;
+  logItems.forEach(function(li){li.classList.toggle('on',p>=+li.dataset.at-.001);});
+}
+
+/* ---------- lens plate ---------- */
+var LP=$('lparts'),parts=[],CX=300,CY=375;
+function wUp(y){return 150-76*Math.pow((CY-y)/225,1.6);}
+function wDn(y){return 150-62*Math.pow((y-CY)/190,1.6);}
+function wAt(y){return y<CY?wUp(y):wDn(y);}
+function band(y1,y2){var w1=wAt(y1),w2=wAt(y2),s1=(y1-CY)*.05,s2=(y2-CY)*.05;
+  return 'M'+(CX-w1)+' '+y1+'Q'+CX+' '+(y1+s1*2)+' '+(CX+w1)+' '+y1+'L'+(CX+w2)+' '+y2+'Q'+CX+' '+(y2+s2*2)+' '+(CX-w2)+' '+y2+'Z';}
+function part(g,o){o.el=g;parts.push(o);return g;}
+(function(){
+  var gA={fill:'url(#hatch)',stroke:'#14213d','stroke-width':.9};
+  // frame outline (draws)
+  var prof='',pr2='',pl='',pl2='';for(var y=150;y<=565;y+=5){var w=wAt(y);prof+=(prof?'L':'M')+(CX-w-4)+' '+y;pr2+=(pr2?'L':'M')+(CX+w+4)+' '+y;pl+=(pl?'L':'M')+(CX-w*.52)+' '+y;pl2+=(pl2?'L':'M')+(CX+w*.52)+' '+y;}
+  var fr=el('g',{fill:'none',stroke:'#14213d','stroke-width':1.1},LP);
+  [prof,pr2,pl,pl2].forEach(function(d,i){el('path',{d:d,pathLength:1,'stroke-dasharray':1,'stroke-dashoffset':1,opacity:i>1?.45:1},fr);});
+  part(fr,{kind:'draw',s0:0,len:.24});
+  // base
+  var base=el('g',{},LP);el('path',{d:'M205 572H395L420 640H180Z',fill:'url(#xhatch)',stroke:'#14213d','stroke-width':1},base);
+  el('rect',{x:160,y:640,width:280,height:14,fill:'#14213d'},base);el('path',{d:'M190 600H410',stroke:'#14213d','stroke-width':.8},base);
+  part(base,{dx:0,dy:140,rot:0,s0:.04,cx:300,cy:610});
+  // lower prisms E
+  var yl=[428,448,468,488,508,528,548],n=0;
+  for(var i=0;i<yl.length-1;i++){var g=el('g',{},LP);el('path',Object.assign({d:band(yl[i]+1.5,yl[i+1]-1.5)},gA),g);
+    part(g,{dx:(i%2?1:-1)*60,dy:90+i*26,rot:(i%2?6:-6),s0:.1+i*.035,cx:300,cy:yl[i]});}
+  // central belt C
+  var yb=[330,352,375,398,420];
+  for(var j=0;j<4;j++){var g2=el('g',{},LP);el('path',Object.assign({d:band(yb[j]+1.5,yb[j+1]-1.5)},gA),g2);
+    part(g2,{dx:(j%2?1:-1)*240,dy:0,rot:0,s0:.2+j*.04,cx:300,cy:yb[j]});}
+  // upper prisms A
+  var yu=[328,308,288,268,248,228,208,188,168,150];
+  for(var k=0;k<yu.length-1;k++){var g3=el('g',{},LP);el('path',Object.assign({d:band(yu[k+1]+1.5,yu[k]-1.5)},gA),g3);
+    part(g3,{dx:(k%2?-1:1)*50,dy:-(90+k*24),rot:(k%2?-7:7),s0:.26+k*.03,cx:300,cy:yu[k]});}
+  // crown
+  var cr=el('g',{},LP);el('path',{d:'M'+(CX-74)+' 150Q'+CX+' 86 '+(CX+74)+' 150Z',fill:'url(#xhatch)',stroke:'#14213d','stroke-width':1},cr);
+  el('path',{d:'M300 104V84',stroke:'#14213d','stroke-width':2},cr);el('circle',{cx:300,cy:80,r:5,fill:'#14213d'},cr);
+  part(cr,{dx:0,dy:-150,rot:0,s0:.52,cx:300,cy:120});
+  // lamp D
+  var lamp=el('g',{},LP);el('circle',{cx:CX,cy:CY,r:26,fill:'url(#halo)'},lamp);el('path',{d:'M300 356c9 12 11 20 7 27-3 5-11 5-14 0-4-7-2-15 7-27z',fill:'url(#flame)'},lamp);
+  el('rect',{x:292,y:384,width:16,height:14,fill:'#14213d'},lamp);
+  part(lamp,{dx:0,dy:0,rot:0,sc:.2,s0:.56,cx:300,cy:375});
+  // bullseye B
+  var be=el('g',{},LP);el('circle',{cx:CX,cy:CY,r:44,fill:'rgba(239,233,220,.55)',stroke:'#14213d','stroke-width':1},be);
+  [34,24,14].forEach(function(r){el('circle',{cx:CX,cy:CY,r:r,fill:'none',stroke:'#14213d','stroke-width':.8},be);});
+  part(be,{dx:0,dy:0,rot:120,sc:.25,s0:.46,cx:300,cy:375});
+  // rays
+  var RG=$('rays'),rays=[[440,222],[420,262],[455,350],[0,375],[455,400],[425,490],[410,530]];
+  rays.forEach(function(r){[1,-1].forEach(function(m){var d=r[0]?'M300 375L'+(300+m*(r[0]-300))+' '+r[1]+'L'+(300+m*292)+' '+r[1]:'M300 375L'+(300+m*292)+' 375';
+    el('path',{d:d,pathLength:1,'stroke-dasharray':1,'stroke-dashoffset':1},RG);});});
+  // callouts
+  var CO=$('callouts'),labels=[['A',300,236],['B',300,353],['C',210,388],['D',300,420],['E',330,500]];
+  labels.forEach(function(l){el('circle',{cx:l[1],cy:l[2]-4,r:9,fill:'#f6f1e7',stroke:'#c0392b'},CO);var tx=el('text',{x:l[1],y:l[2],fill:'#c0392b'},CO);tx.textContent=l[0];});
+})();
+var rayEls=[].slice.call(document.querySelectorAll('#rays path')),lwash=$('levelwash'),callouts=$('callouts'),frameEls=parts[0].el.children;
+function backOut(x){var c1=1.5,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2);}
+function lens(p){
+  for(var i=0;i<parts.length;i++){var P=parts[i],f=clamp((p-P.s0)/(P.len||.2),0,1);
+    if(P.kind==='draw'){for(var j=0;j<frameEls.length;j++)frameEls[j].setAttribute('stroke-dashoffset',(1-f).toFixed(3));continue;}
+    var e=reduce?f:backOut(f),inv=1-e,sc=P.sc!=null?mix(P.sc,1,e):1;
+    P.el.setAttribute('transform','translate('+(P.dx*inv).toFixed(1)+' '+(P.dy*inv).toFixed(1)+') rotate('+(P.rot*inv).toFixed(2)+' '+P.cx+' '+P.cy+')'+(sc!==1?' translate('+P.cx+' '+P.cy+') scale('+sc.toFixed(3)+') translate('+(-P.cx)+' '+(-P.cy)+')':''));
+    P.el.setAttribute('opacity',clamp(f*1.6,0,1).toFixed(3));}
+  var rf=clamp((p-.64)/.2,0,1);rayEls.forEach(function(r,i){r.setAttribute('stroke-dashoffset',(1-clamp(rf*1.3-(i%7)*.05,0,1)).toFixed(3));});
+  lwash.setAttribute('opacity',smooth(.82,.96,p).toFixed(3));callouts.setAttribute('opacity',smooth(.78,.9,p).toFixed(3));
+}
+
+/* ---------- scroll-driven state ---------- */
+var mast=$('mast'),pbeam=$('pbeam'),ptip=$('ptip'),pline=$('pline'),mchap=$('mchap'),lensS=$('lens');
+var chapters=[].slice.call(document.querySelectorAll('[data-ch]')),curCh='',T=0,lastWatchP=0;
+function secP(s){var r=s.getBoundingClientRect(),h=s.offsetHeight-innerHeight;return clamp(-r.top/Math.max(1,h),0,1);}
+function onScroll(){
+  var max=document.documentElement.scrollHeight-innerHeight,p=clamp(scrollY/Math.max(1,max),0,1);
+  pbeam.style.transform='scaleX('+p.toFixed(4)+')';pline.style.transform='scaleX('+p.toFixed(4)+')';
+  var bw=mast.clientWidth;ptip.style.opacity=p>.003?1:0;ptip.style.transform='translateX('+(p*bw).toFixed(1)+'px)';
+  mast.classList.toggle('solid',scrollY>hero.offsetHeight-mastH-10);
+  var ch='Prologue';for(var i=0;i<chapters.length;i++){if(chapters[i].getBoundingClientRect().top<innerHeight*.45)ch=chapters[i].dataset.ch;}
+  if(ch!==curCh){curCh=ch;mchap.textContent=ch;}
+  lastWatchP=secP(watchS);watch(lastWatchP,T);
+  lens(secP(lensS));
+}
+var sT=0;addEventListener('scroll',function(){if(!sT)sT=requestAnimationFrame(function(){sT=0;onScroll();});},{passive:true});
+
+/* ---------- reveals ---------- */
+var io='IntersectionObserver' in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -6% 0px'}):null;
+[].forEach.call(document.querySelectorAll('.rv'),function(e){io?io.observe(e):e.classList.add('in');});
+var heroVis=true,watchVis=false;
+if(window.IntersectionObserver){new IntersectionObserver(function(es){es.forEach(function(e){if(e.target===hero)heroVis=e.isIntersecting;else watchVis=e.isIntersecting;});}).observe(hero);
+  new IntersectionObserver(function(es){watchVis=es[0].isIntersecting;}).observe(watchS);}
+
+/* ---------- footnotes ---------- */
+var pop=$('pop'),popText=$('popText'),popX=$('popX'),opener=null;
+var notes={1:'The stair in this imagined tower is cast iron, and every tread rings when struck.',2:'Each real lighthouse keeps its own pattern of flashes, so a sailor can tell one headland from the next.',3:'Concentric-prism lenses were introduced in the 1820s by the French physicist Augustin Fresnel.'};
+function openFn(btn){opener=btn;var n=btn.dataset.fn;popText.innerHTML='<b>'+n+'</b>'+notes[n];pop.hidden=false;
+  var r=btn.getBoundingClientRect(),w=pop.offsetWidth,left=clamp(r.left+r.width/2-40,12,innerWidth-w-12);
+  pop.style.left=left+'px';pop.style.top=(r.bottom+scrollY+10)+'px';pop.style.setProperty('--ax',clamp(r.left+r.width/2-left-6,10,w-22)+'px');popX.focus({preventScroll:true});}
+function closeFn(){if(pop.hidden)return;pop.hidden=true;if(opener)opener.focus({preventScroll:true});opener=null;}
+[].forEach.call(document.querySelectorAll('.fn'),function(b){b.addEventListener('click',function(e){e.stopPropagation();if(!pop.hidden&&opener===b)closeFn();else openFn(b);});});
+popX.addEventListener('click',closeFn);
+document.addEventListener('click',function(e){if(!pop.hidden&&!pop.contains(e.target))closeFn();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeFn();});
+$('toTop').addEventListener('click',function(){scrollTo({top:0,behavior:reduce?'auto':'smooth'});});
+
+/* ---------- loop ---------- */
+var running=true,raf=0,last=0;
+function loop(now){
+  raf=0;if(!running||document.hidden)return;
+  var dt=last?Math.min(.05,(now-last)/1000):0;last=now;T+=dt;
+  if(heroVis){if(!reduce){beam(T);sea(T);}}
+  if(watchVis)watch(lastWatchP,T);
+  raf=requestAnimationFrame(loop);
+}
+function play(){running=true;root.classList.remove('paused');if(!raf){last=0;raf=requestAnimationFrame(loop);}}
+function pause(){running=false;root.classList.add('paused');if(raf){cancelAnimationFrame(raf);raf=0;}}
+document.addEventListener('visibilitychange',function(){if(document.hidden){if(raf){cancelAnimationFrame(raf);raf=0;}}else if(running)play();});
+function layout(){frameScene();beam(reduce?PERIOD*.68:T);sea(T);onScroll();}
+addEventListener('resize',layout);
+T=PERIOD*.68;layout();
+window.__demo={play:play,pause:pause,get playing(){return running;}};
+addEventListener('message',function(e){var d=e.data||{};if(d.type==='demo:play')play();else if(d.type==='demo:pause')pause();});
+play();
+try{parent.postMessage({type:'demo:ready',id:'w02-longform',duration:null},'*');}catch(e){}
+})();
+</script>
+</body>
+</html>

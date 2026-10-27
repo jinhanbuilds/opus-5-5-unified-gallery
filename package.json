@@ -1,0 +1,12 @@
+{
+  "name": "opus-5-5-unified-gallery",
+  "private": true,
+  "scripts": {
+    "build": "python3 scripts/build_public.py",
+    "build:public": "python3 scripts/build_public.py",
+    "build:full": "python3 scripts/build.py"
+  },
+  "devDependencies": {
+    "esbuild": "0.21.5"
+  }
+}

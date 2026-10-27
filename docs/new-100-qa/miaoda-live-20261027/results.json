@@ -1,0 +1,263 @@
+{
+  "date": "2026-10-27T14:19:32.681Z",
+  "url": "https://zcnofdpgpxud.feishu.link/app/app_17exzr8eka4",
+  "publicContext": true,
+  "count": 8,
+  "passed": 8,
+  "metadata": [
+    {
+      "width": 1440,
+      "subjects": 218,
+      "variants": 222,
+      "code": 31,
+      "image": 69,
+      "files": {
+        "deployment-manifest.json": {
+          "sha256": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+          "json": {
+            "appId": "app_17exzr8eka4",
+            "date": "2026-10-27",
+            "localCatalogSha256": "72364c7a1615fb61591a6f62f4d15721d8d92196b0f06dcace543fe3045c8461",
+            "subjects": 218,
+            "variants": 222,
+            "newCases": 100,
+            "code": 31,
+            "image": 69,
+            "groups": {
+              "lemo": {
+                "total": 15,
+                "code": 2,
+                "image": 13
+              },
+              "mg": {
+                "total": 13,
+                "code": 0,
+                "image": 13
+              },
+              "openvg": {
+                "total": 15,
+                "code": 15,
+                "image": 0
+              },
+              "avi": {
+                "total": 15,
+                "code": 0,
+                "image": 15
+              },
+              "swan": {
+                "total": 14,
+                "code": 0,
+                "image": 14
+              },
+              "threejs": {
+                "total": 14,
+                "code": 0,
+                "image": 14
+              },
+              "optical": {
+                "total": 14,
+                "code": 14,
+                "image": 0
+              }
+            },
+            "codeIds": [
+              "n012",
+              "n015",
+              "n029",
+              "n030",
+              "n031",
+              "n032",
+              "n033",
+              "n034",
+              "n035",
+              "n036",
+              "n037",
+              "n038",
+              "n039",
+              "n040",
+              "n041",
+              "n042",
+              "n043",
+              "n087",
+              "n088",
+              "n089",
+              "n090",
+              "n091",
+              "n092",
+              "n093",
+              "n094",
+              "n095",
+              "n096",
+              "n097",
+              "n098",
+              "n099",
+              "n100"
+            ]
+          }
+        },
+        "fusion/catalog.js": {
+          "sha256": "183d29fc38ce44d23ea70d431018e3ed438d2e58f389b2dc4eb8207799c1e737"
+        },
+        "fusion/app.js": {
+          "sha256": "c1e3b2a0b73ba9a80356f8e3ae270183f25dcdc049c4a30af5c582251bddcbb7"
+        }
+      }
+    },
+    {
+      "width": 390,
+      "subjects": 218,
+      "variants": 222,
+      "code": 31,
+      "image": 69,
+      "files": {
+        "deployment-manifest.json": {
+          "sha256": "376612abe3761fefb1f0075194312d995f5b7232f5658a3df5f0e1d75d3ceb80",
+          "json": {
+            "appId": "app_17exzr8eka4",
+            "date": "2026-10-27",
+            "localCatalogSha256": "72364c7a1615fb61591a6f62f4d15721d8d92196b0f06dcace543fe3045c8461",
+            "subjects": 218,
+            "variants": 222,
+            "newCases": 100,
+            "code": 31,
+            "image": 69,
+            "groups": {
+              "lemo": {
+                "total": 15,
+                "code": 2,
+                "image": 13
+              },
+              "mg": {
+                "total": 13,
+                "code": 0,
+                "image": 13
+              },
+              "openvg": {
+                "total": 15,
+                "code": 15,
+                "image": 0
+              },
+              "avi": {
+                "total": 15,
+                "code": 0,
+                "image": 15
+              },
+              "swan": {
+                "total": 14,
+                "code": 0,
+                "image": 14
+              },
+              "threejs": {
+                "total": 14,
+                "code": 0,
+                "image": 14
+              },
+              "optical": {
+                "total": 14,
+                "code": 14,
+                "image": 0
+              }
+            },
+            "codeIds": [
+              "n012",
+              "n015",
+              "n029",
+              "n030",
+              "n031",
+              "n032",
+              "n033",
+              "n034",
+              "n035",
+              "n036",
+              "n037",
+              "n038",
+              "n039",
+              "n040",
+              "n041",
+              "n042",
+              "n043",
+              "n087",
+              "n088",
+              "n089",
+              "n090",
+              "n091",
+              "n092",
+              "n093",
+              "n094",
+              "n095",
+              "n096",
+              "n097",
+              "n098",
+              "n099",
+              "n100"
+            ]
+          }
+        },
+        "fusion/catalog.js": {
+          "sha256": "183d29fc38ce44d23ea70d431018e3ed438d2e58f389b2dc4eb8207799c1e737"
+        },
+        "fusion/app.js": {
+          "sha256": "c1e3b2a0b73ba9a80356f8e3ae270183f25dcdc049c4a30af5c582251bddcbb7"
+        }
+      }
+    }
+  ],
+  "results": [
+    {
+      "width": 1440,
+      "id": "n012",
+      "errors": [],
+      "action": "Original timeline and sound control",
+      "pass": true
+    },
+    {
+      "width": 1440,
+      "id": "n029",
+      "errors": [],
+      "action": "Original game starts",
+      "pass": true
+    },
+    {
+      "width": 1440,
+      "id": "n087",
+      "errors": [],
+      "action": "Original optical controls",
+      "pass": true
+    },
+    {
+      "width": 1440,
+      "id": "n020",
+      "errors": [],
+      "action": "Image disclosure and source link",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "id": "n012",
+      "errors": [],
+      "action": "Original timeline and sound control",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "id": "n029",
+      "errors": [],
+      "action": "Original game starts",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "id": "n087",
+      "errors": [],
+      "action": "Original optical controls",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "id": "n020",
+      "errors": [],
+      "action": "Image disclosure and source link",
+      "pass": true
+    }
+  ]
+}

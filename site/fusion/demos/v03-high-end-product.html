@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Culla Product Film</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#FAFAF7}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* v03-high-end-product — 8 bars @120 BPM = 16 s (beat 0.5 s), 1920x1080. Fictional product "Culla".
+   Story time s = (t + 1.9) mod 16, so frame 0 shows the finished hook (thumbnail) and the loop seam sits in the black.
+   Bar 1  0–2    hook word by word on beats: Find(0) the(.5) best(1) take(1.5)
+   Bar 2  2–4    "take" grows into the prompt field; cursor clicks (2.5), types, clicks Cull (3.5); circle opens from the button
+   Bar 3  4–6    dark: wall of 30 procedural clips, scan line, winners lit exactly on beats 4.5 / 5 / 5.5
+   Bar 4  6–8    3D carousel with floor reflections; anticipation, then a sub-frame motion-blurred whip onto the hero (7.0–7.55)
+   Bar 5  8–10   hero in a phone; side panel flips into results on beat 9
+   Bar 6–7 10–13 big stats on push cuts (10 / 11 / 12), 3-word ticker (13 / 13.25 / 13.5)
+   Bar 8  14–16  logo reveal, fade to black 15–15.45, black → white, hook restarts */
+(() => {
+const ID = 'v03-high-end-product', W = 1920, H = 1080, D = 16, PHASE = 1.9;
+const cv = document.getElementById('c'), X = cv.getContext('2d');
+let S = 1, OX = 0, OY = 0, CW = 1, CH = 1;
+const cl = (v, a = 0, b = 1) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t, k = (t, a, b) => cl((t - a) / (b - a));
+const eo3 = x => 1 - Math.pow(1 - x, 3), eio3 = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2, ei3 = x => x * x * x;
+const eoX = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+const eioX = x => x <= 0 ? 0 : x >= 1 ? 1 : x < .5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2;
+function rng(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const WHITE = '#FAFAF7', INK = '#0E0E0F', DARK = '#0B0B0C', ACC = '#2F5BFF', GREY = '#77777A';
+const FF = 'Geist,"Helvetica Neue",Arial,sans-serif';
+const font = (s, w = 600) => { X.font = `${w} ${s}px ${FF}`; X.letterSpacing = (-0.04 * s) + 'px'; };
+const rr = (x, y, w, h, r) => { X.beginPath(); X.roundRect(x, y, w, h, Math.max(0, Math.min(r, w / 2, h / 2))); };
+
+// ---------------- procedural "footage" tiles ----------------
+const PALS = [
+  ['#F2B27E', '#C9677A', '#2C3550', '#FBE3B8'], ['#E8C39C', '#6F8C93', '#2B3B40', '#F6E7CF'], ['#1C2335', '#3B4762', '#0F1420', '#F4CF86'],
+  ['#DCDDD6', '#9BA6A4', '#56625F', '#F2F1EA'], ['#EFD0A2', '#CF8756', '#5A3326', '#FFF1D6'], ['#BFD3D6', '#5F8A95', '#1E3942', '#E9F3F2']
+];
+const R0 = rng(11), TILES = [];
+for (let i = 0; i < 30; i++) {
+  const type = (i * 7 + (i >> 2)) % 6, pal = PALS[(i * 5 + 3) % 6], r = rng(100 + i);
+  const T = { type, pal, ph: r() * 10, sp: .6 + r() * .8, pts: [], bld: [] };
+  for (let l = 0; l < 3; l++) { const a = []; for (let j = 0; j <= 12; j++) a.push(r()); T.pts.push(a); }
+  for (let j = 0; j < 9; j++) T.bld.push([r(), .35 + r() * .5, r()]);
+  T.bok = Array.from({ length: 7 }, () => [r(), r(), .04 + r() * .08]);
+  TILES.push(T);
+}
+function tile(x, y, w, h, T, tm) {
+  const [c1, c2, c3, c4] = T.pal, t = tm * T.sp + T.ph, ga = X.globalAlpha, GA = v => { X.globalAlpha = ga * v; };
+  X.save(); X.beginPath(); X.rect(x, y, w, h); X.clip();
+  const g = X.createLinearGradient(0, y, 0, y + h); g.addColorStop(0, c1); g.addColorStop(1, c2); X.fillStyle = g; X.fillRect(x, y, w, h);
+  if (T.type === 0) { // sun over water
+    const hz = y + h * .58; X.fillStyle = c4; GA(.9); X.beginPath(); X.arc(x + w * .5, hz - h * .08 + Math.sin(t * .3) * h * .02, w * .16, 0, 7); X.fill(); GA(1);
+    X.fillStyle = c3; X.fillRect(x, hz, w, h - (hz - y)); X.fillStyle = c4;
+    for (let j = 0; j < 9; j++) { const yy = hz + 8 + j * (h * .045), ww = w * (.12 + .3 * (1 - j / 9)) * (.7 + .3 * Math.sin(t * 2 + j)); GA(.55 - j * .05); X.fillRect(x + w * .5 - ww / 2 + Math.sin(t + j * 1.7) * 6, yy, ww, 2); }
+    GA(1);
+  } else if (T.type === 1) { // ridges
+    for (let l = 0; l < 3; l++) {
+      X.fillStyle = [c2, c3, INK][l]; GA([.55, .8, .9][l]); X.beginPath(); X.moveTo(x, y + h);
+      const off = (t * (6 + l * 10)) % (w / 6);
+      for (let j = 0; j <= 12; j++) X.lineTo(x + j * w / 6 - off, y + h * (.42 + l * .13) + T.pts[l][j] * h * .12);
+      X.lineTo(x + w * 2, y + h); X.fill();
+    }
+    GA(1);
+  } else if (T.type === 2) { // city at night
+    X.fillStyle = c3; X.fillRect(x, y, w, h);
+    const g2 = X.createLinearGradient(0, y, 0, y + h); g2.addColorStop(0, c1); g2.addColorStop(1, c2); GA(.7); X.fillStyle = g2; X.fillRect(x, y, w, h * .7); GA(1);
+    T.bld.forEach(([bx, bh, s], j) => {
+      const bw = w * .16, xx = x + bx * w * .9 - bw / 2 + ((t * 4) % (w * .2)) - w * .1, top = y + h * (1 - bh * .8);
+      X.fillStyle = '#0A0D16'; X.fillRect(xx, top, bw, h); X.fillStyle = c4;
+      for (let q = 0; q < 10; q++) { const on = ((Math.floor(t * 1.5) * 13 + q * 7 + j * 31) % 9) < 3; if (on) X.fillRect(xx + 4 + (q % 3) * (bw / 3.2), top + 8 + Math.floor(q / 3) * 16, 3, 5); }
+    });
+  } else if (T.type === 3) { // road
+    const hz = y + h * .46; X.fillStyle = c3; X.fillRect(x, hz, w, h); X.fillStyle = '#1b1b1d';
+    X.beginPath(); X.moveTo(x + w * .47, hz); X.lineTo(x + w * .53, hz); X.lineTo(x + w * 1.1, y + h); X.lineTo(x - w * .1, y + h); X.fill();
+    X.fillStyle = c4;
+    for (let j = 0; j < 7; j++) { const u = ((j / 7 + t * .35) % 1), p = u * u, yy = hz + p * (h - (hz - y)), ww = 1 + p * 7, hh = 2 + p * 26; X.fillRect(x + w * .5 - ww / 2, yy, ww, hh); }
+  } else if (T.type === 4) { // portrait with bokeh
+    T.bok.forEach(([bx, by, br]) => { X.fillStyle = c4; GA(.22); X.beginPath(); X.arc(x + ((bx * w + t * 8) % w), y + by * h * .7, br * w * 2, 0, 7); X.fill(); });
+    GA(1); X.fillStyle = c3; const sw = Math.sin(t * .8) * 4;
+    X.beginPath(); X.arc(x + w * .5 + sw, y + h * .5, w * .15, 0, 7); X.fill();
+    X.beginPath(); X.moveTo(x + w * .12, y + h); X.quadraticCurveTo(x + w * .16 + sw, y + h * .66, x + w * .5 + sw, y + h * .66); X.quadraticCurveTo(x + w * .84 + sw, y + h * .66, x + w * .88, y + h); X.fill();
+  } else { // ripples from above
+    X.strokeStyle = c4; X.lineWidth = 2;
+    for (let c = 0; c < 2; c++) { const cx = x + w * (c ? .7 : .3), cy = y + h * (c ? .65 : .35);
+      for (let j = 0; j < 4; j++) { const u = ((t * .4 + j / 4 + c * .5) % 1); GA((1 - u) * .7); X.beginPath(); X.arc(cx, cy, 6 + u * w * .5, 0, 7); X.stroke(); } }
+    GA(1);
+  }
+  X.restore();
+}
+
+// ---------------- Bar 1–2: hook + UI ----------------
+const HOOK = ['Find', 'the', 'best', 'take'], HS = 184, HY = 604;
+let hookL = null;
+function hookLayout() { font(HS); const gap = HS * .27, ws = HOOK.map(w => X.measureText(w).width); const tot = ws.reduce((a, b) => a + b, 0) + gap * 3; let x = (W - tot) / 2; hookL = ws.map(w => { const o = { x, w }; x += w + gap; return o; }); }
+const FIELD = { x: 400, y: 476, w: 1120, h: 128 }, BTN = { cx: 1412, cy: 540, w: 196, h: 92 };
+const QUERY = 'golden hour laughs';
+function curPos(s) { // cursor in bar 2
+  const P = [[2.22, 1560, 930], [2.46, 560, 548], [2.5, 560, 548], [3.18, 600, 600], [3.44, BTN.cx - 10, BTN.cy + 6], [3.9, BTN.cx - 10, BTN.cy + 6]];
+  let i = 0; while (i < P.length - 2 && s >= P[i + 1][0]) i++; const a = P[i], b = P[i + 1], e = eio3(k(s, a[0], b[0]));
+  return [lerp(a[1], b[1], e), lerp(a[2], b[2], e)];
+}
+function drawCursor(x, y, p) { X.save(); X.translate(x, y); X.scale(2.4 * (1 - .15 * p), 2.4 * (1 - .15 * p)); X.beginPath(); X.moveTo(0, 0); X.lineTo(0, 17); X.lineTo(4.2, 13.1); X.lineTo(7, 19.4); X.lineTo(9.7, 18.3); X.lineTo(7, 12.1); X.lineTo(12.4, 12.1); X.closePath(); X.fillStyle = INK; X.fill(); X.strokeStyle = '#fff'; X.lineWidth = 1.3; X.stroke(); X.restore(); }
+function barHookUI(s) {
+  X.fillStyle = WHITE; X.fillRect(0, 0, W, H);
+  if (!hookL) hookLayout();
+  const m = eio3(k(s, 2.0, 2.46)); // morph progress
+  // words
+  font(HS); X.fillStyle = INK;
+  HOOK.forEach((wd, i) => {
+    const land = i * .5, e = eoX(k(s, land - .1, land + .32)), ex = eo3(k(s, 2.0 + i * .03, 2.3 + i * .03));
+    if (e <= 0) return; const o = hookL[i];
+    if (i === 3) { // the word that becomes the UI
+      X.save(); X.beginPath(); X.rect(o.x - 20, HY - HS * .95, o.w + 40, HS * 1.2); X.clip();
+      X.globalAlpha = 1 - k(s, 2.02, 2.2); X.fillText(wd, o.x, HY + (1 - e) * HS); X.restore();
+      return;
+    }
+    X.save(); X.beginPath(); X.rect(o.x - 20, HY - HS * .95 - 200, o.w + 40, HS * 1.2 + 200); X.clip();
+    X.globalAlpha = 1 - ex; X.fillText(wd, o.x, HY + (1 - e) * HS - ex * 70); X.restore();
+  });
+  if (s < 2.0) return;
+  // field grows out of the word's box
+  const o = hookL[3], fx = lerp(o.x - 24, FIELD.x, m), fy = lerp(HY - HS * .78, FIELD.y, m), fw = lerp(o.w + 48, FIELD.w, m), fh = lerp(HS * .98, FIELD.h, m);
+  X.save(); X.shadowColor = 'rgba(0,0,0,.07)'; X.shadowBlur = 40 * m; X.shadowOffsetY = 12 * m;
+  rr(fx, fy, fw, fh, lerp(28, 64, m)); X.fillStyle = '#fff'; X.globalAlpha = cl(m * 2.5); X.fill(); X.restore();
+  rr(fx, fy, fw, fh, lerp(28, 64, m)); X.strokeStyle = '#E4E4E0'; X.lineWidth = 2; X.globalAlpha = cl(m * 2.5); X.stroke(); X.globalAlpha = 1;
+  const ui = k(s, 2.3, 2.5);
+  if (ui > 0) {
+    X.save(); X.globalAlpha = ui;
+    // search glyph
+    X.strokeStyle = INK; X.lineWidth = 4; X.lineCap = 'round'; X.beginPath(); X.arc(FIELD.x + 70, 534, 15, 0, 7); X.stroke(); X.beginPath(); X.moveTo(FIELD.x + 81, 545); X.lineTo(FIELD.x + 92, 556); X.stroke();
+    const n = Math.floor(QUERY.length * k(s, 2.56, 3.14)); font(46, 500);
+    if (n === 0) { X.fillStyle = '#A5A5A2'; X.fillText('Describe the take you want', FIELD.x + 122, 556); }
+    else { X.fillStyle = INK; X.fillText(QUERY.slice(0, n), FIELD.x + 122, 556); }
+    if (s > 2.5 && s < 3.45) { const cw = n ? X.measureText(QUERY.slice(0, n)).width : 0; if (Math.floor(s * 4) % 2 === 0 || (s < 3.2 && n > 0)) { X.fillStyle = ACC; X.fillRect(FIELD.x + 124 + cw, 516, 3, 50); } }
+    X.restore();
+    // button
+    const bs = eoX(k(s, 2.32, 2.62)), pr = Math.max(0, 1 - Math.abs(s - 3.5) / .08);
+    const bw = BTN.w * bs * (1 - .05 * pr), bh = BTN.h * bs * (1 - .05 * pr);
+    rr(BTN.cx - bw / 2, BTN.cy - bh / 2, bw, bh, bh / 2); X.fillStyle = ACC; X.fill();
+    if (bs > .6) { font(40, 600); X.fillStyle = '#fff'; X.textAlign = 'center'; X.globalAlpha = k(bs, .6, 1); X.fillText('Cull', BTN.cx, BTN.cy + 14); X.textAlign = 'left'; X.globalAlpha = 1; }
+  }
+  // cursor
+  if (s > 2.22 && s < 3.75) { const [cx, cy] = curPos(s), p = Math.max(0, 1 - Math.abs(s - 2.5) / .08, 1 - Math.abs(s - 3.5) / .08); drawCursor(cx, cy, p); }
+  // the drop: a circle opens out of the button into the dark scene
+  const ce = eioX(k(s, 3.5, 4.02));
+  if (ce > 0) { X.save(); X.beginPath(); X.arc(BTN.cx, BTN.cy, lerp(BTN.h / 2, 2200, ce), 0, 7); X.clip(); X.fillStyle = DARK; X.fillRect(0, 0, W, H); X.globalAlpha = k(ce, .08, .45); barWall(Math.max(s, 3.9)); X.restore(); }
+}
+
+// ---------------- Bar 3: clip wall + scan ----------------
+const TWd = 148, THt = 263, GAP = 18, GX0 = (W - (10 * TWd + 9 * GAP)) / 2, GY0 = (H - (3 * THt + 2 * GAP)) / 2;
+const WIN = [[2, 1], [5, 0], [8, 2]], WINT = [4.5, 5.0, 5.5];
+const tileRect = (c, r) => ({ x: GX0 + c * (TWd + GAP), y: GY0 + r * (THt + GAP), w: TWd, h: THt });
+function scanX(s) { const P = [[4.0, GX0 - 50], [4.5, GX0 + 2 * 166 + 74], [5.0, GX0 + 5 * 166 + 74], [5.5, GX0 + 8 * 166 + 74], [5.8, W - GX0 + 60]]; let i = 0; while (i < P.length - 2 && s >= P[i + 1][0]) i++; return lerp(P[i][1], P[i + 1][1], k(s, P[i][0], P[i + 1][0])); }
+function badge(x, y, txt, a) { X.save(); X.globalAlpha = a; font(22, 600); X.letterSpacing = '0px'; const w = X.measureText(txt).width + 26; rr(x, y, w, 38, 19); X.fillStyle = ACC; X.fill(); X.fillStyle = '#fff'; X.fillText(txt, x + 13, y + 26); X.restore(); }
+function barWall(s) {
+  X.fillStyle = DARK; X.fillRect(0, 0, W, H);
+  const push = 1 + .045 * eio3(k(s, 3.9, 6.0));
+  const out = eo3(k(s, 5.72, 6.1));
+  X.save(); X.translate(W / 2, H / 2); X.scale(push, push); X.translate(-W / 2, -H / 2);
+  const sx = scanX(s);
+  for (let r = 0; r < 3; r++) for (let c = 0; c < 10; c++) {
+    const wi = WIN.findIndex(q => q[0] === c && q[1] === r);
+    if (wi >= 0 && s >= 5.72) continue; // winners handed to the carousel transition
+    const R = tileRect(c, r), passed = k(sx, R.x + R.w / 2 - 20, R.x + R.w / 2 + 60);
+    X.globalAlpha = (wi >= 0 ? 1 : 1 - .72 * passed) * (1 - out);
+    tile(R.x, R.y, R.w, R.h, TILES[r * 10 + c], s);
+    if (wi >= 0) {
+      const lit = eoX(k(s, WINT[wi] - .02, WINT[wi] + .25));
+      if (lit > 0) { X.globalAlpha = 1; X.strokeStyle = ACC; X.lineWidth = 5; X.strokeRect(R.x - 5, R.y - 5, R.w + 10, R.h + 10); badge(R.x + 10, R.y + 12, '0' + (wi + 1), lit); }
+    }
+  }
+  X.globalAlpha = 1;
+  // scan line
+  if (s > 3.95 && s < 5.85) {
+    const g = X.createLinearGradient(sx - 160, 0, sx, 0); g.addColorStop(0, 'rgba(47,91,255,0)'); g.addColorStop(1, 'rgba(47,91,255,.16)');
+    X.fillStyle = g; X.fillRect(sx - 160, GY0 - 30, 160, H - 2 * GY0 + 60);
+    X.fillStyle = ACC; X.fillRect(sx - 1.5, GY0 - 30, 3, H - 2 * GY0 + 60);
+  }
+  X.restore();
+  // counter
+  font(26, 500); X.letterSpacing = '0px'; X.fillStyle = 'rgba(255,255,255,.55)';
+  const seen = Math.round(214 * k(s, 4.0, 5.8));
+  X.globalAlpha = 1 - out; X.fillText(seen + ' / 214 clips', GX0, H - 44); X.textAlign = 'right'; X.fillText(Math.min(3, WINT.filter(b => s >= b).length) + ' keepers', W - GX0, H - 44); X.textAlign = 'left'; X.globalAlpha = 1;
+  if (s >= 5.72 && s < 6.3) winnersToCarousel(s);
+}
+
+// ---------------- Bar 4: carousel ----------------
+const NC = 8, CR = 640, CF = 1700, CWd = 300, CHt = 533, HOR = 430, FLOOR = 842;
+const SLOT_TILE = [5, 28, 3, 7, 18, 22, 11, 12]; // slot 0 = winner 02, slot 1 = winner 03, slot 7 = winner 01 (hero)
+function phi(s) {
+  const drift = -.28 * eio3(k(s, 6.1, 7.0));
+  const whip = eio3(k(s, 7.0, 7.6)) * (Math.PI / 4 + 2 * Math.PI + .28);
+  return drift + whip;
+}
+function cardGeom(i, s) {
+  const th = i * 2 * Math.PI / NC + phi(s), c = Math.cos(th), sn = Math.sin(th);
+  const sc = CF / (CF + CR * (1 - c)), yb = HOR + (FLOOR - HOR) * sc;
+  return { x: W / 2 + CR * sn * sc, yb, w: CWd * sc, h: CHt * sc, c, depth: 1 - c };
+}
+function drawCard(g, T, s, alpha, dim) {
+  const cw = g.w * Math.abs(g.c);
+  if (cw < 1) return;
+  X.save(); X.globalAlpha = alpha;
+  if (g.c > 0) {
+    // reflection
+    X.save(); X.translate(0, 2 * g.yb); X.scale(1, -1); X.globalAlpha = alpha * .28; tile(g.x - cw / 2, g.yb - g.h, cw, g.h, T, s); X.restore();
+    const fg = X.createLinearGradient(0, g.yb, 0, g.yb + g.h * .55); fg.addColorStop(0, 'rgba(11,11,12,.3)'); fg.addColorStop(1, 'rgba(11,11,12,1)');
+    X.fillStyle = fg; X.fillRect(g.x - cw / 2 - 1, g.yb, cw + 2, g.h + 2);
+    tile(g.x - cw / 2, g.yb - g.h, cw, g.h, T, s);
+    if (dim > 0) { X.fillStyle = `rgba(11,11,12,${dim})`; X.fillRect(g.x - cw / 2, g.yb - g.h, cw, g.h); }
+  } else { X.save(); X.translate(g.x, 0); X.scale(-1, 1); tile(-cw / 2, g.yb - g.h, cw, g.h, T, s); X.restore(); X.fillStyle = 'rgba(11,11,12,.62)'; X.fillRect(g.x - cw / 2, g.yb - g.h, cw, g.h); }
+  X.restore();
+}
+function carouselScene(s, heroOut) {
+  X.fillStyle = DARK; X.fillRect(0, 0, W, H);
+  // floor line
+  X.fillStyle = 'rgba(255,255,255,.05)'; X.fillRect(0, FLOOR + 1, W, 1);
+  const inO = eo3(k(s, 6.05, 6.45)), fadeO = 1 - eo3(k(s, 7.6, 7.85));
+  const list = []; for (let i = 0; i < NC; i++) list.push([i, cardGeom(i, s)]);
+  list.sort((a, b) => b[1].depth - a[1].depth);
+  for (const [i, g] of list) {
+    const isWin = i === 0 || i === 1 || i === 7;
+    if (heroOut && i === 7) continue;
+    const a = (isWin ? 1 : inO) * (i === 7 ? 1 : fadeO);
+    drawCard(g, TILES[SLOT_TILE[i]], s, a, cl(g.depth * .45));
+  }
+}
+function winnersToCarousel(s) { // match move: wall winners fly to their carousel slots
+  const e = eio3(k(s, 5.72, 6.2)); const slots = [7, 0, 1];
+  WIN.forEach(([c, r], wi) => {
+    const R = tileRect(c, r), push = 1 + .045 * eio3(k(s, 3.9, 6.0));
+    const rx = (R.x - W / 2) * push + W / 2, ry = (R.y - H / 2) * push + H / 2, g = cardGeom(slots[wi], 6.2), cw = g.w * Math.abs(g.c);
+    const x = lerp(rx, g.x - cw / 2, e), y = lerp(ry, g.yb - g.h, e), w = lerp(R.w * push, cw, e), h = lerp(R.h * push, g.h, e);
+    tile(x, y, w, h, TILES[r * 10 + c], s);
+    X.globalAlpha = 1 - e; X.strokeStyle = ACC; X.lineWidth = 5; X.strokeRect(x - 5, y - 5, w + 10, h + 10); X.globalAlpha = 1;
+  });
+}
+const HERO_T = TILES[1 * 10 + 2];
+const PHONE = { cx: 690, cy: 540, w: 360, h: 700, sw: 324, sh: 576 };
+function barCarousel(s) {
+  if (s > 7.0 && s < 7.6) { // sub-frame motion blur: running average of 10 sub-frames across a 1/45 s shutter
+    const n = 10; for (let i = 0; i < n; i++) { X.globalAlpha = 1 / (i + 1); carouselScene(s + (i / (n - 1) - .5) / 45); }
+    X.globalAlpha = 1;
+  } else carouselScene(s, s >= 7.6);
+  // hero flies into the phone screen
+  if (s >= 7.6) {
+    const e = eio3(k(s, 7.6, 8.02)), g = cardGeom(7, 7.6);
+    const x = lerp(g.x - g.w / 2, PHONE.cx - PHONE.sw / 2, e), y = lerp(g.yb - g.h, PHONE.cy - PHONE.sh / 2 + 10, e), w = lerp(g.w, PHONE.sw, e), h = lerp(g.h, PHONE.sh, e);
+    tile(x, y, w, h, HERO_T, s);
+  }
+}
+
+// ---------------- Bar 5: phone + flipping panel ----------------
+function barPhone(s) {
+  X.fillStyle = DARK; X.fillRect(0, 0, W, H);
+  const P = PHONE, pin = eo3(k(s, 7.8, 8.15));
+  // phone body (generic)
+  X.save(); X.globalAlpha = pin; rr(P.cx - P.w / 2, P.cy - P.h / 2, P.w, P.h, 58); X.fillStyle = '#1A1A1C'; X.fill(); X.strokeStyle = '#2E2E31'; X.lineWidth = 2; X.stroke();
+  rr(P.cx - 44, P.cy - P.h / 2 + 20, 88, 24, 12); X.fillStyle = '#050506'; X.fill(); X.restore();
+  const sx = P.cx - P.sw / 2, sy = P.cy - P.sh / 2 + 10;
+  X.save(); rr(sx, sy, P.sw, P.sh, 10); X.clip(); tile(sx, sy, P.sw, P.sh, HERO_T, s); X.restore();
+  // on-screen chip + trim bar
+  const ci = eo3(k(s, 8.1, 8.4));
+  if (ci > 0) {
+    X.save(); X.globalAlpha = ci; badge(sx + 18, sy + 18, 'Keeper 01', 1);
+    rr(sx + 18, sy + P.sh - 46, P.sw - 36, 8, 4); X.fillStyle = 'rgba(255,255,255,.3)'; X.fill();
+    rr(sx + 18, sy + P.sh - 46, (P.sw - 36) * k(s, 8.1, 10), 8, 4); X.fillStyle = '#fff'; X.fill(); X.restore();
+  }
+  // panel
+  const pe = eoX(k(s, 8.0, 8.5)), px = lerp(1560, 1300, pe), py = 540, pw = 600, ph = 540;
+  const fl = eio3(k(s, 8.86, 9.14)), ang = fl * Math.PI, sxs = Math.cos(ang);
+  X.save(); X.globalAlpha = pe; X.translate(px, py); X.scale(Math.abs(sxs), 1 - .04 * Math.sin(ang));
+  rr(-pw / 2, -ph / 2, pw, ph, 30); X.fillStyle = '#141416'; X.fill(); X.strokeStyle = '#2A2A2E'; X.lineWidth = 2; X.stroke();
+  const L = -pw / 2 + 48, T = -ph / 2;
+  if (sxs > 0) { // front: scanning
+    font(26, 500); X.letterSpacing = '0px'; X.fillStyle = 'rgba(255,255,255,.5)'; X.fillText('Culla is watching', L, T + 86);
+    font(64, 600); X.fillStyle = '#fff'; X.fillText(Math.round(214 * k(s, 8.0, 8.85)) + ' clips', L, T + 164);
+    rr(L, T + 214, pw - 96, 8, 4); X.fillStyle = 'rgba(255,255,255,.12)'; X.fill();
+    rr(L, T + 214, (pw - 96) * eio3(k(s, 8.0, 8.85)), 8, 4); X.fillStyle = ACC; X.fill();
+    for (let i = 0; i < 4; i++) { rr(L, T + 270 + i * 58, (pw - 96) * [.8, .55, .7, .4][i], 18, 9); X.fillStyle = 'rgba(255,255,255,.07)'; X.fill(); }
+  } else { // back: results (drawn un-mirrored)
+    font(26, 500); X.letterSpacing = '0px'; X.fillStyle = 'rgba(255,255,255,.5)'; X.fillText('Results', L, T + 86);
+    font(64, 600); X.fillStyle = '#fff'; X.fillText('3 keepers', L, T + 164);
+    const rows = [[HERO_T, 'Keeper 01', '0:08 · golden hour', '0.97'], [TILES[5], 'Keeper 02', '0:05 · laughing', '0.94'], [TILES[28], 'Keeper 03', '0:11 · wide shot', '0.91']];
+    rows.forEach(([T2, a, b, sc], i) => {
+      const ry = T + 206 + i * 104, re = eoX(k(s, 9.12 + i * .1, 9.5 + i * .1)); if (re <= 0) return;
+      X.save(); X.globalAlpha = re; X.translate((1 - re) * 30, 0);
+      X.save(); rr(L, ry, 50, 88, 8); X.clip(); tile(L, ry, 50, 88, T2, s); X.restore();
+      font(30, 600); X.letterSpacing = '0px'; X.fillStyle = '#fff'; X.fillText(a, L + 76, ry + 38);
+      font(22, 500); X.letterSpacing = '0px'; X.fillStyle = 'rgba(255,255,255,.5)'; X.fillText(b, L + 76, ry + 70);
+      font(34, 600); X.letterSpacing = '0px'; X.fillStyle = ACC; X.textAlign = 'right'; X.fillText(sc, pw / 2 - 48, ry + 54); X.textAlign = 'left';
+      X.restore();
+    });
+  }
+  X.restore();
+}
+
+// ---------------- Bars 6–8: stats, ticker, logo ----------------
+const STATS = [[10, '12h', 'of footage'], [11, '38s', 'to find the keepers'], [12, '3', 'clips worth posting']];
+function barStats(s) {
+  X.fillStyle = WHITE; X.fillRect(0, 0, W, H);
+  let i = 0; while (i < 2 && s >= STATS[i + 1][0]) i++;
+  const [t0, num, cap] = STATS[i], push = 1 + .07 * eio3(k(s, t0, t0 + 1)), e = eoX(k(s, t0, t0 + .32));
+  X.save(); X.translate(W / 2, H / 2); X.scale(push, push); X.translate(-W / 2, -H / 2);
+  font(430, 600); const nw = X.measureText(num).width; font(58, 500); const cw = X.measureText(cap).width;
+  const x0 = (W - (nw + 48 + cw)) / 2, by = 700;
+  X.save(); X.beginPath(); X.rect(x0 - 40, by - 430 * .78, nw + 80, 430 * .86); X.clip();
+  font(430, 600); X.fillStyle = i === 2 ? ACC : INK; X.fillText(num, x0, by + (1 - e) * 360); X.restore();
+  const ce = eoX(k(s, t0 + .1, t0 + .45));
+  X.save(); X.beginPath(); X.rect(x0 + nw + 30, by - 70, cw + 60, 90); X.clip();
+  font(58, 500); X.fillStyle = GREY; X.fillText(cap, x0 + nw + 48, by + (1 - ce) * 80); X.restore();
+  X.restore();
+}
+const TICK = ['Shoot', 'Cull', 'Post'];
+function barTicker(s) {
+  X.fillStyle = WHITE; X.fillRect(0, 0, W, H);
+  font(210, 600); const gap = 120, ws = TICK.map(w => X.measureText(w).width), tot = ws.reduce((a, b) => a + b, 0) + gap * 2;
+  let x = (W - tot) / 2 + lerp(90, -90, k(s, 13, 14)); const by = 616;
+  TICK.forEach((wd, i) => {
+    const e = eoX(k(s, 13 + i * .25 - .05, 13 + i * .25 + .3));
+    X.save(); X.beginPath(); X.rect(x - 20, by - 210 * .8, ws[i] + 40, 210 * 1.05); X.clip();
+    font(210, 600); X.fillStyle = i === 1 ? ACC : INK; X.fillText(wd, x, by + (1 - e) * 220); X.restore();
+    x += ws[i] + gap;
+  });
+}
+function logo(s) {
+  X.fillStyle = WHITE; X.fillRect(0, 0, W, H);
+  font(170, 600); const ww = X.measureText('culla').width, R = 70, gap = 44, tot = R * 2 + gap + ww, x0 = (W - tot) / 2, cy = 520;
+  const me = eoX(k(s, 14.0, 14.4));
+  X.fillStyle = ACC; X.beginPath(); X.arc(x0 + R, cy, R * me, 0, 7); X.fill();
+  const sl = eo3(k(s, 14.18, 14.5));
+  if (sl > 0) { X.save(); X.translate(x0 + R, cy); X.rotate(-.62); X.fillStyle = WHITE; X.fillRect(-R * 1.2, -6, R * 2.4 * sl, 12); X.restore(); }
+  const le = k(s, 14.12, 14.7);
+  X.save(); X.beginPath(); X.rect(x0 + 2 * R + gap - 10, cy - 150, ww + 40, 210); X.clip();
+  font(170, 600); X.fillStyle = INK;
+  [...'culla'].forEach((ch, i) => { const e = eoX(k(le, i * .08, i * .08 + .5)); X.fillText(ch, x0 + 2 * R + gap + X.measureText('culla'.slice(0, i)).width, cy + 58 + (1 - e) * 190); });
+  X.restore();
+  const te = eo3(k(s, 14.5, 14.85)); font(40, 500); X.letterSpacing = '0px'; X.fillStyle = GREY; X.textAlign = 'center'; X.globalAlpha = te;
+  X.fillText('Your best takes, found', W / 2, cy + 200 + (1 - te) * 14); X.textAlign = 'left'; X.globalAlpha = 1;
+}
+
+// ---------------- compose ----------------
+function story(t) { return (t + PHASE) % D; }
+function bgAt(t) { const s = story(t); if (s < 3.9) return WHITE; if (s < 10) return DARK; if (s < 15.2) return WHITE; return '#000'; }
+function draw(t) {
+  const s = story(t);
+  X.textBaseline = 'alphabetic';
+  if (s < 4.02) barHookUI(s);
+  else if (s < 6.2) barWall(s);
+  else if (s < 8.0) barCarousel(s);
+  else if (s < 10) barPhone(s);
+  else if (s < 13) barStats(s);
+  else if (s < 14) barTicker(s);
+  else if (s < 15.5) logo(s);
+  if (s >= 15.0) { // fade to black, then black → white where the hook restarts
+    X.fillStyle = '#000'; X.globalAlpha = eio3(k(s, 15.0, 15.45)); if (s >= 15.5) { X.globalAlpha = 1; X.fillStyle = WHITE; X.fillRect(0, 0, W, H); X.fillStyle = '#000'; X.globalAlpha = 1 - eio3(k(s, 15.66, 15.94)); }
+    X.fillRect(0, 0, W, H); X.globalAlpha = 1;
+  }
+}
+function frame(t) {
+  X.setTransform(1, 0, 0, 1, 0, 0); X.fillStyle = bgAt(t); X.fillRect(0, 0, CW, CH);
+  X.setTransform(S, 0, 0, S, OX, OY); X.save(); X.beginPath(); X.rect(0, 0, W, H); X.clip(); draw(t); X.restore();
+}
+
+// ---------------- runtime ----------------
+function fit() { const dpr = Math.min(window.devicePixelRatio || 1, 1.5); const vw = Math.max(1, innerWidth), vh = Math.max(1, innerHeight);
+  CW = cv.width = Math.round(vw * dpr); CH = cv.height = Math.round(vh * dpr); S = Math.min(CW / W, CH / H); OX = (CW - W * S) / 2; OY = (CH - H * S) / 2; }
+let cur = 0, playing = true, t0 = performance.now(), raf = 0;
+const kick = () => { if (!raf && !document.hidden) raf = requestAnimationFrame(loop); };
+function loop(now) { raf = 0; if (!playing) return; cur = ((now - t0) / 1000) % D; frame(cur); kick(); }
+const fontsReady = Promise.race([
+  Promise.all([document.fonts.load(`600 100px Geist`, 'Findthebestak'), document.fonts.load(`500 40px Geist`, 'golden'), document.fonts.load(`400 40px Geist`, 'a')]).catch(() => {}),
+  new Promise(r => setTimeout(r, 3000))
+]).then(() => { hookL = null; frame(cur); });
+window.DURATION = D;
+window.seek = (t) => { cur = ((+t % D) + D) % D; t0 = performance.now() - cur * 1000; return fontsReady.then(() => frame(cur)); };
+window.__demo = { play() { if (playing) return; playing = true; t0 = performance.now() - cur * 1000; kick(); }, pause() { playing = false; }, get playing() { return playing; }, get time() { return cur; } };
+addEventListener('message', e => { const d = e.data || {}; if (d.type === 'demo:play') __demo.play(); else if (d.type === 'demo:pause') __demo.pause(); else if (d.type === 'demo:seek') seek(+d.t || 0); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = 0; } else if (playing) { t0 = performance.now() - cur * 1000; kick(); } });
+addEventListener('resize', () => { fit(); frame(cur); });
+fit(); frame(0); kick();
+fontsReady.then(() => { try { parent.postMessage({ type: 'demo:ready', id: ID, duration: D }, '*'); } catch (e) {} });
+})();
+</script>
+</body>
+</html>

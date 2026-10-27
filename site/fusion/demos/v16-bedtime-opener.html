@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sleepy Lantern Opener</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#101A31}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* v16-bedtime-opener — 15 s, 1920x1080 logical stage. Faceless channel "Sleepy Lantern" (prompt's own name).
+   Look: cut-paper night — every layer has a flat drop shadow, outlines "boil" through 3 drawings, and ALL motion
+   is on twos (12 fps): the picture only changes when floor(t*12) changes. Paper grain + vignette on top.
+   0.00–0.80  calm night (complete first frame): sleepy crescent moon with drifting z's, dim ember lantern hanging
+              from the moon, paper hills, cottage with a lit window, stars twinkling.
+   0.80–2.80  a firefly loops in from the right along a dotted trail and slips into the lantern.
+   2.80–3.40  lantern ignites (flicker), warm glow blooms.
+   3.00–6.20  light wave rolls out from the lantern: stars brighten in rings; grass fireflies rise (3.6+); shooting star 5.0.
+   6.90–10.05 a firefly leaves the lantern and "writes" the title: letters of SLEEPY (7.5–8.5) then LANTERN (8.95–10.05)
+              pop up (spring on twos) as it passes, each with a tiny sparkle.
+   10.0–11.1  handwritten tagline reveals, doodle underline draws.
+   11.1–14.2  HOLD on the channel name (~3 s): lantern sways, stars twinkle, firefly hovers, letters boil gently.
+   14.2–15.0  soft return: letters float up and fade, lantern dims to ember, stars/fireflies settle, firefly exits right
+              → identical to t=0 (all periodic motion uses integer cycles per 15 s; boil cycle 3 divides 180 frames). */
+(() => {
+const ID = 'v16-bedtime-opener', W = 1920, H = 1080, D = 15, TAU = Math.PI * 2, FPS2 = 12, NF = D * FPS2;
+const cv = document.getElementById('c'), X = cv.getContext('2d');
+let S = 1, OX = 0, OY = 0, CW = 1, CH = 1;
+const cl = (v, a = 0, b = 1) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t, k = (t, a, b) => cl((t - a) / (b - a));
+const eo3 = x => 1 - Math.pow(1 - x, 3), eio3 = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const spring = (t, w = 12, z = .6) => { if (t <= 0) return 0; const wd = w * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w * t) * (Math.cos(wd * t) + z * w / wd * Math.sin(wd * t)); };
+let sd = 715; const rnd = () => { sd = sd + 0x6D2B79F5 | 0; let r = Math.imul(sd ^ sd >>> 15, 1 | sd); r = r + Math.imul(r ^ r >>> 7, 61 | r) ^ r; return ((r ^ r >>> 14) >>> 0) / 4294967296; };
+const hsh = n => { n = (n ^ 61) ^ (n >>> 16); n = n + (n << 3) | 0; n ^= n >>> 4; n = Math.imul(n, 0x27d4eb2d); n ^= n >>> 15; return (n >>> 0) / 4294967296; };
+let B = 0; const jit = (id, amp) => (hsh(id * 7919 + B * 104729 + 17) - .5) * 2 * amp; // line boil, 3 drawings
+const per = (m, tq, ph = 0) => Math.sin(TAU * m * tq / D + ph);
+
+const C = { skyT: '#0F1930', skyM: '#1A2948', skyB: '#2D3E61', star: '#FFF1CF', moon: '#F6E3B4', moonS: '#D9BE86', far: '#22345A', mid: '#18274A', near: '#0F192E', shadow: 'rgba(4,8,18,.5)', cream: '#FBEBC9', gold: '#F3D9A4', roof: '#141C33', wall: '#2B3656', win: '#FFC56C', cap: '#3B2A22', tassel: '#C9543A' };
+const TF = 'Fredoka,"Arial Rounded MT Bold","Nunito",Arial,sans-serif', HF = 'Caveat,"Segoe Print","Bradley Hand",cursive';
+
+// ---------- static seeded scene data ----------
+const STARS = Array.from({ length: 84 }, (_, i) => ({ x: rnd() * W, y: 30 + Math.pow(rnd(), 1.3) * 640, r: 1.8 + rnd() * 2.6, b: .42 + rnd() * .45, m: 1 + Math.floor(rnd() * 4), ph: rnd() * TAU, big: i < 9 }));
+const FLIES = Array.from({ length: 7 }, (_, i) => ({ x: 180 + i * 250 + rnd() * 120, y: 930 + rnd() * 70, m1: 1 + Math.floor(rnd() * 2), m2: 2 + Math.floor(rnd() * 3), m3: 5 + Math.floor(rnd() * 6), ph: rnd() * TAU, ph2: rnd() * TAU }));
+const HILLS = [
+  { base: 790, a: [34, 18], f: [.0036, .0081], p: [.4, 2.1], c: C.far },
+  { base: 868, a: [30, 14], f: [.0029, .0068], p: [2.6, .7], c: C.mid },
+  { base: 962, a: [26, 12], f: [.0042, .0093], p: [1.2, 3.3], c: C.near }];
+const hillY = (j, x) => { const h = HILLS[j]; return h.base + h.a[0] * Math.sin(x * h.f[0] + h.p[0]) + h.a[1] * Math.sin(x * h.f[1] + h.p[1]); };
+const TUFTS = Array.from({ length: 34 }, () => ({ x: rnd() * W, h: 14 + rnd() * 16, l: (rnd() - .5) * .5 }));
+let grain = null;
+function makeGrain() {
+  const g = document.createElement('canvas'); g.width = g.height = 180; const gx = g.getContext('2d'), im = gx.createImageData(180, 180);
+  for (let i = 0; i < im.data.length; i += 4) { const v = rnd() < .5 ? 255 : 0; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = Math.floor(rnd() * 90); }
+  gx.putImageData(im, 0, 0); grain = X.createPattern(g, 'repeat');
+}
+
+// ---------- geometry ----------
+const MC = { x: 560, y: 240, r: 118 }, PV = { x: 560, y: 356 }, SL = 150, RX = 80, RY = 98, BCY = SL + 24 + RY;
+const sway = tq => .045 * per(2, tq) + (tq > 2.8 ? .06 * Math.exp(-(tq - 2.8) * 1.4) * Math.sin((tq - 2.8) * 6) : 0);
+function lanternCenter(tq) { const th = sway(tq); return { x: PV.x - Math.sin(th) * BCY, y: PV.y + Math.cos(th) * BCY }; }
+function lam(tq) { // lantern light level
+  const ig = eo3(k(tq, 2.8, 3.4)), back = eio3(k(tq, 14.2, 14.95));
+  let l = .25 + .75 * ig * (1 - back);
+  l *= 1 + .05 * per(23, tq) + .035 * per(37, tq, 1) + (ig > 0 && ig < 1 ? .25 * Math.sin(tq * 47) * (1 - ig) : 0);
+  return l;
+}
+
+// ---------- title layout ----------
+const L1 = { s: 'Sleepy', x: 882, y: 470 }, L2 = { s: 'Lantern', x: 882, y: 672 }, TS = 190;
+const SEG = { l1: [7.5, 8.5], l2: [8.95, 10.05] };
+function letters() {
+  X.font = `600 ${TS}px ${TF}`; X.letterSpacing = '0px';
+  const out = [];
+  [L1, L2].forEach((L, li) => {
+    const end = L.x + X.measureText(L.s).width, seg = li ? SEG.l2 : SEG.l1;
+    [...L.s].forEach((ch, i) => {
+      const x = L.x + X.measureText(L.s.slice(0, i)).width, w = X.measureText(ch).width, cx = x + w / 2;
+      out.push({ ch, x, cx, y: L.y, li, i, n: out.length, pop: seg[0] + (cx - L.x) / (end - L.x + 20) * (seg[1] - seg[0]), end });
+    });
+  });
+  return out;
+}
+function titleFly(tq, LT) {
+  const e1 = LT.find(q => q.li === 0).end + 20, e2 = LT.find(q => q.li === 1).end + 20, hov = { x: e2 + 70, y: 500 };
+  const y1 = x => 404 + 14 * Math.sin((x - 880) * .021), y2 = x => 606 + 14 * Math.sin((x - 880) * .021 + 1);
+  if (tq < 6.9) return null;
+  const q2 = (a, c, b, u) => ({ x: (1 - u) * (1 - u) * a.x + 2 * (1 - u) * u * c.x + u * u * b.x, y: (1 - u) * (1 - u) * a.y + 2 * (1 - u) * u * c.y + u * u * b.y });
+  if (tq < 7.5) { const lc = lanternCenter(tq), p = q2(lc, { x: 700, y: 330 }, { x: 880, y: y1(880) }, eio3(k(tq, 6.9, 7.5))); p.a = k(tq, 6.9, 7.05); return p; }
+  if (tq < 8.5) { const x = lerp(880, e1, k(tq, 7.5, 8.5)); return { x, y: y1(x), a: 1 }; }
+  if (tq < 8.95) { const p = q2({ x: e1, y: y1(e1) }, { x: e1 - 60, y: 640 }, { x: 880, y: y2(880) }, eio3(k(tq, 8.5, 8.95))); p.a = 1; return p; }
+  if (tq < 10.05) { const x = lerp(880, e2, k(tq, 8.95, 10.05)); return { x, y: y2(x), a: 1 }; }
+  const hv = (t) => ({ x: hov.x + 26 * per(3, t), y: hov.y + 20 * per(5, t, .5) });
+  if (tq < 10.6) { const u = eio3(k(tq, 10.05, 10.6)), h = hv(tq); return { x: lerp(e2, h.x, u), y: lerp(y2(e2), h.y, u), a: 1 }; }
+  if (tq < 14.2) { const h = hv(tq); h.a = 1; return h; }
+  const h = hv(14.2), u = eio3(k(tq, 14.2, 15)); return { x: lerp(h.x, 2050, u), y: lerp(h.y, 520, u) - Math.sin(Math.PI * u) * 120, a: 1 };
+}
+// intro firefly: Catmull-Rom path into the lantern
+const FP = [[2050, 520], [1760, 420], [1500, 560], [1390, 430], [1520, 370], [1570, 480], [1340, 590], [1060, 520], [820, 640], [560, 623]];
+function crPt(u) {
+  const n = FP.length - 1, f = cl(u) * n, i = Math.min(n - 1, Math.floor(f)), s = f - i;
+  const p0 = FP[Math.max(0, i - 1)], p1 = FP[i], p2 = FP[i + 1], p3 = FP[Math.min(n, i + 2)];
+  const c = (a, b, c2, d) => .5 * ((2 * b) + (-a + c2) * s + (2 * a - 5 * b + 4 * c2 - d) * s * s + (-a + 3 * b - 3 * c2 + d) * s * s * s);
+  return { x: c(p0[0], p1[0], p2[0], p3[0]), y: c(p0[1], p1[1], p2[1], p3[1]) };
+}
+const introU = tq => eio3(k(tq, .8, 2.8));
+
+// ---------- drawing ----------
+function glowDot(x, y, r, a, col = '255,236,160') {
+  const g = X.createRadialGradient(x, y, 0, x, y, r * 5); g.addColorStop(0, `rgba(${col},${.55 * a})`); g.addColorStop(1, `rgba(${col},0)`);
+  X.fillStyle = g; X.beginPath(); X.arc(x, y, r * 5, 0, TAU); X.fill();
+  X.fillStyle = `rgba(255,248,210,${a})`; X.beginPath(); X.arc(x, y, r, 0, TAU); X.fill();
+}
+function sparkle(x, y, s, a) { if (s <= 0 || a <= 0) return; X.save(); X.globalAlpha = a; X.fillStyle = C.star; X.beginPath(); X.moveTo(x, y - s); X.quadraticCurveTo(x, y, x + s, y); X.quadraticCurveTo(x, y, x, y + s); X.quadraticCurveTo(x, y, x - s, y); X.quadraticCurveTo(x, y, x, y - s); X.fill(); X.restore(); }
+function sky(tq) {
+  const g = X.createLinearGradient(0, 0, 0, H); g.addColorStop(0, C.skyT); g.addColorStop(.6, C.skyM); g.addColorStop(1, C.skyB);
+  X.fillStyle = g; X.fillRect(0, 0, W, H);
+  const lc = lanternCenter(tq), R = 2300 * eo3(k(tq, 3.0, 6.2)), fade = 1 - eio3(k(tq, 14.2, 14.95));
+  STARS.forEach((s, i) => {
+    const d = Math.hypot(s.x - lc.x, s.y - lc.y), boost = cl((R - d) / 260) * fade, tw = .5 + .5 * per(s.m, tq, s.ph);
+    const a = cl(s.b * (.55 + .45 * tw) + boost * .5), r = s.r * (1 + boost * .5);
+    if (s.big) sparkle(s.x + jit(i, .8), s.y + jit(i + 99, .8), r * 3.2, a);
+    else { X.fillStyle = C.star; X.globalAlpha = a; X.beginPath(); X.arc(s.x, s.y, r, 0, TAU); X.fill(); X.globalAlpha = 1; }
+    const raw = cl((R - d) / 260), ring = raw > 0 && raw < 1 ? Math.sin(Math.PI * raw) * fade : 0; if (ring > .05) sparkle(s.x, s.y, r * 4 * ring, ring * .7);
+  });
+  // shooting star
+  const ss = k(tq, 5.0, 5.6); if (ss > 0 && ss < 1) {
+    const x = lerp(1560, 1080, ss), y = lerp(110, 290, ss), g2 = X.createLinearGradient(x, y, x + 200, y - 75);
+    g2.addColorStop(0, `rgba(255,241,207,${.9 * Math.sin(Math.PI * ss)})`); g2.addColorStop(1, 'rgba(255,241,207,0)');
+    X.strokeStyle = g2; X.lineWidth = 4; X.lineCap = 'round'; X.beginPath(); X.moveTo(x, y); X.lineTo(x + 200, y - 75); X.stroke(); X.lineCap = 'butt';
+  }
+  // paper clouds
+  [[1250, 200, 1.0, 1], [210, 520, .8, 2]].forEach(([cx, cy, sc, m], j) => {
+    const x = cx + 22 * per(1, tq, j * 2), blobs = [[-110, 12, 52], [-45, -18, 70], [40, -4, 62], [108, 16, 44]];
+    for (const pass of [0, 1]) {
+      X.fillStyle = pass ? '#24365C' : C.shadow; X.beginPath();
+      blobs.forEach(([bx, by, br], q) => { X.moveTo(x + (bx + pass * 0 + (pass ? 0 : 7)) * sc + br * sc, cy + (by + (pass ? 0 : 9)) * sc); X.arc(x + (bx + (pass ? 0 : 7)) * sc + jit(q + j * 9, .8), cy + (by + (pass ? 0 : 9)) * sc, br * sc, 0, TAU); });
+      X.rect(x - 150 * sc + (pass ? 0 : 7), cy + 10 * sc + (pass ? 0 : 9), 300 * sc, 50 * sc); X.fill();
+    }
+  });
+}
+function moon(tq) {
+  const ox = jit(501, 1.2), oy = jit(502, 1.2);
+  const cres = (dx, dy, col) => {
+    X.save(); X.beginPath(); X.arc(MC.x + dx + ox, MC.y + dy + oy, MC.r, 0, TAU); X.clip();
+    X.beginPath(); X.rect(0, 0, W, H); X.arc(MC.x + 50 + dx + ox, MC.y - 36 + dy + oy, 104, 0, TAU, true); X.fillStyle = col; X.fill('evenodd'); X.restore();
+  };
+  cres(8, 10, C.shadow); cres(0, 0, C.moon);
+  X.save(); X.beginPath(); X.arc(MC.x + ox, MC.y + oy, MC.r, 0, TAU); X.clip();
+  X.fillStyle = C.moonS; X.globalAlpha = .35; X.beginPath(); X.arc(MC.x - 60 + ox, MC.y + 60 + oy, 26, 0, TAU); X.arc(MC.x - 88 + ox, MC.y + 4 + oy, 12, 0, TAU); X.fill(); X.restore();
+  // sleepy face
+  X.strokeStyle = '#6B5A3A'; X.lineWidth = 5; X.lineCap = 'round'; X.beginPath(); X.arc(MC.x - 50 + ox + jit(503, .8), MC.y + 26 + oy, 16, .15 * Math.PI, .85 * Math.PI); X.stroke(); X.lineCap = 'butt';
+  X.fillStyle = 'rgba(242,160,130,.55)'; X.beginPath(); X.arc(MC.x - 26 + ox, MC.y + 58 + oy, 11, 0, TAU); X.fill();
+  // z's
+  for (let j = 0; j < 3; j++) {
+    const ph = ((tq / 5) + j / 3) % 1, a = Math.sin(Math.PI * ph) * .8;
+    X.font = `600 ${Math.round(30 + ph * 18)}px ${HF}`; X.fillStyle = `rgba(251,235,201,${a})`;
+    X.fillText('z', MC.x - 150 - ph * 70 + 10 * Math.sin(ph * 6), MC.y - 40 - ph * 130);
+  }
+  // hook
+  X.strokeStyle = '#E9D3A6'; X.lineWidth = 4; X.beginPath(); X.arc(PV.x, PV.y - 6, 7, 0, TAU); X.stroke();
+}
+function glow(tq, l, a = 1) {
+  const c = lanternCenter(tq), R = 200 + 380 * l, g = X.createRadialGradient(c.x, c.y, 0, c.x, c.y, R);
+  g.addColorStop(0, `rgba(255,196,120,${.5 * l * a})`); g.addColorStop(.4, `rgba(255,170,90,${.18 * l * a})`); g.addColorStop(1, 'rgba(255,160,80,0)');
+  X.save(); X.globalCompositeOperation = 'lighter'; X.fillStyle = g; X.fillRect(c.x - R, c.y - R, R * 2, R * 2); X.restore();
+}
+function hills(tq) {
+  HILLS.forEach((h, j) => {
+    const path = (dx, dy) => { X.beginPath(); X.moveTo(-20, H + 20); for (let x = -20, v = 0; x <= W + 40; x += 40, v++) X.lineTo(x + dx, hillY(j, x) + dy + jit(v + j * 200, 1.3)); X.lineTo(W + 20, H + 20); X.closePath(); };
+    path(8, -10); X.fillStyle = C.shadow; X.fill();
+    path(0, 0); X.fillStyle = h.c; X.fill();
+    if (j === 0) [[1150, 1], [1215, .8], [1770, 1.1], [330, .9]].forEach(([tx, s], q) => tree(tx, hillY(0, tx) + 8, s, q));
+    if (j === 1) cottage(tq);
+  });
+  TUFTS.forEach((g, i) => { const y = hillY(2, g.x) + 4; X.strokeStyle = '#1C2A48'; X.lineWidth = 3; X.lineCap = 'round'; X.beginPath(); X.moveTo(g.x - 6, y); X.lineTo(g.x - 10 + g.l * 20 + jit(i + 400, 1.5), y - g.h); X.moveTo(g.x, y); X.lineTo(g.x + 2 + g.l * 10 + jit(i + 450, 1.5), y - g.h * 1.3); X.moveTo(g.x + 6, y); X.lineTo(g.x + 12 + jit(i + 480, 1.5), y - g.h * .9); X.stroke(); X.lineCap = 'butt'; });
+}
+function tree(x, y, s, q) {
+  for (const pass of [0, 1]) {
+    X.fillStyle = pass ? '#1A2A4C' : C.shadow; const dx = pass ? 0 : 6, dy = pass ? 0 : 8;
+    for (let i = 0; i < 3; i++) { const w = (46 - i * 10) * s, ty = y - (i * 30 + 20) * s; X.beginPath(); X.moveTo(x - w + dx, ty + dy); X.lineTo(x + dx + jit(q * 10 + i, 1), ty - 52 * s + dy); X.lineTo(x + w + dx, ty + dy); X.closePath(); X.fill(); }
+  }
+}
+function cottage(tq) {
+  const x = 1560, gy = hillY(1, x) + 12, w = 132, h = 96, wx = x - w / 2, wy = gy - h;
+  X.fillStyle = C.shadow; X.fillRect(wx + 8, wy + 10, w, h); X.beginPath(); X.moveTo(wx - 18 + 8, wy + 10); X.lineTo(x + 8, wy - 70 + 10); X.lineTo(wx + w + 18 + 8, wy + 10); X.fill();
+  X.fillStyle = C.wall; X.fillRect(wx, wy, w, h);
+  X.fillStyle = C.roof; X.fillRect(x + 26, wy - 66, 20, 44); X.beginPath(); X.moveTo(wx - 18, wy + 2); X.lineTo(x + jit(700, 1), wy - 70); X.lineTo(wx + w + 18, wy + 2); X.closePath(); X.fill();
+  const fl = .9 + .1 * per(29, tq);
+  const g = X.createRadialGradient(x - 26, wy + 46, 0, x - 26, wy + 46, 90); g.addColorStop(0, `rgba(255,197,108,${.35 * fl})`); g.addColorStop(1, 'rgba(255,197,108,0)');
+  X.save(); X.globalCompositeOperation = 'lighter'; X.fillStyle = g; X.fillRect(x - 126, wy - 54, 200, 200); X.restore();
+  X.fillStyle = C.win; X.globalAlpha = fl; X.fillRect(x - 44, wy + 28, 36, 34); X.globalAlpha = 1;
+  X.fillStyle = C.wall; X.fillRect(x - 27, wy + 28, 3, 34); X.fillRect(x - 44, wy + 44, 36, 3);
+  X.fillStyle = C.roof; X.fillRect(x + 18, wy + 40, 28, 56);
+}
+function lantern(tq, l) {
+  const th = sway(tq), core = mix3('#C9A26A', '#FFF3C8', cl((l - .25) / .75)), edge = mix3('#8C6A45', '#F0A54A', cl((l - .25) / .75));
+  X.save(); X.translate(PV.x, PV.y); X.rotate(th);
+  X.strokeStyle = '#E9D3A6'; X.lineWidth = 3; X.beginPath(); X.moveTo(0, 0); X.quadraticCurveTo(jit(801, 3), SL / 2, jit(802, 1), SL); X.stroke();
+  const body = (dx, dy) => { X.beginPath(); X.ellipse(dx + jit(803, .9), BCY + dy, RX, RY, 0, 0, TAU); };
+  body(7, 9); X.fillStyle = C.shadow; X.fill();
+  const g = X.createRadialGradient(0, BCY - 12, 8, 0, BCY, RY * 1.05); g.addColorStop(0, core); g.addColorStop(1, edge);
+  body(0, 0); X.fillStyle = g; X.fill();
+  X.save(); body(0, 0); X.clip();
+  X.strokeStyle = 'rgba(150,90,40,.55)'; X.lineWidth = 3;
+  for (let j = 1; j <= 6; j++) { const y = BCY - RY + j * (2 * RY / 7), hw = RX * Math.sqrt(Math.max(0, 1 - ((y - BCY) / RY) ** 2)); X.beginPath(); X.moveTo(-hw, y); X.quadraticCurveTo(jit(810 + j, 2), y + 11, hw, y); X.stroke(); }
+  // painted crescent motif
+  X.fillStyle = 'rgba(180,80,45,.72)'; X.beginPath(); X.arc(-4, BCY + 2, 26, 0, TAU); X.arc(8, BCY - 8, 22, 0, TAU, true); X.fill('evenodd');
+  X.restore();
+  X.fillStyle = C.cap; rr(-40, SL, 80, 26, 7); X.fill(); rr(-34, BCY + RY - 8, 68, 22, 7); X.fill();
+  X.strokeStyle = C.tassel; X.lineWidth = 4; X.beginPath(); X.moveTo(0, BCY + RY + 14); X.lineTo(0, BCY + RY + 38); X.stroke();
+  X.lineWidth = 3; X.beginPath(); for (let j = -2; j <= 2; j++) { X.moveTo(j * 3, BCY + RY + 38); X.lineTo(j * 5 + jit(820 + j, 1.2), BCY + RY + 66); } X.stroke();
+  X.restore();
+}
+const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+const mix3 = (a, b, t) => { const A = hex(a), Bc = hex(b); return `rgb(${A.map((v, i) => Math.round(lerp(v, Bc[i], t))).join(',')})`; };
+function rr(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, r); }
+
+function title(tq, LT) {
+  X.font = `600 ${TS}px ${TF}`; X.letterSpacing = '0px';
+  LT.forEach(q => {
+    const lt = tq - q.pop; if (lt <= 0) return;
+    const sc = spring(lt, 14, .55), out = k(tq, 14.2 + q.n * .025, 14.62 + q.n * .025), a = 1 - out;
+    if (a <= 0 || sc <= 0) return;
+    const bob = 3 * per(3, tq, q.n * .9) * k(tq, 10.5, 11), rot = jit(900 + q.n, .025) + (1 - Math.min(1, sc)) * (q.i % 2 ? .3 : -.3);
+    X.save(); X.globalAlpha = a; X.translate(q.cx + jit(930 + q.n, 1.2), q.y - TS * .34 + bob - out * 50); X.rotate(rot); X.scale(sc, sc);
+    X.textAlign = 'center'; X.fillStyle = 'rgba(4,8,18,.55)'; X.fillText(q.ch, 6, TS * .34 + 9); X.fillStyle = C.cream; X.fillText(q.ch, 0, TS * .34);
+    X.restore();
+    const sp = k(lt, 0, .5); if (sp < 1) sparkle(q.cx + (hsh(q.n + 5) - .5) * 60, q.y - TS * .82 - 10, 16 * Math.sin(Math.PI * sp), .9);
+  });
+  X.textAlign = 'left';
+  // tagline (handwriting reveal) + doodle underline
+  const tag = 'bedtime stories · every night', rv = eio3(k(tq, 10.0, 10.9)), ta = 1 - k(tq, 14.2, 14.55);
+  if (rv > 0 && ta > 0) {
+    X.font = `600 60px ${HF}`; const tw = X.measureText(tag).width;
+    X.save(); X.globalAlpha = ta; X.beginPath(); X.rect(880, 690, (tw + 30) * rv, 120); X.clip(); X.fillStyle = C.gold; X.fillText(tag, 890 + jit(960, .8), 768 + jit(961, .8)); X.restore();
+    const ul = k(tq, 10.6, 11.1); if (ul > 0) {
+      X.save(); X.globalAlpha = ta * .8; X.strokeStyle = C.gold; X.lineWidth = 4; X.lineCap = 'round'; X.beginPath();
+      const n = Math.floor(40 * ul); for (let i = 0; i <= n; i++) { const x = 892 + i * (tw / 40), y = 796 + 6 * Math.sin(i * .7) + jit(970 + i, .7); i ? X.lineTo(x, y) : X.moveTo(x, y); } X.stroke(); X.restore();
+    }
+  }
+}
+function fireflies(tq) {
+  // grass fireflies
+  FLIES.forEach((f, i) => {
+    const a = k(tq, 3.6 + i * .15, 4.4 + i * .15) * (1 - k(tq, 14.2, 14.9)) * (.55 + .45 * per(f.m3, tq, f.ph)); if (a <= 0) return;
+    glowDot(f.x + 40 * per(f.m1, tq, f.ph), f.y - 40 - 60 * (.5 + .5 * per(f.m2, tq, f.ph2)), 4, a);
+  });
+  // intro firefly + dotted trail
+  if (tq > .8 && tq < 2.95) {
+    const u = introU(tq), p = crPt(u), fade = 1 - k(tq, 2.72, 2.9);
+    for (let j = 1; j <= 9; j++) { const pu = introU(tq - j / FPS2); if (pu <= 0) break; const q = crPt(pu); X.fillStyle = `rgba(255,236,170,${(.75 - j * .07) * fade})`; X.beginPath(); X.arc(q.x, q.y, 5.5 - j * .4, 0, TAU); X.fill(); }
+    glowDot(p.x, p.y, 7.5, fade);
+  }
+}
+
+function draw(tq) {
+  B = Math.round(tq * FPS2) % 3;
+  const LT = letters(), l = lam(tq);
+  sky(tq); moon(tq); glow(tq, l); hills(tq); glow(tq, l, .22); lantern(tq, l); fireflies(tq);
+  title(tq, LT);
+  const tf = titleFly(tq, LT); if (tf) glowDot(tf.x, tf.y, 6, tf.a);
+  // grain + vignette
+  if (grain) { X.save(); X.globalAlpha = .07; X.translate(B * 61, B * 37); X.fillStyle = grain; X.fillRect(-200, -200, W + 400, H + 400); X.restore(); }
+  const v = X.createRadialGradient(W / 2, H / 2, H * .35, W / 2, H / 2, H * 1.05); v.addColorStop(0, 'rgba(5,8,18,0)'); v.addColorStop(1, 'rgba(5,8,18,.55)');
+  X.fillStyle = v; X.fillRect(0, 0, W, H);
+}
+function frame(t) {
+  const fi = Math.floor(t * FPS2 + 1e-6) % NF, tq = fi / FPS2;
+  X.setTransform(1, 0, 0, 1, 0, 0); X.fillStyle = C.skyT; X.fillRect(0, 0, CW, CH);
+  X.setTransform(S, 0, 0, S, OX, OY); X.save(); X.beginPath(); X.rect(0, 0, W, H); X.clip(); X.textBaseline = 'alphabetic'; draw(tq); X.restore();
+  return fi;
+}
+
+// ---------- runtime (redraws only when the 12 fps frame changes) ----------
+function fit() { const dpr = Math.min(window.devicePixelRatio || 1, 1.5), vw = Math.max(1, innerWidth), vh = Math.max(1, innerHeight);
+  CW = cv.width = Math.round(vw * dpr); CH = cv.height = Math.round(vh * dpr); S = Math.min(CW / W, CH / H); OX = (CW - W * S) / 2; OY = (CH - H * S) / 2; }
+let cur = 0, playing = true, t0 = performance.now(), raf = 0, last = -1;
+const kick = () => { if (!raf && !document.hidden) raf = requestAnimationFrame(loop); };
+function loop(now) { raf = 0; if (!playing) return; cur = ((now - t0) / 1000) % D; const fi = Math.floor(cur * FPS2 + 1e-6) % NF; if (fi !== last) last = frame(cur); kick(); }
+makeGrain();
+const fontsReady = Promise.race([
+  Promise.all([document.fonts.load(`600 100px Fredoka`, 'SleepyLantern'), document.fonts.load(`600 60px Caveat`, 'bedtime stories · every night z')]).catch(() => {}),
+  new Promise(r => setTimeout(r, 3000))
+]).then(() => { last = frame(cur); });
+window.DURATION = D;
+window.seek = (t) => { cur = ((+t % D) + D) % D; t0 = performance.now() - cur * 1000; return fontsReady.then(() => { last = frame(cur); }); };
+window.__demo = { play() { if (playing) return; playing = true; t0 = performance.now() - cur * 1000; kick(); }, pause() { playing = false; }, get playing() { return playing; }, get time() { return cur; } };
+addEventListener('message', e => { const d = e.data || {}; if (d.type === 'demo:play') __demo.play(); else if (d.type === 'demo:pause') __demo.pause(); else if (d.type === 'demo:seek') seek(+d.t || 0); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = 0; } else if (playing) { t0 = performance.now() - cur * 1000; kick(); } });
+addEventListener('resize', () => { fit(); last = frame(cur); });
+fit(); last = frame(0); kick();
+fontsReady.then(() => { try { parent.postMessage({ type: 'demo:ready', id: ID, duration: D }, '*'); } catch (e) {} });
+})();
+</script>
+</body>
+</html>
